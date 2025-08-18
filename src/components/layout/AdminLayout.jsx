@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -28,15 +28,18 @@ import axiosInstance from "../../api/axiosInstance";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
 import { toast as toastNotify } from "react-toastify";
-
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { companyAPI } from "../../api/companyApi";
 const AdminLayout = (props) => {
-  const { socket, connectSocket, setUpdateDashboard } = useSocketContext();
+  const { socket, connectSocket, updateDashboard, setUpdateDashboard } =
+    useSocketContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [notifications, setNotifications] = useState([]);
   const [companyData, setCompanyData] = useState(null);
 
   const getCompanyDetails = async () => {
@@ -58,36 +61,6 @@ const AdminLayout = (props) => {
     getCompanyDetails();
   }, []);
 
-  // Dummy notifications data
-  const notifications = [
-    {
-      id: 1,
-      type: "leave",
-      title: "Leave Request Pending",
-      message: "John Doe has requested 3 days of annual leave",
-      time: "2 minutes ago",
-      isRead: false,
-    },
-    {
-      id: 2,
-      type: "employee",
-      title: "New Employee Added",
-      message: "Sarah Wilson has been added to the Engineering team",
-      time: "1 hour ago",
-      isRead: false,
-    },
-    {
-      id: 3,
-      type: "payroll",
-      title: "Payroll Processing Complete",
-      message: "December payroll has been processed successfully",
-      time: "3 hours ago",
-      isRead: true,
-    },
-  ];
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
-
   const handleLogout = async () => {
     logout();
     navigate("/login");
@@ -103,6 +76,21 @@ const AdminLayout = (props) => {
     { icon: User, label: "User Management", path: "/admin/user" },
     { icon: Settings, label: "Settings", path: "/admin/settings" },
   ];
+
+  // api
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await companyAPI.getNotification();
+        if (response.status) {
+          setNotifications(response?.data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+    fetchNotification();
+  }, [updateDashboard]);
 
   // handle real time notification
   useEffect(() => {
@@ -125,6 +113,9 @@ const AdminLayout = (props) => {
       socket.off("notify:user");
     };
   }, [socket]);
+  const unreadCount = useMemo(() => {
+    return notifications?.filter((n) => !n.read)?.length;
+  }, [notifications]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -254,18 +245,18 @@ const AdminLayout = (props) => {
                       <Badge variant="secondary">{unreadCount} new</Badge>
                     </div>
                     <div className="space-y-3 max-h-80 overflow-y-auto">
-                      {notifications.map((notification) => (
+                      {notifications?.map((notification) => (
                         <Card
                           key={notification.id}
                           className={`border-0 shadow-sm ${
-                            !notification.isRead ? "bg-blue-50" : ""
+                            !notification.read ? "bg-blue-50" : ""
                           }`}
                         >
                           <CardContent className="p-3">
                             <div className="flex items-start space-x-3">
                               <div
                                 className={`w-2 h-2 rounded-full mt-2 ${
-                                  !notification.isRead
+                                  !notification.read
                                     ? "bg-blue-500"
                                     : "bg-slate-300"
                                 }`}
@@ -278,7 +269,7 @@ const AdminLayout = (props) => {
                                   {notification.message}
                                 </p>
                                 <p className="text-xs text-slate-400 mt-2">
-                                  {notification.time}
+                                  {dayjs(notification?.createdAt).fromNow()}
                                 </p>
                               </div>
                             </div>

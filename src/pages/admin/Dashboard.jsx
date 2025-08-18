@@ -144,24 +144,26 @@ const AdminDashboard = () => {
       <div className="space-y-6">
         {/* Welcome Header */}
 
-        {notifications?.map((notification) => (
-          <Alert
-            key={notification.id}
-            className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
-            style={{ color: "white !important" }}
-            onClick={async () => {
-              const resp = await companyAPI.readNotification(notification.id);
-              if (resp.status) {
-                fetchNotification();
-              }
-            }}
-          >
-            <AlertDescription className="text-sm text-slate-700">
-              <strong>{notification.title}</strong>:{" "}
-              <span className="text-blue-600">{notification.message}</span>
-            </AlertDescription>
-          </Alert>
-        ))}
+        {notifications
+          ?.filter((a) => !a.read)
+          ?.map((notification) => (
+            <Alert
+              key={notification.id}
+              className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
+              style={{ color: "white !important" }}
+              onClick={async () => {
+                const resp = await companyAPI.readNotification(notification.id);
+                if (resp.status) {
+                  fetchNotification();
+                }
+              }}
+            >
+              <AlertDescription className="text-sm text-slate-700">
+                <strong>{notification.title}</strong>:{" "}
+                <span className="text-blue-600">{notification.message}</span>
+              </AlertDescription>
+            </Alert>
+          ))}
 
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
           <div className="flex justify-between items-center">

@@ -464,7 +464,9 @@ const LeaveRequestModal = ({
             <Button
               type="submit"
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-              disabled={leaveCalculate?.leave_remaing - totalLeaveCount < 0}
+              disabled={
+                readOnly || leaveCalculate?.leave_remaing - totalLeaveCount < 0
+              }
             >
               <CalendarPlus className="h-4 w-4 mr-2" />
               Submit Request

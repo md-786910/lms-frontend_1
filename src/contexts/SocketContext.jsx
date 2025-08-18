@@ -80,7 +80,7 @@ export const SocketProvider = ({ children }) => {
       updateDashboard,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [socket]
+    [socket, updateDashboard]
   );
 
   return (
