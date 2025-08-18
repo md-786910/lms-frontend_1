@@ -154,7 +154,7 @@ const EmployeeLayout = () => {
             </p>
           </div>
           <Button
-            onClick={handleLogout}
+            onClick={() => handleLogout()}
             variant="outline"
             className="w-full flex items-center space-x-2"
           >
