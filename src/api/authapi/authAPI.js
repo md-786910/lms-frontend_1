@@ -36,6 +36,11 @@ export const authAPI = {
     const response = await axiosInstance.post("/user/logout");
     return response;
   },
+
+  lgetNotification: async () => {
+    const response = await axiosInstance.get(`/notify/employee`);
+    return response.data;
+  },
 };
 
 export const userAPI = {

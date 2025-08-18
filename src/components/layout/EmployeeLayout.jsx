@@ -4,7 +4,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { io } from "socket.io-client";
 
 import {
   Popover,
@@ -23,9 +22,11 @@ import {
   Building2,
   Bell,
 } from "lucide-react";
-import useSocket from "../../hooks/useSocket";
-
+import { toast } from "sonner";
+import { toast as toastNotify } from "react-toastify";
+import { useSocketContext } from "../../contexts/SocketContext";
 const EmployeeLayout = () => {
+  const { socket, connectSocket } = useSocketContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const { user, logout } = useAuth();
@@ -72,20 +73,26 @@ const EmployeeLayout = () => {
     { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
   ];
 
-  // socket
-  useSocket({
-    userId: user?.id,
-    companyId: user?.company_id,
-    onEvents: {
-      "employee:created": (data) => {
-        console.log("👤 New employee created:", data);
-        // You can show a toast or update UI
-      },
-      notification: (data) => {
-        console.log("🔔 Notification received:", data);
-      },
-    },
-  });
+  // handle real time notification
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      connectSocket(token);
+    }
+  }, [connectSocket]);
+
+  useEffect(() => {
+    if (!socket) {
+      return toast.error("Please refresh to connect to get real time updates");
+    }
+    socket.on("notify:user", ({ message }) => {
+      return toastNotify.success(message);
+    });
+
+    return () => {
+      socket.off("notify:user");
+    };
+  }, [socket]);
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Sidebar */}

@@ -1,24 +1,29 @@
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useFormValidation } from '../hooks/useFormValidation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Building2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
-import { authAPI } from '../api/authapi/authAPI';
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useFormValidation } from "../hooks/useFormValidation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Building2, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { authAPI } from "../api/authapi/authAPI";
 
 const Login = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [apiError, setApiError] = useState('');
+  const [apiError, setApiError] = useState("");
 
   // Redirect if already authenticated
   if (user?.role) {
-
     return (
       <Navigate
         to={
@@ -29,41 +34,57 @@ const Login = () => {
         replace
       />
     );
-
   }
 
   //  Validation schema using your custom hook format
   const validationSchema = {
     email: [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'email', message: 'Enter a valid email address.' },
+      { type: "required", message: "Email is required." },
+      { type: "email", message: "Enter a valid email address." },
     ],
     password: [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'minLength', value: 6, message: 'Password must be at least 6 characters.' },
-    ]
+      { type: "required", message: "Password is required." },
+      {
+        type: "minLength",
+        value: 6,
+        message: "Password must be at least 6 characters.",
+      },
+    ],
   };
 
-  const { values, errors, isSubmitting, handleChange, handleBlur, handleSubmit } = useFormValidation({
-    email: '',
-    password: ''
-  },
+  const {
+    values,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = useFormValidation(
+    {
+      email: "",
+      password: "",
+    },
     validationSchema
   );
 
   const onSubmit = async (formValues) => {
-    setApiError('');
+    setApiError("");
     try {
       const res = await authAPI.login(formValues);
       if (res.status && res.data?.user) {
         const { user, token } = res.data;
         login(user, token);
-        navigate(user.role === 'admin' ? '/admin/dashboard' : '/employee/dashboard');
+        navigate(
+          user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"
+        );
+        window.location.reload();
       } else {
-        setApiError(res.message || 'Invalid credentials. Please try again.');
+        setApiError(res.message || "Invalid credentials. Please try again.");
       }
     } catch (error) {
-      setApiError(error?.response?.data?.message || 'An error occurred. Please try again.');
+      setApiError(
+        error?.response?.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
@@ -72,7 +93,9 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="relative">
           <div style={{ position: "absolute", top: "1rem", left: "-25rem" }}>
-            <Button onClick={() => navigate('/company')}>&#8678; Go Back</Button>
+            <Button onClick={() => navigate("/company")}>
+              &#8678; Go Back
+            </Button>
           </div>
 
           <div className="text-center mb-8">
@@ -90,7 +113,9 @@ const Login = () => {
 
         <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl font-semibold text-center">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-center">
+              Welcome back
+            </CardTitle>
             <CardDescription className="text-center">
               Enter your credentials to access your dashboard
             </CardDescription>
@@ -113,7 +138,9 @@ const Login = () => {
                     placeholder="Enter your email"
                   />
                 </div>
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -135,15 +162,23 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
               </div>
 
               {apiError && (
                 <Alert className="border-red-200 bg-red-50">
-                  <AlertDescription className="text-red-700">{apiError}</AlertDescription>
+                  <AlertDescription className="text-red-700">
+                    {apiError}
+                  </AlertDescription>
                 </Alert>
               )}
 
@@ -153,22 +188,20 @@ const Login = () => {
                   className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Signing in...' : 'Sign in'}
+                  {isSubmitting ? "Signing in..." : "Sign in"}
                 </Button>
 
                 <div className="text-center">
                   <button
                     type="button"
                     className="text-sm text-blue-600 hover:underline"
-                    onClick={() => navigate('/forgot-password')}
+                    onClick={() => navigate("/forgot-password")}
                   >
                     Forgot Password?
                   </button>
                 </div>
               </div>
-
             </form>
-
 
             {/* <div className="mt-6 p-4 bg-slate-50 rounded-lg">
               <p className="text-sm font-medium text-slate-700 mb-2">

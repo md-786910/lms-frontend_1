@@ -22,8 +22,12 @@ import {
   Timer,
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { useSocketContext } from "../../contexts/SocketContext";
+import { authAPI } from "../../api/authapi/authAPI";
 
 const EmployeeDashboard = () => {
+  const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -33,6 +37,7 @@ const EmployeeDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [basicProfile, setBasicProfile] = useState({});
+  const [notifications, setNotifications] = useState([]);
   // Mock leave data for calendar
   const myLeaveData = [
     {
@@ -152,6 +157,17 @@ const EmployeeDashboard = () => {
     }, 1000);
   };
 
+  const fetchNotification = async () => {
+    try {
+      const response = await authAPI.getNotification();
+      if (response.status === 200) {
+        setNotifications(response.data?.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
   useEffect(() => {
     const fetDashboard = async () => {
       try {
@@ -198,7 +214,7 @@ const EmployeeDashboard = () => {
         setLoading(false);
       }
     };
-
+    fetchNotification();
     fetDashboard();
   }, []);
 
@@ -232,6 +248,26 @@ const EmployeeDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
+
+      {notifications?.map((notification) => (
+        <Alert
+          key={notification.id}
+          className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
+          style={{ color: "white !important" }}
+          onClick={async () => {
+            const resp = await companyAPI.readNotification(notification.id);
+            if (resp.status) {
+              fetchNotification();
+            }
+          }}
+        >
+          <AlertDescription className="text-sm text-slate-700">
+            <strong>{notification.title}</strong>:{" "}
+            <span className="text-blue-600">{notification.message}</span>
+          </AlertDescription>
+        </Alert>
+      ))}
+
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
           Welcome back,{" "}

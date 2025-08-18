@@ -24,10 +24,13 @@ import {
   CalendarClock,
   User,
 } from "lucide-react";
-import useSocket from "../../hooks/useSocket";
 import axiosInstance from "../../api/axiosInstance";
+import { useSocketContext } from "../../contexts/SocketContext";
+import { toast } from "sonner";
+import { toast as toastNotify } from "react-toastify";
 
 const AdminLayout = (props) => {
+  const { socket, connectSocket, setUpdateDashboard } = useSocketContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const { user, logout } = useAuth();
@@ -101,23 +104,27 @@ const AdminLayout = (props) => {
     { icon: Settings, label: "Settings", path: "/admin/settings" },
   ];
 
-  // socket
-  const userId = "123"; // replace from auth context or localStorage
-  const companyId = "456";
+  // handle real time notification
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      connectSocket(token);
+    }
+  }, [connectSocket]);
 
-  useSocket({
-    userId: user?.id,
-    companyId: user?.company_id,
-    onEvents: {
-      "employee:created": (data) => {
-        console.log("👤 New employee created:", data);
-        // You can show a toast or update UI
-      },
-      notification: (data) => {
-        console.log("🔔 Notification received:", data);
-      },
-    },
-  });
+  useEffect(() => {
+    if (!socket) {
+      return toast.error("Please refresh to connect to get real time updates");
+    }
+    socket.on("notify:user", ({ message }) => {
+      setUpdateDashboard(Math.random()); // Trigger update
+      return toastNotify.success(message);
+    });
+
+    return () => {
+      socket.off("notify:user");
+    };
+  }, [socket]);
 
   return (
     <div className="min-h-screen bg-slate-50">
