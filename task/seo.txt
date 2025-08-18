@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Base -->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>QuickHR — Cloud HRMS & Payroll | Attendance, Leave, Timesheets</title>
+    <meta
+      name="description"
+      content="QuickHR is a modern HRMS for growing teams—attendance & leave tracking, payroll, timesheets, performance, and onboarding. Try it free."
+    />
+    <link rel="canonical" href="https://www.example.com/" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+
+    <!-- Favicons & PWA (update paths to your assets) -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0F172A" />
+
+    <!-- Preconnects (speed up critical third-parties) -->
+    <!-- Adjust or remove if unused -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://analytics.example.com" crossorigin />
+
+    <!-- Optional: Preload your main webfont or critical CSS -->
+    <!-- <link rel="preload" as="style" href="/assets/critical.css" /> -->
+    <!-- <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/Inter-Variable.woff2" /> -->
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="QuickHR" />
+    <meta property="og:title" content="QuickHR — Cloud HRMS & Payroll" />
+    <meta
+      property="og:description"
+      content="All-in-one HR software: attendance, leave, payroll, performance."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.example.com/" />
+    <meta
+      property="og:image"
+      content="https://www.example.com/og/quickhr-hrms.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@yourbrand" />
+    <meta name="twitter:creator" content="@yourbrand" />
+    <meta name="twitter:title" content="QuickHR — Cloud HRMS & Payroll" />
+    <meta
+      name="twitter:description"
+      content="All-in-one HR software: attendance, leave, payroll, performance."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.example.com/og/quickhr-hrms.png"
+    />
+
+    <!-- Geo/Local business (optional; set if you target a region) -->
+    <!-- <meta name="geo.region" content="IN" /> -->
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "QuickHR",
+        "url": "https://www.example.com/",
+        "logo": "https://www.example.com/logo.png",
+        "sameAs": [
+          "https://www.linkedin.com/company/yourbrand",
+          "https://twitter.com/yourbrand"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "telephone": "+1-555-0100",
+            "email": "sales@example.com",
+            "areaServed": "IN"
+          },
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "support@example.com",
+            "areaServed": "IN"
+          }
+        ]
+      }
+    </script>
+
+    <!-- Structured Data: SoftwareApplication (SaaS HRMS) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "QuickHR",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Cloud HRMS for attendance, leave, payroll, timesheets, performance, and onboarding.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "category": "FreeTrial"
+        },
+        "url": "https://www.example.com/",
+        "image": "https://www.example.com/og/quickhr-hrms.png",
+        "publisher": {
+          "@type": "Organization",
+          "name": "QuickHR"
+        }
+      }
+    </script>
+
+    <!-- Structured Data: WebSite + SearchAction (if you have site search) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://www.example.com/",
+        "name": "QuickHR",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.example.com/search?q={query}",
+          "query-input": "required name=query"
+        }
+      }
+    </script>
+
+    <!-- Security headers are set server-side; shown here only as a reminder -->
+    <!-- e.g., CSP, X-Content-Type-Options, Referrer-Policy -->
+  </head>
+
+  <body>
+    <noscript
+      >QuickHR works best with JavaScript enabled. Enable JS to use the HRMS
+      dashboard.</noscript
+    >
+    <div id="root"></div>
+
+    <!-- For production builds, Vite will replace this with hashed assets -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
