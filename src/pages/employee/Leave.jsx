@@ -145,54 +145,6 @@ const EmployeeLeave = () => {
         </Button>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Total Approved
-            </h3>
-            <p className="text-2xl font-bold text-green-600">
-              {leaveDash?.total_approved || 0} days
-            </p>
-            <p className="text-sm text-slate-600">This year</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-              <Clock className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Pending
-            </h3>
-            <p className="text-2xl font-bold text-orange-600">
-              {leaveDash?.total_pending || 0} days
-            </p>
-            <p className="text-sm text-slate-600">Awaiting approval</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-              <CalendarDays className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Remaining
-            </h3>
-            <p className="text-2xl font-bold text-purple-600">
-              {leaveDash?.total_remaining || 0} days
-            </p>
-            <p className="text-sm text-slate-600">Available balance</p>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Leave Balance */}
       <Card className="border-0 shadow-lg">
         <CardHeader>
@@ -355,6 +307,54 @@ const EmployeeLeave = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="border-0 shadow-lg">
+          <CardContent className="p-6 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">
+              Total Approved
+            </h3>
+            <p className="text-2xl font-bold text-green-600">
+              {leaveDash?.total_approved || 0} days
+            </p>
+            <p className="text-sm text-slate-600">This year</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-lg">
+          <CardContent className="p-6 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+              <Clock className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">
+              Pending
+            </h3>
+            <p className="text-2xl font-bold text-orange-600">
+              {leaveDash?.total_pending || 0} days
+            </p>
+            <p className="text-sm text-slate-600">Awaiting approval</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-lg">
+          <CardContent className="p-6 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+              <CalendarDays className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">
+              Remaining
+            </h3>
+            <p className="text-2xl font-bold text-purple-600">
+              {leaveDash?.total_remaining || 0} days
+            </p>
+            <p className="text-sm text-slate-600">Available balance</p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Leave Request Modal */}
       <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
