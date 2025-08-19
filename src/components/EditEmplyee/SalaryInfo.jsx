@@ -111,6 +111,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
     values.epf_pension,
     values.epf_admin,
     values.is_epf_applicable,
+    values.upi_number,
   ]);
 
   useImperativeHandle(ref, () => ({
