@@ -12,8 +12,10 @@ const validationSchema = {
     { type: "required", message: "ZIP Code is required" },
     { type: "zip", message: "Invalid ZIP Code" },
   ],
-  country: [{ type: "required", message: "Country is required" }],
-  permanent_address: [],
+  country: [{ type: "optional", message: "Country is required" }],
+  permanent_address: [
+    { type: "optional", message: "Permanent address is required" },
+  ],
 };
 
 const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
@@ -36,7 +38,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
     <div className="space-y-4 p-4 border rounded-md shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="street">Street Address</Label>
+          <Label htmlFor="street">Street Address *</Label>
           <Input
             id="street"
             name="street"
@@ -50,7 +52,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city">City *</Label>
           <Input
             id="city"
             name="city"
@@ -64,7 +66,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="state">State</Label>
+          <Label htmlFor="state">State *</Label>
           <Input
             id="state"
             name="state"
@@ -78,7 +80,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="zip_code">ZIP Code</Label>
+          <Label htmlFor="zip_code">ZIP Code *</Label>
           <Input
             id="zip_code"
             name="zip_code"
@@ -117,6 +119,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
           onBlur={handleBlur}
           rows={3}
         />
+        {touched.permanent_address ||
+          (errors.permanent_address && (
+            <p className="text-red-500 text-sm">{errors.permanent_address}</p>
+          ))}
       </div>
     </div>
   );

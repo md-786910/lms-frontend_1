@@ -96,7 +96,7 @@ const DocumentsForm = ({
             htmlFor="docType"
             className="text-sm font-medium text-gray-700"
           >
-            Document Type
+            Document Type *
           </Label>
           <Select
             value={selectedType}
@@ -122,7 +122,7 @@ const DocumentsForm = ({
             className="text-sm font-medium text-gray-700"
           >
             Upload File{" "}
-            <span className="text-xs text-gray-500">(PDF, JPG, PNG)</span>
+            <span className="text-xs text-gray-500">(PDF, JPG, PNG)</span> *
           </Label>
           <Input
             id="docFile"

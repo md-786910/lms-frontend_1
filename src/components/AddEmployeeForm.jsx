@@ -122,7 +122,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
               {renderError("firstName")}
             </div>
             <div>
-              <Label htmlFor="lastName">Last Name *</Label>
+              <Label htmlFor="lastName">Last Name </Label>
               <Input
                 id="lastName"
                 name="lastName"
