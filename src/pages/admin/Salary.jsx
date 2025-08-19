@@ -36,6 +36,7 @@ import {
 import { salaryAPI } from "../../api/salaryApi";
 import dayjs from "dayjs";
 import debounce from "lodash/debounce";
+import NoDataFound from "../../common/NoDataFound";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -349,7 +350,11 @@ const Salary = () => {
               <tbody>
                 {salaryDatas?.map((salary) => {
                   const {
-                    employee: { first_name, last_name, employee_no },
+                    employee: {
+                      first_name = "",
+                      last_name = "",
+                      employee_no = "",
+                    },
                   } = salary;
                   return (
                     <tr
@@ -409,6 +414,7 @@ const Salary = () => {
                 })}
               </tbody>
             </table>
+            {salaryDatas?.length === 0 && <NoDataFound />}
           </div>
         </CardContent>
       </Card>
