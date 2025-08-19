@@ -169,7 +169,10 @@ const Profile = ({ readOnly = false }) => {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center space-x-2">
                   <User className="h-4 w-4 text-slate-400" />
-                  <span>ID: {basicInfo?.employee_no}</span>
+                  <span>
+                    ID:{" "}
+                    {parseInt(basicInfo?.employee_no) || `EMP-${basicInfo?.id}`}
+                  </span>
                 </div>
                 <div className="flex items-center justify-center space-x-2">
                   <Calendar className="h-4 w-4 text-slate-400" />
@@ -245,21 +248,21 @@ const Profile = ({ readOnly = false }) => {
               <User className="h-8 w-8 mx-auto mb-2 text-blue-600" />
               {/* <p className="text-sm text-slate-600">Employee ID</p> */}
               <p className="font-semibold text-slate-800">
-                {basicInfo?.employee_no}
+                {parseInt(basicInfo?.employee_no) || `EMP-${basicInfo?.id}`}
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <Briefcase className="h-8 w-8 mx-auto mb-2 text-green-600" />
               {/* <p className="text-sm text-slate-600">Position</p> */}
               <p className="font-semibold text-slate-800">
-                {basicInfo?.designation?.title}
+                {basicInfo?.designation?.title || "N/A"}
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <MapPin className="h-8 w-8 mx-auto mb-2 text-purple-600" />
               {/* <p className="text-sm text-slate-600">Department</p> */}
               <p className="font-semibold text-slate-800">
-                {basicInfo?.department?.name}
+                {basicInfo?.department?.name || "N/A"}
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
