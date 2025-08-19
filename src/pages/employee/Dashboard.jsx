@@ -627,7 +627,7 @@ const EmployeeDashboard = () => {
         </div>
       </div>
 
-      {/* 👇 NEW: Slide-in Holiday Modal (same as Admin) */}
+      {/* Slide-in Holiday Modal (same as Admin) */}
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">
           {/* Overlay */}
@@ -693,7 +693,7 @@ const EmployeeDashboard = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
