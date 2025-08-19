@@ -303,7 +303,7 @@ const Employees = ({
                         title="Edit"
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleEditEmployee(employee.id)}
+                        onClick={() => handleEditEmployee(employee)}
                       >
                         <Edit3 className="h-4 w-4" />
                       </Button>
@@ -479,6 +479,11 @@ const Employees = ({
                 <span>
                   Edit Employee :{" "}
                   <span className="text-blue-600">
+                    (
+                    {selectedEmployee?.first_name +
+                      " " +
+                      selectedEmployee?.last_name}
+                    ) &nbsp; - &nbsp;
                     {capitalizeFirstLetter(activeTabEdit)}
                   </span>
                 </span>
@@ -487,7 +492,7 @@ const Employees = ({
           </DialogHeader>
           {selectedEmployee && (
             <EditEmployeeForm
-              employeeId={selectedEmployee}
+              employeeId={selectedEmployee?.id}
               onClose={handleEditClose}
               onSuccess={handleEditSuccess}
               handleTabActive={(props) => setActiveTabEdit(props)}
