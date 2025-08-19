@@ -23,7 +23,7 @@ const validationSchema = {
     { type: "boolean", message: "EPF applicability must be true or false" },
   ],
   epf: [
-    { type: "number", message: "EPF must be a valid number" },
+    { type: "string", message: "EPF must be a valid string" },
     { type: "optional", message: "EPF is optional" },
   ],
   epf_pension: [
@@ -186,7 +186,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                   <Input
                     id={field}
                     name={field}
-                    type="number"
+                    type={field === "epf" ? "text" : "number"}
                     value={values[field]}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -244,7 +244,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
           </div>
         </div>
         <p className="text-sm text-gray-500 mt-1">
-          Amount in words: ({numberToWords(values.payable_salary)})
+          Amount in words: ({numberToWords(values?.payable_salary ?? 0)})
         </p>
       </div>
 

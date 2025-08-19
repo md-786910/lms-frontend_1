@@ -19,6 +19,7 @@ import {
 import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
 import ConfirmFn from "../../utility/confirmFn";
+import NoDataFound from "../../common/NoDataFound";
 
 const LEAVE_STATUS = {
   pending: "Pending",
@@ -304,6 +305,8 @@ const EmployeeLeave = () => {
                 </div>
               </div>
             ))}
+
+            {leaveRequest?.length === 0 && <NoDataFound />}
           </div>
         </CardContent>
       </Card>

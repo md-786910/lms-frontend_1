@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
 import axiosInstance from "../../api/axiosInstance";
+import NoDataFound from "../../common/NoDataFound";
 const getStatusColor = (status) => {
   switch (status) {
     case "paid":
@@ -38,10 +39,11 @@ const Salary = () => {
     const total_deducation =
       (parseFloat(salaryInfo?.epf_admin) || 0) +
       (parseFloat(salaryInfo?.epf_pension) || 0);
+
     const ytdBasic = {
-      grossPay: month_in_digit * salaryInfo?.salary_with_allowance,
-      totalDeductions: month_in_digit * total_deducation,
-      netPay: month_in_digit * salaryInfo?.payable_salary,
+      grossPay: month_in_digit * (salaryInfo?.salary_with_allowance ?? 0),
+      totalDeductions: month_in_digit * total_deducation ?? 0,
+      netPay: month_in_digit * (salaryInfo?.payable_salary ?? 0),
       taxPaid: 0,
     };
     return ytdBasic;
@@ -128,14 +130,14 @@ const Salary = () => {
                 Current Monthly Salary
               </h2>
               <p className="text-3xl font-bold">
-                ₹{salaryInfo?.payable_salary?.toLocaleString()}
+                ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
               </p>
               <p className="text-blue-100 mt-1">Net Pay (After Deductions)</p>
             </div>
             <div className="mt-4 sm:mt-0 text-right">
               <p className="text-blue-100">Gross Salary</p>
               <p className="text-xl font-semibold">
-                ₹{salaryInfo?.salary_with_allowance?.toLocaleString()}
+                ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
               </p>
             </div>
           </div>
@@ -156,14 +158,14 @@ const Salary = () => {
               <DollarSign className="h-8 w-8 mx-auto mb-2 text-blue-600" />
               <p className="text-sm text-slate-600">Gross Pay</p>
               <p className="text-xl font-bold text-blue-600">
-                ₹{ytdSummary?.grossPay?.toLocaleString()}
+                ₹{ytdSummary?.grossPay?.toLocaleString() ?? 0}
               </p>
             </div>
             <div className="text-center p-4 bg-red-50 rounded-lg">
               <Minus className="h-8 w-8 mx-auto mb-2 text-red-600" />
               <p className="text-sm text-slate-600">Total Deductions</p>
               <p className="text-xl font-bold text-red-600">
-                ₹{ytdSummary?.totalDeductions?.toLocaleString()}
+                ₹{ytdSummary?.totalDeductions?.toLocaleString() ?? 0}
               </p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
@@ -197,7 +199,7 @@ const Salary = () => {
             <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
               <span className="text-slate-700">Basic Salary</span>
               <span className="font-semibold text-green-700">
-                ₹{salaryInfo?.base_salary?.toLocaleString()}
+                ₹{salaryInfo?.base_salary?.toLocaleString() ?? 0}
               </span>
             </div>
             <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
@@ -205,23 +207,24 @@ const Salary = () => {
               <span className="font-semibold text-green-700">
                 ₹
                 {(
-                  salaryInfo?.hra +
-                  salaryInfo?.bonus +
-                  salaryInfo?.cca
+                  salaryInfo?.hra ||
+                  0 + salaryInfo?.bonus ||
+                  0 + salaryInfo?.cca ||
+                  0
                 )?.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
               <span className="text-slate-700">Bonus</span>
               <span className="font-semibold text-green-700">
-                ₹{salaryInfo?.bonus?.toLocaleString()}
+                ₹{salaryInfo?.bonus?.toLocaleString() ?? 0}
               </span>
             </div>
             <div className="border-t pt-3">
               <div className="flex justify-between items-center font-semibold text-lg">
                 <span>Total Earnings</span>
                 <span className="text-green-600">
-                  ₹{salaryInfo?.salary_with_allowance?.toLocaleString()}
+                  ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -371,6 +374,7 @@ const Salary = () => {
                 ))}
               </tbody>
             </table>
+            {salaryHistory?.length === 0 && <NoDataFound />}
           </div>
         </CardContent>
       </Card>
