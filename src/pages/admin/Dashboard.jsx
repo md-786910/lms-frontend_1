@@ -63,7 +63,7 @@ const AdminDashboard = () => {
     };
 
     fetchDashboardData();
-    // fetchNotification();
+    fetchNotification();
   }, [updateDashboard]);
 
   if (loading) {

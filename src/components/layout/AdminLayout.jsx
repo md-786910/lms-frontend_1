@@ -80,10 +80,10 @@ const AdminLayout = (props) => {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        // const response = await companyAPI.getNotification();
-        // if (response.status) {
-        //   setNotifications(response?.data || []);
-        // }
+        const response = await companyAPI.getNotification();
+        if (response.status) {
+          setNotifications(response?.data || []);
+        }
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -155,8 +155,7 @@ const AdminLayout = (props) => {
         <nav className="mt-6 px-4">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-
+            const isActive = location.pathname.includes(item.path);
             return (
               <button
                 key={item.path}

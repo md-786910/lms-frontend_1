@@ -131,7 +131,7 @@ const EmployeeLayout = () => {
         <nav className="mt-6 px-4">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname.includes(item.path);
 
             return (
               <button
