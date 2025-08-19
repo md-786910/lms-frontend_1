@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { empProfileApi } from "../../../api/employee/profile";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import NoDataFound from '../../../common/NoDataFound'
+import NoDataFound from "../../../common/NoDataFound";
 
 function PersonalInfo() {
   const [personalInfo, setPersonalInfo] = useState(null);
@@ -26,45 +26,45 @@ function PersonalInfo() {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />;
   }
 
   if (!personalInfo) {
-    return <NoDataFound/>
+    return <NoDataFound />;
   }
 
   return (
-     <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
+    <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label>Emergency Contact Name</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {personalInfo.emergencyContactName || "N/A"}
+            {personalInfo.emergency_contact_person || "N/A"}
           </p>
         </div>
         <div>
           <Label>Emergency Contact Phone</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {personalInfo.emergencyContactPhone || "N/A"}
+            {personalInfo.emergency_contact_number || "N/A"}
           </p>
         </div>
         <div>
           <Label>Relationship</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {personalInfo.emergencyContactRelation || "N/A"}
+            {personalInfo.emergency_contact_relationship || "N/A"}
           </p>
         </div>
         <div>
           <Label>Blood Group</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {personalInfo.bloodGroup || "N/A"}
+            {personalInfo.blood_group || "N/A"}
           </p>
         </div>
       </div>
       <div>
         <Label>Medical Conditions</Label>
         <p className="mt-1 p-2 bg-slate-50 rounded-md">
-          {personalInfo.medicalConditions || "N/A"}
+          {personalInfo.medical_conditions || "N/A"}
         </p>
       </div>
       <div>

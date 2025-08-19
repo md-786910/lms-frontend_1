@@ -9,10 +9,12 @@ import {
   Briefcase,
   FileText,
   Heart,
+  Edit3,
   DollarSign,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
+import { useToast } from "@/hooks/use-toast";
 
 const employeeProfileTab = [
   {
@@ -47,11 +49,12 @@ const employeeProfileTab = [
   },
 ];
 
-const Profile = () => {
+const Profile = ({ readOnly = false }) => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [basicInfo, setBasicInfo] = useState(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchBasicInfo = async () => {
@@ -68,6 +71,45 @@ const Profile = () => {
     };
     fetchBasicInfo();
   }, []);
+
+  const handleAvatarChange = async (event, employeeId) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const uploaded = await empProfileApi.uploadFile(formData);
+      console.log(uploaded);
+
+      if (uploaded?.fileIds?.[0]?.file_path) {
+        const newProfilePath = uploaded.fileIds[0].file_path;
+
+        // update backend
+        await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
+
+        // update local state so UI refreshes
+        setBasicInfo((prev) => ({
+          ...prev,
+          profile: newProfilePath,
+        }));
+
+        toast({
+          title: "Avatar Updated",
+          description:
+            "Employee profile picture has been updated successfully.",
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+      toast({
+        title: "Upload Failed",
+        description: "There was an issue uploading the avatar.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -97,7 +139,19 @@ const Profile = () => {
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
-                  {/* initials could go here */}
+                  {basicInfo?.first_name?.[0]}
+                  {basicInfo?.last_name?.[0]}
+                </div>
+              )}
+              {!readOnly && (
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <Edit3 className="text-white w-4 h-4 z-10" />
                 </div>
               )}
             </div>
@@ -189,25 +243,31 @@ const Profile = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <User className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-              <p className="text-sm text-slate-600">Employee ID</p>
-              <p className="font-semibold text-slate-800">{user?.employeeId}</p>
+              {/* <p className="text-sm text-slate-600">Employee ID</p> */}
+              <p className="font-semibold text-slate-800">
+                {basicInfo?.employee_no}
+              </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <Briefcase className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              <p className="text-sm text-slate-600">Position</p>
-              <p className="font-semibold text-slate-800">{user?.position}</p>
+              {/* <p className="text-sm text-slate-600">Position</p> */}
+              <p className="font-semibold text-slate-800">
+                {basicInfo?.designation?.title}
+              </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <MapPin className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-              <p className="text-sm text-slate-600">Department</p>
-              <p className="font-semibold text-slate-800">{user?.department}</p>
+              {/* <p className="text-sm text-slate-600">Department</p> */}
+              <p className="font-semibold text-slate-800">
+                {basicInfo?.department?.name}
+              </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
               <Calendar className="h-8 w-8 mx-auto mb-2 text-orange-600" />
-              <p className="text-sm text-slate-600">Join Date</p>
+              {/* <p className="text-sm text-slate-600">Join Date</p> */}
               <p className="font-semibold text-slate-800">
-                {user?.joinDate
-                  ? new Date(user.joinDate).toLocaleDateString()
+                {basicInfo?.date_of_joining
+                  ? new Date(basicInfo.date_of_joining).toLocaleDateString()
                   : "N/A"}
               </p>
             </div>

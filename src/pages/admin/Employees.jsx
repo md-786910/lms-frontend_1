@@ -26,7 +26,7 @@ import {
   Phone,
   MapPin,
   Calendar,
-  DollarSign,
+  IndianRupee,
   User,
   UserRoundX,
 } from "lucide-react";
@@ -345,7 +345,12 @@ const Employees = ({
                   <div className="md:col-span-2 space-y-3">
                     <div className="flex items-center space-x-3 text-sm">
                       <User className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">ID: {employee.id}</span>
+                      <span className="text-slate-600">
+                        ID:{" "}
+                        {employee?.employee_no
+                          ? employee.employee_no
+                          : employee.id}
+                      </span>
                     </div>
                     <div className="flex items-center space-x-3 text-sm">
                       <Mail className="h-4 w-4 text-slate-400" />
@@ -360,12 +365,14 @@ const Employees = ({
                     <div className="flex items-center space-x-3 text-sm">
                       <MapPin className="h-4 w-4 text-slate-400" />
                       <span className="text-slate-600">
-                        {employee.department?.name}
+                        {employee.address?.city}, {employee.address?.zip_code}
                       </span>
                     </div>
                     <div className="flex items-center space-x-3 text-sm">
-                      <DollarSign className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">{employee.salary}</span>
+                      <IndianRupee className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-600">
+                        {employee.employee_salary?.payable_salary}
+                      </span>
                     </div>
 
                     <div className="w-[34vw] flex justify-between items-center text-sm">
