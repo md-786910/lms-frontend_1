@@ -1,8 +1,8 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 export const companyAPI = {
   getAll: async () => {
-    const response = await axiosInstance.get('/company');
+    const response = await axiosInstance.get("/company");
     return response.data;
   },
 
@@ -12,7 +12,7 @@ export const companyAPI = {
   },
 
   create: async (companyData) => {
-    const response = await axiosInstance.post('/company/add', companyData);
+    const response = await axiosInstance.post("/company/add", companyData);
     return response.data;
   },
 
@@ -31,4 +31,12 @@ export const companyAPI = {
     return response.data;
   },
 
+  getNotification: async () => {
+    const response = await axiosInstance.get(`notify/admin`);
+    return response.data;
+  },
+  readNotification: async (id) => {
+    const response = await axiosInstance.get(`notify/read/${id}`);
+    return response.data;
+  },
 };

@@ -19,8 +19,8 @@ export const AuthProvider = ({ children }) => {
   // Login function used after successful API call
   const login = (userData, token) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    if (token) {
+    if (token && userData) {
+      localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", token);
     }
   };

@@ -23,8 +23,12 @@ import {
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
 import holidayJsonData from "../../data/holiday.json";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { useSocketContext } from "../../contexts/SocketContext";
+import { authAPI } from "../../api/authapi/authAPI";
 
 const EmployeeDashboard = () => {
+  const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -34,10 +38,9 @@ const EmployeeDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [basicProfile, setBasicProfile] = useState({});
-
-  /* 👇 NEW: Holiday modal + list state */
   const [showHolidayModal, setShowHolidayModal] = useState(false);
   const [holidayList, setHolidayList] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   // Mock leave data for calendar
   const myLeaveData = [
@@ -158,6 +161,17 @@ const EmployeeDashboard = () => {
     }, 1000);
   };
 
+  const fetchNotification = async () => {
+    try {
+      const response = await authAPI.getNotification();
+      if (response.status) {
+        setNotifications(response?.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
   useEffect(() => {
     const fetDashboard = async () => {
       try {
@@ -204,9 +218,9 @@ const EmployeeDashboard = () => {
         setLoading(false);
       }
     };
-
+    fetchNotification();
     fetDashboard();
-  }, []);
+  }, [updateDashboard]);
 
   /* 👇 NEW: Load holidays for current year */
   useEffect(() => {
@@ -238,13 +252,39 @@ const EmployeeDashboard = () => {
       status: leave.status,
     })
   );
-
+  // const recentActivities = (dashboardData?.activities || []).map((activity) => ({
+  //   type: 'employee',
+  //   message: activity.title,
+  //   time: new Date(activity.createdAt).toLocaleString(),
+  //   status: 'completed'
+  // }));
   return (
-    <>
-      <div className="space-y-6">
-        {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
-          <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Welcome Header */}
+
+      {notifications
+        ?.filter((a) => !a.read)
+        ?.map((notification) => (
+          <Alert
+            key={notification.id}
+            className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
+            style={{ color: "white !important" }}
+            onClick={async () => {
+              const resp = await authAPI.readNotification(notification.id);
+              if (resp.status) {
+                fetchNotification();
+              }
+            }}
+          >
+            <AlertDescription className="text-sm text-slate-700">
+              <strong>{notification.title}</strong>:{" "}
+              <span className="text-blue-600">{notification.message}</span>
+            </AlertDescription>
+          </Alert>
+        ))}
+
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+        <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold mb-2">
                 Welcome back,{" "}
@@ -263,7 +303,18 @@ const EmployeeDashboard = () => {
               View Holidays
             </button>
           </div>
-
+        <div className="flex flex-wrap gap-4 text-sm">
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="h-4 w-4" />
+            <span>
+              Employee ID:{" "}
+              {basicProfile?.employee_no ?? `EMP-${basicProfile?.id}`}
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Users className="h-4 w-4" />
+            <span>Department: {basicProfile?.department?.name}</span>
+          </div>
           <div className="flex flex-wrap gap-4 text-sm">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-4 w-4" />

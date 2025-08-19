@@ -7,4 +7,7 @@ export const EmpDashboardApi = {
   getProfileBasicInfo: () => {
     return axiosInstance.get("/employee/profile/basic");
   },
+  getNotification: () => {
+    return axiosInstance.get("/notify/employee");
+  },
 };

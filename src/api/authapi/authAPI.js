@@ -36,6 +36,15 @@ export const authAPI = {
     const response = await axiosInstance.post("/user/logout");
     return response;
   },
+
+  getNotification: async () => {
+    const response = await axiosInstance.get(`employee/notify/employee`);
+    return response.data;
+  },
+  readNotification: async (id) => {
+    const response = await axiosInstance.get(`employee/notify/read/${id}`);
+    return response.data;
+  },
 };
 
 export const userAPI = {

@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { io } from "socket.io-client";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
+dayjs.extend(relativeTime);
 import {
   Popover,
   PopoverContent,
@@ -23,41 +25,19 @@ import {
   Building2,
   Bell,
 } from "lucide-react";
-import useSocket from "../../hooks/useSocket";
-
+import { toast } from "sonner";
+import { toast as toastNotify } from "react-toastify";
+import { useSocketContext } from "../../contexts/SocketContext";
+import { authAPI } from "../../api/authapi/authAPI";
 const EmployeeLayout = () => {
+  const { socket, connectSocket, updateDashboard, setUpdateDashboard } =
+    useSocketContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Dummy notification data for employee
-  const notifications = [
-    {
-      id: 1,
-      title: "Leave Request Approved",
-      message: "Your leave request for Dec 25-26 has been approved.",
-      time: "2 hours ago",
-      isRead: false,
-    },
-    {
-      id: 2,
-      title: "Salary Credit",
-      message: "Your salary for December has been credited.",
-      time: "1 day ago",
-      isRead: false,
-    },
-    {
-      id: 3,
-      title: "Company Policy Update",
-      message: "New work from home policy has been updated.",
-      time: "3 days ago",
-      isRead: true,
-    },
-  ];
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const [notifications, setNotifications] = useState([]);
 
   const handleLogout = () => {
     logout();
@@ -72,20 +52,47 @@ const EmployeeLayout = () => {
     { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
   ];
 
-  // socket
-  useSocket({
-    userId: user?.id,
-    companyId: user?.company_id,
-    onEvents: {
-      "employee:created": (data) => {
-        console.log("👤 New employee created:", data);
-        // You can show a toast or update UI
-      },
-      notification: (data) => {
-        console.log("🔔 Notification received:", data);
-      },
-    },
-  });
+  // api
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await authAPI.getNotification();
+        if (response.status) {
+          setNotifications(response?.data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+    fetchNotification();
+  }, [updateDashboard]);
+
+  // handle real time notification
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      connectSocket(token);
+    }
+  }, [connectSocket]);
+
+  useEffect(() => {
+    if (!socket) {
+      return toast.error("Please refresh to connect to get real time updates");
+    }
+    socket.on("notify:user", ({ message }) => {
+      setUpdateDashboard(Math.random());
+      return toastNotify.success(message);
+    });
+
+    return () => {
+      socket.off("notify:user");
+    };
+  }, [socket]);
+
+  const unreadCount = useMemo(() => {
+    return notifications?.filter((n) => !n.read)?.length;
+  }, [notifications]);
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Sidebar */}
@@ -147,7 +154,7 @@ const EmployeeLayout = () => {
             </p>
           </div>
           <Button
-            onClick={handleLogout}
+            onClick={() => handleLogout()}
             variant="outline"
             className="w-full flex items-center space-x-2"
           >
@@ -202,18 +209,18 @@ const EmployeeLayout = () => {
                       <Badge variant="secondary">{unreadCount} new</Badge>
                     </div>
                     <div className="space-y-3 max-h-80 overflow-y-auto">
-                      {notifications.map((notification) => (
+                      {notifications?.map((notification) => (
                         <Card
                           key={notification.id}
                           className={`border-0 shadow-sm ${
-                            !notification.isRead ? "bg-blue-50" : ""
+                            !notification.read ? "bg-blue-50" : ""
                           }`}
                         >
                           <CardContent className="p-3">
                             <div className="flex items-start space-x-3">
                               <div
                                 className={`w-2 h-2 rounded-full mt-2 ${
-                                  !notification.isRead
+                                  !notification.read
                                     ? "bg-blue-500"
                                     : "bg-slate-300"
                                 }`}
@@ -226,7 +233,7 @@ const EmployeeLayout = () => {
                                   {notification.message}
                                 </p>
                                 <p className="text-xs text-slate-400 mt-2">
-                                  {notification.time}
+                                  {dayjs(notification?.createdAt).fromNow()}
                                 </p>
                               </div>
                             </div>

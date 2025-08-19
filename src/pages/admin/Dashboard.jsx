@@ -18,13 +18,29 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { companyAPI } from "../../api/companyApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { useSocketContext } from "../../contexts/SocketContext";
 
 const AdminDashboard = () => {
+  const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showHolidayModal, setShowHolidayModal] = useState(false);
   const [holidayList, setHolidayList] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+
+  const fetchNotification = async () => {
+    try {
+      const response = await companyAPI.getNotification();
+      if (response.status) {
+        setNotifications(response?.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
   useEffect(() => {
     const year = new Date().getFullYear();
     const holidayData = holidayJsonData.holiday_data?.find(
@@ -45,8 +61,10 @@ const AdminDashboard = () => {
         setLoading(false);
       }
     };
+
     fetchDashboardData();
-  }, []);
+    fetchNotification();
+  }, [updateDashboard]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -121,12 +139,32 @@ const AdminDashboard = () => {
     ? getEmployeesOnLeave(selectedDate)
     : [];
 
-  console.log({ holidayList });
-
   return (
     <>
       <div className="space-y-6">
         {/* Welcome Header */}
+
+        {notifications
+          ?.filter((a) => !a.read)
+          ?.map((notification) => (
+            <Alert
+              key={notification.id}
+              className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
+              style={{ color: "white !important" }}
+              onClick={async () => {
+                const resp = await companyAPI.readNotification(notification.id);
+                if (resp.status) {
+                  fetchNotification();
+                }
+              }}
+            >
+              <AlertDescription className="text-sm text-slate-700">
+                <strong>{notification.title}</strong>:{" "}
+                <span className="text-blue-600">{notification.message}</span>
+              </AlertDescription>
+            </Alert>
+          ))}
+
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
           <div className="flex justify-between items-center">
             <div>

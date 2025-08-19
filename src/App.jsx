@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ToastContainer } from "react-toastify";
 
 import Login from "./pages/Login";
 
@@ -55,100 +56,120 @@ import PersonanInfo from "./pages/employee/profile/PersonanInfo";
 import Salary from "./pages/employee/Salary";
 import SalaryInfo from "./pages/employee/profile/SalaryInfo";
 import User from "./pages/admin/User";
+import { SocketProvider } from "./contexts/SocketContext";
 
 const App = () => (
   <TooltipProvider>
     <Toaster />
     <Sonner />
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Company Website Routes */}
-          <Route path="/company" element={<CompanyLayout />}>
-            <Route index element={<CompanyHome />} />
-            <Route path="about" element={<CompanyAbout />} />
-            <Route path="services" element={<CompanyServices />} />
-            <Route path="pricing" element={<CompanyPricing />} />
-            <Route path="contact" element={<CompanyContact />} />
-            <Route path="get-started" element={<CompanyGetStarted />} />
-          </Route>
-
-          {/* Auth Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Navigate to="/company" replace />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/employee/verify-email" element={<SetNewPassword />} />
-
-          {/* Admin Routes */}
-          <Route
-            path="/admin"
-            element={<ProtectedRoute allowedRoles={["admin", "light_admin"]} />}
-          >
-            <Route element={<AdminLayout />}>
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="employees" element={<AdminEmployees />} />
-              <Route path="salary" element={<AdminSalary />} />
-              <Route path="leave" element={<AdminLeave />} />
-              <Route path="timing" element={<AdminTiming />} />
-              <Route path="user" element={<User />} />
-
-              <Route path="history" element={<HistoryPage />} />
-              <Route path="settings" element={<AdminSettings />} />
-
-              {/* keep as children setting */}
-              {/* <Route path="company" element={<AdminSettings />} /> */}
-              <Route path="settings" element={<SettingLayout />}>
-                <Route index element={<Navigate to="company" replace />} />
-                <Route
-                  path="company"
-                  element={<Company value="comp" />}
-                  index
-                />
-                <Route path="prefix" element={<Prefix value="comp" />} />
-                <Route path="currency" element={<Currency value="comp" />} />
-                <Route
-                  path="departments"
-                  element={<Departments value="comp" />}
-                />
-                <Route
-                  path="designations"
-                  element={<Designations value="comp" />}
-                />
-                <Route path="leave" element={<Leave value="comp" />} />
-                <Route
-                  path="document-category"
-                  element={<Documents value="comp" />}
-                />
-                <Route path="templates" element={<Templates value="comp" />} />
-              </Route>
-              <Route index element={<Navigate to="dashboard" replace />} />
+      <SocketProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Company Website Routes */}
+            <Route path="/company" element={<CompanyLayout />}>
+              <Route index element={<CompanyHome />} />
+              <Route path="about" element={<CompanyAbout />} />
+              <Route path="services" element={<CompanyServices />} />
+              <Route path="pricing" element={<CompanyPricing />} />
+              <Route path="contact" element={<CompanyContact />} />
+              <Route path="get-started" element={<CompanyGetStarted />} />
             </Route>
-          </Route>
 
-          {/* Employee Routes */}
-          <Route
-            path="/employee"
-            element={<ProtectedRoute allowedRoles={["employee"]} />}
-          >
-            <Route element={<EmployeeLayout />}>
-              <Route path="dashboard" element={<EmployeeDashboard />} />
-              <Route path="profile" element={<EmployeProfileLayout />}>
-                <Route index element={<Navigate to="basic" replace />} />
-                <Route path="basic" element={<BasicInfo />} index />
-                <Route path="address" element={<Address />} />
-                <Route path="documents" element={<Document />} />
-                <Route path="personal" element={<PersonanInfo />} />
-                <Route path="salary" element={<SalaryInfo />} />
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/company" replace />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/employee/verify-email" element={<SetNewPassword />} />
+
+            {/* Admin Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin", "light_admin"]} />
+              }
+            >
+              <Route element={<AdminLayout />}>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="employees" element={<AdminEmployees />} />
+                <Route path="salary" element={<AdminSalary />} />
+                <Route path="leave" element={<AdminLeave />} />
+                <Route path="timing" element={<AdminTiming />} />
+                <Route path="user" element={<User />} />
+
+                <Route path="history" element={<HistoryPage />} />
+                <Route path="settings" element={<AdminSettings />} />
+
+                {/* keep as children setting */}
+                {/* <Route path="company" element={<AdminSettings />} /> */}
+                <Route path="settings" element={<SettingLayout />}>
+                  <Route index element={<Navigate to="company" replace />} />
+                  <Route
+                    path="company"
+                    element={<Company value="comp" />}
+                    index
+                  />
+                  <Route path="prefix" element={<Prefix value="comp" />} />
+                  <Route path="currency" element={<Currency value="comp" />} />
+                  <Route
+                    path="departments"
+                    element={<Departments value="comp" />}
+                  />
+                  <Route
+                    path="designations"
+                    element={<Designations value="comp" />}
+                  />
+                  <Route path="leave" element={<Leave value="comp" />} />
+                  <Route
+                    path="document-category"
+                    element={<Documents value="comp" />}
+                  />
+                  <Route
+                    path="templates"
+                    element={<Templates value="comp" />}
+                  />
+                </Route>
+                <Route index element={<Navigate to="dashboard" replace />} />
               </Route>
-              <Route path="leave" element={<EmployeeLeave />} />
-              <Route path="time-logs" element={<EmployeeTimeLogs />} />
-              <Route path="salary" element={<EmployeeSalary />} />
-              <Route index element={<Navigate to="dashboard" replace />} />
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+
+            {/* Employee Routes */}
+            <Route
+              path="/employee"
+              element={<ProtectedRoute allowedRoles={["employee"]} />}
+            >
+              <Route element={<EmployeeLayout />}>
+                <Route path="dashboard" element={<EmployeeDashboard />} />
+                <Route path="profile" element={<EmployeProfileLayout />}>
+                  <Route index element={<Navigate to="basic" replace />} />
+                  <Route path="basic" element={<BasicInfo />} index />
+                  <Route path="address" element={<Address />} />
+                  <Route path="documents" element={<Document />} />
+                  <Route path="personal" element={<PersonanInfo />} />
+                  <Route path="salary" element={<SalaryInfo />} />
+                </Route>
+                <Route path="leave" element={<EmployeeLeave />} />
+                <Route path="time-logs" element={<EmployeeTimeLogs />} />
+                <Route path="salary" element={<EmployeeSalary />} />
+                <Route index element={<Navigate to="dashboard" replace />} />
+              </Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SocketProvider>
     </AuthProvider>
   </TooltipProvider>
 );
