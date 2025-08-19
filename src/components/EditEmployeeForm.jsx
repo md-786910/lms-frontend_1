@@ -199,15 +199,16 @@ const EditEmployeeForm = ({
     });
 
     if (!isValid) {
-      console.warn("Form validation failed");
-      if (activeTab === "documents" || activeTab === "leave") {
-        console.warn("Bypassing validation for documents temporarily...");
-      } else {
-        return;
-      }
+      setLoader(false);
+      toast({
+        title: "Please fill all required fields.",
+        status: "error",
+        duration: 800,
+        isClosable: true,
+      });
+      return;
     }
 
-    // if (!isValid) return;
     const payload = getTabPayload({
       activeTab,
       employeeId,

@@ -13,9 +13,7 @@ const validationSchema = {
     { type: "zip", message: "Invalid ZIP Code" },
   ],
   country: [{ type: "required", message: "Country is required" }],
-  permanent_address: [
-    { type: "required", message: "Permanent address is required" },
-  ],
+  permanent_address: [],
 };
 
 const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
@@ -46,9 +44,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {touched.street && errors.street && (
-            <p className="text-red-500 text-sm">{errors.street}</p>
-          )}
+          {touched.street ||
+            (errors?.street && (
+              <p className="text-red-500 text-sm">{errors.street}</p>
+            ))}
         </div>
         <div>
           <Label htmlFor="city">City</Label>
@@ -59,9 +58,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {touched.city && errors.city && (
-            <p className="text-red-500 text-sm">{errors.city}</p>
-          )}
+          {touched.city ||
+            (errors.city && (
+              <p className="text-red-500 text-sm">{errors.city}</p>
+            ))}
         </div>
         <div>
           <Label htmlFor="state">State</Label>
@@ -72,9 +72,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {touched.state && errors.state && (
-            <p className="text-red-500 text-sm">{errors.state}</p>
-          )}
+          {touched.state ||
+            (errors.state && (
+              <p className="text-red-500 text-sm">{errors.state}</p>
+            ))}
         </div>
         <div>
           <Label htmlFor="zip_code">ZIP Code</Label>
@@ -85,9 +86,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {touched.zip_code && errors.zip_code && (
-            <p className="text-red-500 text-sm">{errors.zip_code}</p>
-          )}
+          {touched.zip_code ||
+            (errors.zip_code && (
+              <p className="text-red-500 text-sm">{errors.zip_code}</p>
+            ))}
         </div>
         <div>
           <Label htmlFor="country">Country</Label>
@@ -98,9 +100,10 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {touched.country && errors.country && (
-            <p className="text-red-500 text-sm">{errors.country}</p>
-          )}
+          {touched.country ||
+            (errors.country && (
+              <p className="text-red-500 text-sm">{errors.country}</p>
+            ))}
         </div>
       </div>
 
@@ -114,9 +117,6 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
           onBlur={handleBlur}
           rows={3}
         />
-        {touched.permanent_address && errors.permanent_address && (
-          <p className="text-red-500 text-sm">{errors.permanent_address}</p>
-        )}
       </div>
     </div>
   );

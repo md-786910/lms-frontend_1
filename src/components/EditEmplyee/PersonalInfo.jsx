@@ -13,25 +13,20 @@ import { useFormValidation } from "@/hooks/useFormValidation";
 import { BLOOD_GROUPS } from "../../data/bloodgroup";
 
 const validationSchema = {
-  emergency_contact_person: [
-    { type: "required", message: "Contact name is required" },
-  ],
+  emergency_contact_person: [],
   emergency_contact_number: [
-    { type: "required", message: "Contact phone is required" },
     { type: "phone", message: "Invalid phone number" },
   ],
-  emergency_contact_relationship: [
-    { type: "required", message: "Relationship is required" },
-  ],
+  emergency_contact_relationship: [],
   blood_group: [{ type: "required", message: "Blood group is required" }],
   medical_conditions: [], // Optional, so no validation
   hobbies: [], // Optional, so no validation
-  epf_no: [{ type: "required", message: "EPF number is required" }],
-  esic_no: [{ type: "required", message: "ESIC number is required" }],
-  pan_no: [{ type: "required", message: "PAN number is required" }],
-  aadhaar_no: [{ type: "required", message: "Aadhaar number is required" }],
-  passport_no: [{ type: "required", message: "Passport number is required" }],
-  uan_no: [{ type: "required", message: "UAN number is required" }],
+  epf_no: [],
+  esic_no: [],
+  pan_no: [],
+  aadhaar_no: [],
+  passport_no: [],
+  uan_no: [],
 };
 
 const PersonalInfoForm = forwardRef(
