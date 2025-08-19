@@ -36,7 +36,7 @@ const GetStarted = () => {
     companySize: [{ type: "required", message: "Company Size is required" }],
     country: [{ type: "required", message: "Country is required" }],
     firstName: [{ type: "required", message: "First Name is required" }],
-    lastName: [{ type: "required", message: "Last Name is required" }],
+    lastName: [{ type: "optional", message: "Last Name is required" }],
     email: [
       { type: "required", message: "Email is required" },
       { type: "email", message: "Please enter a valid email" },
@@ -374,7 +374,7 @@ const GetStarted = () => {
                       )}
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Label htmlFor="lastName">Last Name </Label>
                       <Input
                         id="lastName"
                         type="text"

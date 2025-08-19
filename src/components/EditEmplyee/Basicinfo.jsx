@@ -12,7 +12,7 @@ import { useFormValidation } from "../../hooks/useFormValidation";
 
 const validationSchema = {
   first_name: [{ type: "required", message: "First name is required" }],
-  last_name: [{ type: "required", message: "Last name is required" }],
+  last_name: [{ type: "optional", message: "Last name is required" }],
   email: [
     { type: "required", message: "Email is required" },
     { type: "email", message: "Invalid email format" },
@@ -71,7 +71,7 @@ const BasicInfoForm = forwardRef(
         <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md shadow-sm">
           {/* First Name */}
           <div style={{ paddingTop: "20px" }}>
-            <Label htmlFor="first_name">First Name</Label>
+            <Label htmlFor="first_name">First Name *</Label>
             <Input
               id="first_name"
               name="first_name"
@@ -101,7 +101,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Email */}
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email *</Label>
             <Input
               id="email"
               name="email"
@@ -116,7 +116,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Phone Number */}
           <div>
-            <Label htmlFor="phone_number">Phone</Label>
+            <Label htmlFor="phone_number">Phone *</Label>
             <Input
               id="phone_number"
               name="phone_number"
@@ -131,7 +131,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Gender */}
           <div>
-            <Label htmlFor="gender">Gender</Label>
+            <Label htmlFor="gender">Gender *</Label>
             <Input
               id="gender"
               name="gender"
@@ -201,7 +201,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Date of Birth */}
           <div>
-            <Label htmlFor="date_of_birth">Date of Birth</Label>
+            <Label htmlFor="date_of_birth">Date of Birth *</Label>
             <Input
               id="date_of_birth"
               name="date_of_birth"
@@ -272,7 +272,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Nationality */}
           <div>
-            <Label htmlFor="nationality">Nationality</Label>
+            <Label htmlFor="nationality">Nationality *</Label>
             <Input
               id="nationality"
               name="nationality"

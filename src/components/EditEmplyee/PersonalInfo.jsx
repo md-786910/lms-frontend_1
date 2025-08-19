@@ -15,7 +15,7 @@ import { BLOOD_GROUPS } from "../../data/bloodgroup";
 const validationSchema = {
   emergency_contact_person: [],
   emergency_contact_number: [
-    { type: "phone", message: "Invalid phone number" },
+    { type: "optional", message: "Invalid phone number" },
   ],
   emergency_contact_relationship: [],
   blood_group: [{ type: "required", message: "Blood group is required" }],
@@ -112,7 +112,7 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div>
-            <Label htmlFor="blood_group">Blood Group</Label>
+            <Label htmlFor="blood_group">Blood Group *</Label>
             <Select
               value={values.blood_group}
               onValueChange={(value) => setFieldValue("blood_group", value)}
@@ -128,7 +128,7 @@ const PersonalInfoForm = forwardRef(
                 ))}
               </SelectContent>
             </Select>
-            {touched.blood_group && errors.blood_group && (
+            {errors.blood_group && (
               <p className="text-red-500 text-sm">{errors.blood_group}</p>
             )}
           </div>
