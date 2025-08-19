@@ -16,6 +16,18 @@ import dayjs from "dayjs";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
 import axiosInstance from "../../api/axiosInstance";
+const getStatusColor = (status) => {
+  switch (status) {
+    case "paid":
+      return "bg-green-100 text-green-800";
+    case "pending":
+      return "bg-orange-100 text-orange-800";
+    case "processing":
+      return "bg-blue-100 text-blue-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
 const Salary = () => {
   const { updateDashboard } = useSocketContext();
   const month_in_digit = dayjs().month() + 1;
@@ -332,7 +344,7 @@ const Salary = () => {
                       ₹{record?.net_salary?.toLocaleString()}
                     </td>
                     <td className="py-4 px-4 text-center">
-                      <Badge className="bg-green-100 text-green-800">
+                      <Badge className={getStatusColor(record?.status)}>
                         {record?.status}
                       </Badge>
                     </td>

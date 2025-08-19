@@ -44,8 +44,7 @@ axiosInstance.interceptors.response.use(
     if (status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      toast.error("Session expired. Please login again.");
-      // window.location.href = "/login";
+      window.location.href = "/login";
     }
 
     if (status === 403) {

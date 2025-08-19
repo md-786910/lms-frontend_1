@@ -26,7 +26,7 @@ import holidayJsonData from "../../data/holiday.json";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { authAPI } from "../../api/authapi/authAPI";
-
+import dayjs from "dayjs";
 const EmployeeDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
@@ -64,58 +64,6 @@ const EmployeeDashboard = () => {
       type: "Sick Leave",
       status: "Pending",
       reason: "Medical appointment",
-    },
-  ];
-
-  const quickStats = [
-    {
-      title: "Leave Balance",
-      value: "18 days",
-      subtitle: "Available this year",
-      icon: CalendarIcon,
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      title: "Hours This Month",
-      value: "162h",
-      subtitle: "8h remaining",
-      icon: Clock,
-      color: "from-green-500 to-green-600",
-    },
-    {
-      title: "Current Salary",
-      value: "$85,000",
-      subtitle: "Annual gross",
-      icon: DollarSign,
-      color: "from-purple-500 to-purple-600",
-    },
-    {
-      title: "Performance",
-      value: "92%",
-      subtitle: "This quarter",
-      icon: TrendingUp,
-      color: "from-orange-500 to-orange-600",
-    },
-  ];
-
-  const recentActivities = [
-    {
-      title: "Clocked In",
-      description: "Started work at 9:00 AM today",
-      time: "2 hours ago",
-      type: "success",
-    },
-    {
-      title: "Leave Request Approved",
-      description: "Your leave request for Feb 20-21 has been approved",
-      time: "1 day ago",
-      type: "success",
-    },
-    {
-      title: "Salary Slip Generated",
-      description: "January 2024 salary slip is now available",
-      time: "3 days ago",
-      type: "info",
     },
   ];
 
@@ -252,12 +200,15 @@ const EmployeeDashboard = () => {
       status: leave.status,
     })
   );
-  // const recentActivities = (dashboardData?.activities || []).map((activity) => ({
-  //   type: 'employee',
-  //   message: activity.title,
-  //   time: new Date(activity.createdAt).toLocaleString(),
-  //   status: 'completed'
-  // }));
+
+  const recentActivities = (dashboardData?.activities || []).map(
+    (activity) => ({
+      type: "employee",
+      message: activity.title,
+      time: new Date(activity.createdAt).toLocaleString(),
+      status: "completed",
+    })
+  );
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
@@ -499,6 +450,38 @@ const EmployeeDashboard = () => {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
+
+            <div className="space-y-4">
+              {recentActivities.map((activity, index) => (
+                <div
+                  key={index}
+                  className="flex items-start space-x-4 p-3 bg-slate-50 rounded-lg"
+                >
+                  <div className="flex-shrink-0 mt-1">
+                    {activity.type === "success" && (
+                      <div className="h-2 w-2 bg-green-500 rounded-full" />
+                    )}
+                    {activity.type === "info" && (
+                      <div className="h-2 w-2 bg-blue-500 rounded-full" />
+                    )}
+                    {activity.type === "warning" && (
+                      <div className="h-2 w-2 bg-orange-500 rounded-full" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-slate-800">
+                      {activity.title}
+                    </p>
+                    <p className="text-sm text-slate-600 mt-1">
+                      {activity.description}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-2">
+                      {dayjs(activity.createdAt).fromNow()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               <Button
                 onClick={handleClockIn}
@@ -552,6 +535,7 @@ const EmployeeDashboard = () => {
                 <Users className="h-5 w-5" />
                 <span className="text-sm">Update Profile</span>
               </Button>
+
             </div>
           </CardContent>
         </Card>

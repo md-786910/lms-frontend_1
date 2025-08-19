@@ -71,13 +71,16 @@ const Login = () => {
     setApiError("");
     try {
       const res = await authAPI.login(formValues);
-      if (res.status && res.data?.user) {
+      if (res.status) {
         const { user, token } = res.data;
-        login(user, token);
-        navigate(
-          user.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"
-        );
-        window.location.reload();
+        console.log({ user, token });
+        setTimeout(() => {
+          login(user, token);
+          navigate(
+            user?.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"
+          );
+          window.location.reload();
+        }, 800);
       } else {
         setApiError(res.message || "Invalid credentials. Please try again.");
       }
