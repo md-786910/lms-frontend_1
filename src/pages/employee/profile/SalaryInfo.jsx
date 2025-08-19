@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { empProfileApi } from "../../../api/employee/profile";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import NoDataFound from '../../../common/NoDataFound'
+import NoDataFound from "../../../common/NoDataFound";
 
 function SalaryInfo() {
   const [salaryInfo, setSalaryInfo] = useState(null);
@@ -26,26 +26,26 @@ function SalaryInfo() {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />;
   }
 
   if (!salaryInfo) {
-    return <NoDataFound/>
+    return <NoDataFound />;
   }
 
   return (
-     <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
+    <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label>Basic Salary</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.basicSalary || "N/A"}
+            ₹{salaryInfo.base_salary || "N/A"}
           </p>
         </div>
         <div>
           <Label>Allowances</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.allowances || "N/A"}
+            ₹{salaryInfo.hra + salaryInfo.cca || "N/A"}
           </p>
         </div>
         <div>
@@ -57,35 +57,56 @@ function SalaryInfo() {
         <div>
           <Label>Deductions</Label>
           <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.deductions || "N/A"}
+            ₹
+            {(salaryInfo?.epf_pension ?? 0) + (salaryInfo?.epf_admin ?? 0) ||
+              "N/A"}
           </p>
         </div>
-        <div>
-          <Label>Net Salary</Label>
-          <p className="mt-1 p-2 bg-green-50 rounded-md font-semibold text-green-800">
-            ₹{salaryInfo.netSalary || "N/A"}
-          </p>
-        </div>
-        <div>
-          <Label>Pay Frequency</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {salaryInfo.payFrequency || "N/A"}
-          </p>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label>Bank Account</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {salaryInfo.bankAccount || "N/A"}
-          </p>
-        </div>
-        <div>
-          <Label>Bank Name</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            {salaryInfo.bankName || "N/A"}
-          </p>
-        </div>
+        {salaryInfo.upi_number ? (
+          // Show UPI details
+          <>
+            <div>
+              <Label>Net Salary</Label>
+              <p className="mt-1 p-2 bg-green-50 rounded-md font-semibold text-green-800">
+                ₹{salaryInfo.payable_salary || "N/A"}
+              </p>
+            </div>
+            <div>
+              <Label>UPI Number</Label>
+              <p className="mt-1 p-2 bg-slate-50 rounded-md">
+                {salaryInfo.upi_number}
+              </p>
+            </div>
+          </>
+        ) : (
+          // Show Bank details
+          <>
+            <div>
+              <Label>Net Salary</Label>
+              <p className="mt-1 p-2 bg-green-50 rounded-md font-semibold text-green-800">
+                ₹{salaryInfo.payable_salary || "N/A"}
+              </p>
+            </div>
+            <div>
+              <Label>IFSC Code</Label>
+              <p className="mt-1 p-2 bg-slate-50 rounded-md">
+                {salaryInfo.ifsc_code || "N/A"}
+              </p>
+            </div>
+            <div>
+              <Label>Bank Account</Label>
+              <p className="mt-1 p-2 bg-slate-50 rounded-md">
+                {salaryInfo.bank_account_number || "N/A"}
+              </p>
+            </div>
+            <div>
+              <Label>Bank Name</Label>
+              <p className="mt-1 p-2 bg-slate-50 rounded-md">
+                {salaryInfo.bank_name || "N/A"}
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

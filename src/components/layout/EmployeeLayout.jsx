@@ -103,11 +103,19 @@ const EmployeeLayout = () => {
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200">
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
-              <Building2 className="h-5 w-5 text-white" />
-            </div>
+            {user?.logo ? (
+              <img
+                src={user.logo}
+                alt={user.name || "Company Logo"}
+                className="h-8 w-8 rounded-lg object-cover"
+              />
+            ) : (
+              <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
+                <Building2 className="h-5 w-5 text-white" />
+              </div>
+            )}
             <span className="text-lg font-semibold text-slate-800">
-              Employee Portal
+              {user?.company_name || "LMS"}
             </span>
           </div>
           <Button

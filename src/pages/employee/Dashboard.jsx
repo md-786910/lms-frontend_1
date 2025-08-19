@@ -10,6 +10,7 @@ import {
   Calendar as CalendarIcon,
   Clock,
   DollarSign,
+  IndianRupee,
   TrendingUp,
   CheckCircle,
   Users,
@@ -139,9 +140,9 @@ const EmployeeDashboard = () => {
             },
             {
               title: "Current Salary",
-              value: "$85,000",
+              value: `₹${resp.data?.data?.net_salary}`,
               subtitle: "Annual gross",
-              icon: DollarSign,
+              icon: IndianRupee,
               color: "from-purple-500 to-purple-600",
             },
             {

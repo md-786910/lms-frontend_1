@@ -26,37 +26,48 @@ function Address() {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />;
   }
 
   if (!addressInfo) {
-    return <NoDataFound/>
+    return <NoDataFound />;
   }
-console.log('====================================');
-console.log(addressInfo);
-console.log('====================================');
+  console.log("====================================");
+  console.log(addressInfo);
+  console.log("====================================");
   return (
-     <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
+    <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label>Street Address</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{addressInfo.street || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {addressInfo.street || "N/A"}
+          </p>
         </div>
         <div>
           <Label>City</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{addressInfo.city || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {addressInfo.city || "N/A"}
+          </p>
         </div>
         <div>
           <Label>State</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{addressInfo.state || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {addressInfo.state || "N/A"}
+          </p>
         </div>
         <div>
           <Label>ZIP Code</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{addressInfo.zip_code || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {addressInfo.zip_code || "N/A"}
+          </p>
         </div>
         <div>
           <Label>Country</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{addressInfo.country || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {/* {addressInfo.country || "N/A"} */}
+            India
+          </p>
         </div>
       </div>
       <div>
