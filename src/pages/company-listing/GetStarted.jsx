@@ -130,10 +130,14 @@ const GetStarted = () => {
       const response = await axiosInstance.post("/company/register", payload);
       if (response.status === 201) {
         const { token, user } = response.data?.data;
-        // localStorage.setItem("token", token);
-        // localStorage.setItem("user", JSON.stringify(user?.role));
-        login(user, token);
         setUser(user);
+        setTimeout(() => {
+          login(user, token);
+          navigate(
+            user?.role === "admin" ? "/admin/dashboard" : "/employee/dashboard"
+          );
+          window.location.reload();
+        }, 800);
       }
     } catch (error) {
       console.error(

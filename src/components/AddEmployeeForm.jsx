@@ -251,14 +251,16 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
                   <SelectValue placeholder="Select designation" />
                 </SelectTrigger>
                 <SelectContent>
-                  {designations.map((designation, index) => (
-                    <SelectItem
-                      key={`${designation.id}-${index}`}
-                      value={String(designation.id)}
-                    >
-                      {designation.title}
-                    </SelectItem>
-                  ))}
+                  {designations
+                    ?.filter((a) => a?.department_id == values?.department)
+                    ?.map((designation, index) => (
+                      <SelectItem
+                        key={`${designation.id}-${index}`}
+                        value={String(designation.id)}
+                      >
+                        {designation.title}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
               {renderError("designation")}
