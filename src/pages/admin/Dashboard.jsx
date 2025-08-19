@@ -122,6 +122,7 @@ const AdminDashboard = () => {
       message: activity.title,
       time: new Date(activity.createdAt).toLocaleString(),
       status: "completed",
+      createdAt: activity?.createdAt,
     })
   );
 

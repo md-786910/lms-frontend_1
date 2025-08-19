@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormValidation } from "@/hooks/useFormValidation";
+import { numberToWords } from "../../config/appConfig";
 
 const validationSchema = {
   base_salary: [
@@ -243,8 +244,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
           </div>
         </div>
         <p className="text-sm text-gray-500 mt-1">
-          Amount in words: ({values.payable_salary < 0 ? "Minus " : ""}) Indian
-          Rupee {Math.abs(values.payable_salary || 0)} Only
+          Amount in words: ({numberToWords(values.payable_salary)})
         </p>
       </div>
 

@@ -27,6 +27,7 @@ import { Alert, AlertDescription } from "../../components/ui/alert";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { authAPI } from "../../api/authapi/authAPI";
 import dayjs from "dayjs";
+import NoDataFound from "../../common/NoDataFound";
 const EmployeeDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
@@ -193,6 +194,7 @@ const EmployeeDashboard = () => {
       message: activity.title,
       time: new Date(activity.createdAt).toLocaleString(),
       status: "completed",
+      createdAt: activity.createdAt,
     })
   );
   return (
@@ -352,9 +354,7 @@ const EmployeeDashboard = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-slate-500 text-sm">
-                    No leave scheduled for this day
-                  </p>
+                  <NoDataFound />
                 )}
               </div>
             </div>
@@ -371,7 +371,7 @@ const EmployeeDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentActivities.map((activity, index) => (
+              {recentActivities?.map((activity, index) => (
                 <div
                   key={index}
                   className="flex items-start space-x-4 p-3 bg-slate-50 rounded-lg"
@@ -392,7 +392,7 @@ const EmployeeDashboard = () => {
                       {activity.title}
                     </p>
                     <p className="text-sm text-slate-600 mt-1">
-                      {activity.description}
+                      {activity.message}
                     </p>
                     <p className="text-xs text-slate-500 mt-2">
                       {dayjs(activity.createdAt).fromNow()}
@@ -400,6 +400,8 @@ const EmployeeDashboard = () => {
                   </div>
                 </div>
               ))}
+
+              {recentActivities?.length === 0 && <NoDataFound />}
             </div>
           </CardContent>
         </Card>
