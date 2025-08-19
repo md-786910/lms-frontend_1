@@ -274,7 +274,7 @@ const Salary = () => {
                 <SelectItem value={3}>March</SelectItem>
                 <SelectItem value={4}>April</SelectItem>
                 <SelectItem value={5}>May</SelectItem>
-                <SelectItem value={7}>June</SelectItem>
+                <SelectItem value={6}>June</SelectItem>
               </SelectContent>
             </Select>
 

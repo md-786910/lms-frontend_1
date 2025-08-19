@@ -25,7 +25,7 @@ import { EmpDashboardApi } from "../../api/employee/dashboard";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { authAPI } from "../../api/authapi/authAPI";
-
+import dayjs from "dayjs";
 const EmployeeDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
@@ -60,58 +60,6 @@ const EmployeeDashboard = () => {
       type: "Sick Leave",
       status: "Pending",
       reason: "Medical appointment",
-    },
-  ];
-
-  const quickStats = [
-    {
-      title: "Leave Balance",
-      value: "18 days",
-      subtitle: "Available this year",
-      icon: CalendarIcon,
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      title: "Hours This Month",
-      value: "162h",
-      subtitle: "8h remaining",
-      icon: Clock,
-      color: "from-green-500 to-green-600",
-    },
-    {
-      title: "Current Salary",
-      value: "$85,000",
-      subtitle: "Annual gross",
-      icon: DollarSign,
-      color: "from-purple-500 to-purple-600",
-    },
-    {
-      title: "Performance",
-      value: "92%",
-      subtitle: "This quarter",
-      icon: TrendingUp,
-      color: "from-orange-500 to-orange-600",
-    },
-  ];
-
-  const recentActivities = [
-    {
-      title: "Clocked In",
-      description: "Started work at 9:00 AM today",
-      time: "2 hours ago",
-      type: "success",
-    },
-    {
-      title: "Leave Request Approved",
-      description: "Your leave request for Feb 20-21 has been approved",
-      time: "1 day ago",
-      type: "success",
-    },
-    {
-      title: "Salary Slip Generated",
-      description: "January 2024 salary slip is now available",
-      time: "3 days ago",
-      type: "info",
     },
   ];
 
@@ -238,12 +186,14 @@ const EmployeeDashboard = () => {
     })
   );
 
-  // const recentActivities = (dashboardData?.activities || []).map((activity) => ({
-  //   type: 'employee',
-  //   message: activity.title,
-  //   time: new Date(activity.createdAt).toLocaleString(),
-  //   status: 'completed'
-  // }));
+  const recentActivities = (dashboardData?.activities || []).map(
+    (activity) => ({
+      type: "employee",
+      message: activity.title,
+      time: new Date(activity.createdAt).toLocaleString(),
+      status: "completed",
+    })
+  );
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
@@ -444,7 +394,7 @@ const EmployeeDashboard = () => {
                       {activity.description}
                     </p>
                     <p className="text-xs text-slate-500 mt-2">
-                      {activity.time}
+                      {dayjs(activity.createdAt).fromNow()}
                     </p>
                   </div>
                 </div>

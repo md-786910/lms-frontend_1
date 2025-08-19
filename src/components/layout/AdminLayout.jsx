@@ -29,7 +29,6 @@ import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
 import { toast as toastNotify } from "react-toastify";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { companyAPI } from "../../api/companyApi";
 const AdminLayout = (props) => {
   const { socket, connectSocket, updateDashboard, setUpdateDashboard } =
@@ -81,10 +80,10 @@ const AdminLayout = (props) => {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const response = await companyAPI.getNotification();
-        if (response.status) {
-          setNotifications(response?.data || []);
-        }
+        // const response = await companyAPI.getNotification();
+        // if (response.status) {
+        //   setNotifications(response?.data || []);
+        // }
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -100,6 +99,10 @@ const AdminLayout = (props) => {
     }
   }, [connectSocket]);
 
+  const unreadCount = useMemo(() => {
+    return notifications?.filter((n) => !n.read)?.length;
+  }, [notifications]);
+
   useEffect(() => {
     if (!socket) {
       return toast.error("Please refresh to connect to get real time updates");
@@ -113,9 +116,6 @@ const AdminLayout = (props) => {
       socket.off("notify:user");
     };
   }, [socket]);
-  const unreadCount = useMemo(() => {
-    return notifications?.filter((n) => !n.read)?.length;
-  }, [notifications]);
 
   return (
     <div className="min-h-screen bg-slate-50">

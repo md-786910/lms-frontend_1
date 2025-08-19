@@ -20,7 +20,7 @@ import { companyAPI } from "../../api/companyApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { useSocketContext } from "../../contexts/SocketContext";
-
+import dayjs from "dayjs";
 const AdminDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
     };
 
     fetchDashboardData();
-    fetchNotification();
+    // fetchNotification();
   }, [updateDashboard]);
 
   if (loading) {
@@ -311,7 +311,7 @@ const AdminDashboard = () => {
                         {activity.message}
                       </p>
                       <p className="text-xs text-slate-500 mt-1">
-                        {activity.time}
+                        {dayjs(activity.createdAt).fromNow()}
                       </p>
                     </div>
                   </div>
