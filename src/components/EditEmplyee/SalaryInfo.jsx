@@ -244,7 +244,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
           </div>
         </div>
         <p className="text-sm text-gray-500 mt-1">
-          Amount in words: ({numberToWords(values?.payable_salary ?? 0)})
+          Amount in words: ({numberToWords(values?.payable_salary || 0)})
         </p>
       </div>
 

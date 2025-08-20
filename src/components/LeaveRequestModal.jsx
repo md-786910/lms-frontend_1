@@ -132,11 +132,12 @@ const LeaveRequestModal = ({
       console.error("Please fill all required fields.");
       return;
     }
+
     const resp = await employeeLeaveApi.createNewLeaveRequest({
       leave_type_id: leaveCalculate?.id,
       start_date: startDate,
       end_date: endDate,
-      total_days: dayCount,
+      total_days: totalLeaveCount,
       leave_on: JSON.stringify(leaveDays),
       reason,
       emergency_contact_person: emergencyContact,
@@ -160,33 +161,52 @@ const LeaveRequestModal = ({
   // calculate date diff
   const handleLeaveTypeChange = (index, selectedId) => {
     const updated = [...leaveDays];
-    updated[index].type = parseInt(selectedId); // update selected type
+
+    // Update the selected leave type and its count
+    const selectedType = parseInt(selectedId);
+    const typeObj = LEAVE.find((t) => t.id === selectedType);
+    updated[index].type = selectedType;
+    updated[index].count = typeObj?.count || 0;
+    updated[index].id = typeObj?.name;
+
+    // Update state once with modified leaveDays
     setLeaveDays(updated);
-    const total = updated.reduce((sum, day) => {
-      const typeObj = LEAVE.find((t) => t.id === day.type);
-      return sum + (typeObj?.count || 0);
-    }, 0);
+
+    // Recalculate total leave count
+    const total = updated.reduce((sum, day) => sum + (day.count || 0), 0);
     setTotalLeaveCount(total);
   };
+
   useEffect(() => {
     if (startDate && endDate) {
       const start = dayjs(startDate);
       const end = dayjs(endDate);
       const diffInDays = end.diff(start, "day");
-      setDayCount(diffInDays + 1);
 
       if (diffInDays >= 0) {
-        setDayCount(diffInDays + 1);
         const tempLeaveDays = [];
+        let validDayCount = 0;
+
         for (let i = 0; i <= diffInDays; i++) {
-          const date = start.add(i, "day").format("YYYY-MM-DD");
+          const currentDate = start.add(i, "day");
+          const dayOfWeek = currentDate.day(); // 0 = Sunday, 6 = Saturday
+
+          // Skip Saturday and Sunday
+          if (dayOfWeek === 0 || dayOfWeek === 6) {
+            continue;
+          }
+
+          validDayCount += 1;
+
           tempLeaveDays.push({
-            date,
+            date: currentDate.format("YYYY-MM-DD"),
             type: 0,
             id: "full_day",
             count: 1,
           });
         }
+
+        setDayCount(validDayCount);
         setLeaveDays(tempLeaveDays);
       } else {
         setDayCount(0);
@@ -194,6 +214,33 @@ const LeaveRequestModal = ({
       }
     }
   }, [startDate, endDate]);
+
+  // useEffect(() => {
+  //   if (startDate && endDate) {
+  //     const start = dayjs(startDate);
+  //     const end = dayjs(endDate);
+  //     const diffInDays = end.diff(start, "day");
+  //     setDayCount(diffInDays + 1);
+
+  //     if (diffInDays >= 0) {
+  //       setDayCount(diffInDays + 1);
+  //       const tempLeaveDays = [];
+  //       for (let i = 0; i <= diffInDays; i++) {
+  //         const date = start.add(i, "day").format("YYYY-MM-DD");
+  //         tempLeaveDays.push({
+  //           date,
+  //           type: 0,
+  //           id: "full_day",
+  //           count: 1,
+  //         });
+  //       }
+  //       setLeaveDays(tempLeaveDays);
+  //     } else {
+  //       setDayCount(0);
+  //       setLeaveDays([]);
+  //     }
+  //   }
+  // }, [startDate, endDate]);
 
   useEffect(() => {
     if (readOnly) {
@@ -217,6 +264,16 @@ const LeaveRequestModal = ({
       setTotalLeaveCount(total);
     }
   }, [leaveRequestViewMode, readOnly]);
+
+  // cuurent
+  const today = new Date();
+  const disablePast = {
+    before: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+  };
+  const disableWeekends = (date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  };
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -289,6 +346,7 @@ const LeaveRequestModal = ({
                     onSelect={setStartDate}
                     initialFocus
                     className="pointer-events-auto"
+                    disabled={[disablePast, disableWeekends]}
                   />
                 </PopoverContent>
               </Popover>
@@ -324,6 +382,7 @@ const LeaveRequestModal = ({
                     onSelect={setEndDate}
                     initialFocus
                     className="pointer-events-auto"
+                    disabled={[disablePast, disableWeekends]}
                   />
                 </PopoverContent>
               </Popover>
@@ -334,8 +393,8 @@ const LeaveRequestModal = ({
           </div>
 
           {dayCount > 0 && (
-            <div className="shadow p-1">
-              {leaveDays.map((day, index) => (
+            <div className="border pb-2 p-1">
+              {leaveDays?.map((day, index) => (
                 <div
                   key={day.date}
                   className="grid grid-cols-2 md:grid-cols-2 gap-4 items-center mt-2"
@@ -431,12 +490,12 @@ const LeaveRequestModal = ({
                   You are select total days{" "}
                 </span>
                 <span className="font-medium text-blue-900 ml-2">
-                  {dayCount} days
+                  {dayCount || 0} days
                 </span>
                 <br />
                 <span className="text-blue-700">Total Leave count spent </span>
                 <span className="font-medium text-blue-900 ml-2">
-                  {totalLeaveCount}
+                  {(!readOnly && totalLeaveCount) || 0}
                 </span>
               </div>
 
@@ -444,7 +503,10 @@ const LeaveRequestModal = ({
                 <div>
                   <span className="text-blue-700">Remaining :</span>
                   <span className="font-medium text-blue-900 ml-2">
-                    {leaveCalculate?.leave_remaing - totalLeaveCount} &nbsp;
+                    {(!readOnly &&
+                      leaveCalculate?.leave_remaing - totalLeaveCount) ||
+                      0}
+                    &nbsp;
                     <span className="text-xs text-red-600">
                       {leaveCalculate?.leave_remaing - totalLeaveCount < 0
                         ? "(you dont have sufficient balace)"

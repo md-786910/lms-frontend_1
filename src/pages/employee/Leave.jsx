@@ -20,6 +20,7 @@ import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
 import ConfirmFn from "../../utility/confirmFn";
 import NoDataFound from "../../common/NoDataFound";
+import { useSocketContext } from "../../contexts/SocketContext";
 
 const LEAVE_STATUS = {
   pending: "Pending",
@@ -28,6 +29,7 @@ const LEAVE_STATUS = {
 };
 
 const EmployeeLeave = () => {
+  const { updateDashboard } = useSocketContext();
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [leaveDash, setLeaveDash] = useState(null);
   const [leaveRequest, setLeaveRequest] = useState([]);
@@ -120,7 +122,7 @@ const EmployeeLeave = () => {
   useEffect(() => {
     fetchLeave();
     getLeaveRequest();
-  }, []);
+  }, [updateDashboard]);
   return (
     <div className="space-y-6">
       {/* Header */}

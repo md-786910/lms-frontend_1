@@ -9,7 +9,9 @@ import { Building2, Save } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import { useFormValidation } from "../../hooks/useFormValidation";
 import { employeeAPI } from "../../api/employeeApi";
+import { useSocketContext } from "../../contexts/SocketContext";
 function Company({ value }) {
+  const { setUpdateDashboard } = useSocketContext();
   const [loader, setLoader] = useState(false);
   const [logoUploading, setLogoUploading] = useState(false);
   const [companyLogo, setCompanyLogo] = useState(null);
@@ -101,6 +103,7 @@ function Company({ value }) {
 
       if (resp.status === 200) {
         getCompanyDetails();
+        setUpdateDashboard(Math.random());
       }
     } catch (error) {
       console.log("Save failed:", error);

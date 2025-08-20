@@ -169,10 +169,7 @@ const Profile = ({ readOnly = false }) => {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-center space-x-2">
                   <User className="h-4 w-4 text-slate-400" />
-                  <span>
-                    ID:{" "}
-                    {parseInt(basicInfo?.employee_no) || `EMP-${basicInfo?.id}`}
-                  </span>
+                  <span>ID: {basicInfo?.employee_no}</span>
                 </div>
                 <div className="flex items-center justify-center space-x-2">
                   <Calendar className="h-4 w-4 text-slate-400" />
@@ -248,7 +245,7 @@ const Profile = ({ readOnly = false }) => {
               <User className="h-8 w-8 mx-auto mb-2 text-blue-600" />
               {/* <p className="text-sm text-slate-600">Employee ID</p> */}
               <p className="font-semibold text-slate-800">
-                {parseInt(basicInfo?.employee_no) || `EMP-${basicInfo?.id}`}
+                {basicInfo?.employee_no}
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">

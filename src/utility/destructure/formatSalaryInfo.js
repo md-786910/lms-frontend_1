@@ -31,10 +31,10 @@ export const formatSalaryInfo = (data) => {
     ifsc_code: ifsc_code || "",
     is_epf_applicable:
       is_epf_applicable !== undefined ? is_epf_applicable : false,
-    payable_salary: payable_salary || "",
-    salary_with_allowance: salary_with_allowance || "",
-    total_allowance: total_allowance || "",
-    total_deduction_allowance: total_deduction_allowance || "",
+    payable_salary: payable_salary || 0,
+    salary_with_allowance: salary_with_allowance || 0,
+    total_allowance: total_allowance || 0,
+    total_deduction_allowance: total_deduction_allowance || 0,
     upi_number: upi_number || "",
   };
 };

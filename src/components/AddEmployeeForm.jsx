@@ -79,12 +79,12 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
       const payload = employeePayload(formData);
       const result = await employeeAPI.create(payload);
       if (result.status == 201) {
-        toast({
-          title: "Employee Added Successfully!",
-          description: `Invitation email sent to ${
-            result.email || formData.email
-          }. Employee ID: ${result.employeeId || empId}`,
-        });
+        // toast({
+        //   title: "Employee Added Successfully!",
+        //   description: `Invitation email sent to ${
+        //     result.email || formData.email
+        //   }. Employee ID: ${result.employeeId || empId}`,
+        // });
 
         onSuccess?.();
         onClose?.();

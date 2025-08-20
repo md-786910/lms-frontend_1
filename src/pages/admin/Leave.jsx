@@ -25,6 +25,7 @@ import {
   XCircle,
   AlertCircle,
   Filter,
+  Eye,
 } from "lucide-react";
 import { useFormValidation } from "../../hooks/useFormValidation";
 import { leaveApi } from "../../api/leave/leave";
@@ -32,6 +33,21 @@ import { leaveAPI } from "../../api/settingsApi/leaveApi";
 import debounce from "lodash/debounce";
 import NoDataFound from "../../common/NoDataFound";
 import ConfirmFn from "../../utility/confirmFn";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { format, parseISO } from "date-fns";
+import { useSocketContext } from "../../contexts/SocketContext";
 
 // Validation schema for leave policy modal
 const leavePolicySchema = {
@@ -59,6 +75,7 @@ const LEAVE_STATUS = {
 
 const Leave = () => {
   const { toast } = useToast();
+  const { updateDashboard } = useSocketContext();
   const [statusFilter, setStatusFilter] = useState({
     status: "all",
     leave_type_id: 0,
@@ -164,13 +181,16 @@ const Leave = () => {
   // Initial fetch on mount
   useEffect(() => {
     fetchLeaveData();
-  }, []);
+  }, [updateDashboard]);
 
   // Watch search input changes and trigger debounced fetch
   useEffect(() => {
     debouncedSearch(searchTerm, statusFilter);
   }, [searchTerm, statusFilter]);
-
+  const tooltip = {
+    children:
+      "You can import all employees into the salary module manually by using this button if they are not imported automatically.",
+  };
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -454,6 +474,38 @@ const Leave = () => {
                     </Button>
                   </div>
                 )}
+
+                <Tooltip delayDuration={100} className="cursor-pointer">
+                  <TooltipTrigger asChild>
+                    <Eye className="cursor-pointer h-4 w-4 text-slate-400" />
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    align="center"
+                    className="text-xs "
+                    children={
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <div className="max-h-36 w-full overflow-y-auto">
+                          <TableBody>
+                            {JSON.parse(request?.leave_on)?.map((log) => (
+                              <TableRow key={log.date}>
+                                <TableCell className="font-medium">
+                                  {format(parseISO(log?.date), "MMM dd, yyyy")}
+                                </TableCell>
+                                <TableCell>{log?.id || "-"}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </div>
+                      </Table>
+                    }
+                  />
+                </Tooltip>
               </div>
             </CardContent>
           </Card>

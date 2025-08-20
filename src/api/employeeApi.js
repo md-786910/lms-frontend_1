@@ -129,4 +129,18 @@ export const employeeAPI = {
     );
     return response.data;
   },
+
+  resendInvite: async (id) => {
+    const response = await axiosInstance.post(
+      `/company/employee/resend-invite/${id}`
+    );
+    return response.data;
+  },
+
+  activateSuspendedEmployee: async (id) => {
+    const response = await axiosInstance.post(
+      `/company/employee/activate-suspended-employee/${id}`
+    );
+    return response.data;
+  },
 };
