@@ -29,6 +29,7 @@ import {
   IndianRupee,
   User,
   UserRoundX,
+  Loader2,
 } from "lucide-react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
 import EditEmployeeForm from "@/components/EditEmployeeForm";
@@ -39,6 +40,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
 import { Label } from "@/components/ui/label";
 import { capitalizeFirstLetter } from "../../utility/utility";
+import axiosInstance from "../../api/axiosInstance";
 const Employees = ({
   filterByStatus = [],
   showAddButton = true,
@@ -58,6 +60,7 @@ const Employees = ({
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
+  const [isLoading, setIsLoading] = useState(false);
   const fetchEmployees = async () => {
     try {
       const params = {
@@ -166,7 +169,7 @@ const Employees = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-
+      setIsLoading(true);
       const uploaded = await employeeAPI.uploadFile(formData);
       if (uploaded?.fileIds[0]?.file_path) {
         const updatePayload = {
@@ -174,10 +177,6 @@ const Employees = ({
         };
         await employeeAPI.profilePic(employeeId, updatePayload);
       }
-      toast({
-        title: "Avatar Updated",
-        description: "Employee profile picture has been updated successfully.",
-      });
 
       fetchEmployees();
     } catch (error) {
@@ -187,6 +186,9 @@ const Employees = ({
         description: "There was an issue uploading the avatar.",
         variant: "destructive",
       });
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -326,14 +328,53 @@ const Employees = ({
                           variant="danger"
                           size="sm"
                           className="text-red-600"
-                          // onClick={() => {
-                          //   setEmployeeToDelete(employee);
-                          //   setShowConfirmDelete(true);
-                          // }}
+                          onClick={async () => {
+                            const resp =
+                              await employeeAPI.activateSuspendedEmployee(
+                                employee.id
+                              );
+                            if (resp?.status) {
+                              fetchEmployees();
+                            }
+                          }}
                         >
-                          suspend
+                          Re-suspend
                         </Button>
                       )}
+
+                      {!employee?.is_password_created &&
+                        !employeeActiveStatus && (
+                          <Button
+                            title="Resend invite"
+                            variant="outline"
+                            onClick={async () => {
+                              try {
+                                const resp = await employeeAPI.resendInvite(
+                                  employee.id
+                                );
+                                if (resp?.status) {
+                                  toast({
+                                    title: "Success",
+                                    description: resp?.data?.message,
+                                    variant: "success",
+                                  });
+                                }
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description:
+                                    error?.response?.data?.message ||
+                                    "Something went wrong",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                            boolean={true}
+                            className="px-1.5 py-1.5"
+                          >
+                            Resend invite
+                          </Button>
+                        )}
                     </div>
                   )}
                 </div>
@@ -409,11 +450,18 @@ const Employees = ({
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
-                        {employee.avatar}
+                        {isLoading ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <>
+                            {employee.first_name.charAt(0)}
+                            {employee.last_name.charAt(0)}
+                          </>
+                        )}
                       </div>
                     )}
                     {!readOnly && (
-                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute border-1 bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <input
                           type="file"
                           accept="image/*"
@@ -423,6 +471,7 @@ const Employees = ({
                         <Edit3 className="text-white w-4 h-4 z-10" />
                       </div>
                     )}
+                    {isLoading && <Loader2 className="animate-spin" />}
                   </div>
                 </div>
 

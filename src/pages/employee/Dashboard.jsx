@@ -196,6 +196,9 @@ const EmployeeDashboard = () => {
       date: new Date(), // API does not provide leave date, assuming today
       type: leave.leave_type.leave_type,
       status: leave.status,
+      leaveOn: JSON.parse(leave?.leave_on)?.find(
+        (f) => f.date === format(new Date(), "yyyy-MM-dd")
+      ),
     })
   );
 
@@ -353,10 +356,17 @@ const EmployeeDashboard = () => {
                           <div className="flex items-center justify-between">
                             <div>
                               <span className="font-medium text-slate-800">
-                                {leave.employeeName} -{" "}
-                                {leave.employeeId ?? `EMP-${leave.emp_id}`}
+                                <p className="font-medium text-slate-800 flex  items-center justify-between">
+                                  {leave.employeeName}{" "}
+                                  <span className="mx-3 border p-1 rounded text-[12px] text-blue-600">
+                                    {leave?.leaveOn?.id}
+                                  </span>
+                                </p>
                               </span>
-                              <p className="text-sm text-slate-800">
+                              <p className="text-sm text-slate-600">
+                                {leave.employeeId}
+                              </p>
+                              <p className="text-sm text-orange-700 font-medium">
                                 {leave.type}
                               </p>
                               {/* <p className="text-sm text-slate-600">

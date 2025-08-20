@@ -61,7 +61,7 @@ import { SocketProvider } from "./contexts/SocketContext";
 const App = () => (
   <TooltipProvider>
     <Toaster />
-    <Sonner />
+    <Sonner position="top-right" />
     <ToastContainer
       position="top-right"
       autoClose={5000}

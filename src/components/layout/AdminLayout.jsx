@@ -58,7 +58,7 @@ const AdminLayout = (props) => {
   };
   useEffect(() => {
     getCompanyDetails();
-  }, []);
+  }, [updateDashboard]);
 
   const handleLogout = async () => {
     logout();

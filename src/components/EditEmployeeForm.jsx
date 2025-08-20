@@ -199,14 +199,16 @@ const EditEmployeeForm = ({
     });
 
     if (!isValid) {
-      setLoader(false);
-      toast({
-        title: "Please fill all required fields.",
-        status: "error",
-        duration: 800,
-        isClosable: true,
-      });
-      return;
+      if (!["documents", "leave"].includes(activeTab)) {
+        setLoader(false);
+        toast({
+          title: "Please fill all required fields.",
+          variant: "destructive",
+          duration: 800,
+          isClosable: true,
+        });
+        return;
+      }
     }
 
     const payload = getTabPayload({
@@ -227,8 +229,20 @@ const EditEmployeeForm = ({
           await employeeAPI.updateAddressInfo(employeeId, payload);
           break;
         case "documents":
+          if (newDocs?.length === 0) {
+            toast({
+              title: "Please add document",
+              description: "Please add at least one document",
+              variant: "destructive",
+              duration: 800,
+              isClosable: true,
+            });
+            return;
+          }
           const documentPayload = await buildDocumentUploadPayload(newDocs);
           await employeeAPI.updateDocumentsInfo(employeeId, documentPayload);
+
+          setNewDocs([]);
           break;
         case "personal":
           await employeeAPI.updatePersonalInfo(employeeId, payload);
@@ -244,12 +258,12 @@ const EditEmployeeForm = ({
           break;
       }
 
-      toast({
-        title: "Employee Updated Successfully!",
-        description: `${employee?.first_name || ""} ${
-          employee?.last_name || ""
-        }'s ${activeTab} information has been updated.`,
-      });
+      // toast({
+      //   title: "Employee Updated Successfully!",
+      //   description: `${employee?.first_name || ""} ${
+      //     employee?.last_name || ""
+      //   }'s ${activeTab} information has been updated.`,
+      // });
       setHit(Math.random());
       setLoader(false);
       // onSuccess();
