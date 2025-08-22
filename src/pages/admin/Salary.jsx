@@ -27,6 +27,7 @@ import {
   Edit3,
   Eye,
   CircleAlert,
+  FilePlus,
 } from "lucide-react";
 import {
   Tooltip,
@@ -37,6 +38,7 @@ import { salaryAPI } from "../../api/salaryApi";
 import dayjs from "dayjs";
 import debounce from "lodash/debounce";
 import NoDataFound from "../../common/NoDataFound";
+import axiosInstance from "../../api/axiosInstance";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -54,7 +56,7 @@ const tooltip = {
   children:
     "You can import all employees into the salary module manually by using this button if they are not imported automatically.",
 };
-
+const year = new Date().getFullYear();
 const Salary = () => {
   const currentMonth = dayjs().month() + 1;
   const { toast } = useToast();
@@ -124,6 +126,24 @@ const Salary = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDownloadSalary = async (
+    employee_id,
+    month_in_digit,
+    year = new Date().getFullYear()
+  ) => {
+    const resp = await axiosInstance.get(
+      `/adminFile/download/employee/${employee_id}/month/${month_in_digit}/year/${year}`,
+      { responseType: "blob" }
+    );
+    const url = window.URL.createObjectURL(new Blob([resp.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "salary_slip.pdf"); // or use dynamic filename
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   // Debounced version
@@ -392,21 +412,35 @@ const Salary = () => {
                         </Badge>
                       </td>
                       <td className="py-4 px-4">
-                        <div className="flex justify-center space-x-2">
+                        <div className="flex justify-space-between space-x-2">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleViewEmployee(salary)}
                           >
-                            <Eye className="h-4 w-4" />
+                            <FilePlus className="h-4 w-4" />
                           </Button>
-                          <Button
+                          {salary?.salary_slip && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                handleDownloadSalary(
+                                  salary?.employee_id,
+                                  salary?.month_in_digit
+                                );
+                              }}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          )}
+                          {/* <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEditEmployee(salary)}
                           >
                             <Edit3 className="h-4 w-4" />
-                          </Button>
+                          </Button> */}
                         </div>
                       </td>
                     </tr>
