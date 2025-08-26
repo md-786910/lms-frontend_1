@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 // Base URL management
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
-const API_BASE_URL = `${API_BASE}/api/v1/"`;
+const API_BASE_URL = `${API_BASE}/api/v1/`;
 console.log({ API_BASE_URL });
 
 const axiosInstance = axios.create({
@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
     if (status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
 
     if (status === 403) {
