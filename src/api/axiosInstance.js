@@ -2,10 +2,9 @@ import axios from "axios";
 import { toast } from "sonner";
 
 // Base URL management
-// const isDev = process.env.NODE_ENV !== "production";
-// const API_BASE_URL = "http://localhost:8000/api/v1/";
-
-const API_BASE_URL = "http://192.168.1.24:8000/api/v1/";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = `${API_BASE}/api/v1/"`;
+console.log({ API_BASE_URL });
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,

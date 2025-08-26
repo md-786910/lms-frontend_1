@@ -2,8 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
 
-const SOCKET_URL = "http://192.168.1.24:8000";
-// const SOCKET_URL = "http://localhost:8000";
+const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
 
 const SocketContext = createContext({});
 
