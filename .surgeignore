@@ -1,0 +1,6 @@
+# .surgeignore
+.env
+.env.*
+node_modules
+src
+*.map

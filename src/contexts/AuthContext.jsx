@@ -34,8 +34,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
       }
+      return true;
     } catch (error) {
       console.error("Logout error:", error);
+      return false;
     }
   };
 

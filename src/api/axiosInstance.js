@@ -1,9 +1,10 @@
 import axios from "axios";
 import { toast } from "sonner";
+import { API_BASE_URL_DEV } from "../config/api";
 
 // Base URL management
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
-const API_BASE_URL = `${API_BASE}/api/v1/`;
+const API_BASE_URL = `${API_BASE_URL_DEV}/api/v1/`;
 console.log({ API_BASE_URL });
 
 const axiosInstance = axios.create({

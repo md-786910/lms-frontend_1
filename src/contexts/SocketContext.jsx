@@ -1,10 +1,22 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL_DEV } from "../config/api";
 
-const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
+const SOCKET_URL = `${API_BASE_URL_DEV}`;
+// const SOCKET_URL =import.meta.env.VITE_API_BASE_URL;
 
 const SocketContext = createContext({});
+
+const genUserId = (role, id) => {
+  if (role === "employee") {
+    return `employee_${id}`;
+  } else if (role === "admin") {
+    return `admin_${id}`;
+  } else if (role === "light_admin") {
+    return `light_admin_${id}`;
+  }
+};
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
@@ -12,6 +24,7 @@ export const SocketProvider = ({ children }) => {
   const connectSocket = (token) => {
     if (!socket) {
       const decoded = jwtDecode(token);
+      const userId = genUserId(decoded?.sub?.role, decoded?.sub?.id);
       const s = io(SOCKET_URL, {
         autoConnect: false,
         reconnection: true,
@@ -20,7 +33,7 @@ export const SocketProvider = ({ children }) => {
         transports: ["websocket", "polling"],
         path: "/realtime",
         query: {
-          userId: decoded?.sub?.id,
+          userId,
           companyId: decoded?.sub?.company_id,
         },
       });

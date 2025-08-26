@@ -41,7 +41,10 @@ const EmployeeLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    setTimeout(() => {
+      navigate("/login");
+      window.location.reload();
+    }, 500);
   };
 
   const menuItems = [
