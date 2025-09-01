@@ -28,6 +28,7 @@ import {
   Eye,
   CircleAlert,
   FilePlus,
+  DownloadIcon,
 } from "lucide-react";
 import {
   Tooltip,
@@ -431,9 +432,48 @@ const Salary = () => {
                                 );
                               }}
                             >
-                              <Eye className="h-4 w-4" />
+                              <DownloadIcon className="h-4 w-4" />
                             </Button>
                           )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={async () => {
+                              try {
+                                const response = await axiosInstance.get(
+                                  "/company/salary/view",
+                                  {
+                                    params: {
+                                      employee_id: salary?.employee_id,
+                                      month_in_digit: salary?.month_in_digit,
+                                    },
+                                    responseType: "blob", // important for binary data
+                                    headers: {
+                                      Accept: "application/pdf",
+                                    },
+                                  }
+                                );
+
+                                // Create a blob URL
+                                const fileURL = URL.createObjectURL(
+                                  new Blob([response.data], {
+                                    type: "application/pdf",
+                                  })
+                                );
+
+                                // Open in a new tab
+                                window.open(fileURL, "_blank");
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description: error?.response?.data?.message,
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
                           {/* <Button
                             variant="ghost"
                             size="sm"
