@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Minus,
   Plus,
+  IndianRupee,
 } from "lucide-react";
 import { salaryAPI } from "../../api/employee/salary";
 import dayjs from "dayjs";
@@ -155,7 +156,7 @@ const Salary = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <DollarSign className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+              <IndianRupee className="h-8 w-8 mx-auto mb-2 text-blue-600" />
               <p className="text-sm text-slate-600">Gross Pay</p>
               <p className="text-xl font-bold text-blue-600">
                 ₹{ytdSummary?.grossPay?.toLocaleString() ?? 0}

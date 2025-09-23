@@ -132,16 +132,35 @@ const BasicInfoForm = forwardRef(
           {/* Gender */}
           <div>
             <Label htmlFor="gender">Gender *</Label>
-            <Input
+            {/* <Input
               id="gender"
               name="gender"
               value={values.gender}
               onChange={handleChange}
               onBlur={handleBlur}
-            />
-            {touched.gender && errors.gender && (
-              <p className="text-red-500 text-sm">{errors.gender}</p>
-            )}
+            /> */}
+            <Select
+              value={values.gender}
+              onValueChange={(val) =>
+                handleChange({
+                  target: { name: "gender", value: val },
+                })
+              }
+              onBlur={() => handleBlur({ target: { name: "gender" } })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="prefer-not-to-say">
+                  Prefer not to say
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {renderError("gender")}
           </div>
 
           {/* Marital Status */}
