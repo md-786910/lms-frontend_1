@@ -239,14 +239,14 @@ const Employees = ({
                 ))}
               </SelectContent>
             </Select>
-            <div className="relative top-1">
+            <div className="relative top-1 mx-2">
               <Label>
                 {!employeeActiveStatus
                   ? "Active Employees"
                   : "Suspended Employees"}
               </Label>
               <Switch
-                className="relative top-1 mx-2"
+                className="relative top-1 mx-2 w-12"
                 title="suspended employees"
                 defaultChecked={true}
                 onCheckedChange={(val) => {
@@ -338,7 +338,7 @@ const Employees = ({
                             }
                           }}
                         >
-                          Re-suspend
+                          Revoke-suspend
                         </Button>
                       )}
 

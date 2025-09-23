@@ -72,44 +72,44 @@ const Profile = ({ readOnly = false }) => {
     fetchBasicInfo();
   }, []);
 
-  const handleAvatarChange = async (event, employeeId) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // const handleAvatarChange = async (event, employeeId) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
 
-      const uploaded = await empProfileApi.uploadFile(formData);
-      console.log(uploaded);
+  //     const uploaded = await empProfileApi.uploadFile(formData);
+  //     console.log(uploaded);
 
-      if (uploaded?.fileIds?.[0]?.file_path) {
-        const newProfilePath = uploaded.fileIds[0].file_path;
+  //     if (uploaded?.fileIds?.[0]?.file_path) {
+  //       const newProfilePath = uploaded.fileIds[0].file_path;
 
-        // update backend
-        await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
+  //       // update backend
+  //       await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
 
-        // update local state so UI refreshes
-        setBasicInfo((prev) => ({
-          ...prev,
-          profile: newProfilePath,
-        }));
+  //       // update local state so UI refreshes
+  //       setBasicInfo((prev) => ({
+  //         ...prev,
+  //         profile: newProfilePath,
+  //       }));
 
-        toast({
-          title: "Avatar Updated",
-          description:
-            "Employee profile picture has been updated successfully.",
-        });
-      }
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
-      toast({
-        title: "Upload Failed",
-        description: "There was an issue uploading the avatar.",
-        variant: "destructive",
-      });
-    }
-  };
+  //       toast({
+  //         title: "Avatar Updated",
+  //         description:
+  //           "Employee profile picture has been updated successfully.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading avatar:", error);
+  //     toast({
+  //       title: "Upload Failed",
+  //       description: "There was an issue uploading the avatar.",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="space-y-6">
@@ -143,7 +143,7 @@ const Profile = ({ readOnly = false }) => {
                   {basicInfo?.last_name?.[0]}
                 </div>
               )}
-              {!readOnly && (
+              {/* {!readOnly && (
                 <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <input
                     type="file"
@@ -153,7 +153,7 @@ const Profile = ({ readOnly = false }) => {
                   />
                   <Edit3 className="text-white w-4 h-4 z-10" />
                 </div>
-              )}
+              )} */}
             </div>
             <div>
               <h3 className="text-xl font-semibold text-slate-800 my-2">

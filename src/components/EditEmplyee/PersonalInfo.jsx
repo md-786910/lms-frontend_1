@@ -134,6 +134,37 @@ const PersonalInfoForm = forwardRef(
           </div>
         </div>
 
+        {/* Additional Fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="epf_no">EPF Number</Label>
+            <Input
+              id="epf_no"
+              name="epf_no"
+              value={values.epf_no}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {touched.epf_no && errors.epf_no && (
+              <p className="text-red-500 text-sm">{errors.epf_no}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="pan_no">PAN Number</Label>
+            <Input
+              id="pan_no"
+              name="pan_no"
+              value={values.pan_no}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            {touched.pan_no && errors.pan_no && (
+              <p className="text-red-500 text-sm">{errors.pan_no}</p>
+            )}
+          </div>
+        </div>
+
         <div>
           <Label htmlFor="medical_conditions">Medical Conditions</Label>
           <Textarea
@@ -156,22 +187,7 @@ const PersonalInfoForm = forwardRef(
           />
         </div>
 
-        {/* Additional Fields */}
-        <div>
-          <Label htmlFor="epf_no">EPF Number</Label>
-          <Input
-            id="epf_no"
-            name="epf_no"
-            value={values.epf_no}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.epf_no && errors.epf_no && (
-            <p className="text-red-500 text-sm">{errors.epf_no}</p>
-          )}
-        </div>
-
-        <div>
+        {/* <div>
           <Label htmlFor="esic_no">ESIC Number</Label>
           <Input
             id="esic_no"
@@ -183,23 +199,9 @@ const PersonalInfoForm = forwardRef(
           {touched.esic_no && errors.esic_no && (
             <p className="text-red-500 text-sm">{errors.esic_no}</p>
           )}
-        </div>
+        </div> */}
 
-        <div>
-          <Label htmlFor="pan_no">PAN Number</Label>
-          <Input
-            id="pan_no"
-            name="pan_no"
-            value={values.pan_no}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {touched.pan_no && errors.pan_no && (
-            <p className="text-red-500 text-sm">{errors.pan_no}</p>
-          )}
-        </div>
-
-        <div>
+        {/* <div>
           <Label htmlFor="aadhaar_no">Aadhaar Number</Label>
           <Input
             id="aadhaar_no"
@@ -211,9 +213,9 @@ const PersonalInfoForm = forwardRef(
           {touched.aadhaar_no && errors.aadhaar_no && (
             <p className="text-red-500 text-sm">{errors.aadhaar_no}</p>
           )}
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <Label htmlFor="passport_no">Passport Number</Label>
           <Input
             id="passport_no"
@@ -225,9 +227,9 @@ const PersonalInfoForm = forwardRef(
           {touched.passport_no && errors.passport_no && (
             <p className="text-red-500 text-sm">{errors.passport_no}</p>
           )}
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <Label htmlFor="uan_no">UAN Number</Label>
           <Input
             id="uan_no"
@@ -239,7 +241,7 @@ const PersonalInfoForm = forwardRef(
           {touched.uan_no && errors.uan_no && (
             <p className="text-red-500 text-sm">{errors.uan_no}</p>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }

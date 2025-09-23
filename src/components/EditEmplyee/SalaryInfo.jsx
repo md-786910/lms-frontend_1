@@ -124,6 +124,35 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
 
   return (
     <div className="space-y-6">
+      {/* === Salary Summary === */}
+      <div className="bg-gray-50 rounded-lg border p-5 shadow-sm">
+        <h3 className="text-lg font-semibold mb-4">Salary Summary</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-base font-medium">
+          <div>
+            Gross Earnings:{" "}
+            <span className="text-gray-800">
+              ₹{values.salary_with_allowance || 0}
+            </span>
+          </div>
+          <div>
+            Total Deductions:{" "}
+            <span className="text-gray-800">
+              ₹{values.total_deduction_allowance || 0}
+            </span>
+          </div>
+          <div
+            className={
+              values.payable_salary < 0 ? "text-red-600" : "text-green-600"
+            }
+          >
+            Net Payable: ₹{values.payable_salary || 0}
+          </div>
+        </div>
+        <p className="text-sm text-gray-500 mt-1">
+          Amount in words: ({numberToWords(values?.payable_salary || 0)})
+        </p>
+      </div>
+
       {/* === Earnings Section === */}
       <div className="rounded-lg border p-5 bg-white shadow-sm">
         <h3 className="text-lg font-semibold mb-4">Earnings</h3>
@@ -220,35 +249,6 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* === Salary Summary === */}
-      <div className="bg-gray-50 rounded-lg border p-5 shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Salary Summary</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-base font-medium">
-          <div>
-            Gross Earnings:{" "}
-            <span className="text-gray-800">
-              ₹{values.salary_with_allowance || 0}
-            </span>
-          </div>
-          <div>
-            Total Deductions:{" "}
-            <span className="text-gray-800">
-              ₹{values.total_deduction_allowance || 0}
-            </span>
-          </div>
-          <div
-            className={
-              values.payable_salary < 0 ? "text-red-600" : "text-green-600"
-            }
-          >
-            Net Payable: ₹{values.payable_salary || 0}
-          </div>
-        </div>
-        <p className="text-sm text-gray-500 mt-1">
-          Amount in words: ({numberToWords(values?.payable_salary || 0)})
-        </p>
       </div>
 
       {/* === Payment Details === */}
