@@ -58,9 +58,10 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
         leave.id === id
           ? {
               ...leave,
-              addon:
-                field === "available" ? Number(leave.addon || 0) + delta : 0,
-              subst: field === "booked" ? Number(leave.subst || 0) - delta : 0,
+              // addon:field === "available" ? Number(leave.addon || 0) + delta : 0,
+              addon: field === "available" ? 0 : 0,
+              subst: field === "booked" ? 0 : 0,
+              // subst: field === "booked" ? Number(leave.subst || 0) - delta : 0,
             }
           : { ...leave, addon: 0, subst: 0 }
       )
@@ -92,7 +93,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                     <span>
                       Total Annual leave: <strong>{leave_count}</strong> days
                     </span>
-                    <span>
+                    {/* <span>
                       Available: <strong>{leave_remaing}</strong> days
                     </span>
                     <span>
@@ -101,7 +102,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
 
                     <span>
                       Addon: <strong>{leave?.addon || 0}</strong> days
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -115,26 +116,27 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                     {field}
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-full shadow-sm border">
-                    <button
+                    {/* <button
                       className="text-slate-600 hover:text-black font-bold"
                       onClick={() => {
                         updateValue(id, field, -1);
                       }}
                     >
                       –
-                    </button>
+                    </button> */}
                     <span className="w-6 text-center font-semibold">
-                      {(field === "available" ? leave?.addon : leave?.subst) ||
-                        0}
+                      {(field === "available"
+                        ? leave?.leave_remaing
+                        : leave?.leave_used) || 0}
                     </span>
-                    <button
+                    {/* <button
                       className="text-slate-600 hover:text-black font-bold"
                       onClick={() => {
                         updateValue(id, field, 1);
                       }}
                     >
                       +
-                    </button>
+                    </button> */}
                   </div>
                   <div className="text-[12px] text-slate-400 mt-1">days</div>
                 </div>

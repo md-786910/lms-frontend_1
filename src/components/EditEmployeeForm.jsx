@@ -405,13 +405,15 @@ const EditEmployeeForm = ({
         <Button type="button" variant="outline" onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          onClick={handleSave}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          disabled={loader}
-        >
-          {loader ? "Saving..." : "Save Changes"}
-        </Button>
+        {activeTab !== "leave" && (
+          <Button
+            onClick={handleSave}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            disabled={loader}
+          >
+            {loader ? "Saving..." : "Save Changes"}
+          </Button>
+        )}
       </div>
     </Card>
   );

@@ -18,8 +18,8 @@ export const mapApiToLeaveForm = (apiData) => {
 export const mapLeaveFormToDeltaPayload = (leaveInfo) => {
   return leaveInfo?.map((item) => ({
     id: item.id,
-    leave_balance_to_add: item?.addon,
-    leave_balance_to_subtract: item?.subst,
+    leave_balance_to_add: 0,
+    leave_balance_to_subtract: 0,
   }));
 };
 
