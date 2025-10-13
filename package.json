@@ -10,7 +10,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "surge ./dist lmsi.surge.sh"
+    "deploy": "cp ./dist/index.html ./dist/200.html && surge ./dist lmsi.surge.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
