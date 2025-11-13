@@ -39,16 +39,6 @@
           "name": "Diwali (Deepavali)"
         },
         {
-          "date": "2025-10-22",
-          "day": "Wednesday",
-          "name": "Dussehra (Vijayadashami)"
-        },
-        {
-          "date": "2025-11-06",
-          "day": "Thursday",
-          "name": "Guru Nanak Jayanti"
-        },
-        {
           "date": "2025-12-25",
           "day": "Thursday",
           "name": "Christmas Day"
@@ -73,12 +63,7 @@
         {
           "date": "2025-04-14",
           "day": "Monday",
-          "name": "Ambedkar Jayanti / Tamil New Year"
-        },
-        {
-          "date": "2025-04-17",
-          "day": "Thursday",
-          "name": "Mahavir Jayanti"
+          "name": "Ambedkar Jayanti"
         },
         {
           "date": "2025-05-12",
@@ -91,11 +76,6 @@
           "name": "Eid-ul-Adha (Bakrid)"
         },
         {
-          "date": "2025-08-09",
-          "day": "Saturday",
-          "name": "Raksha Bandhan"
-        },
-        {
           "date": "2025-08-18",
           "day": "Monday",
           "name": "Janmashtami"
@@ -106,19 +86,9 @@
           "name": "Ganesh Chaturthi"
         },
         {
-          "date": "2025-09-08",
-          "day": "Monday",
-          "name": "Onam"
-        },
-        {
-          "date": "2025-10-23",
+          "date": "2025-11-06",
           "day": "Thursday",
-          "name": "Govardhan Puja"
-        },
-        {
-          "date": "2025-10-24",
-          "day": "Friday",
-          "name": "Bhai Dooj"
+          "name": "Guru Nanak Jayanti"
         }
       ]
     },
@@ -148,7 +118,7 @@
         {
           "date": "2026-05-01",
           "day": "Friday",
-          "name": "May Day / Labour Day"
+          "name": "Labour Day"
         },
         {
           "date": "2026-08-15",
@@ -159,11 +129,6 @@
           "date": "2026-10-02",
           "day": "Friday",
           "name": "Gandhi Jayanti"
-        },
-        {
-          "date": "2026-10-12",
-          "day": "Monday",
-          "name": "Dussehra (Vijayadashami)"
         },
         {
           "date": "2026-11-09",
@@ -218,21 +183,6 @@
           "name": "Ganesh Chaturthi"
         },
         {
-          "date": "2026-08-28",
-          "day": "Friday",
-          "name": "Onam"
-        },
-        {
-          "date": "2026-08-29",
-          "day": "Saturday",
-          "name": "Raksha Bandhan"
-        },
-        {
-          "date": "2026-11-10",
-          "day": "Tuesday",
-          "name": "Govardhan Puja"
-        },
-        {
           "date": "2026-11-25",
           "day": "Wednesday",
           "name": "Guru Nanak Jayanti"
@@ -273,19 +223,9 @@
           "name": "Gandhi Jayanti"
         },
         {
-          "date": "2027-10-20",
-          "day": "Wednesday",
-          "name": "Dussehra (Vijayadashami)"
-        },
-        {
           "date": "2027-10-29",
           "day": "Friday",
           "name": "Diwali (Deepavali)"
-        },
-        {
-          "date": "2027-11-14",
-          "day": "Sunday",
-          "name": "Guru Nanak Jayanti"
         },
         {
           "date": "2027-12-25",
@@ -310,29 +250,14 @@
           "name": "Ambedkar Jayanti"
         },
         {
-          "date": "2027-04-25",
-          "day": "Sunday",
-          "name": "Mahavir Jayanti"
-        },
-        {
-          "date": "2027-05-17",
-          "day": "Monday",
-          "name": "Eid-ul-Adha (Bakrid)"
-        },
-        {
           "date": "2027-05-20",
           "day": "Thursday",
           "name": "Buddha Purnima"
         },
         {
-          "date": "2027-08-16",
+          "date": "2027-05-17",
           "day": "Monday",
-          "name": "Onam"
-        },
-        {
-          "date": "2027-08-18",
-          "day": "Wednesday",
-          "name": "Raksha Bandhan"
+          "name": "Eid-ul-Adha (Bakrid)"
         },
         {
           "date": "2027-08-27",
@@ -345,14 +270,9 @@
           "name": "Ganesh Chaturthi"
         },
         {
-          "date": "2027-10-30",
-          "day": "Saturday",
-          "name": "Govardhan Puja"
-        },
-        {
-          "date": "2027-10-31",
+          "date": "2027-11-14",
           "day": "Sunday",
-          "name": "Bhai Dooj"
+          "name": "Guru Nanak Jayanti"
         }
       ]
     },
@@ -382,7 +302,7 @@
         {
           "date": "2028-05-01",
           "day": "Monday",
-          "name": "May Day / Labour Day"
+          "name": "Labour Day"
         },
         {
           "date": "2028-08-15",
@@ -393,11 +313,6 @@
           "date": "2028-10-02",
           "day": "Monday",
           "name": "Gandhi Jayanti"
-        },
-        {
-          "date": "2028-10-09",
-          "day": "Monday",
-          "name": "Dussehra (Vijayadashami)"
         },
         {
           "date": "2028-10-17",
@@ -422,11 +337,6 @@
           "name": "Maha Shivaratri"
         },
         {
-          "date": "2028-04-13",
-          "day": "Thursday",
-          "name": "Mahavir Jayanti"
-        },
-        {
           "date": "2028-05-06",
           "day": "Saturday",
           "name": "Eid-ul-Adha (Bakrid)"
@@ -437,11 +347,6 @@
           "name": "Buddha Purnima"
         },
         {
-          "date": "2028-08-05",
-          "day": "Saturday",
-          "name": "Raksha Bandhan"
-        },
-        {
           "date": "2028-08-15",
           "day": "Tuesday",
           "name": "Janmashtami"
@@ -450,16 +355,6 @@
           "date": "2028-08-26",
           "day": "Saturday",
           "name": "Ganesh Chaturthi"
-        },
-        {
-          "date": "2028-09-04",
-          "day": "Monday",
-          "name": "Onam"
-        },
-        {
-          "date": "2028-10-18",
-          "day": "Wednesday",
-          "name": "Govardhan Puja"
         },
         {
           "date": "2028-11-02",
@@ -492,11 +387,6 @@
           "name": "Good Friday"
         },
         {
-          "date": "2029-04-25",
-          "day": "Wednesday",
-          "name": "Eid-ul-Adha (Bakrid)"
-        },
-        {
           "date": "2029-08-15",
           "day": "Wednesday",
           "name": "Independence Day"
@@ -505,11 +395,6 @@
           "date": "2029-10-02",
           "day": "Tuesday",
           "name": "Gandhi Jayanti"
-        },
-        {
-          "date": "2029-10-27",
-          "day": "Saturday",
-          "name": "Dussehra (Vijayadashami)"
         },
         {
           "date": "2029-11-05",
@@ -534,19 +419,14 @@
           "name": "Maha Shivaratri"
         },
         {
-          "date": "2029-04-02",
-          "day": "Monday",
-          "name": "Mahavir Jayanti"
-        },
-        {
-          "date": "2029-04-14",
-          "day": "Saturday",
-          "name": "Ambedkar Jayanti"
-        },
-        {
           "date": "2029-04-28",
           "day": "Saturday",
           "name": "Buddha Purnima"
+        },
+        {
+          "date": "2029-04-25",
+          "day": "Wednesday",
+          "name": "Eid-ul-Adha (Bakrid)"
         },
         {
           "date": "2029-08-04",
@@ -554,24 +434,9 @@
           "name": "Janmashtami"
         },
         {
-          "date": "2029-08-15",
-          "day": "Wednesday",
+          "date": "2029-09-03",
+          "day": "Monday",
           "name": "Ganesh Chaturthi"
-        },
-        {
-          "date": "2029-08-25",
-          "day": "Saturday",
-          "name": "Onam"
-        },
-        {
-          "date": "2029-08-25",
-          "day": "Saturday",
-          "name": "Raksha Bandhan"
-        },
-        {
-          "date": "2029-11-06",
-          "day": "Tuesday",
-          "name": "Govardhan Puja"
         },
         {
           "date": "2029-11-21",
@@ -619,11 +484,6 @@
           "name": "Gandhi Jayanti"
         },
         {
-          "date": "2030-10-16",
-          "day": "Wednesday",
-          "name": "Dussehra (Vijayadashami)"
-        },
-        {
           "date": "2030-10-25",
           "day": "Friday",
           "name": "Diwali (Deepavali)"
@@ -646,11 +506,6 @@
           "name": "Maha Shivaratri"
         },
         {
-          "date": "2030-04-22",
-          "day": "Monday",
-          "name": "Mahavir Jayanti"
-        },
-        {
           "date": "2030-05-18",
           "day": "Saturday",
           "name": "Buddha Purnima"
@@ -669,16 +524,6 @@
           "date": "2030-09-03",
           "day": "Tuesday",
           "name": "Ganesh Chaturthi"
-        },
-        {
-          "date": "2030-09-13",
-          "day": "Friday",
-          "name": "Onam"
-        },
-        {
-          "date": "2030-10-26",
-          "day": "Saturday",
-          "name": "Govardhan Puja"
         },
         {
           "date": "2030-11-10",

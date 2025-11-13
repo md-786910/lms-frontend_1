@@ -176,13 +176,13 @@ const EmployeeDashboard = () => {
             icon: IndianRupee,
             color: "from-purple-500 to-purple-600",
           },
-          {
-            title: "Hours This Month",
-            value: "162h",
-            subtitle: "8h remaining",
-            icon: Clock,
-            color: "from-green-500 to-green-600",
-          },
+          // {
+          //   title: "Hours This Month",
+          //   value: "162h",
+          //   subtitle: "8h remaining",
+          //   icon: Clock,
+          //   color: "from-green-500 to-green-600",
+          // },
         ];
 
         setQuickStat(quickStats);
@@ -296,7 +296,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quickStat?.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -461,7 +461,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <Card className="border-0 shadow-lg  ">
+        {/* <Card className="border-0 shadow-lg  ">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
@@ -511,17 +511,17 @@ const EmployeeDashboard = () => {
                 <Timer className="h-5 w-5" />
                 <span className="text-sm">Time Logs</span>
               </Button>
-              {/* <Button
+              <Button
                 onClick={() => navigate("/employee/profile")}
                 variant="outline"
                 className="h-20 flex flex-col space-y-2"
               >
                 <Users className="h-5 w-5" />
                 <span className="text-sm">Update Profile</span>
-              </Button> */}
+              </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">

@@ -71,7 +71,7 @@ const AdminLayout = (props) => {
     { icon: Users, label: "Employees", path: "/admin/employees" },
     { icon: IndianRupee, label: "Salary", path: "/admin/salary" },
     { icon: Calendar, label: "Leave", path: "/admin/leave" },
-    { icon: Clock, label: "Timing", path: "/admin/timing" },
+    // { icon: Clock, label: "Timing", path: "/admin/timing" },
     // { icon: CalendarClock, label: "Employee History", path: "/admin/history" },
     { icon: User, label: "User Management", path: "/admin/user" },
     { icon: Settings, label: "Settings", path: "/admin/settings" },

@@ -53,7 +53,7 @@ const EmployeeLayout = () => {
     { icon: User, label: "Profile", path: "/employee/profile" },
     { icon: Calendar, label: "Leave", path: "/employee/leave" },
     { icon: IndianRupee, label: "Salary", path: "/employee/salary" },
-    { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
+    // { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
   ];
 
   // api
