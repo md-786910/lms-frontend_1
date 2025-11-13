@@ -170,7 +170,7 @@ const TimeLogs = () => {
   };
 
   return (
-    <div className="space-y-6 blur pointer-events-none">
+    <div className="space-y-6 ">
       {/* Header with Current Status */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">

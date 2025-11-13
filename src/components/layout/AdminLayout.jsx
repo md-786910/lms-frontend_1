@@ -23,6 +23,7 @@ import {
   Settings,
   CalendarClock,
   User,
+  IndianRupee,
 } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import { useSocketContext } from "../../contexts/SocketContext";
@@ -68,7 +69,7 @@ const AdminLayout = (props) => {
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
     { icon: Users, label: "Employees", path: "/admin/employees" },
-    { icon: DollarSign, label: "Salary", path: "/admin/salary" },
+    { icon: IndianRupee, label: "Salary", path: "/admin/salary" },
     { icon: Calendar, label: "Leave", path: "/admin/leave" },
     { icon: Clock, label: "Timing", path: "/admin/timing" },
     // { icon: CalendarClock, label: "Employee History", path: "/admin/history" },

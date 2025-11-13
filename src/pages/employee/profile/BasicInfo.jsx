@@ -5,13 +5,10 @@ import NoDataFound from "../../../common/NoDataFound";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 function BasicInfo() {
- const { basicInfo,loading} = useOutletContext();
-  if (loading) {
-    return <LoadingSpinner/>
-  }
+  const { basicInfo, loading } = useOutletContext();
 
   if (!basicInfo) {
-    return <NoDataFound/>
+    return <NoDataFound />;
   }
 
   return (
@@ -19,7 +16,9 @@ function BasicInfo() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="name">Full Name</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{basicInfo.first_name} {basicInfo.last_name}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {basicInfo.first_name} {basicInfo.last_name}
+          </p>
         </div>
         <div>
           <Label htmlFor="email">Email Address</Label>
@@ -27,7 +26,9 @@ function BasicInfo() {
         </div>
         <div>
           <Label htmlFor="phone">Phone Number</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{basicInfo.phone_number}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {basicInfo.phone_number}
+          </p>
         </div>
         <div>
           <Label htmlFor="dateOfBirth">Date of Birth</Label>
@@ -39,11 +40,15 @@ function BasicInfo() {
         </div>
         <div>
           <Label>Gender</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{basicInfo.gender || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {basicInfo.gender || "N/A"}
+          </p>
         </div>
         <div>
           <Label>Marital Status</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">{basicInfo.martial_status || "N/A"}</p>
+          <p className="mt-1 p-2 bg-slate-50 rounded-md">
+            {basicInfo.martial_status || "N/A"}
+          </p>
         </div>
       </div>
     </div>

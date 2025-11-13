@@ -25,10 +25,6 @@ function PersonalInfo() {
     fetchPersonalInfo();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (!personalInfo) {
     return <NoDataFound />;
   }

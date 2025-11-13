@@ -210,7 +210,7 @@ const Profile = ({ readOnly = false }) => {
                       <NavLink
                         to={tab.link}
                         className={({ isActive }) =>
-                          `text-center py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${
+                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${
                             isActive
                               ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
                               : "bg-transparent hover:bg-gray-200"
@@ -223,9 +223,11 @@ const Profile = ({ readOnly = false }) => {
                   );
                 })}
               </TabsList>
-              <Outlet
-                context={activeTab === "basic" ? { basicInfo, loading } : {}}
-              />
+              <main className="h-[40vh] max-h-[50vh] border">
+                <Outlet
+                  context={activeTab === "basic" ? { basicInfo, loading } : {}}
+                />
+              </main>
             </Tabs>
           </CardContent>
         </Card>

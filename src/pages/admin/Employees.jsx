@@ -519,7 +519,7 @@ const Employees = ({
 
       {/* Edit Employee Dialog */}
       <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-        <DialogContent className="max-w-5xl max-h-[100vh]">
+        <DialogContent className="max-w-6xl max-h-[100vh]">
           <DialogHeader>
             <DialogTitle>
               <CardTitle className="flex items-center space-x-2">

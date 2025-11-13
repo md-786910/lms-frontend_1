@@ -24,6 +24,7 @@ import {
   X,
   Building2,
   Bell,
+  IndianRupee,
 } from "lucide-react";
 import { toast } from "sonner";
 import { toast as toastNotify } from "react-toastify";
@@ -51,7 +52,7 @@ const EmployeeLayout = () => {
     { icon: LayoutDashboard, label: "Dashboard", path: "/employee/dashboard" },
     { icon: User, label: "Profile", path: "/employee/profile" },
     { icon: Calendar, label: "Leave", path: "/employee/leave" },
-    { icon: DollarSign, label: "Salary", path: "/employee/salary" },
+    { icon: IndianRupee, label: "Salary", path: "/employee/salary" },
     { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
   ];
 

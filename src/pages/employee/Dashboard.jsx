@@ -29,6 +29,7 @@ import { useSocketContext } from "../../contexts/SocketContext";
 import { authAPI } from "../../api/authapi/authAPI";
 import dayjs from "dayjs";
 import NoDataFound from "../../common/NoDataFound";
+import { employeeLeaveApi } from "../../api/employee/leaveApi";
 const EmployeeDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const { user } = useAuth();
@@ -130,53 +131,72 @@ const EmployeeDashboard = () => {
       setHolidayList(holidayData);
     }
 
-    const fetDashboard = async () => {
+    const fetchDashboard = async () => {
       try {
-        const resp = await EmpDashboardApi.getDashboard();
-        const resp1 = await EmpDashboardApi.getProfileBasicInfo();
-        if (resp.status == 200 || resp1.status == 200) {
-          const quickStats = [
-            {
-              title: "Leave Balance",
-              value: `${resp.data?.data?.leave_balance} days`,
-              subtitle: "Available this year",
-              icon: CalendarIcon,
-              color: "from-blue-500 to-blue-600",
-            },
-            {
-              title: "Hours This Month",
-              value: "162h",
-              subtitle: "8h remaining",
-              icon: Clock,
-              color: "from-green-500 to-green-600",
-            },
-            {
-              title: "Current Salary",
-              value: `₹${resp.data?.data?.net_salary}`,
-              subtitle: "Annual gross",
-              icon: IndianRupee,
-              color: "from-purple-500 to-purple-600",
-            },
-            {
-              title: "Performance",
-              value: "92%",
-              subtitle: "This quarter",
-              icon: TrendingUp,
-              color: "from-orange-500 to-orange-600",
-            },
-          ];
-          setQuickStat(quickStats);
-          setDashboardData(resp.data?.data);
-          setBasicProfile(resp1.data?.data);
+        // Fire all API calls in parallel
+        const [dashboardRes, profileRes, leaveRes] = await Promise.all([
+          EmpDashboardApi.getDashboard(),
+          EmpDashboardApi.getProfileBasicInfo(),
+          employeeLeaveApi.getLeave(),
+        ]);
+
+        const allSuccessful =
+          dashboardRes?.status === 200 &&
+          profileRes?.status === 200 &&
+          leaveRes?.status === 200;
+
+        if (!allSuccessful) {
+          console.warn("Some API responses were not 200.");
+          return;
         }
-      } catch (error) {
-        console.log(error);
+
+        const dashboard = dashboardRes.data?.data || {};
+        const profile = profileRes.data?.data || {};
+        const leaves = leaveRes.data?.data || {};
+
+        const quickStats = [
+          {
+            title: "Total Approved leave",
+            value: `${leaves.total_approved || 0} days`,
+            subtitle: "This year",
+            icon: TrendingUp,
+            color: "from-orange-500 to-orange-600",
+          },
+          {
+            title: "Leave Balance",
+            value: `${dashboard.leave_balance || 0} days`,
+            subtitle: "Available this year",
+            icon: CalendarIcon,
+            color: "from-blue-500 to-blue-600",
+          },
+          {
+            title: "Current Salary",
+            value: `₹${dashboard.net_salary || 0}`,
+            subtitle: "Annual gross",
+            icon: IndianRupee,
+            color: "from-purple-500 to-purple-600",
+          },
+          {
+            title: "Hours This Month",
+            value: "162h",
+            subtitle: "8h remaining",
+            icon: Clock,
+            color: "from-green-500 to-green-600",
+          },
+        ];
+
+        setQuickStat(quickStats);
+        setDashboardData(dashboard);
+        setBasicProfile(profile);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchNotification();
-    fetDashboard();
+    fetchDashboard();
   }, [updateDashboard]);
 
   if (loading) {
@@ -283,9 +303,9 @@ const EmployeeDashboard = () => {
               <Card
                 key={index}
                 className={`border-0 shadow-lg bg-white hover:shadow-xl transition-shadow
-              ${index == 1 ? "blur pointer-events-none" : ""}
-                
-                `}
+                  
+                  `}
+                // ${index == 1 ? "blur pointer-events-none" : ""}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
@@ -441,12 +461,12 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <Card className="border-0 shadow-lg blur pointer-events-none">
+        <Card className="border-0 shadow-lg  ">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
               <Button
                 onClick={handleClockIn}
                 disabled={clockedIn || isLoading}
@@ -491,92 +511,17 @@ const EmployeeDashboard = () => {
                 <Timer className="h-5 w-5" />
                 <span className="text-sm">Time Logs</span>
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => navigate("/employee/profile")}
                 variant="outline"
                 className="h-20 flex flex-col space-y-2"
               >
                 <Users className="h-5 w-5" />
                 <span className="text-sm">Update Profile</span>
-              </Button>
+              </Button> */}
             </div>
           </CardContent>
         </Card>
-
-        {/* Upcoming Events & Performance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 blur pointer-events-none">
-          {/* Upcoming Events */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <CalendarIcon className="h-5 w-5 text-purple-600" />
-                <span>Upcoming Events</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingEvents.map((event, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-medium text-slate-800">
-                        {event.title}
-                      </p>
-                      <p className="text-sm text-slate-600">{event.date}</p>
-                    </div>
-                    <div
-                      className={`px-2 py-1 rounded text-xs font-medium ${
-                        event.type === "meeting"
-                          ? "bg-blue-100 text-blue-800"
-                          : event.type === "deadline"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
-                    >
-                      {event.type}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Performance Overview */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle>Performance Overview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 gap-6">
-                <div className="text-center">
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">92%</span>
-                  </div>
-                  <p className="font-medium text-slate-800">
-                    Overall Performance
-                  </p>
-                  <p className="text-sm text-slate-600">
-                    Excellent work this quarter
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-purple-600">15</div>
-                    <p className="text-sm text-slate-600">Projects Completed</p>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-orange-600">
-                      8.5
-                    </div>
-                    <p className="text-sm text-slate-600">Team Rating</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">

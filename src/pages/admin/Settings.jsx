@@ -20,7 +20,7 @@ const Settings = () => {
       </div>
 
       <Tabs>
-        <TabsList className="grid w-full grid-cols-8">
+        <TabsList className={`grid w-full grid-cols-${settingTabs.length}`}>
           {settingTabs?.map((tab, index) => {
             const { id, name, link } = tab;
             return (
@@ -28,7 +28,7 @@ const Settings = () => {
                 <NavLink
                   to={link}
                   className={({ isActive }) =>
-                    `text-center py-2 px-4 rounded-md transition-colors ${
+                    `text-center py-2  w-full rounded-md transition-colors ${
                       isActive
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
                         : "bg-transparent hover:bg-gray-200"

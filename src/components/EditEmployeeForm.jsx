@@ -284,7 +284,7 @@ const EditEmployeeForm = ({
   };
 
   return (
-    <Card className="w-full max-w-5xl mx-auto min-h-[80vh] max-h-[80vh] flex flex-col">
+    <Card className="w-full  mx-auto min-h-[80vh] max-h-[80vh] flex flex-col">
       <CardContent className="flex-1 overflow-y-auto px-6">
         <Tabs
           value={activeTab}

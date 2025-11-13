@@ -34,11 +34,11 @@ const settingTabs = [
     name: "Document Category",
     link: "/admin/settings/document-category",
   },
-  {
-    id: 1,
-    name: "Templates",
-    link: "/admin/settings/templates",
-  },
+  // {
+  //   id: 1,
+  //   name: "Templates",
+  //   link: "/admin/settings/templates",
+  // },
 ];
 
 export default settingTabs;

@@ -25,10 +25,6 @@ function SalaryInfo() {
     fetchSalaryInfo();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (!salaryInfo) {
     return <NoDataFound />;
   }

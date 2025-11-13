@@ -180,12 +180,12 @@ const Salary = () => {
             <Download className="h-4 w-4 mr-2" />
             Export Report
           </Button>
-          <Button
+          {/* <Button
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             onClick={handleProcessPayroll}
           >
             Process Payroll
-          </Button>
+          </Button> */}
         </div>
       </div>
 

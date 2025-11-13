@@ -91,6 +91,7 @@ function Company({ value }) {
         tax_no,
         logo, // ⬅️ Include this
         phone_number,
+        company_name,
       } = companyData;
 
       const resp = await axiosInstance.put("/company", {
@@ -99,6 +100,7 @@ function Company({ value }) {
         tax_no,
         logo, // ⬅️ Save logo too
         phone_number,
+        company_name,
       });
 
       if (resp.status === 200) {
@@ -198,7 +200,6 @@ function Company({ value }) {
                 name="company_name"
                 value={companyData?.company_name ?? ""}
                 onChange={handleChange}
-                disabled
               />
               {errors.company_name && (
                 <p className="text-red-500 text-sm">{errors.company_name}</p>
