@@ -46,7 +46,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format, parseISO } from "date-fns";
 import dayjs from "dayjs";
 import { useSocketContext } from "../../contexts/SocketContext";
 
@@ -496,7 +495,7 @@ const Leave = () => {
                             {JSON.parse(request?.leave_on)?.map((log) => (
                               <TableRow key={log.date}>
                                 <TableCell className="font-medium">
-                                  {format(parseISO(log?.date), "MMM dd, yyyy")}
+                                  {dayjs(log?.date).format("D MMM YYYY")}
                                 </TableCell>
                                 <TableCell>{log?.id || "-"}</TableCell>
                               </TableRow>
