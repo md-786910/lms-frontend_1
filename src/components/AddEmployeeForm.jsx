@@ -18,7 +18,7 @@ import { User, Mail } from "lucide-react";
 import { employeePayload } from "../utility/employeePayload";
 const validationSchema = {
   firstName: [{ type: "required", message: "First name is required" }],
-  lastName: [{ type: "required", message: "Last name is required" }],
+  lastName: [{ type: "optional", message: "Last name is required" }],
   email: [
     { type: "required", message: "Email is required" },
     { type: "email", message: "Invalid email format" },
@@ -128,9 +128,9 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
                 name="lastName"
                 value={values.lastName}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                // onBlur={handleBlur}
               />
-              {renderError("lastName")}
+              {/* {renderError("lastName")} */}
             </div>
           </div>
 

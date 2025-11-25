@@ -190,3 +190,23 @@ All colors MUST be HSL.
     background-color: #f1f5f9;
 }
 
+/* Date input styles - fix calendar icon alignment */
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  margin: 0;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
