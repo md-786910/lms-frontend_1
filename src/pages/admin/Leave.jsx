@@ -47,6 +47,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format, parseISO } from "date-fns";
+import dayjs from "dayjs";
 import { useSocketContext } from "../../contexts/SocketContext";
 
 // Validation schema for leave policy modal
@@ -377,8 +378,8 @@ const Leave = () => {
                     <div>
                       <p className="text-slate-500">Duration</p>
                       <p className="font-medium text-slate-800">
-                        {new Date(request?.start_date).toLocaleDateString()} -{" "}
-                        {new Date(request?.end_date).toLocaleDateString()}
+                        {dayjs(request?.start_date).format("D MMM YYYY")} -{" "}
+                        {dayjs(request?.end_date).format("D MMM YYYY")}
                       </p>
                     </div>
                     <div>
@@ -390,14 +391,14 @@ const Leave = () => {
                     <div>
                       <p className="text-slate-500">Applied Date</p>
                       <p className="font-medium text-slate-800">
-                        {new Date(request?.createdAt).toLocaleDateString()}
+                        {dayjs(request?.createdAt).format("D MMM YYYY")}
                       </p>
                     </div>
                     {request?.status === "approved" && (
                       <div>
                         <p className="text-green-500">Approved Date</p>
                         <p className="font-medium text-slate-800">
-                          {new Date(request?.updatedAt).toLocaleDateString()}
+                          {dayjs(request?.updatedAt).format("D MMM YYYY")}
                         </p>
                       </div>
                     )}
