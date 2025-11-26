@@ -223,7 +223,7 @@ const Profile = ({ readOnly = false }) => {
                   );
                 })}
               </TabsList>
-              <main className="h-[40vh] max-h-[50vh] border">
+              <main className="h-[40vh] max-h-[60vh] ">
                 <Outlet
                   context={activeTab === "basic" ? { basicInfo, loading } : {}}
                 />

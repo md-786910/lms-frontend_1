@@ -150,7 +150,7 @@ const Salary = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <TrendingUp className="h-5 w-5 text-purple-600" />
-            <span>Year-to-Date Summary (2024)</span>
+            <span>Year-to-Date Summary ({dayjs().year()})</span>
           </CardTitle>
         </CardHeader>
         <CardContent>

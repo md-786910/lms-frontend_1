@@ -160,10 +160,12 @@ const EmployeeLayout = () => {
         <div className="absolute bottom-4 left-4 right-4">
           <div className="p-4 bg-slate-50 rounded-lg mb-4">
             <p className="text-sm font-medium text-slate-800">{user?.name}</p>
-            <p className="text-xs text-slate-500">{user?.email}</p>
-            <p className="text-xs text-blue-600 font-medium">
-              Employee ID: {user?.id}
+            <p className="font-medium text-[15px] text-slate-500">
+              {user?.email}
             </p>
+            {/* <p className="text-xs text-blue-600 font-medium">
+              Employee ID: {user?.id}
+            </p> */}
           </div>
           <Button
             onClick={() => handleLogout()}
