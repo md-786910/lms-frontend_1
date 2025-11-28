@@ -50,6 +50,11 @@ const LeaveRequestModal = ({
   readOnly = false,
   leaveRequestViewMode = {},
 }) => {
+  console.log({
+    leaves,
+    readOnly,
+    leaveRequestViewMode,
+  });
   const { toast } = useToast();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -493,13 +498,21 @@ const LeaveRequestModal = ({
                   {dayCount || 0} days
                 </span>
                 <br />
-                <span className="text-blue-700">Total Leave count spent </span>
-                <span className="font-medium text-blue-900 ml-2">
-                  {(!readOnly && totalLeaveCount) || 0}
-                </span>
+                {!["approved"].includes(leaveRequestViewMode?.status) && (
+                  <>
+                    <span className="text-blue-700">
+                      Total Leave count spent{" "}
+                    </span>
+                    <span className="font-medium text-blue-900 ml-2">
+                      {totalLeaveCount || 0}
+                    </span>
+                  </>
+                )}
               </div>
 
-              {leaveRequestViewMode?.status !== "pending" && (
+              {!["pending", "approved"].includes(
+                leaveRequestViewMode?.status
+              ) && (
                 <div>
                   <span className="text-blue-700">Remaining :</span>
                   <span className="font-medium text-blue-900 ml-2">
