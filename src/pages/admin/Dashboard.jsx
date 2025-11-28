@@ -327,18 +327,132 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
-        {/* Top Performers */}
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              {/* <Award className="h-5 w-5 text-yellow-600" /> */}
-              {/* <span>Employee leave </span> */}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-          </CardContent>
-        </Card>
+        {/* Employee of the Month */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Current Month Employee of the Month */}
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="h-5 w-5 text-yellow-600" />
+                <span>
+                  Employee of the Month - {format(new Date(), "MMMM yyyy")}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Employee Name
+                      </th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Total Leave (Days)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(dashboardData?.current_month_leaves || []).length > 0 ? (
+                      dashboardData.current_month_leaves.map(
+                        ({ employee: emp, total_leave }, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                          >
+                            <td className="py-3 px-4 text-sm text-slate-800">
+                              {emp.employee_name ||
+                                `${emp.first_name || ""} ${
+                                  emp.last_name || ""
+                                }`.trim() ||
+                                "N/A"}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                              {total_leave ?? 0}
+                            </td>
+                          </tr>
+                        )
+                      )
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="py-6 text-center text-slate-500 text-sm"
+                        >
+                          No leave data available for this month
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Previous Month Employee of the Month */}
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="h-5 w-5 text-purple-600" />
+                <span>
+                  Employee of the Month -{" "}
+                  {format(
+                    new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                    "MMMM yyyy"
+                  )}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Employee Name
+                      </th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Total Leave (Days)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(dashboardData?.previous_month_leaves || []).length > 0 ? (
+                      dashboardData.previous_month_leaves.map(
+                        ({ employee: emp, total_leave }, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                          >
+                            <td className="py-3 px-4 text-sm text-slate-800">
+                              {emp.employee_name ||
+                                `${emp.first_name || ""} ${
+                                  emp.last_name || ""
+                                }`.trim() ||
+                                "N/A"}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                              {total_leave ?? 0}
+                            </td>
+                          </tr>
+                        )
+                      )
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="py-6 text-center text-slate-500 text-sm"
+                        >
+                          No leave data available for previous month
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">
