@@ -431,7 +431,7 @@ const Leave = () => {
                             }
                           },
                           text_no: "Cancel",
-                          text_yes: "Approved",
+                          text_yes: "Approve",
                           title: "Approve Leave",
                           message:
                             "Are you sure you want to approve this leave request?",
