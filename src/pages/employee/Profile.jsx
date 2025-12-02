@@ -176,7 +176,11 @@ const Profile = ({ readOnly = false }) => {
                   <span>
                     Joined:{" "}
                     {user?.date_of_joining
-                      ? new Date(user.date_of_joining).toLocaleDateString()
+                      ? new Date(user.date_of_joining).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
                       : "N/A"}
                   </span>
                 </div>
