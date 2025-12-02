@@ -233,9 +233,19 @@ const EmployeeLeave = () => {
                       <div>
                         <span className="text-slate-600">Duration:</span>
                         <p className="font-medium">
-                          {new Date(request.start_date).toLocaleDateString()} -{" "}
-                          {new Date(request.end_date).toLocaleDateString()}
+                          {new Date(request.start_date).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}{" "}
+                          -{" "}
+                          {new Date(request.end_date).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
                         </p>
+
                         <p className="text-slate-500">
                           {request.total_days} day
                           {request.total_days > 1 ? "s" : ""}
@@ -248,7 +258,11 @@ const EmployeeLeave = () => {
                       <div>
                         <span className="text-slate-600">Applied Date:</span>
                         <p className="font-medium">
-                          {new Date(request.createdAt).toLocaleDateString()}
+                          {new Date(request.createdAt).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
                         </p>
                       </div>
                     </div>

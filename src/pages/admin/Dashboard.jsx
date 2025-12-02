@@ -252,7 +252,7 @@ const AdminDashboard = () => {
                 <div className="space-y-4">
                   <h4 className="font-semibold text-slate-800">
                     {selectedDate
-                      ? format(selectedDate, "MMMM d, yyyy")
+                      ? format(selectedDate, "dd MMMM, yyyy")
                       : "Select a date"}
                   </h4>
                   {selectedDateLeaves.length > 0 ? (
@@ -335,7 +335,7 @@ const AdminDashboard = () => {
               <CardTitle className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-yellow-600" />
                 <span>
-                  Employee of the Month - {format(new Date(), "MMMM yyyy")}
+                  List of leaves of Employees for Month - {format(new Date(), "MMMM yyyy")}
                 </span>
               </CardTitle>
             </CardHeader>
@@ -395,7 +395,7 @@ const AdminDashboard = () => {
               <CardTitle className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-purple-600" />
                 <span>
-                  Employee of the Month -{" "}
+                  List of leaves of Employees for Month -{" "}
                   {format(
                     new Date(new Date().setMonth(new Date().getMonth() - 1)),
                     "MMMM yyyy"

@@ -363,7 +363,7 @@ const EmployeeDashboard = () => {
                 <div className="space-y-4">
                   <h4 className="font-semibold text-slate-800">
                     {selectedDate
-                      ? format(selectedDate, "MMMM d, yyyy")
+                      ? format(selectedDate, "dd MMMM, yyyy")
                       : "Select a date"}
                   </h4>
                   {leaveData?.length > 0 ? (

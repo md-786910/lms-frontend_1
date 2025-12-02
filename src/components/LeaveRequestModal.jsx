@@ -401,7 +401,7 @@ const LeaveRequestModal = ({
                     <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
                     {startDate || dates?.start_date ? (
                       <span className="text-slate-700">
-                        {format(startDate || dates?.start_date, "PPP")}
+                        {format(startDate || dates?.start_date, "dd/MM/yy")}
                       </span>
                     ) : (
                       <span>Select start date</span>
@@ -450,7 +450,7 @@ const LeaveRequestModal = ({
                     <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
                     {endDate || dates?.end_date ? (
                       <span className="text-slate-700">
-                        {format(endDate || dates?.end_date, "PPP")}
+                        {format(endDate || dates?.end_date, "dd/MM/yy")}
                       </span>
                     ) : (
                       <span>Select end date</span>
@@ -504,7 +504,7 @@ const LeaveRequestModal = ({
                           {dayjs(day.date).format("dddd")}
                         </p>
                         <p className="text-sm text-slate-500">
-                          {dayjs(day.date).format("MMMM D, YYYY")}
+                          {dayjs(day.date).format("DD MMM YYYY")}
                         </p>
                       </div>
                     </div>
