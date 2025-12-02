@@ -423,7 +423,11 @@ const Employees = ({
                           Joined:{" "}
                           {new Date(
                             employee.date_of_joining
-                          ).toLocaleDateString()}
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
                         </span>
                       </div>
                       {readOnly && (
@@ -431,7 +435,11 @@ const Employees = ({
                           Suspended:{" "}
                           {new Date(
                             employee.date_of_joining
-                          ).toLocaleDateString()}
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
                         </span>
                       )}
                     </div>

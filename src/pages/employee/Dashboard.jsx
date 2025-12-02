@@ -363,7 +363,7 @@ const EmployeeDashboard = () => {
                 <div className="space-y-4">
                   <h4 className="font-semibold text-slate-800">
                     {selectedDate
-                      ? format(selectedDate, "MMMM d, yyyy")
+                      ? format(selectedDate, "dd MMMM, yyyy")
                       : "Select a date"}
                   </h4>
                   {leaveData?.length > 0 ? (
@@ -455,6 +455,132 @@ const EmployeeDashboard = () => {
                 ))}
 
                 {recentActivities?.length === 0 && <NoDataFound />}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        {/* Employee of the Month */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Current Month Employee of the Month */}
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="h-5 w-5 text-yellow-600" />
+                <span>
+                  My leaves for Month - {format(new Date(), "MMMM yyyy")}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Total Leave (Days)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(dashboardData?.current_month_leaves || []).length > 0 ? (
+                      dashboardData.current_month_leaves.map(
+                        ({ employee: emp, total_leave }, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                          >
+                            <td className="py-3 px-4 text-sm text-slate-800">
+                              {emp.employee_name ||
+                                `${emp.first_name || ""} ${
+                                  emp.last_name || ""
+                                }`.trim() ||
+                                "N/A"}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                              {total_leave ?? 0}
+                            </td>
+                          </tr>
+                        )
+                      )
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="py-6 text-center text-slate-500 text-sm"
+                        >
+                          No leave data available for this month
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Previous Month Employee of the Month */}
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="h-5 w-5 text-purple-600" />
+                <span>
+                  My leaves for Month -{" "}
+                  {format(
+                    new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                    "MMMM yyyy"
+                  )}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                        Total Leave (Days)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(dashboardData?.previous_month_leaves || []).length > 0 ? (
+                      dashboardData.previous_month_leaves.map(
+                        ({ employee: emp, total_leave }, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                          >
+                            <td className="py-3 px-4 text-sm text-slate-800">
+                              {emp.employee_name ||
+                                `${emp.first_name || ""} ${
+                                  emp.last_name || ""
+                                }`.trim() ||
+                                "N/A"}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                              {total_leave ?? 0}
+                            </td>
+                          </tr>
+                        )
+                      )
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="py-6 text-center text-slate-500 text-sm"
+                        >
+                          No leave data available for previous month
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </CardContent>
           </Card>

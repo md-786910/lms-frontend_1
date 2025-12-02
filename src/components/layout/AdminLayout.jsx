@@ -92,6 +92,38 @@ const AdminLayout = (props) => {
     fetchNotification();
   }, [updateDashboard]);
 
+  const handleReadNotification = async (id) => {
+    try {
+      const resp = await companyAPI.readNotification(id);
+      if (resp?.status) {
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+        );
+      }
+    } catch (error) {
+      console.error("Error marking notification read:", error);
+      toast.error("Could not mark notification as read");
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    // gather unread notifications
+    const unread = notifications?.filter((n) => !n.read) || [];
+    if (!unread.length) return;
+    try {
+      // mark all in parallel
+      await Promise.allSettled(
+        unread.map((n) => companyAPI.readNotification(n.id))
+      );
+      // update locally
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    } catch (error) {
+      console.error("Error marking all notifications read:", error);
+      toast.error("Could not mark all notifications as read");
+    }
+    toast.success("All notifications marked as read");
+  };
+
   // handle real time notification
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -250,7 +282,8 @@ const AdminLayout = (props) => {
                           key={notification.id}
                           className={`border-0 shadow-sm ${
                             !notification.read ? "bg-blue-50" : ""
-                          }`}
+                          } cursor-pointer`}
+                          onClick={() => handleReadNotification(notification.id)}
                         >
                           <CardContent className="p-3">
                             <div className="flex items-start space-x-3">
@@ -277,7 +310,12 @@ const AdminLayout = (props) => {
                         </Card>
                       ))}
                     </div>
-                    <Button variant="outline" className="w-full text-sm">
+                    <Button
+                      variant="outline"
+                      className="w-full text-sm"
+                      onClick={handleMarkAllAsRead}
+                      disabled={unreadCount === 0}
+                    >
                       Mark all as read
                     </Button>
                   </div>
