@@ -335,7 +335,8 @@ const AdminDashboard = () => {
               <CardTitle className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-yellow-600" />
                 <span>
-                  List of leaves of Employees for Month - {format(new Date(), "MMMM yyyy")}
+                  List of leaves of Employees for Month -{" "}
+                  {format(new Date(), "MMMM yyyy")}
                 </span>
               </CardTitle>
             </CardHeader>
@@ -355,17 +356,15 @@ const AdminDashboard = () => {
                   <tbody>
                     {(dashboardData?.current_month_leaves || []).length > 0 ? (
                       dashboardData.current_month_leaves.map(
-                        ({ employee: emp, total_leave }, index) => (
+                        ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
                             className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                           >
                             <td className="py-3 px-4 text-sm text-slate-800">
-                              {emp.employee_name ||
-                                `${emp.first_name || ""} ${
-                                  emp.last_name || ""
-                                }`.trim() ||
-                                "N/A"}
+                              {`${first_name || ""} ${
+                                last_name || ""
+                              }`.trim() || "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-600 text-right">
                               {total_leave ?? 0}
@@ -419,17 +418,15 @@ const AdminDashboard = () => {
                   <tbody>
                     {(dashboardData?.previous_month_leaves || []).length > 0 ? (
                       dashboardData.previous_month_leaves.map(
-                        ({ employee: emp, total_leave }, index) => (
+                        ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
                             className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                           >
                             <td className="py-3 px-4 text-sm text-slate-800">
-                              {emp.employee_name ||
-                                `${emp.first_name || ""} ${
-                                  emp.last_name || ""
-                                }`.trim() ||
-                                "N/A"}
+                              {`${first_name || ""} ${
+                                last_name || ""
+                              }`.trim() || "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-600 text-right">
                               {total_leave ?? 0}
