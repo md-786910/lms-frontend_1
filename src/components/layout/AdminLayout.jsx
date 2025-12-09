@@ -171,7 +171,7 @@ const AdminLayout = (props) => {
                 <Building2 className="h-5 w-5 text-white" />
               </div>
             )}
-            <span className="text-lg font-semibold text-slate-800">
+            <span className="text-lg font-semibold text-slate-800 leading-tight">
               {companyData?.company_name || "HR Admin"}
             </span>
           </div>
