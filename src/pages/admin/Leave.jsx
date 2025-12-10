@@ -26,6 +26,7 @@ import {
   AlertCircle,
   Filter,
   Eye,
+  Plus,
 } from "lucide-react";
 import { useFormValidation } from "../../hooks/useFormValidation";
 import { leaveApi } from "../../api/leave/leave";
@@ -47,6 +48,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
+import AdminLeaveModal from "../../components/AdminLeaveModal";
 import { useSocketContext } from "../../contexts/SocketContext";
 
 // Validation schema for leave policy modal
@@ -82,6 +84,7 @@ const Leave = () => {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [showLeavePolicyModal, setShowLeavePolicyModal] = useState(false);
+  const [showCreateLeaveModal, setShowCreateLeaveModal] = useState(false);
   const [leaveDash, setLeaveDash] = useState(null);
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [leavePolicy, setLeavePolicy] = useState([]);
@@ -203,13 +206,22 @@ const Leave = () => {
             Manage employee leave requests and approvals
           </p>
         </div>
-        <Button
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          onClick={() => setShowLeavePolicyModal(true)}
-        >
-          <Filter className="h-4 w-4 mr-2" />
-          Leave Policy
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            onClick={() => setShowCreateLeaveModal(true)}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Create Leave
+          </Button>
+          <Button
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            onClick={() => setShowLeavePolicyModal(true)}
+          >
+            <Filter className="h-4 w-4 mr-2" />
+            Leave Policy
+          </Button>
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -513,6 +525,22 @@ const Leave = () => {
       </div>
 
       {leaveRequest?.length == 0 && <NoDataFound />}
+
+      {/* Create Leave Modal */}
+      <Dialog
+        open={showCreateLeaveModal}
+        onOpenChange={setShowCreateLeaveModal}
+      >
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <AdminLeaveModal
+            onClose={() => setShowCreateLeaveModal(false)}
+            onSuccess={() => {
+              fetchLeaveData();
+              setShowCreateLeaveModal(false);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Leave Policy Modal */}
       <Dialog

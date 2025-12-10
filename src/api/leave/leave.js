@@ -26,4 +26,7 @@ export const leaveApi = {
       `/company/leave/approve/${id}/employee/${employee_id}`
     );
   },
+  adminCreateLeave: (data) => {
+    return axiosInstance.post("/company/leave/create-leave", data);
+  },
 };
