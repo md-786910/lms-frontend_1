@@ -29,6 +29,10 @@ import {
   CheckCircle2,
   AlertCircle,
   Users,
+  Briefcase,
+  CalendarDays,
+  Hash,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
@@ -95,19 +99,15 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     validationSchema
   );
 
-  // Fetch employees and leave types
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [empResponse, leaveResponse] = await Promise.all([
+        const [empResponse] = await Promise.all([
           employeeAPI.getAll(),
-          leaveAPI.getleave(),
+          // leaveAPI.getleave(),
         ]);
         if (empResponse.data) {
           setEmployees(empResponse.data);
-        }
-        if (leaveResponse.data) {
-          setLeaveTypes(leaveResponse.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -120,10 +120,10 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     };
     fetchData();
   }, []);
-
-  // Reset form when employee changes
   const handleEmployeeChange = (empId) => {
+    const emp = employees.find((e) => e.id.toString() === empId);
     setSelectedEmployee(empId);
+    setLeaveTypes(emp?.employee_leaves || []);
     setLeaveType(null);
     setLeaveDays([]);
     setStartDate(null);
@@ -179,8 +179,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
         total_days: totalLeaveCount,
         leave_on: JSON.stringify(leaveDays),
         reason,
-        emergency_contact_person: emergencyContact,
-        status: leaveStatus,
+        emergency_contact_person: "",
       });
 
       if (response.status === 201 || response.status === 200) {
@@ -272,265 +271,288 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     (emp) => emp.id === parseInt(selectedEmployee)
   );
 
+  console.log({ leaveTypes });
+
   return (
-    <div className="w-full overflow-hidden">
-      {/* Header with Gradient */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-5">
+    <div className="w-full max-h-[90vh] flex flex-col bg-white overflow-hidden">
+      {/* Header */}
+      <div className="flex-shrink-0 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 px-6 py-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+          <div className="flex items-center gap-4">
+            <div className="p-2.5 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
               <CalendarPlus className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-white tracking-tight">
                 Create Leave Request
               </h2>
-              <p className="text-blue-100 text-sm">
-                Manually create a leave request for an employee
+              <p className="text-indigo-200 text-sm mt-0.5">
+                Submit a new leave request for an employee
               </p>
             </div>
           </div>
+          {/* <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          >
+            <X className="h-5 w-5 text-white/80 hover:text-white" />
+          </button> */}
         </div>
       </div>
 
-      <div className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Employee Selection */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="employee"
-              className="flex items-center space-x-2 text-slate-700 font-medium"
-            >
-              <Users className="h-4 w-4 text-blue-600" />
-              <span>
-                Select Employee <span className="text-red-500">*</span>
-              </span>
-            </Label>
-            <Select
-              value={selectedEmployee || ""}
-              onValueChange={handleEmployeeChange}
-            >
-              <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500">
-                <SelectValue placeholder="Select an employee" />
-              </SelectTrigger>
-              <SelectContent>
-                {employees.map((emp) => (
-                  <SelectItem key={emp.id} value={emp.id.toString()}>
-                    {emp.first_name} {emp.last_name || ""} ({emp.employee_no})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.employee_id && (
-              <p className="text-red-500 text-sm flex items-center space-x-1">
-                <AlertCircle className="h-3 w-3" />
-                <span>{errors.employee_id}</span>
-              </p>
-            )}
-          </div>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+          {/* Employee Selection Card */}
+          <div className="bg-slate-50/50 rounded-lg p-4 border border-slate-200/60">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-indigo-100 rounded-lg">
+                <Users className="h-4 w-4 text-indigo-600" />
+              </div>
+              <h3 className="font-semibold text-slate-800">Employee Details</h3>
+            </div>
 
-          {/* Leave Type Selection */}
-          {selectedEmployee && (
             <div className="space-y-2">
-              <Label
-                htmlFor="leaveType"
-                className="flex items-center space-x-2 text-slate-700 font-medium"
-              >
-                <FileText className="h-4 w-4 text-blue-600" />
-                <span>
-                  Leave Type <span className="text-red-500">*</span>
-                </span>
+              <Label className="text-sm font-medium text-slate-700">
+                Select Employee <span className="text-red-500">*</span>
               </Label>
               <Select
-                value={leaveType ? leaveType.toString() : ""}
-                onValueChange={(val) => {
-                  setLeaveType(parseInt(val));
-                }}
+                value={selectedEmployee || ""}
+                onValueChange={handleEmployeeChange}
               >
-                <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500">
-                  <SelectValue placeholder="Select leave type" />
+                <SelectTrigger className="h-11 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500/20 focus:ring-2">
+                  <SelectValue placeholder="Choose an employee..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {leaveTypes?.map((type) => (
+                  {employees.map((emp) => (
                     <SelectItem
-                      key={type?.id}
-                      value={type?.id.toString()}
+                      key={emp.id}
+                      value={emp.id.toString()}
                       className="py-2.5"
                     >
-                      {type?.type}
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">
+                          {emp.first_name} {emp.last_name || ""}
+                        </span>
+                        <span className="text-slate-400 text-sm">
+                          ({emp.employee_no})
+                        </span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              {errors.leave_type && (
-                <p className="text-red-500 text-sm flex items-center space-x-1">
-                  <AlertCircle className="h-3 w-3" />
-                  <span>{errors.leave_type}</span>
+              {errors.employee_id && (
+                <p className="text-red-500 text-sm flex items-center gap-1.5 mt-1">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  <span>{errors.employee_id}</span>
                 </p>
               )}
             </div>
-          )}
+          </div>
 
-          {/* Date Range */}
+          {/* Leave Details Section */}
           {selectedEmployee && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50/50 rounded-lg p-4 border border-slate-200/60 space-y-4">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="p-1.5 bg-purple-100 rounded-lg">
+                  <Briefcase className="h-4 w-4 text-purple-600" />
+                </div>
+                <h3 className="font-semibold text-slate-800">Leave Details</h3>
+              </div>
+
+              {/* Leave Type */}
               <div className="space-y-2">
-                <Label className="flex items-center space-x-2 text-slate-700 font-medium">
-                  <CalendarIcon className="h-4 w-4 text-blue-600" />
-                  <span>
+                <Label className="text-sm font-medium text-slate-700">
+                  Leave Type <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={leaveType ? leaveType.toString() : ""}
+                  onValueChange={(val) => setLeaveType(parseInt(val))}
+                >
+                  <SelectTrigger className="h-11 bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500/20 focus:ring-2">
+                    <SelectValue placeholder="Select leave type..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leaveTypes?.map((type) => (
+                      <SelectItem
+                        key={type?.leave_id}
+                        value={type?.leave_id.toString()}
+                        className="py-2.5"
+                      >
+                        {type?.leave_type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.leave_type && (
+                  <p className="text-red-500 text-sm flex items-center gap-1.5 mt-1">
+                    <AlertCircle className="h-3.5 w-3.5" />
+                    <span>{errors.leave_type}</span>
+                  </p>
+                )}
+              </div>
+
+              {/* Date Range */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">
                     Start Date <span className="text-red-500">*</span>
-                  </span>
-                </Label>
-                <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full h-11 justify-start text-left font-normal border-slate-200 hover:bg-slate-50",
-                        !startDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
-                      {startDate ? (
-                        <span className="text-slate-700">
-                          {format(startDate, "dd/MM/yy")}
-                        </span>
-                      ) : (
-                        <span>Select start date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={startDate}
-                      onSelect={(date) => {
-                        setStartDate(date);
-                        setStartDateOpen(false);
-                      }}
-                      initialFocus
-                      className="pointer-events-auto"
-                      disabled={[disablePast, disableWeekends]}
-                    />
-                  </PopoverContent>
-                </Popover>
-                {errors.start_date && (
-                  <p className="text-red-500 text-sm flex items-center space-x-1">
-                    <AlertCircle className="h-3 w-3" />
-                    <span>{errors.start_date}</span>
-                  </p>
-                )}
-              </div>
+                  </Label>
+                  <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full h-11 justify-start text-left font-normal bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300",
+                          !startDate && "text-slate-400"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2.5 h-4 w-4 text-slate-400" />
+                        {startDate ? (
+                          <span className="text-slate-700">
+                            {format(startDate, "dd MMM yyyy")}
+                          </span>
+                        ) : (
+                          <span>Pick start date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={startDate}
+                        onSelect={(date) => {
+                          setStartDate(date);
+                          setStartDateOpen(false);
+                        }}
+                        initialFocus
+                        className="pointer-events-auto"
+                        disabled={[disablePast, disableWeekends]}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {errors.start_date && (
+                    <p className="text-red-500 text-sm flex items-center gap-1.5 mt-1">
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      <span>{errors.start_date}</span>
+                    </p>
+                  )}
+                </div>
 
-              <div className="space-y-2">
-                <Label className="flex items-center space-x-2 text-slate-700 font-medium">
-                  <CalendarIcon className="h-4 w-4 text-purple-600" />
-                  <span>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">
                     End Date <span className="text-red-500">*</span>
-                  </span>
-                </Label>
-                <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full h-11 justify-start text-left font-normal border-slate-200 hover:bg-slate-50",
-                        !endDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
-                      {endDate ? (
-                        <span className="text-slate-700">
-                          {format(endDate, "dd/MM/yy")}
-                        </span>
-                      ) : (
-                        <span>Select end date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={endDate}
-                      onSelect={(date) => {
-                        setEndDate(date);
-                        setEndDateOpen(false);
-                      }}
-                      initialFocus
-                      className="pointer-events-auto"
-                      disabled={[disablePast, disableWeekends]}
-                    />
-                  </PopoverContent>
-                </Popover>
-                {errors.end_date && (
-                  <p className="text-red-500 text-sm flex items-center space-x-1">
-                    <AlertCircle className="h-3 w-3" />
-                    <span>{errors.end_date}</span>
-                  </p>
-                )}
+                  </Label>
+                  <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full h-11 justify-start text-left font-normal bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300",
+                          !endDate && "text-slate-400"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2.5 h-4 w-4 text-slate-400" />
+                        {endDate ? (
+                          <span className="text-slate-700">
+                            {format(endDate, "dd MMM yyyy")}
+                          </span>
+                        ) : (
+                          <span>Pick end date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={endDate}
+                        onSelect={(date) => {
+                          setEndDate(date);
+                          setEndDateOpen(false);
+                        }}
+                        initialFocus
+                        className="pointer-events-auto"
+                        disabled={[disablePast, disableWeekends]}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {errors.end_date && (
+                    <p className="text-red-500 text-sm flex items-center gap-1.5 mt-1">
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      <span>{errors.end_date}</span>
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Leave Status Selection */}
-          {selectedEmployee && (
-            <div className="space-y-2">
-              <Label className="flex items-center space-x-2 text-slate-700 font-medium">
-                <CheckCircle2 className="h-4 w-4 text-blue-600" />
-                <span>Leave Status</span>
-              </Label>
-              <Select value={leaveStatus} onValueChange={setLeaveStatus}>
-                <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-
-          {/* Leave Days Selection */}
+          {/* Leave Duration Selection */}
           {dayCount > 0 && selectedEmployee && (
-            <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
-                <h4 className="font-medium text-slate-700 flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-blue-600" />
-                  <span>Select Leave Duration for Each Day</span>
-                </h4>
+            <div className="bg-slate-50/50 rounded-lg border border-slate-200/60 overflow-hidden">
+              <div className="px-4 py-3 border-b border-slate-200/60 bg-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-amber-100 rounded-lg">
+                      <Clock className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-800">
+                      Leave Duration
+                    </h3>
+                  </div>
+                  <span className="text-sm text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                    {dayCount} {dayCount === 1 ? "day" : "days"} selected
+                  </span>
+                </div>
               </div>
-              <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
+
+              <div className="divide-y divide-slate-100 max-h-64 overflow-y-auto">
                 {leaveDays?.map((day, index) => (
                   <div
                     key={day.date}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-4 hover:bg-slate-50 transition-colors"
+                    className="flex items-center justify-between gap-4 px-4 py-3 hover:bg-white transition-colors"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
-                        {dayjs(day.date).format("DD")}
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex flex-col items-center justify-center text-white shadow-sm">
+                        <span className="text-xs font-medium leading-none opacity-80">
+                          {dayjs(day.date).format("MMM")}
+                        </span>
+                        <span className="text-base font-bold leading-none mt-0.5">
+                          {dayjs(day.date).format("DD")}
+                        </span>
                       </div>
                       <div>
                         <p className="font-medium text-slate-800">
                           {dayjs(day.date).format("dddd")}
                         </p>
                         <p className="text-sm text-slate-500">
-                          {dayjs(day.date).format("DD MMM YYYY")}
+                          {dayjs(day.date).format("DD MMMM YYYY")}
                         </p>
                       </div>
                     </div>
-                    <div>
+
+                    <div className="w-44">
                       <Select
                         value={day?.type?.toString()}
                         onValueChange={(val) =>
                           handleLeaveTypeChange(index, val)
                         }
                       >
-                        <SelectTrigger className="h-10 border-slate-200">
+                        <SelectTrigger
+                          className={cn(
+                            "h-10 bg-white border-slate-200",
+                            dayErrors[index] && "border-red-300 bg-red-50"
+                          )}
+                        >
                           <SelectValue placeholder="Select duration" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={"0"} className="text-slate-400">
+                          <SelectItem
+                            value={"0"}
+                            className="text-slate-400"
+                            disabled
+                          >
                             Select Duration
                           </SelectItem>
                           {LEAVE?.map((type) => (
@@ -545,9 +567,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         </SelectContent>
                       </Select>
                       {dayErrors[index] && (
-                        <p className="text-red-500 text-xs mt-1 flex items-center space-x-1">
-                          <AlertCircle className="h-3 w-3" />
-                          <span>{dayErrors[index]}</span>
+                        <p className="text-red-500 text-xs mt-1">
+                          {dayErrors[index]}
                         </p>
                       )}
                     </div>
@@ -557,135 +578,153 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
             </div>
           )}
 
-          {/* Reason */}
+          {/* Reason Section */}
           {selectedEmployee && (
-            <div className="space-y-2">
-              <Label
-                htmlFor="reason"
-                className="flex items-center space-x-2 text-slate-700 font-medium"
-              >
-                <FileText className="h-4 w-4 text-blue-600" />
-                <span>
+            <div className="bg-slate-50/50 rounded-lg p-4 border border-slate-200/60">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="p-1.5 bg-emerald-100 rounded-lg">
+                  <FileText className="h-4 w-4 text-emerald-600" />
+                </div>
+                <h3 className="font-semibold text-slate-800">
+                  Additional Information
+                </h3>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-slate-700">
                   Reason for Leave <span className="text-red-500">*</span>
-                </span>
-              </Label>
-              <Textarea
-                id="reason"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Provide details about the leave request..."
-                rows={3}
-                className="border-slate-200 focus:border-blue-500 focus:ring-blue-500 resize-none"
-              />
-              {errors.reason && (
-                <p className="text-red-500 text-sm flex items-center space-x-1">
-                  <AlertCircle className="h-3 w-3" />
-                  <span>{errors.reason}</span>
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* Emergency Contact */}
-          {selectedEmployee && (
-            <div className="space-y-2">
-              <Label
-                htmlFor="emergencyContact"
-                className="flex items-center space-x-2 text-slate-700 font-medium"
-              >
-                <Phone className="h-4 w-4 text-blue-600" />
-                <span>
-                  Emergency Contact{" "}
-                  <span className="text-slate-400 text-sm font-normal">
-                    (Optional)
-                  </span>
-                </span>
-              </Label>
-              <Input
-                id="emergencyContact"
-                value={emergencyContact}
-                onChange={(e) => setEmergencyContact(e.target.value)}
-                placeholder="Contact person during absence"
-                className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-              />
-            </div>
-          )}
-
-          {/* Leave Summary */}
-          {selectedEmployee && (
-            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-100 p-5">
-              <h4 className="font-semibold text-slate-800 mb-4 flex items-center space-x-2">
-                <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                <span>Leave Summary</span>
-              </h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Employee
+                </Label>
+                <Textarea
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  placeholder="Please provide a brief description of your leave request..."
+                  rows={3}
+                  className="bg-white border-slate-200 focus:border-indigo-500 focus:ring-indigo-500/20 focus:ring-2 resize-none"
+                />
+                {errors.reason && (
+                  <p className="text-red-500 text-sm flex items-center gap-1.5 mt-1">
+                    <AlertCircle className="h-3.5 w-3.5" />
+                    <span>{errors.reason}</span>
                   </p>
-                  <p className="font-semibold text-slate-800">
-                    {selectedEmployeeData?.first_name || "—"}
-                  </p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Leave Type
-                  </p>
-                  <p className="font-semibold text-slate-800">
-                    {leaveTypes.find((t) => t.id === leaveType)?.type || "—"}
-                  </p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Days Selected
-                  </p>
-                  <p className="font-semibold text-slate-800">
-                    {dayCount || 0} days
-                  </p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Leave Count
-                  </p>
-                  <p className="font-semibold text-purple-600">
-                    {totalLeaveCount || 0}
-                  </p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm col-span-2">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Status
-                  </p>
-                  <p className="font-semibold capitalize text-slate-800">
-                    {leaveStatus}
-                  </p>
-                </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-slate-100">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="px-6 h-11 border-slate-200 hover:bg-slate-50"
-              disabled={isSubmitting}
-            >
-              <X className="h-4 w-4 mr-2" />
-              Cancel
-            </Button>
-            {selectedEmployee && (
-              <Button
-                type="submit"
-                className="px-6 h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25"
-                disabled={isSubmitting || dayCount === 0}
-              >
-                {isSubmitting ? "Creating..." : "Create Leave"}
-              </Button>
-            )}
-          </div>
+          {/* Summary Card */}
+          {selectedEmployee && (
+            <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-lg p-4 border border-indigo-100/60">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 bg-indigo-100 rounded-lg">
+                  <CheckCircle2 className="h-4 w-4 text-indigo-600" />
+                </div>
+                <h3 className="font-semibold text-slate-800">
+                  Request Summary
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white shadow-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <User className="h-3.5 w-3.5 text-slate-400" />
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      Employee
+                    </p>
+                  </div>
+                  <p className="font-semibold text-slate-800 truncate">
+                    {selectedEmployeeData?.first_name || "—"}
+                  </p>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white shadow-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Briefcase className="h-3.5 w-3.5 text-slate-400" />
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      Type
+                    </p>
+                  </div>
+                  <p className="font-semibold text-slate-800 truncate">
+                    {leaveTypes.find((t) => t.leave_id === leaveType)
+                      ?.leave_type || "—"}
+                  </p>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white shadow-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <CalendarDays className="h-3.5 w-3.5 text-slate-400" />
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      Days
+                    </p>
+                  </div>
+                  <p className="font-semibold text-slate-800">
+                    {dayCount || 0}
+                  </p>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white shadow-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Hash className="h-3.5 w-3.5 text-slate-400" />
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      Leave Count
+                    </p>
+                  </div>
+                  <p className="font-semibold text-indigo-600">
+                    {totalLeaveCount || 0}
+                  </p>
+                </div>
+              </div>
+
+              {startDate && endDate && (
+                <div className="mt-4 pt-4 border-t border-indigo-100">
+                  <p className="text-sm text-slate-600 text-center">
+                    <span className="font-medium">
+                      {format(startDate, "dd MMM yyyy")}
+                    </span>
+                    <span className="mx-2 text-slate-400">to</span>
+                    <span className="font-medium">
+                      {format(endDate, "dd MMM yyyy")}
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </form>
+      </div>
+
+      {/* Footer Actions */}
+      <div className="flex-shrink-0 px-4 py-3 bg-slate-50 border-t border-slate-200">
+        <div className="flex items-center justify-end gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            className="px-5 h-10 border-slate-200 hover:bg-white text-slate-600"
+            disabled={isSubmitting}
+          >
+            Cancel
+          </Button>
+          {selectedEmployee && (
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              className="px-6 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/25 transition-all duration-200"
+              disabled={isSubmitting || dayCount === 0}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  Create Leave Request
+                </>
+              )}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

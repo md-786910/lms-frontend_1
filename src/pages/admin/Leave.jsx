@@ -531,7 +531,7 @@ const Leave = () => {
         open={showCreateLeaveModal}
         onOpenChange={setShowCreateLeaveModal}
       >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="p-0 max-w-4xl max-h-[90vh] overflow-y-auto">
           <AdminLeaveModal
             onClose={() => setShowCreateLeaveModal(false)}
             onSuccess={() => {
