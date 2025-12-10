@@ -10,6 +10,9 @@ import {
   TrendingUp,
   Award,
   AlertCircle,
+  X,
+  Bell,
+  CheckCircle,
 } from "lucide-react";
 
 import holidayJsonData from "../../data/holiday.json";
@@ -18,8 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { companyAPI } from "../../api/companyApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { Alert, AlertDescription } from "../../components/ui/alert";
 import { useSocketContext } from "../../contexts/SocketContext";
+import EmployeeLeaveTable from "../../components/EmployeeLeaveTable";
 import dayjs from "dayjs";
 const AdminDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
@@ -149,24 +152,88 @@ const AdminDashboard = () => {
 
         {notifications
           ?.filter((a) => !a.read)
-          ?.map((notification) => (
-            <Alert
-              key={notification.id}
-              className="p-2 border-0 shadow-red-400 rounded-lg shadow-md "
-              style={{ color: "white !important" }}
-              onClick={async () => {
-                const resp = await companyAPI.readNotification(notification.id);
-                if (resp.status) {
-                  fetchNotification();
-                }
-              }}
-            >
-              <AlertDescription className="text-sm text-slate-700">
-                <strong>{notification.title}</strong>:{" "}
-                <span className="text-blue-600">{notification.message}</span>
-              </AlertDescription>
-            </Alert>
-          ))}
+          ?.map((notification) => {
+            const isLeaveRequest = notification.title?.toLowerCase().includes("leave");
+            const isApproved = notification.message?.toLowerCase().includes("approved");
+            const isRejected = notification.message?.toLowerCase().includes("rejected");
+
+            const getIcon = () => {
+              if (isApproved) return <CheckCircle className="h-5 w-5 text-white" />;
+              if (isRejected) return <X className="h-5 w-5 text-white" />;
+              if (isLeaveRequest) return <CalendarIcon className="h-5 w-5 text-white" />;
+              return <Bell className="h-5 w-5 text-white" />;
+            };
+
+            const getGradient = () => {
+              if (isApproved) return "from-emerald-500 to-green-600";
+              if (isRejected) return "from-red-500 to-rose-600";
+              if (isLeaveRequest) return "from-violet-500 to-purple-600";
+              return "from-blue-500 to-indigo-600";
+            };
+
+            const getTitle = () => {
+              if (isApproved) return "Leave Approved";
+              if (isRejected) return "Leave Rejected";
+              if (isLeaveRequest) return "New Leave Request";
+              return notification.title || "Notification";
+            };
+
+            return (
+              <div
+                key={notification.id}
+                className="relative bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-200"
+                onClick={async () => {
+                  const resp = await companyAPI.readNotification(notification.id);
+                  if (resp.status) {
+                    fetchNotification();
+                  }
+                }}
+              >
+                <div className="flex items-start gap-4 p-4">
+                  {/* Icon */}
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${getGradient()} flex items-center justify-center shadow-md`}>
+                    {getIcon()}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="font-semibold text-slate-800 text-sm">
+                        {getTitle()}
+                      </h4>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                        New
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {notification.message}
+                    </p>
+                    <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {dayjs(notification.createdAt).fromNow()}
+                    </p>
+                  </div>
+
+                  {/* Close button */}
+                  <button
+                    className="flex-shrink-0 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      const resp = await companyAPI.readNotification(notification.id);
+                      if (resp.status) {
+                        fetchNotification();
+                      }
+                    }}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {/* Accent line */}
+                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${getGradient()}`} />
+              </div>
+            );
+          })}
 
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
           <div className="flex justify-between items-center">
@@ -450,6 +517,8 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        {/* Yearly Leave Summary Table - Moved to top */}
+        <EmployeeLeaveTable />
       </div>
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">

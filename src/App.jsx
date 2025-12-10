@@ -66,13 +66,14 @@ const App = () => (
       position="top-right"
       autoClose={5000}
       hideProgressBar={false}
-      newestOnTop={false}
+      newestOnTop
       closeOnClick={false}
       rtl={false}
       pauseOnFocusLoss
       draggable
       pauseOnHover
-      theme="dark"
+      theme="light"
+      icon={false}
     />
     <AuthProvider>
       <SocketProvider>

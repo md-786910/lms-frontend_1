@@ -27,7 +27,7 @@ import {
   IndianRupee,
 } from "lucide-react";
 import { toast } from "sonner";
-import { toast as toastNotify } from "react-toastify";
+import { showNotification } from "../../utils/customToast";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { authAPI } from "../../api/authapi/authAPI";
 const EmployeeLayout = () => {
@@ -112,7 +112,7 @@ const EmployeeLayout = () => {
     }
     socket.on("notify:user", ({ message }) => {
       setUpdateDashboard(Math.random());
-      return toastNotify.success(message);
+      showNotification(message);
     });
 
     return () => {

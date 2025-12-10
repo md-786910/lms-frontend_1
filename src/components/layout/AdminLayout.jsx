@@ -28,7 +28,7 @@ import {
 import axiosInstance from "../../api/axiosInstance";
 import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
-import { toast as toastNotify } from "react-toastify";
+import { showNotification } from "../../utils/customToast";
 import dayjs from "dayjs";
 import { companyAPI } from "../../api/companyApi";
 const AdminLayout = (props) => {
@@ -142,7 +142,7 @@ const AdminLayout = (props) => {
     }
     socket.on("notify:user", ({ message }) => {
       setUpdateDashboard(Math.random()); // Trigger update
-      return toastNotify.success(message);
+      showNotification(message);
     });
 
     return () => {

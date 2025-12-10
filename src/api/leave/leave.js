@@ -29,4 +29,7 @@ export const leaveApi = {
   adminCreateLeave: (data) => {
     return axiosInstance.post("/company/leave/create-leave", data);
   },
+  getYearlySummary: (params = {}) => {
+    return axiosInstance.get("/company/leave/yearly-summary", { params });
+  },
 };
