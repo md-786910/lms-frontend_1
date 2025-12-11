@@ -67,13 +67,15 @@ const LeaveRequestModal = ({
   const { toast } = useToast();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [leaveType, setLeaveType] = useState(leaves?.[0]?.id);
+  const [leaveType, setLeaveType] = useState(leaves?.[0]?.leave_id);
   const [reason, setReason] = useState("");
   const [emergencyContact, setEmergencyContact] = useState("");
   const [dayCount, setDayCount] = useState(0);
-  const [leaveCalculate, setLeaveCalculate] = useState(() => {
-    return leaves?.find((l) => l.id == leaveType);
-  });
+  const [leaveCalculate, setLeaveCalculate] = useState(null);
+
+  // const [leaveCalculate, setLeaveCalculate] = useState(() => {
+  //   return leaves?.find((l) => l.leave_id == Number(leaveType));
+  // });
 
   const [leaveDays, setLeaveDays] = useState([]);
   const [totalLeaveCount, setTotalLeaveCount] = useState(0);
@@ -150,7 +152,7 @@ const LeaveRequestModal = ({
     }
 
     const resp = await employeeLeaveApi.createNewLeaveRequest({
-      leave_type_id: leaveCalculate?.id,
+      leave_type_id: leaveCalculate?.leave_id,
       start_date: startDate,
       end_date: endDate,
       total_days: totalLeaveCount,
@@ -279,7 +281,7 @@ const LeaveRequestModal = ({
       );
       setTotalLeaveCount(total);
     }
-  }, [leaveRequestViewMode, readOnly]);
+  }, [leaveRequestViewMode?.leave_type_id, readOnly]);
 
   // cuurent
   const today = new Date();
@@ -300,6 +302,11 @@ const LeaveRequestModal = ({
       statusStyles[status] || "bg-slate-100 text-slate-800 border-slate-200"
     );
   };
+
+  useEffect(() => {
+    const match = leaves?.find((l) => l.leave_id == Number(leaveType));
+    setLeaveCalculate(match);
+  }, [leaveType, leaves]);
 
   return (
     <div className="w-full overflow-hidden">
@@ -349,8 +356,8 @@ const LeaveRequestModal = ({
             <Select
               value={parseInt(leaveType)}
               onValueChange={(val) => {
-                setLeaveType(val);
-                calculateLeave(val);
+                setLeaveType(Number(val));
+                calculateLeave(Number(val));
               }}
               disabled={readOnly}
             >
@@ -361,7 +368,7 @@ const LeaveRequestModal = ({
                 {leaves?.map((type) => (
                   <SelectItem
                     key={type?.id}
-                    value={type?.id}
+                    value={type?.leave_id}
                     className="py-2.5"
                   >
                     {type?.leave_type}
