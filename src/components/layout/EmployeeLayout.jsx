@@ -296,9 +296,9 @@ const EmployeeLayout = () => {
               </Popover>
 
               <div className="flex items-center space-x-3">
-                <div className="text-right">
+                <div className="text-left">
                   <p className="text-sm font-semibold text-slate-900">
-                    {user?.name || "Employee User"}
+                    {user?.first_name || "Employee User"}
                   </p>
                   <p className="text-xs text-slate-500">
                     {user?.position || "Employee"}

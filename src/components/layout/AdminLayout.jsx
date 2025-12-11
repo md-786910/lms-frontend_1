@@ -323,9 +323,9 @@ const AdminLayout = (props) => {
               </Popover>
 
               <div className="flex items-center space-x-3">
-                <div className="text-right">
+                <div className="text-left">
                   <p className="text-sm font-semibold text-slate-900">
-                    {user?.name || "Admin User"}
+                    {user?.first_name || "Admin User"}
                   </p>
                   <p className="text-xs text-slate-500">Administrator</p>
                 </div>
