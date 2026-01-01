@@ -157,7 +157,10 @@ const EmployeeLeaveTable = () => {
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
-              {[currentYear, currentYear + 1].map((y) => (
+              {Array.from(
+                { length: currentYear - 2025 + 1 },
+                (_, i) => 2025 + i
+              ).map((y) => (
                 <SelectItem key={y} value={y.toString()}>
                   {y}
                 </SelectItem>
