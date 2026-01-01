@@ -428,7 +428,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         }}
                         initialFocus
                         className="pointer-events-auto"
-                        disabled={[disablePast, disableWeekends]}
+                        disabled={[disableWeekends]}
+                        // disabled={[disablePast, disableWeekends]}
                       />
                     </PopoverContent>
                   </Popover>
@@ -473,7 +474,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         }}
                         initialFocus
                         className="pointer-events-auto"
-                        disabled={[disablePast, disableWeekends]}
+                        disabled={[disableWeekends]}
+                        // disabled={[disablePast, disableWeekends]}
                       />
                     </PopoverContent>
                   </Popover>
