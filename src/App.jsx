@@ -45,7 +45,7 @@ import Templates from "./components/settings/Templates";
 import Documents from "./components/settings/Documents";
 
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
+import ResetPasswordPage from "./pages/ResetPassword";
 import SetNewPassword from "./pages/SetNewPassword";
 import HistoryPage from "./pages/admin/History";
 import EmployeProfileLayout from "./components/layout/EmployeProfileLayout";
@@ -93,7 +93,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/company" replace />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/employee/verify-email" element={<SetNewPassword />} />
 
             {/* Admin Routes */}
