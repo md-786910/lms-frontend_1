@@ -57,6 +57,7 @@ import Salary from "./pages/employee/Salary";
 import SalaryInfo from "./pages/employee/profile/SalaryInfo";
 import User from "./pages/admin/User";
 import { SocketProvider } from "./contexts/SocketContext";
+import EmployeeResetPassword from "./pages/employee/ResetPassword";
 
 const App = () => (
   <TooltipProvider>
@@ -165,6 +166,7 @@ const App = () => (
                 <Route path="leave" element={<EmployeeLeave />} />
                 <Route path="time-logs" element={<EmployeeTimeLogs />} />
                 <Route path="salary" element={<EmployeeSalary />} />
+                <Route path="settings/reset-password" element={<EmployeeResetPassword />} />
                 <Route index element={<Navigate to="dashboard" replace />} />
               </Route>
             </Route>

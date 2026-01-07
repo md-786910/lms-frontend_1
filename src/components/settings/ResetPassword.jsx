@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Lock, Save, Eye, EyeOff } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import { toast } from "react-toastify";
+import { useAuth } from "../../contexts/AuthContext";
 
 function ResetPassword() {
+    const { user } = useAuth();
     const [loader, setLoader] = useState(false);
     const [passwordData, setPasswordData] = useState({
         password: "",
@@ -58,7 +60,12 @@ function ResetPassword() {
 
         setLoader(true);
         try {
-            const resp = await axiosInstance.post("/user/change-password", {
+            // Determine endpoint based on role
+            const endpoint = user?.role === "employee"
+                ? "/employee/user/change-password"
+                : "/user/change-password";
+
+            const resp = await axiosInstance.post(endpoint, {
                 password: passwordData.password,
                 confirm_password: passwordData.confirm_password,
             });

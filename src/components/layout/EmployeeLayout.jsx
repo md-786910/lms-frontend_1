@@ -25,6 +25,10 @@ import {
   Building2,
   Bell,
   IndianRupee,
+  Settings,
+  Lock,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { toast } from "sonner";
 import { showNotification } from "../../utils/customToast";
@@ -80,7 +84,7 @@ const EmployeeLayout = () => {
     { icon: User, label: "Profile", path: "/employee/profile" },
     { icon: Calendar, label: "Leave", path: "/employee/leave" },
     { icon: IndianRupee, label: "Salary", path: "/employee/salary" },
-    // { icon: Clock, label: "Time Logs", path: "/employee/time-logs" },
+    { icon: Settings, label: "Settings", path: "/employee/settings/reset-password" },
   ];
 
   // api
@@ -128,9 +132,8 @@ const EmployeeLayout = () => {
     <div className="min-h-screen bg-slate-50">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200">
           <div className="flex items-center space-x-2">
@@ -171,11 +174,10 @@ const EmployeeLayout = () => {
                   navigate(item.path);
                   setSidebarOpen(false);
                 }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors ${
-                  isActive
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors ${isActive
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+                  }`}
               >
                 <Icon className="h-5 w-5" />
                 <span className="font-medium">{item.label}</span>
@@ -253,19 +255,17 @@ const EmployeeLayout = () => {
                       {notifications?.map((notification) => (
                         <Card
                           key={notification.id}
-                          className={`border-0 shadow-sm ${
-                            !notification.read ? "bg-blue-50" : ""
-                          } cursor-pointer`}
+                          className={`border-0 shadow-sm ${!notification.read ? "bg-blue-50" : ""
+                            } cursor-pointer`}
                           onClick={() => handleReadNotification(notification.id)}
                         >
                           <CardContent className="p-3">
                             <div className="flex items-start space-x-3">
                               <div
-                                className={`w-2 h-2 rounded-full mt-2 ${
-                                  !notification.read
-                                    ? "bg-blue-500"
-                                    : "bg-slate-300"
-                                }`}
+                                className={`w-2 h-2 rounded-full mt-2 ${!notification.read
+                                  ? "bg-blue-500"
+                                  : "bg-slate-300"
+                                  }`}
                               />
                               <div className="flex-1">
                                 <h4 className="font-medium text-sm text-slate-800">
