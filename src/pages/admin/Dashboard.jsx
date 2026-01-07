@@ -13,7 +13,12 @@ import {
   X,
   Bell,
   CheckCircle,
+  Mail,
+  Loader2,
+  Download,
 } from "lucide-react";
+
+import { toast } from "sonner";
 
 import holidayJsonData from "../../data/holiday.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,6 +37,8 @@ const AdminDashboard = () => {
   const [showHolidayModal, setShowHolidayModal] = useState(false);
   const [holidayList, setHolidayList] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const fetchNotification = async () => {
     try {
@@ -140,6 +147,49 @@ const AdminDashboard = () => {
 
   const getEmployeesOnLeave = (date) =>
     leaveData?.filter((leave) => isSameDay(leave.date, date));
+
+  const handleSendMail = async () => {
+    try {
+      setSendingEmail(true);
+      const response = await companyAPI.sendLeaveReport();
+      if (response.status) {
+        toast.success(response.message || "Email sent successfully");
+      } else {
+        toast.error(response.message || "Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error(error.response?.data?.message || "Internal server error");
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      setDownloading(true);
+      const response = await companyAPI.downloadLeaveReport();
+
+      // Create a blob from the response data
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "employee_leave_records.csv");
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Download started");
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Failed to download leave records");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const selectedDateLeaves = selectedDate
     ? getEmployeesOnLeave(selectedDate)
@@ -429,9 +479,8 @@ const AdminDashboard = () => {
                             className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                           >
                             <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${
-                                last_name || ""
-                              }`.trim() || "N/A"}
+                              {`${first_name || ""} ${last_name || ""
+                                }`.trim() || "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-600 text-right">
                               {total_leave ?? 0}
@@ -458,15 +507,44 @@ const AdminDashboard = () => {
           {/* Previous Month Employee of the Month */}
           <Card className="border-0 shadow-lg">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center space-x-2">
-                <Award className="h-5 w-5 text-purple-600" />
-                <span>
-                  List of leaves of Employees for Month -{" "}
-                  {format(
-                    new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                    "MMMM yyyy"
-                  )}
-                </span>
+              <CardTitle className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Award className="h-5 w-5 text-purple-600" />
+                  <span>
+                    List of leaves of Employees for Month -{" "}
+                    {format(
+                      new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                      "MMMM yyyy"
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={handleSendMail}
+                    disabled={sendingEmail}
+                    title="Send Report via Email"
+                    className="flex items-center justify-center text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                  >
+                    {sendingEmail ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+                    ) : (
+                      <Mail className="h-4 w-4 text-indigo-600 hover:text-indigo-700" />
+                    )}
+                  </button>
+                  
+                  <button
+                    onClick={handleDownload}
+                    disabled={downloading}
+                    title="Download Report"
+                    className="flex items-center justify-center p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                  >
+                    {downloading ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
+                    ) : (
+                      <Download className="h-4 w-4 text-emerald-600 hover:text-emerald-700" />
+                    )}
+                  </button>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -491,9 +569,8 @@ const AdminDashboard = () => {
                             className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                           >
                             <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${
-                                last_name || ""
-                              }`.trim() || "N/A"}
+                              {`${first_name || ""} ${last_name || ""
+                                }`.trim() || "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-600 text-right">
                               {total_leave ?? 0}

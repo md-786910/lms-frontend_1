@@ -39,4 +39,14 @@ export const companyAPI = {
     const response = await axiosInstance.get(`notify/read/${id}`);
     return response.data;
   },
+  sendLeaveReport: async () => {
+    const response = await axiosInstance.post(`/dashboard/send-report`);
+    return response.data;
+  },
+  downloadLeaveReport: async () => {
+    const response = await axiosInstance.get(`/dashboard/download-report`, {
+      responseType: "blob",
+    });
+    return response;
+  },
 };
