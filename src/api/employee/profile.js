@@ -24,11 +24,8 @@ export const empProfileApi = {
     });
     return response.data;
   },
-  profilePic: async (id, updatedData) => {
-    const response = await axiosInstance.put(
-      `/company/employee/profile/${id}`,
-      updatedData
-    );
+  profilePic: async (updatedData) => {
+    const response = await axiosInstance.put(`/employee/profile/upload-profile`, updatedData);
     return response.data;
   },
 };

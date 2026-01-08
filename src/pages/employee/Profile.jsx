@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "../../contexts/AuthContext";
 import {
@@ -88,7 +89,7 @@ const Profile = ({ readOnly = false }) => {
         const newProfilePath = uploaded.fileIds[0].file_path;
 
         // update backend
-        await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
+        await empProfileApi.profilePic({ profile: newProfilePath });
 
         // update local state so UI refreshes
         setBasicInfo((prev) => ({
@@ -114,7 +115,7 @@ const Profile = ({ readOnly = false }) => {
   const handleDeleteAvatar = async (employeeId) => {
     try {
       setLoading(true);
-      await empProfileApi.profilePic(employeeId, { profile: null });
+      await empProfileApi.profilePic({ profile: null });
 
       // update local state so UI refreshes
       setBasicInfo((prev) => ({
