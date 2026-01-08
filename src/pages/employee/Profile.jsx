@@ -122,7 +122,6 @@ const Profile = ({ readOnly = false }) => {
           </p>
         </div>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Profile Card */}
         <Card className="border-0 shadow-lg">
