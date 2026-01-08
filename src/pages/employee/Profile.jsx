@@ -11,6 +11,8 @@ import {
   Heart,
   Edit3,
   DollarSign,
+  Trash2,
+  Loader2,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
@@ -72,44 +74,69 @@ const Profile = ({ readOnly = false }) => {
     fetchBasicInfo();
   }, []);
 
-  // const handleAvatarChange = async (event, employeeId) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
+  const handleAvatarChange = async (event, employeeId) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
 
-  //     const uploaded = await empProfileApi.uploadFile(formData);
-  //     console.log(uploaded);
+      const uploaded = await empProfileApi.uploadFile(formData);
 
-  //     if (uploaded?.fileIds?.[0]?.file_path) {
-  //       const newProfilePath = uploaded.fileIds[0].file_path;
+      if (uploaded?.fileIds?.[0]?.file_path) {
+        const newProfilePath = uploaded.fileIds[0].file_path;
 
-  //       // update backend
-  //       await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
+        // update backend
+        await empProfileApi.profilePic(employeeId, { profile: newProfilePath });
 
-  //       // update local state so UI refreshes
-  //       setBasicInfo((prev) => ({
-  //         ...prev,
-  //         profile: newProfilePath,
-  //       }));
+        // update local state so UI refreshes
+        setBasicInfo((prev) => ({
+          ...prev,
+          profile: newProfilePath,
+        }));
 
-  //       toast({
-  //         title: "Avatar Updated",
-  //         description:
-  //           "Employee profile picture has been updated successfully.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading avatar:", error);
-  //     toast({
-  //       title: "Upload Failed",
-  //       description: "There was an issue uploading the avatar.",
-  //       variant: "destructive",
-  //     });
-  //   }
-  // };
+        toast({
+          title: "Avatar Updated",
+          description: "Employee profile picture has been updated successfully.",
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+      toast({
+        title: "Upload Failed",
+        description: "There was an issue uploading the avatar.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteAvatar = async (employeeId) => {
+    try {
+      setLoading(true);
+      await empProfileApi.profilePic(employeeId, { profile: null });
+
+      // update local state so UI refreshes
+      setBasicInfo((prev) => ({
+        ...prev,
+        profile: null,
+      }));
+
+      toast({
+        title: "Avatar Removed",
+        description: "Employee profile picture has been removed successfully.",
+      });
+    } catch (error) {
+      console.error("Error deleting avatar:", error);
+      toast({
+        title: "Delete Failed",
+        description: "There was an issue removing the avatar.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -138,22 +165,44 @@ const Profile = ({ readOnly = false }) => {
                   className="w-full h-full object-cover rounded-md border border-slate-500"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
-                  {basicInfo?.first_name?.[0]}
-                  {basicInfo?.last_name?.[0]}
+                <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
+                  {loading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <>
+                      {basicInfo?.first_name?.[0]}
+                      {basicInfo?.last_name?.[0]}
+                    </>
+                  )}
                 </div>
               )}
-              {/* {!readOnly && (
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
-                    className="absolute inset-0 opacity-0 cursor-pointer"
-                  />
-                  <Edit3 className="text-white w-4 h-4 z-10" />
+              {!readOnly && (
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
+                  <div className="relative flex items-center justify-center w-full h-full">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
+                      className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                      title="Change Avatar"
+                    />
+                    <Edit3 className="text-white w-4 h-4 z-10" />
+                  </div>
+                  {basicInfo?.profile && (
+                    <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete h-8"
+                        onClick={() => handleDeleteAvatar(basicInfo?.id)}
+                        title="Delete Avatar"
+                      >
+                        <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
-              )} */}
+              )}
             </div>
             <div>
               <h3 className="text-xl font-semibold text-slate-800 my-2">
@@ -214,10 +263,9 @@ const Profile = ({ readOnly = false }) => {
                       <NavLink
                         to={tab.link}
                         className={({ isActive }) =>
-                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${
-                            isActive
-                              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
-                              : "bg-transparent hover:bg-gray-200"
+                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${isActive
+                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                            : "bg-transparent hover:bg-gray-200"
                           }`
                         }
                       >
