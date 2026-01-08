@@ -138,11 +138,9 @@ const Profile = ({ readOnly = false }) => {
                   className="w-full h-full object-cover rounded-md border border-slate-500"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-2xl rounded-md shadow-lg border border-slate-200">
-                  <span className="drop-shadow-sm uppercase tracking-tighter">
-                    {basicInfo?.first_name?.charAt(0)}
-                    {basicInfo?.last_name?.charAt(0)}
-                  </span>
+                <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
+                  {basicInfo?.first_name?.[0]}
+                  {basicInfo?.last_name?.[0]}
                 </div>
               )}
               {/* {!readOnly && (
@@ -216,9 +214,10 @@ const Profile = ({ readOnly = false }) => {
                       <NavLink
                         to={tab.link}
                         className={({ isActive }) =>
-                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${isActive
-                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
-                            : "bg-transparent hover:bg-gray-200"
+                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${
+                            isActive
+                              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                              : "bg-transparent hover:bg-gray-200"
                           }`
                         }
                       >

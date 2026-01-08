@@ -60,7 +60,7 @@ const Employees = ({
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
-  const [uploadingEmployeeId, setUploadingEmployeeId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fetchEmployees = async () => {
     try {
       const params = {
@@ -169,7 +169,7 @@ const Employees = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      setUploadingEmployeeId(employeeId);
+      setIsLoading(true);
       const uploaded = await employeeAPI.uploadFile(formData);
       if (uploaded?.fileIds[0]?.file_path) {
         const updatePayload = {
@@ -186,33 +186,9 @@ const Employees = ({
         description: "There was an issue uploading the avatar.",
         variant: "destructive",
       });
+      setIsLoading(false);
     } finally {
-      setUploadingEmployeeId(null);
-    }
-  };
-
-  const handleDeleteAvatar = async (employeeId) => {
-    try {
-      setUploadingEmployeeId(employeeId);
-      const updatePayload = {
-        profile: null,
-      };
-      await employeeAPI.profilePic(employeeId, updatePayload);
-      toast({
-        title: "Profile Image Deleted",
-        description: "The profile image has been removed and replaced with a default placeholder.",
-        variant: "success",
-      });
-      fetchEmployees();
-    } catch (error) {
-      console.error("Error deleting avatar:", error);
-      toast({
-        title: "Deletion Failed",
-        description: "There was an issue deleting the profile image.",
-        variant: "destructive",
-      });
-    } finally {
-      setUploadingEmployeeId(null);
+      setIsLoading(false);
     }
   };
 
@@ -475,42 +451,20 @@ const Employees = ({
                     style={{ width: "8rem", height: "8rem" }}
                   >
                     {employee.profile ? (
-                      <>
-                        <img
-                          src={employee.profile}
-                          alt={`${employee.first_name} ${employee.last_name}`}
-                          className="w-full h-full object-cover rounded-md border border-slate-500"
-                        />
-                        {uploadingEmployeeId === employee.id && (
-                          <div className="absolute inset-0 bg-white/50 flex items-center justify-center rounded-md z-30">
-                            <Loader2 className="animate-spin text-blue-600" />
-                          </div>
-                        )}
-                        {!readOnly && (
-                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                            <Button
-                              variant="destructive"
-                              size="icon"
-                              className="h-7 w-7 rounded-full shadow-lg"
-                              onClick={() => handleDeleteAvatar(employee.id)}
-                              title="Delete profile image"
-                            >
-                              <Trash2 className="h-4 w-4 text-white" />
-                            </Button>
-                          </div>
-                        )}
-                      </>
+                      <img
+                        src={employee.profile}
+                        alt={`${employee.first_name} ${employee.last_name}`}
+                        className="w-full h-full object-cover rounded-md border border-slate-500"
+                      />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center rounded-md border border-slate-200 shadow-inner">
-                        {uploadingEmployeeId === employee.id ? (
-                          <Loader2 className="animate-spin text-blue-600" />
+                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
+                        {isLoading ? (
+                          <Loader2 className="animate-spin" />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-2xl rounded-md shadow-lg">
-                            <span className="drop-shadow-sm uppercase tracking-tighter">
-                              {employee.first_name?.charAt(0)}
-                              {employee.last_name?.charAt(0)}
-                            </span>
-                          </div>
+                          <>
+                            {employee.first_name.charAt(0)}
+                            {employee.last_name.charAt(0)}
+                          </>
                         )}
                       </div>
                     )}
@@ -525,6 +479,7 @@ const Employees = ({
                         <Edit3 className="text-white w-4 h-4 z-10" />
                       </div>
                     )}
+                    {isLoading && <Loader2 className="animate-spin" />}
                   </div>
                 </div>
 
