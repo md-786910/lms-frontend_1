@@ -60,7 +60,7 @@ const Employees = ({
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
-  const [isLoading, setIsLoading] = useState(false);
+  const [avatarLoadingId, setAvatarLoadingId] = useState(null);
   const fetchEmployees = async () => {
     try {
       const params = {
@@ -168,7 +168,7 @@ const Employees = ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      setIsLoading(true);
+      setAvatarLoadingId(employeeId);
       const uploaded = await employeeAPI.uploadFile(formData);
       if (uploaded?.fileIds[0]?.file_path) {
         const updatePayload = {
@@ -185,9 +185,39 @@ const Employees = ({
         description: "There was an issue uploading the avatar.",
         variant: "destructive",
       });
-      setIsLoading(false);
+      setAvatarLoadingId(null);
     } finally {
-      setIsLoading(false);
+      setAvatarLoadingId(null);
+    }
+  };
+
+  const handleDeleteAvatar = async (employeeId) => {
+    try {
+      setAvatarLoadingId(employeeId);
+      const updatePayload = {
+        profile: null,
+      };
+      await employeeAPI.profilePic(employeeId, updatePayload);
+
+      setEmployees((prevEmployees) =>
+        prevEmployees.map((emp) =>
+          emp.id === employeeId ? { ...emp, profile: null } : emp
+        )
+      );
+
+      toast({
+        title: "Avatar Removed",
+        description: "Employee profile picture has been removed.",
+      });
+    } catch (error) {
+      console.error("Error deleting avatar:", error);
+      toast({
+        title: "Delete Failed",
+        description: "There was an issue removing the avatar.",
+        variant: "destructive",
+      });
+    } finally {
+      setAvatarLoadingId(null);
     }
   };
 
@@ -456,29 +486,49 @@ const Employees = ({
                         className="w-full h-full object-cover rounded-md border border-slate-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md">
-                        {isLoading ? (
+                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
+                        {avatarLoadingId === employee.id ? (
                           <Loader2 className="animate-spin" />
                         ) : (
                           <>
-                            {employee.first_name.charAt(0)}
-                            {employee.last_name.charAt(0)}
+                            {employee?.first_name?.charAt(0)}
+                            {employee?.last_name?.charAt(0)}
                           </>
                         )}
                       </div>
                     )}
                     {!readOnly && (
-                      <div className="absolute border-1 bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleAvatarChange(e, employee.id)}
-                          className="absolute inset-0 opacity-0 cursor-pointer"
-                        />
-                        <Edit3 className="text-white w-4 h-4 z-10" />
+                      <div className="absolute border-1 bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
+                        <div className="relative flex items-center justify-center w-full h-full cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleAvatarChange(e, employee.id)}
+                            className="absolute inset-0 opacity-0 cursor-pointer z-20"
+                            title="Change Avatar"
+                          />
+                          <Edit3 className="text-white w-4 h-4 z-10 cursor-pointer" />
+                        </div>
+                        {employee.profile && (
+                          <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete"
+                              onClick={() => handleDeleteAvatar(employee.id)}
+                              title="Delete Avatar"
+                            >
+                              <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     )}
-                    {isLoading && <Loader2 className="animate-spin" />}
+                    {avatarLoadingId === employee.id && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-md z-30">
+                        <Loader2 className="animate-spin text-white w-8 h-8" />
+                      </div>
+                    )}
                   </div>
                 </div>
 
