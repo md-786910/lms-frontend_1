@@ -147,7 +147,6 @@ const Employees = ({
       console.error("Error deleting employee:", error);
     }
   };
-
   const handleAddSuccess = () => {
     fetchEmployees();
     setShowAddForm(false);
