@@ -174,13 +174,36 @@ const EmployeeLayout = () => {
                   navigate(item.path);
                   setSidebarOpen(false);
                 }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors ${isActive
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                  : "text-slate-600 hover:bg-slate-100"
-                  }`}
+                className={`flex items-center gap-3 px-4 py-3 my-1 rounded-sm transition-all relative overflow-hidden group w-full
+                  ${
+                    isActive
+                      ? "bg-[#f3f7ff]"
+                      : "text-slate-600 hover:bg-slate-100"
+                  }
+                `}
               >
-                <Icon className="h-5 w-5" />
-                <span className="font-medium">{item.label}</span>
+                {/* Left active indicator */}
+                {isActive && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-r-full" />
+                )}
+
+                {/* Icon */}
+                <Icon
+                  className={`h-5 w-5 ${
+                    isActive ? "text-primary" : "text-slate-500 group-hover:text-slate-700"
+                  }`}
+                />
+
+                {/* Label */}
+                <span
+                  className={`font-semibold text-sm ${
+                    isActive
+                      ? "text-slate-900 dark:text-white"
+                      : "text-slate-700 dark:text-slate-300"
+                  }`}
+                >
+                  {item.label}
+                </span>
               </button>
             );
           })}
@@ -311,7 +334,7 @@ const EmployeeLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="pt-20 p-6">
+        <main className="pt-20 p-6 bg-[#f3f7ff]">
           <Outlet />
         </main>
       </div>

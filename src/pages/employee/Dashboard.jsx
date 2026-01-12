@@ -19,6 +19,10 @@ import {
   X,
   AlertCircle,
   BellRing,
+  CalendarPlus,
+  Contact,
+  Code,
+  Ribbon
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
 import { useSocketContext } from "../../contexts/SocketContext";
@@ -231,7 +235,6 @@ const EmployeeDashboard = () => {
     <>
       <div className="space-y-6">
         {/* Welcome Header */}
-
         {notifications
           ?.filter((a) => !a.read)
           ?.map((notification) => {
@@ -316,41 +319,97 @@ const EmployeeDashboard = () => {
               </div>
             );
           })}
-
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">
-                Welcome back,{" "}
-                {basicProfile?.first_name + " " + basicProfile?.last_name}!
-              </h1>
-              <p className="text-blue-100">
-                Here's what's happening with your team today.
-              </p>
+        <div className="relative overflow-hidden rounded-xl bg-white border border-slate-100 shadow-md p-0 group">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-transparent opacity-10" />
+          <div className="absolute -right-20 -top-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/15 transition-all duration-700" />
+          <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50  border border-green-100  text-green-700 text-xs font-bold uppercase tracking-wider mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                Active Employee
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+                Good Morning,{" "}
+                {basicProfile?.first_name + " " + basicProfile?.last_name}! 👋
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">Here's what's happening with your team <strong className="text-slate-900 dark:text-white">today.</strong></p>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setShowHolidayModal(true)}
+                  className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-slate-900/20 dark:shadow-white/10 transition-all flex items-center gap-2 transform active:scale-95"
+                >
+                  <CalendarPlus className="w-4 h-4 text-white" />
+                  Apply for Leave
+                </button>
+                <button 
+                  onClick={() => setShowHolidayModal(true)}
+                  className="bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 px-6 py-3 rounded-xl text-sm font-bold transition-all"
+                >
+                  View Policy
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setShowHolidayModal(true)}
-              className="bg-white text-blue-700 font-semibold px-4 py-2 rounded-md hover:bg-blue-100 shadow"
-            >
-              View Holidays
-            </button>
-          </div>
-
-          <div className="flex flex-wrap gap-4 text-sm">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4" />
-              <span>
-                Employee ID:{" "}
-                {basicProfile?.employee_no ?? `EMP-${basicProfile?.id}`}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Users className="h-4 w-4" />
-              <span>Department: {basicProfile?.department?.name}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Award className="h-4 w-4" />
-              <span>Position: {basicProfile?.designation?.title}</span>
+            <div className="hidden lg:flex flex-col gap-3 items-end opacity-90">
+              {/* Employee ID */}
+              <div
+                className="flex items-center gap-3 bg-white/60 dark:bg-white/5 backdrop-blur-sm
+                border border-slate-100 dark:border-white/10 p-3 rounded-xl shadow-sm
+                animate-fade-up animate-float
+                transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{ animationDelay: "0ms" }}
+              >
+                <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                  <Contact className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                    Employee ID
+                  </p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-white">
+                    {basicProfile?.employee_no ?? `EMP-${basicProfile?.id}`}
+                  </p>
+                </div>
+              </div>
+              {/* Department */}
+              <div
+                className="flex items-center gap-3 bg-white/80 dark:bg-white/10 backdrop-blur-md
+                border border-slate-100 dark:border-white/10 p-3 pr-8 rounded-xl shadow-md z-10
+                animate-fade-up animate-float
+                transition-all duration-300 hover:-translate-y-1"
+                style={{ animationDelay: "300ms" }}
+              >
+                <div className="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                  <Code className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                    Department
+                  </p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-white">
+                    {basicProfile?.department?.name}
+                  </p>
+                </div>
+              </div>
+              {/* Position */}
+              <div
+                className="absolute top-24 right-52 flex items-center gap-3 bg-white/80 dark:bg-white/10
+                backdrop-blur-md border border-slate-100 dark:border-white/10 p-3 pr-8 rounded-xl shadow-md z-10
+                animate-fade-up animate-float
+                transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ animationDelay: "600ms", animationDuration: "5s" }}
+              >
+                <div className="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                  <Ribbon className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                    Position
+                  </p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-white">
+                    {basicProfile?.designation?.title}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -362,7 +421,7 @@ const EmployeeDashboard = () => {
             return (
               <Card
                 key={index}
-                className={`border-0 shadow-lg bg-white hover:shadow-xl transition-shadow
+                className={`bg-white border border-slate-100 shadow-md
                   
                   `}
                 // ${index == 1 ? "blur pointer-events-none" : ""}
@@ -370,13 +429,13 @@ const EmployeeDashboard = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-600 text-sm font-medium">
+                      <p className="text-[#000000] text-md font-medium">
                         {stat.title}
                       </p>
                       <p className="text-2xl font-bold text-slate-800 mt-2">
                         {stat.value}
                       </p>
-                      <p className="text-sm text-slate-500 mt-1">
+                      <p className="text-sm text-[#242f40] mt-1">
                         {stat.subtitle}
                       </p>
                     </div>
@@ -394,7 +453,7 @@ const EmployeeDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* My Leave Calendar */}
-          <Card className="lg:col-span-2 border-0 shadow-lg">
+          <Card className="lg:col-span-2 bg-white border border-slate-100 shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <CalendarIcon className="h-5 w-5 text-blue-600" />
@@ -476,7 +535,7 @@ const EmployeeDashboard = () => {
           </Card>
 
           {/* Recent Activities */}
-          <Card className="border-0 shadow-lg">
+          <Card className="bg-white border border-slate-100 shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <BellRing className="h-5 w-5 text-blue-600" />
@@ -526,10 +585,10 @@ const EmployeeDashboard = () => {
         {/* Employee of the Month */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Current Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
+          <Card className="bg-white border border-slate-100 shadow-md">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center space-x-2">
-                <Award className="h-5 w-5 text-yellow-600" />
+                <Ribbon className="h-5 w-5 text-yellow-600" />
                 <span>
                   My leaves for Month - {format(new Date(), "MMMM yyyy")}
                 </span>
@@ -586,7 +645,7 @@ const EmployeeDashboard = () => {
           </Card>
 
           {/* Previous Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
+          <Card className="bg-white border border-slate-100 shadow-md">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-purple-600" />
