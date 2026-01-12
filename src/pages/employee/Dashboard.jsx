@@ -52,6 +52,7 @@ const EmployeeDashboard = () => {
    const [leaveRequest, setLeaveRequest] = useState([]);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
+  const [greeting, setGreeting] = useState("");
   // Mock leave data for calendar
   const myLeaveData = [
     {
@@ -230,6 +231,21 @@ const EmployeeDashboard = () => {
     getLeaveRequest();
   }, [updateDashboard]);
 
+  useEffect(() => {
+  const updateGreeting = () => {
+    const hour = new Date().getHours();
+
+    if (hour >= 5 && hour < 12) setGreeting("Good Morning");
+    else if (hour >= 12 && hour < 17) setGreeting("Good Afternoon");
+    else if (hour >= 17 && hour < 22) setGreeting("Good Evening");
+    else setGreeting("Good Night");
+  };
+
+  updateGreeting();
+  const interval = setInterval(updateGreeting, 60000);
+  return () => clearInterval(interval);
+}, []);
+
   if (loading) {
     return (
       <div className="text-center py-10 text-slate-600 text-lg">
@@ -360,7 +376,7 @@ const EmployeeDashboard = () => {
                 Active Employee
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-                Good Morning,{" "}
+                {greeting},{" "}
                 {basicProfile?.first_name + " " + basicProfile?.last_name}! 👋
               </h2>
               <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">Here's what's happening with your team <strong className="text-slate-900 dark:text-white">today.</strong></p>
