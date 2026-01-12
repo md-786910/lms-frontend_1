@@ -16,6 +16,8 @@ import {
   Mail,
   Loader2,
   Download,
+  BellRing,
+  CalendarX
 } from "lucide-react";
 
 import { toast } from "sonner";
@@ -348,12 +350,12 @@ const AdminDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
                   // onSelect={setSelectedDate}
-                  className="rounded-md border pointer-events-auto"
+                  className="W-full max-w-md"
                   modifiers={{
                     hasLeave: leaveData.map((leave) => leave.date),
                   }}
@@ -365,11 +367,11 @@ const AdminDashboard = () => {
                     },
                   }}
                 />
-
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-800">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
+                  <h4 className="text-2xl font-bold text-slate-900">
                     {selectedDate
-                      ? format(selectedDate, "dd MMMM, yyyy")
+                      ? format(selectedDate, "EEEE, dd MMMM")
                       : "Select a date"}
                   </h4>
                   {selectedDateLeaves.length > 0 ? (
@@ -402,9 +404,13 @@ const AdminDashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-slate-500 text-sm">
-                      No employees on leave this day
-                    </p>
+                    <div className="flex items-center justify-center h-full">
+                      <div>
+                        <CalendarX className="mb-2 text-4xl text-slate-300" />
+                        <h4 className="font-bold text-slate-700 dark:text-white mb-2">No events scheduled</h4>
+                        <p className="text-sm text-slate-400 max-w-xs leading-relaxed">Relax! There are no leave requests, holidays, or meetings for this date.</p>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -415,7 +421,7 @@ const AdminDashboard = () => {
           <Card className="border-0 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-blue-600" />
+                <BellRing className="h-5 w-5 text-blue-600" />
                 <span>Recent Activities</span>
               </CardTitle>
             </CardHeader>
