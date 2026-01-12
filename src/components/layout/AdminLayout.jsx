@@ -222,7 +222,7 @@ const AdminLayout = (props) => {
                 <div className="w-full h-full flex items-center justify-center bg-indigo-100 text-indigo-600 font-bold text-sm">{user?.first_name?.[0]?.toUpperCase()} {user?.last_name?.[0]?.toUpperCase()}</div>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{user?.first_name} {user?.last_name}</p>
+                <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">{user?.first_name} {user?.last_name}</p>
                 <p className="text-xs text-slate-500 truncate">{user?.email}</p>
               </div>
             </div>
@@ -330,7 +330,7 @@ const AdminLayout = (props) => {
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-700" />
               <div className="flex items-center space-x-3">
                 <div className="text-left">
-                  <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                  <p className="text-sm font-semibold text-slate-900 truncate">
                     {user?.first_name && user?.last_name
                     ? `${user.first_name} ${user.last_name}`
                     : "Admin User"}
