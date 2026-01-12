@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { format, isSameDay } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import holidayJsonData from "../../data/holiday.json";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import LeaveRequestModal from "@/components/LeaveRequestModal";
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -44,6 +46,12 @@ const EmployeeDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [basicProfile, setBasicProfile] = useState({});
   const [notifications, setNotifications] = useState([]);
+  // Leave Request Modal State
+  const [readOnly, setReadOnly] = useState(false);
+  const [leaveDash, setLeaveDash] = useState(null);
+   const [leaveRequest, setLeaveRequest] = useState([]);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
   // Mock leave data for calendar
   const myLeaveData = [
     {
@@ -198,6 +206,29 @@ const EmployeeDashboard = () => {
     fetchNotification();
     fetchDashboard();
   }, [updateDashboard]);
+  const handleRequestSuccess = () => {
+    console.log("Leave request submitted successfully");
+  };
+  
+  // handle api
+  const fetchLeave = async () => {
+    const resp = await employeeLeaveApi.getLeave();
+    if (resp.status === 200) {
+      setLeaveDash(resp.data?.data);
+    }
+  };
+
+  const getLeaveRequest = async () => {
+    const resp = await employeeLeaveApi.getLeaveRequest();
+    if (resp.status === 200) {
+      setLeaveRequest(resp.data?.data);
+    }
+  };
+  
+  useEffect(() => {
+    fetchLeave();
+    getLeaveRequest();
+  }, [updateDashboard]);
 
   if (loading) {
     return (
@@ -335,7 +366,11 @@ const EmployeeDashboard = () => {
               <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">Here's what's happening with your team <strong className="text-slate-900 dark:text-white">today.</strong></p>
               <div className="flex gap-4">
                 <button 
-                  onClick={() => setShowHolidayModal(true)}
+                  onClick={() => {
+                    setReadOnly(false);
+                    setLeaveRequestViewMode({});
+                    setShowRequestModal(true);
+                  }}
                   className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-slate-900/20 dark:shadow-white/10 transition-all flex items-center gap-2 transform active:scale-95"
                 >
                   <CalendarPlus className="w-4 h-4 text-white" />
@@ -838,6 +873,22 @@ const EmployeeDashboard = () => {
           </div>
         </div>
       )}
+      {/* Leave Request Modal */}
+      <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+          <LeaveRequestModal
+            onClose={() => {
+              setShowRequestModal(false);
+              getLeaveRequest();
+              fetchLeave();
+            }}
+            onSuccess={() => handleRequestSuccess()}
+            leaves={leaveDash?.leaves}
+            readOnly={readOnly || false}
+            leaveRequestViewMode={leaveRequestViewMode}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
