@@ -15,14 +15,10 @@ import {
   TrendingUp,
   CheckCircle,
   Users,
-  Bell,
   Award,
-  Play,
-  Square,
-  FileText,
-  CalendarPlus,
-  Timer,
   X,
+  AlertCircle,
+  BellRing,
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
 import { useSocketContext } from "../../contexts/SocketContext";
@@ -411,7 +407,7 @@ const EmployeeDashboard = () => {
                   mode="single"
                   selected={selectedDate}
                   // onSelect={setSelectedDate}
-                  className="rounded-md border pointer-events-auto"
+                  className="w-full"
                   modifiers={{
                     hasLeave: myLeaveData.map((leave) => leave.date),
                   }}
@@ -425,9 +421,10 @@ const EmployeeDashboard = () => {
                 />
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-800">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
+                  <h4 className="text-2xl font-bold text-slate-900">
                     {selectedDate
-                      ? format(selectedDate, "dd MMMM, yyyy")
+                      ? format(selectedDate, "EEEE, dd MMMM")
                       : "Select a date"}
                   </h4>
                   {leaveData?.length > 0 ? (
@@ -482,17 +479,20 @@ const EmployeeDashboard = () => {
           <Card className="border-0 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Bell className="h-5 w-5 text-blue-600" />
+                <BellRing className="h-5 w-5 text-blue-600" />
                 <span>Recent Activities</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {recentActivities?.map((activity, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-4 p-3 bg-slate-50 rounded-lg"
+                    className="flex items-start space-x-2 p-3 bg-slate-50 rounded-lg"
                   >
+                    <div className="flex-shrink-0 mt-[0.4rem]">
+                      <AlertCircle className="h-5 w-5 text-blue-500" />
+                    </div>
                     <div className="flex-shrink-0 mt-1">
                       {activity.type === "success" && (
                         <div className="h-2 w-2 bg-green-500 rounded-full" />
