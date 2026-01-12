@@ -164,14 +164,14 @@ const AdminLayout = (props) => {
               <img
                 src={companyData.logo}
                 alt={companyData.name || "Company Logo"}
-                className="h-8 w-8 rounded-lg object-cover"
+                className="w-9 h-9 rounded-lg object-cover"
               />
             ) : (
               <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
                 <Building2 className="h-5 w-5 text-white" />
               </div>
             )}
-            <span className="text-lg font-semibold text-slate-800 leading-tight">
+            <span className="font-bold text-xl text-slate-900 leading-none mb-1">
               {companyData?.company_name || "HR Admin"}
             </span>
           </div>
@@ -215,20 +215,26 @@ const AdminLayout = (props) => {
           })}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4">
-          <div className="p-4 bg-slate-50 rounded-lg mb-4">
-            <p className="text-sm font-medium text-slate-800">{user?.name}</p>
-            <p className="text-xs text-slate-500">{user?.email}</p>
-            <p className="text-xs text-blue-600 font-medium">Administrator</p>
+        <div className="p-4 absolute bottom-4 left-4 right-4">
+          <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden ring-2 ring-white dark:ring-slate-600 shadow-sm">
+                <div className="w-full h-full flex items-center justify-center bg-indigo-100 text-indigo-600 font-bold text-sm">{user?.first_name?.[0]?.toUpperCase()} {user?.last_name?.[0]?.toUpperCase()}</div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{user?.first_name} {user?.last_name}</p>
+                <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+              </div>
+            </div>
+            <button 
+              onClick={handleLogout}
+              vairent="outline"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-semibold hover:bg-red-50 hover:text-red-600 hover:border-red-100 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-all shadow-sm text-slate-600 dark:text-slate-300"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="material-symbols-outlined text-base">Sign Out</span>
+            </button>
           </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            className="w-full flex items-center space-x-2"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Logout</span>
-          </Button>
         </div>
       </div>
 
@@ -253,7 +259,7 @@ const AdminLayout = (props) => {
               </h1>
             </div>
 
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               <Popover
                 open={notificationOpen}
                 onOpenChange={setNotificationOpen}
@@ -321,13 +327,15 @@ const AdminLayout = (props) => {
                   </div>
                 </PopoverContent>
               </Popover>
-
+              <div className="h-8 w-px bg-slate-200 dark:bg-slate-700" />
               <div className="flex items-center space-x-3">
                 <div className="text-left">
-                  <p className="text-sm font-semibold text-slate-900">
-                    {user?.first_name || "Admin User"}
+                  <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                    {user?.first_name && user?.last_name
+                    ? `${user.first_name} ${user.last_name}`
+                    : "Admin User"}
                   </p>
-                  <p className="text-xs text-slate-500">Administrator</p>
+                  <p className="text-xs text-slate-500 truncate">Administrator</p>
                 </div>
               </div>
             </div>
