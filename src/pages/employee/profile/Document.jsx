@@ -56,7 +56,7 @@ function Document() {
           <div
             className={`grid gap-6 ${
               documents.length === 1
-                ? "grid-cols-1 max-w-xl mx-auto"
+                ? "grid-cols-1"
                 : "grid-cols-1 md:grid-cols-2"
             }`}
           >
@@ -96,7 +96,7 @@ function Document() {
                       download={doc.file.file_name || "document"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-md"
                     >
                       <Download className="h-4 w-4" />
                       Download

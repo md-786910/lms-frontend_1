@@ -387,14 +387,14 @@ const EmployeeDashboard = () => {
                     setLeaveRequestViewMode({});
                     setShowRequestModal(true);
                   }}
-                  className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-slate-900/20 dark:shadow-white/10 transition-all flex items-center gap-2 transform active:scale-95"
+                  className="bg-slate-900 text-white hover:bg-slate-800 px-6 py-3 rounded-xl text-sm font-bold shadow-lg shadow-slate-900/20 dark:shadow-white/10 transition-all flex items-center gap-2 transform active:scale-95"
                 >
                   <CalendarPlus className="w-4 h-4 text-white" />
                   Apply for Leave
                 </button>
                 <button 
                   onClick={() => setShowHolidayModal(true)}
-                  className="bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 px-6 py-3 rounded-xl text-sm font-bold transition-all"
+                  className="bg-white  text-slate-700 border border-slate-200 hover:bg-gray-800 hover:text-white hover:border-none hover:shadow-lg hover:shadow-slate-900/20 px-6 py-3 rounded-xl text-sm font-bold transition-all"
                 >
                   View Policy
                 </button>

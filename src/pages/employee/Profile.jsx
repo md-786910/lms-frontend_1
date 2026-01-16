@@ -286,7 +286,7 @@ const Profile = ({ readOnly = false }) => {
                         to={tab.link}
                         className={({ isActive }) =>
                           `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${isActive
-                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                            ? "bg-primary/10 text-primary font-semibold"
                             : "bg-transparent hover:bg-gray-200"
                           }`
                         }
