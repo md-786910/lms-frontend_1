@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { empProfileApi } from "../../../api/employee/profile";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import NoDataFound from "../../../common/NoDataFound";
+import { LockKeyhole } from "lucide-react";
 
 function SalaryInfo() {
   const [salaryInfo, setSalaryInfo] = useState(null);
@@ -30,81 +31,91 @@ function SalaryInfo() {
   }
 
   return (
-    <div className="space-y-4 mt-6 p-4 border rounded-md shadow-sm">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label>Basic Salary</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.base_salary || "N/A"}
-          </p>
+    <>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 mt-6">
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Basic Salary</label>
+        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+          ₹{salaryInfo.base_salary || "N/A"}
+          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        <div>
-          <Label>Allowances</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.hra + salaryInfo.cca || "N/A"}
-          </p>
+      </div>
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Allowances</label>
+        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+          ₹{salaryInfo.hra + salaryInfo.cca || "N/A"}
+          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        <div>
-          <Label>Annual Bonus</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹{salaryInfo.bonus || "N/A"}
-          </p>
+      </div>
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Annual Bonus</label>
+        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+          ₹{salaryInfo.bonus || "N/A"}
+          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        <div>
-          <Label>Deductions</Label>
-          <p className="mt-1 p-2 bg-slate-50 rounded-md">
-            ₹
+      </div>
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Deductions</label>
+        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+          ₹
             {(salaryInfo?.epf_pension ?? 0) + (salaryInfo?.epf_admin ?? 0) ||
               "N/A"}
-          </p>
+          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        {salaryInfo.upi_number ? (
-          // Show UPI details
-          <>
-            <div>
-              <Label>Net Salary</Label>
-              <p className="mt-1 p-2 bg-green-50 rounded-md font-semibold text-green-800">
-                ₹{salaryInfo.payable_salary || "N/A"}
-              </p>
-            </div>
-            <div>
-              <Label>UPI Number</Label>
-              <p className="mt-1 p-2 bg-slate-50 rounded-md">
-                {salaryInfo.upi_number}
-              </p>
-            </div>
-          </>
-        ) : (
-          // Show Bank details
-          <>
-            <div>
-              <Label>Net Salary</Label>
-              <p className="mt-1 p-2 bg-green-50 rounded-md font-semibold text-green-800">
-                ₹{salaryInfo.payable_salary || "N/A"}
-              </p>
-            </div>
-            <div>
-              <Label>IFSC Code</Label>
-              <p className="mt-1 p-2 bg-slate-50 rounded-md">
-                {salaryInfo.ifsc_code || "N/A"}
-              </p>
-            </div>
-            <div>
-              <Label>Bank Account</Label>
-              <p className="mt-1 p-2 bg-slate-50 rounded-md">
-                {salaryInfo.bank_account_number || "N/A"}
-              </p>
-            </div>
-            <div>
-              <Label>Bank Name</Label>
-              <p className="mt-1 p-2 bg-slate-50 rounded-md">
-                {salaryInfo.bank_name || "N/A"}
-              </p>
-            </div>
-          </>
-        )}
       </div>
+      {salaryInfo.upi_number ? (
+        // Show UPI details
+        <>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Net Salary</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              ₹{salaryInfo.payable_salary || "N/A"}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">UPI Number</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              {salaryInfo.upi_number}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+        </>
+      ) : (
+        // Show Bank details
+        <>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Net Salary</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              ₹{salaryInfo.payable_salary || "N/A"}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">IFSC Code</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              {salaryInfo.ifsc_code || "N/A"}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Bank Account</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              {salaryInfo.bank_account_number || "N/A"}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Bank Name</label>
+            <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+              {salaryInfo.bank_name || "N/A"}
+              <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </div>
+        </>
+      )}
     </div>
+    </>
   );
 }
 
