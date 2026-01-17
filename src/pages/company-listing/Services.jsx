@@ -2,177 +2,188 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Users, Clock, DollarSign, FileText, BarChart, Shield, 
-  Smartphone, Cloud, Headphones, Settings 
+  Smartphone, Cloud, Headphones, Settings, ArrowRight, Layers 
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import MotionWrapper from "../../components/MotionWrapper";
 
 const Services = () => {
   const coreServices = [
     {
       icon: Users,
-      title: "Employee Management",
-      description: "Complete employee lifecycle management from onboarding to offboarding",
-      features: ["Employee profiles", "Role management", "Department organization", "Document storage"]
+      title: "Employee Lifecycle",
+      description: "End-to-end management from recruitment to offboarding.",
+      features: ["Digital Onboarding", "Role-Based Access", "Document Vault", "Org Charts"]
     },
     {
       icon: Clock,
-      title: "Time & Attendance",
-      description: "Accurate time tracking with automated reporting and compliance",
-      features: ["Clock in/out", "Timesheet management", "Overtime tracking", "Leave management"]
+      title: "Smart Attendance",
+      description: "Precision time tracking with geofencing and biometrics.",
+      features: ["Real-time Sync", "Shift Management", "Overtime Calc", "Mobile Punch-in"]
     },
     {
       icon: DollarSign,
-      title: "Payroll Management",
-      description: "Automated payroll processing with tax compliance and reporting",
-      features: ["Salary calculation", "Tax deductions", "Pay slip generation", "Bank integration"]
+      title: "Automated Payroll",
+      description: "Error-free salary processing with tax compliance.",
+      features: ["Auto-Tax Deduction", "Payslip Generation", "Expense Claims", "Bank Direct Transfer"]
     },
     {
       icon: FileText,
-      title: "Leave Management",
-      description: "Streamlined leave requests and approval workflows",
-      features: ["Leave requests", "Approval workflows", "Leave balance", "Holiday calendar"]
+      title: "Leave & Holidays",
+      description: "Simplified leave requests with multi-level approval flows.",
+      features: ["Custom Policies", "Calendar View", "Balance Tracking", "Comp-off Mgmt"]
     },
     {
       icon: BarChart,
-      title: "Analytics & Reports",
-      description: "Comprehensive insights and reports for data-driven decisions",
-      features: ["Custom reports", "Performance metrics", "Compliance reports", "Dashboard insights"]
+      title: "Advanced Analytics",
+      description: "Actionable insights to drive better HR decisions.",
+      features: ["Attrition Trends", "Performance KPIs", "Custom Reports", "Real-time Dashboards"]
     },
     {
       icon: Shield,
-      title: "Security & Compliance",
-      description: "Enterprise-grade security with full compliance support",
-      features: ["Data encryption", "GDPR compliance", "Access controls", "Audit trails"]
+      title: "Enterprise Security",
+      description: "Bank-grade data protection and regulatory compliance.",
+      features: ["AES-256 Encryption", "Audit Logs", "GDPR Ready", "2FA Security"]
     }
   ];
 
   const additionalServices = [
     {
       icon: Smartphone,
-      title: "Mobile App",
-      description: "Full-featured mobile app for employees and managers"
+      title: "Mobile First",
+      description: "Native iOS and Android apps for the workforce on the go."
     },
     {
       icon: Cloud,
-      title: "Cloud Infrastructure",
-      description: "Reliable, scalable cloud hosting with 99.9% uptime"
+      title: "Cloud Native",
+      description: "99.99% uptime SLA with globally distributed infrastructure."
     },
     {
       icon: Headphones,
-      title: "24/7 Support",
-      description: "Round-the-clock customer support and technical assistance"
+      title: "Premium Support",
+      description: "Dedicated account managers and 24/7 technical assistance."
     },
     {
       icon: Settings,
-      title: "Custom Integration",
-      description: "API access and custom integrations with your existing tools"
+      title: "API Integrations",
+      description: "Seamlessly connect with Slack, Teams, and ERP systems."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-background">
-      {/* Hero Section */}
-      <section className="py-20 px-4 text-center bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h1 className="text-4xl font-bold mb-6 text-white">
-            Our Services
-          </h1>
-          <p className="text-xl text-white/80 mb-8">
-            Comprehensive HR solutions designed to streamline your operations and empower your workforce.
-          </p>
-          <Link to="/company/get-started">
-            <Button size="lg" className="px-8 bg-white text-primary hover:bg-white/90">
-              Start Your Free Trial
-            </Button>
-          </Link>
-        </div>
-      </section>
+    <div className="min-h-screen bg-background font-sans">
+      <MotionWrapper>
+        {/* Hero Section */}
+        <section className="relative py-24 px-6 text-center overflow-hidden bg-[#020817]">
+           {/* Background Gradients */}
+           <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-blue-900/20 rounded-full blur-[120px] -z-10" />
+           <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-indigo-900/20 rounded-full blur-[100px] -z-10" />
 
-      {/* Core Services */}
-      <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-background"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Core HR Services</h2>
-            <p className="text-muted-foreground text-lg">
-              Everything you need to manage your workforce effectively
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-800 text-blue-400 text-xs font-bold uppercase tracking-wider mb-6 animate-enter">
+              <Layers className="h-3 w-3" /> Comprehensive Suite
+            </div>
+            <h1 className="text-4xl lg:text-6xl font-black text-white tracking-tighter mb-6">
+              Built for Modern HR Teams
+            </h1>
+            <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+              A unified platform replacing fragmented tools. Experience the power of integration.
             </p>
+            <Link to="/company/get-started">
+              <Button size="lg" className="px-8 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+                Start Free Trial
+              </Button>
+            </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreServices.map((service, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all duration-300 bg-gradient-card border-0 shadow-lg">
-                <CardHeader>
-                  <service.icon className="h-12 w-12 text-primary mb-4" />
-                  <CardTitle>{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{service.description}</p>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Additional Services */}
-      <section className="py-20 px-4 bg-gradient-primary relative">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-white">Additional Services</h2>
-            <p className="text-white/80 text-lg">
-              Extended features to enhance your HR experience
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {additionalServices.map((service, index) => (
-              <Card key={index} className="text-center hover:shadow-xl transition-all duration-300 bg-white border-0 shadow-lg">
-                <CardHeader>
-                  <service.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle>{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{service.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-background"></div>
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="bg-white p-12 rounded-xl shadow-xl">
-            <h2 className="text-3xl font-bold mb-6">Ready to Transform Your HR?</h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Join thousands of companies already using our platform to streamline their HR operations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/company/get-started">
-                <Button size="lg" className="px-8 bg-primary">
-                  Get Started Free
-                </Button>
-              </Link>
-              <Link to="/company/contact">
-                <Button variant="outline" size="lg" className="px-8">
-                  Contact Sales
-                </Button>
-              </Link>
+        {/* Core Services */}
+        <section className="py-24 px-6 relative bg-slate-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Core Capabilities</h2>
+              <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+                Everything you need to manage your workforce effectively, all in one place.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {coreServices.map((service, index) => (
+                <Card key={index} className="group hover:-translate-y-1 transition-all duration-300 border border-slate-200 shadow-sm hover:shadow-xl hover:border-blue-200 bg-white">
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors duration-300">
+                      <service.icon className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <CardTitle className="text-xl font-bold text-slate-900">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-500 mb-6 leading-relaxed text-sm">{service.description}</p>
+                    <ul className="space-y-3">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="text-sm flex items-center gap-3 text-slate-700 font-medium">
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Additional Services */}
+        <section className="py-24 px-6 bg-white border-t border-slate-100">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-black text-slate-900 mb-4">Enterprise Extensions</h2>
+              <p className="text-slate-500 text-lg">
+                Scale your operations with our advanced add-ons.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {additionalServices.map((service, index) => (
+                <Card key={index} className="text-center hover:bg-slate-50 transition-colors border border-slate-100 shadow-none hover:border-slate-200">
+                  <CardHeader className="flex flex-col items-center pt-8">
+                    <div className="p-3 bg-slate-100 rounded-full mb-4 text-slate-900">
+                        <service.icon className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-lg font-bold text-slate-900">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pb-8">
+                    <p className="text-sm text-slate-500 leading-relaxed">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24 px-6 relative bg-[#020817] overflow-hidden">
+            <div className="absolute inset-0 bg-blue-600/10" />
+            <div className="max-w-4xl mx-auto text-center relative z-10">
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">Ready to Upgrade Your HR?</h2>
+                <p className="text-xl text-slate-400 mb-10">
+                    Join forward-thinking companies building better workplaces.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link to="/company/get-started">
+                        <Button size="lg" className="h-14 px-8 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full">
+                            Get Started Free
+                        </Button>
+                    </Link>
+                    <Link to="/company/contact">
+                        <Button size="lg" variant="outline" className="h-14 px-8 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 rounded-full">
+                            Contact Sales
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+        </section>
+      </MotionWrapper>
     </div>
   );
 };

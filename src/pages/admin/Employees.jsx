@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -30,6 +30,9 @@ import {
   User,
   UserRoundX,
   Loader2,
+  MoreVertical,
+  Briefcase,
+  Users,
 } from "lucide-react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
 import EditEmployeeForm from "@/components/EditEmployeeForm";
@@ -40,7 +43,14 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
 import { Label } from "@/components/ui/label";
 import { capitalizeFirstLetter } from "../../utility/utility";
-import axiosInstance from "../../api/axiosInstance";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 const Employees = ({
   filterByStatus = [],
   showAddButton = true,
@@ -61,6 +71,7 @@ const Employees = ({
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
   const [avatarLoadingId, setAvatarLoadingId] = useState(null);
+
   const fetchEmployees = async () => {
     try {
       const params = {
@@ -106,19 +117,6 @@ const Employees = ({
       employee.department?.name === selectedDepartment;
     return matchesSearch && matchesDepartment;
   });
-
-  // const getStatusColor = (status) => {
-  //   switch (status) {
-  //     case 'true':
-  //       return 'bg-green-100 text-green-800';
-  //     case 'On Leave':
-  //       return 'bg-orange-100 text-orange-800';
-  //     case 'false':
-  //       return 'bg-red-100 text-red-800';
-  //     default:
-  //       return 'bg-gray-100 text-gray-800';
-  //   }
-  // };
 
   const handleEditEmployee = (employee) => {
     setSelectedEmployee(employee);
@@ -224,71 +222,74 @@ const Employees = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">{customTitle}</h1>
-          <p className="text-slate-600">{customSubtitle}</p>
+      <div className="rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+              <Users className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">{customTitle}</h1>
+              <p className="text-blue-100 text-sm">{customSubtitle}</p>
+            </div>
+          </div>
+          {showAddButton && (
+            <Button
+              onClick={() => setShowAddForm(true)}
+              className="bg-white text-blue-600 hover:bg-blue-50 border-none shadow-md"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Employee
+            </Button>
+          )}
         </div>
-        {showAddButton && (
-          <Button
-            onClick={() => setShowAddForm(true)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Employee
-          </Button>
-        )}
       </div>
 
       {/* Search and Filters */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-              <Input
-                placeholder="Search employees by name, email, or department..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Select
-              value={selectedDepartment}
-              onValueChange={setSelectedDepartment}
-            >
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by Department" />
-              </SelectTrigger>
-              <SelectContent>
-                {departments.map((dept) => (
-                  <SelectItem key={dept} value={dept}>
-                    {dept === "all" ? "All Departments" : dept}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="relative top-1 mx-2">
-              <Label>
-                {!employeeActiveStatus
-                  ? "Active Employees"
-                  : "Suspended Employees"}
-              </Label>
-              <Switch
-                className="relative top-1 mx-2 w-12"
-                title="suspended employees"
-                defaultChecked={true}
-                onCheckedChange={(val) => {
-                  setEmployeActiveStatus(!val);
-                }}
-              />
-            </div>
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="relative flex-1 w-full md:max-w-md">
+          <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+          <Input
+            placeholder="Search employees..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+          />
+        </div>
+        
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <Select
+            value={selectedDepartment}
+            onValueChange={setSelectedDepartment}
+          >
+            <SelectTrigger className="w-[180px] bg-slate-50 border-slate-200">
+              <SelectValue placeholder="Department" />
+            </SelectTrigger>
+            <SelectContent>
+              {departments.map((dept) => (
+                <SelectItem key={dept} value={dept}>
+                  {dept === "all" ? "All Departments" : dept}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <div className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
+            <Switch
+              id="suspended-mode"
+              checked={employeeActiveStatus}
+              onCheckedChange={setEmployeActiveStatus}
+              className="data-[state=checked]:bg-red-500"
+            />
+            <Label htmlFor="suspended-mode" className="text-sm text-slate-600 cursor-pointer select-none">
+              {employeeActiveStatus ? "Suspended" : "Active"}
+            </Label>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Employee Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredEmployees.map((employee) => {
           const leaveSummary = employee.employee_leaves?.reduce(
             (acc, leave) => {
@@ -299,311 +300,198 @@ const Employees = ({
             },
             { total: 0, used: 0, remaining: 0 }
           );
+
           return (
             <Card
               key={employee.id}
-              className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+              className="border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
             >
-              {/*  Header Box */}
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div>
-                      <CardTitle className="text-lg text-slate-800">
-                        {employee.first_name} {employee.last_name}
-                      </CardTitle>
-                      <p className="text-slate-600">
-                        {employee.designation?.title}
-                      </p>
-                      <Badge
-                        className={
-                          employee.is_active === true
-                            ? "mt-2 bg-green-100 text-green-800"
-                            : "bg-orange-100 text-orange-800"
-                        }
-                      >
-                        {employee.is_active === true ? "Active" : "Not Active"}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Action buttons  */}
+              <CardHeader className="p-0">
+                <div className="h-20 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-100 relative">
                   {!readOnly && (
-                    <div className="flex space-x-2">
-                      <Button
-                        title="Edit"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEditEmployee(employee)}
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                      {!employeeActiveStatus ? (
-                        <Button
-                          title="Suspend"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600"
-                          onClick={() => {
-                            setEmployeeToDelete(employee);
-                            setShowConfirmDelete(true);
-                          }}
-                        >
-                          <UserRoundX className="h-4 w-4" />
-                        </Button>
-                      ) : (
-                        <Button
-                          title="Suspend"
-                          variant="danger"
-                          size="sm"
-                          className="text-red-600"
-                          onClick={async () => {
-                            const resp =
-                              await employeeAPI.activateSuspendedEmployee(
-                                employee.id
-                              );
-                            if (resp?.status) {
-                              fetchEmployees();
-                            }
-                          }}
-                        >
-                          Revoke-suspend
-                        </Button>
-                      )}
-
-                      {!employee?.is_password_created &&
-                        !employeeActiveStatus && (
-                          <Button
-                            title="Resend invite"
-                            variant="outline"
-                            onClick={async () => {
-                              try {
-                                const resp = await employeeAPI.resendInvite(
-                                  employee.id
-                                );
-                                if (resp?.status) {
-                                  toast({
-                                    title: "Success",
-                                    description: resp?.data?.message,
-                                    variant: "success",
-                                  });
-                                }
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description:
-                                    error?.response?.data?.message ||
-                                    "Something went wrong",
-                                  variant: "destructive",
-                                });
-                              }
-                            }}
-                            boolean={true}
-                            className="px-1.5 py-1.5"
-                          >
-                            Resend invite
+                    <div className="absolute top-3 right-3">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/50">
+                            <MoreVertical className="h-4 w-4 text-slate-500" />
                           </Button>
-                        )}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleEditEmployee(employee)}>
+                            <Edit3 className="h-4 w-4 mr-2" /> Edit Details
+                          </DropdownMenuItem>
+                          
+                          {!employeeActiveStatus ? (
+                            <DropdownMenuItem 
+                              className="text-red-600 focus:text-red-600"
+                              onClick={() => {
+                                setEmployeeToDelete(employee);
+                                setShowConfirmDelete(true);
+                              }}
+                            >
+                              <UserRoundX className="h-4 w-4 mr-2" /> Suspend User
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem 
+                              className="text-green-600 focus:text-green-600"
+                              onClick={async () => {
+                                const resp = await employeeAPI.activateSuspendedEmployee(employee.id);
+                                if (resp?.status) fetchEmployees();
+                              }}
+                            >
+                              <User className="h-4 w-4 mr-2" /> Reactivate User
+                            </DropdownMenuItem>
+                          )}
+
+                          {!employee?.is_password_created && !employeeActiveStatus && (
+                            <DropdownMenuItem 
+                              onClick={async () => {
+                                try {
+                                  const resp = await employeeAPI.resendInvite(employee.id);
+                                  if (resp?.status) {
+                                    toast({ title: "Success", description: resp?.data?.message, variant: "success" });
+                                  }
+                                } catch (error) {
+                                  toast({ title: "Error", description: error?.response?.data?.message || "Error", variant: "destructive" });
+                                }
+                              }}
+                            >
+                              <Mail className="h-4 w-4 mr-2" /> Resend Invite
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   )}
                 </div>
+                
+                <div className="px-6 -mt-10 flex justify-between items-end">
+                  <div className="relative group/avatar">
+                    <Avatar className="h-20 w-20 border-4 border-white shadow-sm cursor-pointer">
+                      <AvatarImage src={employee.profile} className="object-cover" />
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xl font-bold">
+                         {avatarLoadingId === employee.id ? (
+                          <Loader2 className="animate-spin h-6 w-6" />
+                        ) : (
+                          `${employee.first_name?.charAt(0)}${employee.last_name?.charAt(0)}`
+                        )}
+                      </AvatarFallback>
+                    </Avatar>
+                    
+                    {!readOnly && (
+                      <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover/avatar:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                         <label className="cursor-pointer p-1 hover:bg-white/20 rounded-full transition-colors">
+                           <Edit3 className="h-4 w-4 text-white" />
+                           <input type="file" accept="image/*" className="hidden" onChange={(e) => handleAvatarChange(e, employee.id)} />
+                         </label>
+                         {employee.profile && (
+                           <button 
+                             onClick={() => handleDeleteAvatar(employee.id)}
+                             className="p-1 hover:bg-red-500/80 rounded-full transition-colors"
+                           >
+                             <Trash2 className="h-4 w-4 text-white" />
+                           </button>
+                         )}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <Badge variant={employee.is_active ? "success" : "secondary"} className={`mb-4 ${employee.is_active ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-slate-100 text-slate-600"}`}>
+                    {employee.is_active ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
               </CardHeader>
 
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/*Employee Details  */}
-                  <div className="md:col-span-2 space-y-3">
-                    <div className="flex items-center space-x-3 text-sm">
-                      <User className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        ID:{" "}
-                        {employee?.employee_no
-                          ? employee.employee_no
-                          : employee.id}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <Mail className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">{employee.email}</span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <Phone className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.phone_number}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <MapPin className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.address?.city}, {employee.address?.zip_code}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <IndianRupee className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.employee_salary?.payable_salary}
-                      </span>
-                    </div>
-
-                    <div className="w-[34vw] flex justify-between items-center text-sm">
-                      <div className="flex items-center space-x-3">
-                        <Calendar className="h-4 w-4 text-slate-400" />
-                        <span className="text-slate-600">
-                          Joined:{" "}
-                          {new Date(
-                            employee.date_of_joining
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      {readOnly && (
-                        <span className="text-slate-600">
-                          Suspended:{" "}
-                          {new Date(
-                            employee.date_of_joining
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Avatar Box */}
-                  <div
-                    className="relative group"
-                    style={{ width: "8rem", height: "8rem" }}
-                  >
-                    {employee.profile ? (
-                      <img
-                        src={employee.profile}
-                        alt={`${employee.first_name} ${employee.last_name}`}
-                        className="w-full h-full object-cover rounded-md border border-slate-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
-                        {avatarLoadingId === employee.id ? (
-                          <Loader2 className="animate-spin" />
-                        ) : (
-                          <>
-                            {employee?.first_name?.charAt(0)}
-                            {employee?.last_name?.charAt(0)}
-                          </>
-                        )}
-                      </div>
-                    )}
-                    {!readOnly && (
-                      <div className="absolute border-1 bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
-                        <div className="relative flex items-center justify-center w-full h-full cursor-pointer">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleAvatarChange(e, employee.id)}
-                            className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                            title="Change Avatar"
-                          />
-                          <Edit3 className="text-white w-4 h-4 z-10 cursor-pointer" />
-                        </div>
-                        {employee.profile && (
-                          <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete"
-                              onClick={() => handleDeleteAvatar(employee.id)}
-                              title="Delete Avatar"
-                            >
-                              <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {avatarLoadingId === employee.id && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-md z-30">
-                        <Loader2 className="animate-spin text-white w-8 h-8" />
-                      </div>
-                    )}
+              <CardContent className="px-6 py-4 space-y-4">
+                <div>
+                  <h3 className="font-bold text-lg text-slate-800 leading-tight">
+                    {employee.first_name} {employee.last_name}
+                  </h3>
+                  <div className="flex items-center text-slate-500 text-sm mt-1">
+                    <Briefcase className="h-3.5 w-3.5 mr-1.5" />
+                    {employee.designation?.title || "No Designation"}
                   </div>
                 </div>
 
-                {/* Leave Balance */}
-                {!readOnly && (
-                  <div className="flex items-center justify-between text-sm mt-4 p-2 bg-slate-50 rounded-md">
-                    <span className="text-slate-600 font-medium">
-                      Leave Balance:
-                    </span>
-                    <div className="flex space-x-4 text-xs">
-                      <span className="text-green-600">
-                        Remaining: {leaveSummary.remaining}
-                      </span>
-                      <span className="text-orange-600">
-                        Used: {leaveSummary.used}
-                      </span>
-                      <span className="text-slate-500">
-                        Total: {leaveSummary.total}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                <div className="grid grid-cols-1 gap-2.5 text-sm">
+                   <div className="flex items-center text-slate-600">
+                     <Mail className="h-4 w-4 mr-3 text-slate-400" />
+                     <span className="truncate">{employee.email}</span>
+                   </div>
+                   <div className="flex items-center text-slate-600">
+                     <Phone className="h-4 w-4 mr-3 text-slate-400" />
+                     <span>{employee.phone_number || "N/A"}</span>
+                   </div>
+                   <div className="flex items-center text-slate-600">
+                     <User className="h-4 w-4 mr-3 text-slate-400" />
+                     <span>ID: {employee.employee_no || employee.id}</span>
+                   </div>
+                </div>
               </CardContent>
+
+              {!readOnly && (
+                <CardFooter className="bg-slate-50/50 px-6 py-3 border-t border-slate-100">
+                   <div className="w-full flex justify-between items-center text-xs">
+                      <span className="text-slate-500 font-medium">Leave Balance</span>
+                      <div className="flex gap-3">
+                         <span className="text-green-600 font-semibold" title="Remaining">{leaveSummary.remaining} rem</span>
+                         <span className="text-slate-400">|</span>
+                         <span className="text-slate-600" title="Total">{leaveSummary.total} total</span>
+                      </div>
+                   </div>
+                </CardFooter>
+              )}
             </Card>
           );
         })}
       </div>
+      
       {filteredEmployees.length === 0 && <NoDataFound />}
 
       {/* Add Employee Dialog */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh]">
-          <DialogHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <User className="h-5 w-5 text-blue-600" />
+        <DialogContent className="max-w-4xl max-h-[95vh] p-0 overflow-hidden bg-slate-50">
+          <DialogHeader className="p-6 bg-white border-b border-slate-100">
+            <DialogTitle className="flex items-center space-x-2 text-xl">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                 <User className="h-5 w-5 text-blue-600" />
+              </div>
               <span>Add New Employee</span>
-            </CardTitle>
+            </DialogTitle>
           </DialogHeader>
-          <AddEmployeeForm
-            onClose={() => setShowAddForm(false)}
-            onSuccess={() => handleAddSuccess()}
-          />
+          <div className="overflow-y-auto max-h-[calc(95vh-85px)]">
+             <AddEmployeeForm
+               onClose={() => setShowAddForm(false)}
+               onSuccess={() => handleAddSuccess()}
+             />
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* Edit Employee Dialog */}
       <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-        <DialogContent className="max-w-6xl max-h-[100vh]">
-          <DialogHeader>
-            <DialogTitle>
-              <CardTitle className="flex items-center space-x-2">
-                <User className="h-5 w-5 text-blue-600" />
-                {/* keep first letter caps */}
-                <span>
-                  Edit Employee :{" "}
-                  <span className="text-blue-600">
-                    (
-                    {selectedEmployee?.first_name +
-                      " " +
-                      selectedEmployee?.last_name}
-                    ) &nbsp; - &nbsp;
-                    {capitalizeFirstLetter(activeTabEdit)}
-                  </span>
+        <DialogContent className="max-w-6xl max-h-[95vh] p-0 overflow-hidden">
+          <DialogHeader className="p-6 bg-white border-b border-slate-100">
+            <DialogTitle className="flex items-center space-x-2">
+              <Edit3 className="h-5 w-5 text-blue-600" />
+              <div className="flex flex-col">
+                <span>Edit Employee Profile</span>
+                <span className="text-sm font-normal text-slate-500">
+                  {selectedEmployee?.first_name} {selectedEmployee?.last_name} • {capitalizeFirstLetter(activeTabEdit)}
                 </span>
-              </CardTitle>
+              </div>
             </DialogTitle>
           </DialogHeader>
-          {selectedEmployee && (
-            <EditEmployeeForm
-              employeeId={selectedEmployee?.id}
-              onClose={handleEditClose}
-              onSuccess={handleEditSuccess}
-              handleTabActive={(props) => setActiveTabEdit(props)}
-            />
-          )}
+          <div className="overflow-y-auto max-h-[calc(95vh-85px)] p-6 bg-slate-50/50">
+            {selectedEmployee && (
+              <EditEmployeeForm
+                employeeId={selectedEmployee?.id}
+                onClose={handleEditClose}
+                onSuccess={handleEditSuccess}
+                handleTabActive={(props) => setActiveTabEdit(props)}
+              />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -612,7 +500,9 @@ const Employees = ({
         open={showConfirmDelete}
         onClose={() => setShowConfirmDelete(false)}
         onConfirm={() => handleDeleteEmployee()}
-        employee={employeeToDelete}
+        title="Suspend Employee"
+        message={`Are you sure you want to suspend ${employeeToDelete?.first_name} ${employeeToDelete?.last_name}? They will lose access to the system.`}
+        confirmText="Suspend"
       />
     </div>
   );

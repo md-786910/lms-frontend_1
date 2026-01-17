@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { employeeLeaveApi } from "../api/employee/leaveApi";
 import { useFormValidation } from "../hooks/useFormValidation";
+import holidayJsonData from "../data/holiday.json";
 
 const LEAVE = [
   {
@@ -208,16 +209,26 @@ const LeaveRequestModal = ({
         for (let i = 0; i <= diffInDays; i++) {
           const currentDate = start.add(i, "day");
           const dayOfWeek = currentDate.day(); // 0 = Sunday, 6 = Saturday
+          const dateString = currentDate.format("YYYY-MM-DD");
+          const currentYear = currentDate.year();
 
-          // Skip Saturday and Sunday
-          if (dayOfWeek === 0 || dayOfWeek === 6) {
+          // Check for public holiday
+          const yearData = holidayJsonData.holiday_data?.find(
+            (item) => item.year === currentYear
+          );
+          const isPublicHoliday = yearData?.fixed_holidays?.some(
+            (h) => h.date === dateString
+          );
+
+          // Skip Saturday, Sunday, and Public Holidays
+          if (dayOfWeek === 0 || dayOfWeek === 6 || isPublicHoliday) {
             continue;
           }
 
           validDayCount += 1;
 
           tempLeaveDays.push({
-            date: currentDate.format("YYYY-MM-DD"),
+            date: dateString,
             type: 0,
             id: "full_day",
             count: 1,

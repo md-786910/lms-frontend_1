@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  DollarSign,
   Download,
-  Eye,
   Calendar,
   TrendingUp,
   Minus,
   Plus,
   IndianRupee,
+  FileText,
+  CreditCard,
+  Briefcase
 } from "lucide-react";
 import { salaryAPI } from "../../api/employee/salary";
 import dayjs from "dayjs";
@@ -18,18 +19,20 @@ import { useSocketContext } from "../../contexts/SocketContext";
 import { toast } from "sonner";
 import axiosInstance from "../../api/axiosInstance";
 import NoDataFound from "../../common/NoDataFound";
+
 const getStatusColor = (status) => {
   switch (status) {
     case "paid":
-      return "bg-green-100 text-green-800";
+      return "bg-emerald-100 text-emerald-700 border-emerald-200";
     case "pending":
-      return "bg-orange-100 text-orange-800";
+      return "bg-amber-100 text-amber-700 border-amber-200";
     case "processing":
-      return "bg-blue-100 text-blue-800";
+      return "bg-blue-100 text-blue-700 border-blue-200";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-slate-100 text-slate-700 border-slate-200";
   }
 };
+
 const Salary = () => {
   const { updateDashboard } = useSocketContext();
   const month_in_digit = dayjs().month() + 1;
@@ -93,24 +96,24 @@ const Salary = () => {
   }, [updateDashboard]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Salary & Payroll
           </h1>
-          <p className="text-slate-600">
+          <p className="text-sm text-muted-foreground">
             View your salary details and download payslips
           </p>
         </div>
         <Button
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="shadow-lg shadow-primary/20"
           onClick={async () => {
             const currentMonth = salaryHistory?.find(
               (item) => item?.month_in_digit === month_in_digit
             );
-            if (!currentMonth["salary_slip"]) {
+            if (!currentMonth || !currentMonth["salary_slip"]) {
               toast.error("No payslip found for the current month.");
               return;
             }
@@ -123,108 +126,106 @@ const Salary = () => {
       </div>
 
       {/* Current Salary Overview */}
-      <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">
-                Current Monthly Salary
-              </h2>
-              <p className="text-3xl font-bold">
-                ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
-              </p>
-              <p className="text-blue-100 mt-1">Net Pay (After Deductions)</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <Card className="lg:col-span-2 border-0 shadow-lg bg-primary text-primary-foreground relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-black/10 blur-3xl"></div>
+          
+          <CardContent className="p-8 relative z-10">
+            <div className="flex flex-col justify-between h-full gap-8">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-primary-foreground/80 font-medium mb-1">Total Net Payable</p>
+                  <h2 className="text-4xl font-bold tracking-tight">
+                    ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
+                  </h2>
+                  <p className="text-xs text-primary-foreground/60 mt-2 font-medium bg-black/20 inline-block px-2 py-1 rounded">
+                    After all deductions
+                  </p>
+                </div>
+                <div className="p-3 bg-white/10 rounded-xl backdrop-blur-md border border-white/10">
+                  <CreditCard className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-6">
+                <div>
+                  <p className="text-sm text-primary-foreground/70">Gross Salary</p>
+                  <p className="text-xl font-semibold mt-1">
+                    ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-primary-foreground/70">Basic Pay</p>
+                  <p className="text-xl font-semibold mt-1">
+                    ₹{salaryInfo?.base_salary?.toLocaleString() ?? 0}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="mt-4 sm:mt-0 text-right">
-              <p className="text-blue-100">Gross Salary</p>
-              <p className="text-xl font-semibold">
-                ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* YTD Summary */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5 text-purple-600" />
-            <span>Year-to-Date Summary ({dayjs().year()})</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <IndianRupee className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-              <p className="text-sm text-slate-600">Gross Pay</p>
-              <p className="text-xl font-bold text-blue-600">
-                ₹{ytdSummary?.grossPay?.toLocaleString() ?? 0}
-              </p>
+        <Card className="border border-border/50 shadow-sm flex flex-col justify-center">
+          <CardContent className="p-6 space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                <Briefcase className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">Designation</p>
+                <p className="text-lg font-bold text-foreground">Software Engineer</p>
+              </div>
             </div>
-            <div className="text-center p-4 bg-red-50 rounded-lg">
-              <Minus className="h-8 w-8 mx-auto mb-2 text-red-600" />
-              <p className="text-sm text-slate-600">Total Deductions</p>
-              <p className="text-xl font-bold text-red-600">
-                ₹{ytdSummary?.totalDeductions?.toLocaleString() ?? 0}
-              </p>
+            <div className="h-px bg-border/50 w-full" />
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+                <Calendar className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">Pay Period</p>
+                <p className="text-lg font-bold text-foreground">{dayjs().format("MMMM YYYY")}</p>
+              </div>
             </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <Plus className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              <p className="text-sm text-slate-600">Net Pay</p>
-              <p className="text-xl font-bold text-green-600">
-                ₹{ytdSummary?.netPay?.toLocaleString()}
-              </p>
-            </div>
-            <div className="text-center p-4 bg-orange-50 rounded-lg">
-              <Calendar className="h-8 w-8 mx-auto mb-2 text-orange-600" />
-              <p className="text-sm text-slate-600">Tax Paid</p>
-              <p className="text-xl font-bold text-orange-600">
-                ₹{ytdSummary?.taxPaid?.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Salary Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Plus className="h-5 w-5 text-green-600" />
-              <span>Earnings</span>
+      {/* Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card className="border border-border/50 shadow-sm h-full">
+          <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20">
+            <CardTitle className="flex items-center space-x-2 text-base font-semibold text-foreground">
+              <Plus className="h-5 w-5 text-emerald-600" />
+              <span>Earnings Breakdown</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-              <span className="text-slate-700">Basic Salary</span>
-              <span className="font-semibold text-green-700">
-                ₹{salaryInfo?.base_salary?.toLocaleString() ?? 0}
-              </span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-              <span className="text-slate-700">Allowances</span>
-              <span className="font-semibold text-green-700">
-                ₹
-                {(
-                  salaryInfo?.hra ||
-                  0 + salaryInfo?.bonus ||
-                  0 + salaryInfo?.cca ||
-                  0
-                )?.toLocaleString()}
-              </span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-              <span className="text-slate-700">Bonus</span>
-              <span className="font-semibold text-green-700">
-                ₹{salaryInfo?.bonus?.toLocaleString() ?? 0}
-              </span>
-            </div>
-            <div className="border-t pt-3">
-              <div className="flex justify-between items-center font-semibold text-lg">
-                <span>Total Earnings</span>
-                <span className="text-green-600">
+          <CardContent className="p-0">
+            <div className="divide-y divide-border/50">
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">Basic Salary</span>
+                <span className="text-sm font-bold text-emerald-600">
+                  ₹{salaryInfo?.base_salary?.toLocaleString() ?? 0}
+                </span>
+              </div>
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">HRA & Allowances</span>
+                <span className="text-sm font-bold text-emerald-600">
+                  ₹
+                  {(
+                    (salaryInfo?.hra || 0) + (salaryInfo?.cca || 0)
+                  )?.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">Performance Bonus</span>
+                <span className="text-sm font-bold text-emerald-600">
+                  ₹{salaryInfo?.bonus?.toLocaleString() ?? 0}
+                </span>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-emerald-50/30">
+                <span className="text-sm font-bold text-foreground">Total Earnings</span>
+                <span className="text-base font-black text-emerald-700">
                   ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
                 </span>
               </div>
@@ -232,35 +233,35 @@ const Salary = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Minus className="h-5 w-5 text-red-600" />
-              <span>Deductions</span>
+        <Card className="border border-border/50 shadow-sm h-full">
+          <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20">
+            <CardTitle className="flex items-center space-x-2 text-base font-semibold text-foreground">
+              <Minus className="h-5 w-5 text-rose-600" />
+              <span>Deductions Breakdown</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-              <span className="text-slate-700">Income Tax</span>
-              <span className="font-semibold text-red-700">₹{0}</span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-              <span className="text-slate-700">Pf Deducation</span>
-              <span className="font-semibold text-red-700">
-                ₹
-                {(
-                  (salaryInfo?.epf_admin || 0) + (salaryInfo?.epf_pension || 0)
-                )?.toLocaleString()}
-              </span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-              <span className="text-slate-700">Other Deductions</span>
-              <span className="font-semibold text-red-700">₹ 0</span>
-            </div>
-            <div className="border-t pt-3">
-              <div className="flex justify-between items-center font-semibold text-lg">
-                <span>Total Deductions</span>
-                <span className="text-red-600">
+          <CardContent className="p-0">
+            <div className="divide-y divide-border/50">
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">Provident Fund (PF)</span>
+                <span className="text-sm font-bold text-rose-600">
+                  ₹
+                  {(
+                    (salaryInfo?.epf_admin || 0) + (salaryInfo?.epf_pension || 0)
+                  )?.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">Professional Tax</span>
+                <span className="text-sm font-bold text-rose-600">₹0</span>
+              </div>
+              <div className="flex justify-between items-center p-4 hover:bg-muted/30 transition-colors">
+                <span className="text-sm font-medium text-foreground">Income Tax (TDS)</span>
+                <span className="text-sm font-bold text-rose-600">₹0</span>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-rose-50/30">
+                <span className="text-sm font-bold text-foreground">Total Deductions</span>
+                <span className="text-base font-black text-rose-700">
                   ₹
                   {(
                     (salaryInfo?.epf_admin || 0) +
@@ -273,49 +274,74 @@ const Salary = () => {
         </Card>
       </div>
 
-      {/* Salary History */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle>Salary History</CardTitle>
+      {/* YTD Summary */}
+      <Card className="border border-border/50 shadow-sm">
+        <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20">
+          <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            <span>Year-to-Date Summary ({dayjs().year()})</span>
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex flex-col items-center text-center">
+              <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Gross Pay</p>
+              <p className="text-xl font-bold text-foreground">
+                ₹{ytdSummary?.grossPay?.toLocaleString() ?? 0}
+              </p>
+            </div>
+            <div className="p-4 bg-rose-50/50 rounded-xl border border-rose-100 flex flex-col items-center text-center">
+              <p className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Total Deductions</p>
+              <p className="text-xl font-bold text-foreground">
+                ₹{ytdSummary?.totalDeductions?.toLocaleString() ?? 0}
+              </p>
+            </div>
+            <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 flex flex-col items-center text-center">
+              <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Net Pay</p>
+              <p className="text-xl font-bold text-foreground">
+                ₹{ytdSummary?.netPay?.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-4 bg-amber-50/50 rounded-xl border border-amber-100 flex flex-col items-center text-center">
+              <p className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Tax Paid</p>
+              <p className="text-xl font-bold text-foreground">
+                ₹{ytdSummary?.taxPaid?.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Salary History */}
+      <Card className="border border-border/50 shadow-sm">
+        <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20">
+          <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
+            <FileText className="h-5 w-5 text-primary" />
+            Payroll History
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-medium text-slate-700">
-                    Month
-                  </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
-                    Basic Salary
-                  </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
-                    Allowances
-                  </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
-                    Bonus
-                  </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
-                    Deductions
-                  </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
-                    Net Salary
-                  </th>
-                  <th className="text-center py-3 px-4 font-medium text-slate-700">
-                    Status
-                  </th>
-                  <th className="text-center py-3 px-4 font-medium text-slate-700">
-                    Actions
-                  </th>
+            <table className="w-full text-sm">
+              <thead className="bg-muted/30 text-xs font-bold text-muted-foreground uppercase tracking-wider border-b border-border/50">
+                <tr>
+                  <th className="px-6 py-3 text-left">Month</th>
+                  <th className="px-6 py-3 text-right">Basic</th>
+                  <th className="px-6 py-3 text-right">Allowances</th>
+                  <th className="px-6 py-3 text-right">Bonus</th>
+                  <th className="px-6 py-3 text-right">Deductions</th>
+                  <th className="px-6 py-3 text-right">Net Salary</th>
+                  <th className="px-6 py-3 text-center">Status</th>
+                  <th className="px-6 py-3 text-center">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/50">
                 {salaryHistory?.map((record, index) => (
                   <tr
                     key={index}
-                    className="border-b border-slate-100 hover:bg-slate-50"
+                    className="hover:bg-muted/20 transition-colors"
                   >
-                    <td className="py-4 px-4 font-medium text-slate-800">
+                    <td className="px-6 py-4 font-semibold text-foreground">
                       {new Date(
                         `${record?.year}-${record?.month}` + "-01"
                       ).toLocaleDateString("en-US", {
@@ -323,10 +349,10 @@ const Salary = () => {
                         month: "long",
                       })}
                     </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
+                    <td className="px-6 py-4 text-right text-muted-foreground">
                       ₹{record?.base_salary?.toLocaleString()}
                     </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
+                    <td className="px-6 py-4 text-right text-muted-foreground">
                       ₹{" "}
                       {(
                         salaryInfo?.hra +
@@ -334,48 +360,51 @@ const Salary = () => {
                         salaryInfo?.cca
                       )?.toLocaleString()}
                     </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
+                    <td className="px-6 py-4 text-right text-muted-foreground">
                       ₹{record?.bonus?.toLocaleString()}
                     </td>
-                    <td className="py-4 px-4 text-right text-red-600">
-                      ₹{" "}
+                    <td className="px-6 py-4 text-right text-rose-600 font-medium">
+                      - ₹{" "}
                       {(
                         (salaryInfo?.epf_admin || 0) +
                         (salaryInfo?.epf_pension || 0)
                       )?.toLocaleString()}
                     </td>
-                    <td className="py-4 px-4 text-right font-semibold text-slate-800">
+                    <td className="px-6 py-4 text-right font-bold text-foreground">
                       ₹{record?.net_salary?.toLocaleString()}
                     </td>
-                    <td className="py-4 px-4 text-center">
-                      <Badge className={getStatusColor(record?.status)}>
+                    <td className="px-6 py-4 text-center">
+                      <Badge variant="outline" className={getStatusColor(record?.status)}>
                         {record?.status}
                       </Badge>
                     </td>
-                    <td className="py-4 px-4">
-                      <div className="flex justify-center space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={async () => {
-                            if (!record["salary_slip"]) {
-                              toast.error(
-                                "Salary slip is still generated. Please try"
-                              );
-                              return;
-                            }
-                            handleDownloadSalary(record?.month_in_digit);
-                          }}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </div>
+                    <td className="px-6 py-4 text-center">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-primary"
+                        onClick={async () => {
+                          if (!record["salary_slip"]) {
+                            toast.error(
+                              "Salary slip is pending generation."
+                            );
+                            return;
+                          }
+                          handleDownloadSalary(record?.month_in_digit);
+                        }}
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {salaryHistory?.length === 0 && <NoDataFound />}
+            {salaryHistory?.length === 0 && (
+              <div className="p-8 flex justify-center">
+                <NoDataFound />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

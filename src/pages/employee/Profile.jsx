@@ -14,6 +14,7 @@ import {
   DollarSign,
   Trash2,
   Loader2,
+  CheckCircle,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
@@ -140,90 +141,94 @@ const Profile = ({ readOnly = false }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-enter">
       {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">My Profile</h1>
-          <p className="text-slate-600">
-            Manage your personal information and preferences
-          </p>
-        </div>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold text-foreground tracking-tight">My Profile</h1>
+        <p className="text-muted-foreground text-sm">
+          Manage your personal information and preferences
+        </p>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Profile Card */}
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 flex flex-col md:flex-row lg:flex-col items-center justify-center text-center gap-4 ">
-            <div
-              className="relative group"
-              style={{ width: "8rem", height: "8rem" }}
-            >
-              {basicInfo?.profile ? (
-                <img
-                  src={basicInfo.profile}
-                  alt={`${basicInfo.first_name} ${basicInfo.last_name}`}
-                  className="w-full h-full object-cover rounded-md border border-slate-500"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
-                  {loading ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <>
-                      {basicInfo?.first_name?.[0]}
-                      {basicInfo?.last_name?.[0]}
-                    </>
-                  )}
-                </div>
-              )}
-              {!readOnly && (
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
-                  <div className="relative flex items-center justify-center w-full h-full">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
-                      className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                      title="Change Avatar"
+        <div className="lg:col-span-4 space-y-6">
+          <Card className="border border-border/50 shadow-sm overflow-hidden">
+            <CardContent className="p-0">
+              <div className="h-32 bg-primary/10 w-full relative">
+                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" />
+              </div>
+              <div className="px-6 pb-6 -mt-12 flex flex-col items-center text-center relative z-10">
+                <div
+                  className="relative group w-24 h-24 rounded-xl shadow-xl bg-card border-4 border-card mb-4 overflow-hidden"
+                >
+                  {basicInfo?.profile ? (
+                    <img
+                      src={basicInfo.profile}
+                      alt={`${basicInfo.first_name} ${basicInfo.last_name}`}
+                      className="w-full h-full object-cover"
                     />
-                    <Edit3 className="text-white w-4 h-4 z-10" />
-                  </div>
-                  {basicInfo?.profile && (
-                    <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete h-8"
-                        onClick={() => handleDeleteAvatar(basicInfo?.id)}
-                        title="Delete Avatar"
-                      >
-                        <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
-                      </Button>
+                  ) : (
+                    <div className="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl uppercase">
+                      {loading ? (
+                        <Loader2 className="animate-spin h-8 w-8" />
+                      ) : (
+                        <>
+                          {basicInfo?.first_name?.[0]}
+                          {basicInfo?.last_name?.[0]}
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {!readOnly && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 backdrop-blur-sm">
+                      <div className="flex gap-2">
+                        <label className="cursor-pointer p-2 rounded-full hover:bg-white/20 transition-colors text-white">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
+                            className="hidden"
+                          />
+                          <Edit3 className="w-4 h-4" />
+                        </label>
+                        {basicInfo?.profile && (
+                          <button
+                            className="p-2 rounded-full hover:bg-red-500/80 transition-colors text-white"
+                            onClick={() => handleDeleteAvatar(basicInfo?.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
-              )}
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-slate-800 my-2">
-                {basicInfo?.first_name} {basicInfo?.last_name}
-              </h3>
-              <p className="text-slate-600 mb-1">
-                {basicInfo?.designation?.name}
-              </p>
-              <p className="text-sm text-slate-500 mb-4">
-                {basicInfo?.department?.name}
-              </p>
 
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-center space-x-2">
-                  <User className="h-4 w-4 text-slate-400" />
-                  <span>ID: {basicInfo?.employee_no}</span>
+                <h3 className="text-xl font-bold text-foreground">
+                  {basicInfo?.first_name} {basicInfo?.last_name}
+                </h3>
+                <p className="text-sm text-primary font-medium mb-1">
+                  {basicInfo?.designation?.name}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1 rounded-full mt-2">
+                  <Briefcase className="h-3 w-3" />
+                  {basicInfo?.department?.name}
                 </div>
-                <div className="flex items-center justify-center space-x-2">
-                  <Calendar className="h-4 w-4 text-slate-400" />
-                  <span>
-                    Joined:{" "}
+              </div>
+
+              <div className="px-6 pb-6 space-y-4 pt-2">
+                <div className="flex items-center justify-between py-3 border-t border-border/50">
+                  <span className="text-sm text-muted-foreground flex items-center gap-2">
+                    <User className="h-4 w-4" /> Employee ID
+                  </span>
+                  <span className="text-sm font-semibold text-foreground">{basicInfo?.employee_no}</span>
+                </div>
+                <div className="flex items-center justify-between py-3 border-t border-border/50">
+                  <span className="text-sm text-muted-foreground flex items-center gap-2">
+                    <Calendar className="h-4 w-4" /> Joined
+                  </span>
+                  <span className="text-sm font-semibold text-foreground">
                     {user?.date_of_joining
                       ? new Date(user.date_of_joining).toLocaleDateString("en-GB", {
                         day: "2-digit",
@@ -234,100 +239,52 @@ const Profile = ({ readOnly = false }) => {
                   </span>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Tabbed Information */}
-        <Card className="lg:col-span-3 border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <User className="h-5 w-5 text-blue-600" />
-              <span>Profile Information</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-5">
-                {employeeProfileTab.map((tab, index) => {
-                  return (
+        <div className="lg:col-span-8">
+          <Card className="border border-border/50 shadow-sm h-full">
+            <CardHeader className="border-b border-border/50 px-6 py-4">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <User className="h-5 w-5 text-primary" />
+                <span>Profile Details</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
+                <TabsList className="w-full flex justify-start gap-2 bg-transparent p-0 mb-6 border-b border-border/50 rounded-none h-auto overflow-x-auto">
+                  {employeeProfileTab.map((tab) => (
                     <TabsTrigger
-                      key="index"
-                      value="basic"
-                      className="flex items-center space-x-2"
+                      key={tab.id}
+                      value={tab.link.split('/').pop()}
+                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:text-primary rounded-none px-4 py-3 text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <NavLink
                         to={tab.link}
-                        className={({ isActive }) =>
-                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${isActive
-                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
-                            : "bg-transparent hover:bg-gray-200"
-                          }`
-                        }
+                        className="flex items-center gap-2"
                       >
-                        <span className="text-xs sm:text-sm">{tab.name}</span>
+                        {tab.icon}
+                        <span>{tab.name}</span>
                       </NavLink>
                     </TabsTrigger>
-                  );
-                })}
-              </TabsList>
-              <main className="h-[40vh] max-h-[60vh] ">
-                <Outlet
-                  context={activeTab === "basic" ? { basicInfo, loading } : {}}
-                />
-              </main>
-            </Tabs>
-          </CardContent>
-        </Card>
+                  ))}
+                </TabsList>
+                <div className="min-h-[400px]">
+                  <Outlet
+                    context={activeTab === "basic" ? { basicInfo, loading } : {}}
+                  />
+                </div>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
-      {/* Work Information */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Briefcase className="h-5 w-5 text-purple-600" />
-            <span>Work Information</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <User className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-              {/* <p className="text-sm text-slate-600">Employee ID</p> */}
-              <p className="font-semibold text-slate-800">
-                {basicInfo?.employee_no}
-              </p>
-            </div>
-            <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <Briefcase className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              {/* <p className="text-sm text-slate-600">Position</p> */}
-              <p className="font-semibold text-slate-800">
-                {basicInfo?.designation?.title || "N/A"}
-              </p>
-            </div>
-            <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <MapPin className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-              {/* <p className="text-sm text-slate-600">Department</p> */}
-              <p className="font-semibold text-slate-800">
-                {basicInfo?.department?.name || "N/A"}
-              </p>
-            </div>
-            <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <Calendar className="h-8 w-8 mx-auto mb-2 text-orange-600" />
-              {/* <p className="text-sm text-slate-600">Join Date</p> */}
-              <p className="font-semibold text-slate-800">
-                {basicInfo?.date_of_joining
-                  ? new Date(basicInfo.date_of_joining).toLocaleDateString()
-                  : "N/A"}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

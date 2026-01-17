@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useFormValidation } from '../hooks/useFormValidation';
-import { authAPI, userAPI } from '../api/authapi/authAPI';
+import { authAPI } from '../api/authapi/authAPI';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Lock } from 'lucide-react';
+import { Lock, ArrowLeft, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import MotionWrapper from '../components/MotionWrapper';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (!token) {
-      setApiMessage('Invalid or missing token.');
+      setApiMessage('Access token invalid or expired.');
     }
   }, [token]);
 
@@ -56,84 +57,125 @@ const ResetPassword = () => {
       const res = await authAPI.resetPassword({ token, password: formValues.password });
       if (res.status) {
         setIsSuccess(true);
-        setApiMessage('Password has been reset successfully. Redirecting to login...');
+        setApiMessage('Credentials updated. Redirecting to terminal...');
         setTimeout(() => navigate('/login'), 3000);
       } else {
-        setApiMessage(res.message || 'Failed to reset password.');
+        setApiMessage(res.message || 'Update request denied.');
       }
     } catch (error) {
-      setApiMessage(error?.response?.data?.message || 'Something went wrong.');
+      setApiMessage(error?.response?.data?.message || 'Security protocol error. Retry required.');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
-      <div className="w-full max-w-md">
-        <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
-          <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl font-semibold text-center">Reset Password</CardTitle>
-            <CardDescription className="text-center">
-              Enter your new password below
-            </CardDescription>
-          </CardHeader>
+    <div className="min-h-screen flex items-center justify-center bg-[#020817] relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600/10 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute bottom-0 -right-4 w-96 h-96 bg-indigo-600/10 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
 
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">New Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="pl-10 h-12"
-                    placeholder="Enter new password"
-                  />
+        <Button 
+            variant="ghost" 
+            className="absolute top-8 left-8 text-slate-400 hover:text-white hover:bg-white/5 gap-2 transition-all duration-300 rounded-full px-4"
+            onClick={() => navigate('/login')}
+        >
+            <ArrowLeft className="h-4 w-4" /> <span className="text-xs font-bold uppercase tracking-widest">Back</span>
+        </Button>
+
+        <MotionWrapper className="w-full max-w-md p-4 relative z-10">
+            <div className="text-center mb-10">
+                <div className="flex justify-center mb-6">
+                    <div className="p-4 bg-blue-600 rounded-2xl shadow-[0_0_40px_rgba(37,99,235,0.3)]">
+                        <ShieldCheck className="h-10 w-10 text-white" />
+                    </div>
                 </div>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-              </div>
+                <h1 className="text-4xl font-black text-white tracking-tighter uppercase">
+                    Security <span className="text-blue-500">Update</span>
+                </h1>
+                <p className="text-slate-400 mt-3 font-medium tracking-tight">Credential Modification Terminal</p>
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                  <Input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="pl-10 h-12"
-                    placeholder="Confirm new password"
-                  />
-                </div>
-                {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-              </div>
+            <Card className="border border-slate-800 shadow-2xl bg-[#0f172a]/80 backdrop-blur-2xl">
+                <CardHeader className="space-y-1 pb-8 border-b border-slate-800/50">
+                    <CardTitle className="text-xl font-bold text-center text-white tracking-tight">New Password</CardTitle>
+                    <CardDescription className="text-center text-slate-500 text-[10px] uppercase tracking-[0.2em] font-black">
+                        Define secure access tokens
+                    </CardDescription>
+                </CardHeader>
 
-              {apiMessage && (
-                <Alert className={isSuccess ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}>
-                  <AlertDescription className={isSuccess ? 'text-green-700' : 'text-red-700'}>
-                    {apiMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
+                <CardContent className="pt-8 px-8">
+                    {isSuccess ? (
+                        <div className="space-y-6 py-4 text-center animate-enter">
+                            <div className="flex justify-center">
+                                <div className="h-16 w-16 bg-emerald-500/20 rounded-full flex items-center justify-center border border-emerald-500/30">
+                                    <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <h3 className="text-lg font-bold text-white uppercase tracking-tight">Access Restored</h3>
+                                <p className="text-sm text-slate-400 leading-relaxed">Your security credentials have been successfully updated.</p>
+                            </div>
+                            <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-blue-500 animate-progress"></div>
+                            </div>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <div className="space-y-2">
+                            <Label htmlFor="password" class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">New Security Token</Label>
+                            <div className="relative group focus-ring rounded-lg">
+                            <Lock className="absolute left-3 top-3.5 h-4 w-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className="pl-10 h-12 bg-slate-900/50 border-slate-800 focus:border-blue-500 text-white transition-all rounded-lg"
+                                placeholder="••••••••"
+                            />
+                            </div>
+                            {errors.password && <p className="text-red-400 text-[10px] font-bold uppercase mt-1 ml-1">{errors.password}</p>}
+                        </div>
 
-              <Button
-                type="submit"
-                className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium"
-                disabled={isSubmitting || !token}
-              >
-                {isSubmitting ? 'Resetting...' : 'Reset Password'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword" class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Confirm Token</Label>
+                            <div className="relative group focus-ring rounded-lg">
+                            <Lock className="absolute left-3 top-3.5 h-4 w-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
+                            <Input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                value={values.confirmPassword}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className="pl-10 h-12 bg-slate-900/50 border-slate-800 focus:border-blue-500 text-white transition-all rounded-lg"
+                                placeholder="••••••••"
+                            />
+                            </div>
+                            {errors.confirmPassword && <p className="text-red-400 text-[10px] font-bold uppercase mt-1 ml-1">{errors.confirmPassword}</p>}
+                        </div>
+
+                        {apiMessage && (
+                            <Alert className={`py-2 border-l-4 ${isSuccess ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400' : 'bg-destructive/10 border-destructive text-destructive'}`}>
+                            <AlertDescription className="text-[11px] font-bold text-center uppercase">
+                                {apiMessage}
+                            </AlertDescription>
+                            </Alert>
+                        )}
+
+                        <Button
+                            type="submit"
+                            className="w-full h-12 text-xs font-black uppercase tracking-[0.2em] bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all duration-300 rounded-lg"
+                            disabled={isSubmitting || !token}
+                        >
+                            {isSubmitting ? 'Verifying...' : 'Update Terminal Access'}
+                        </Button>
+                        </form>
+                    )}
+                </CardContent>
+            </Card>
+        </MotionWrapper>
     </div>
   );
 };

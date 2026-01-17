@@ -27,18 +27,17 @@ export const AuthProvider = ({ children }) => {
 
   // Logout clears all auth info
   const logout = async () => {
+    // Always clear local state and storage first
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
     try {
-      const resp = await authAPI.logoutUser();
-      if (resp.status === 200) {
-        setUser(null);
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-      }
-      return true;
+      await authAPI.logoutUser();
     } catch (error) {
       console.error("Logout error:", error);
-      return false;
     }
+    return true;
   };
 
   // socket

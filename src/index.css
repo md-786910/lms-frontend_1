@@ -2,97 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Modern SaaS Professional Palette */
+    --background: 220 33% 98%; /* Very subtle cool gray */
+    --foreground: 224 71.4% 4.1%; /* Deepest slate */
 
+    /* Surface & Elevation */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 71.4% 4.1%;
 
-    --primary: 220 91% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary - Sharp Professional Blue */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
 
+    /* Secondary - Soft & Clean */
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --danger: 210 40% 96.1%;
-    --danger-foreground: 222.2 47.4% 11.2%;
-
+    /* Muted & Accents */
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
+    /* Feedback */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
 
+    /* Borders & Inputs */
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 220 91% 50%;
+    --ring: 221.2 83.2% 53.3%;
 
-    --radius: 0.5rem;
+    --radius: 0.6rem; 
 
-    /* SaaS Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(240, 91%, 65%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(200, 91%, 55%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(240, 91%, 65%) 50%, hsl(260, 91%, 70%) 100%);
-    --gradient-background: linear-gradient(180deg, hsl(220, 91%, 97%) 0%, hsl(240, 40%, 98%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(220, 91%, 99%) 100%);
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar - Deep Dark Professional */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 215 20.2% 75%; /* Brighter text for readability */
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 224.3 76.3% 48%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 220 91% 60%;
-    --primary-foreground: 0 0% 100%;
-
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 220 91% 60%;
-
-    /* Dark mode SaaS Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(240, 91%, 70%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(200, 91%, 65%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(240, 91%, 70%) 50%, hsl(260, 91%, 75%) 100%);
-    --gradient-background: linear-gradient(180deg, hsl(222.2, 84%, 4.9%) 0%, hsl(217.2, 32.6%, 17.5%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(222.2, 84%, 4.9%) 0%, hsl(217.2, 32.6%, 17.5%) 100%);
+    --ring: 224.3 76.3% 48%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -109,224 +90,81 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
+  
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Modern Professional Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/10 rounded-full hover:bg-muted-foreground/30 transition-colors;
   }
 }
 
 @layer utilities {
-  .bg-gradient-primary {
-    background: var(--gradient-primary);
+  .shadow-soft {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.02), 0 10px 20px -5px rgba(0,0,0,0.03);
   }
   
-  .bg-gradient-secondary {
-    background: var(--gradient-secondary);
+  .shadow-professional {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
   
-  .bg-gradient-hero {
-    background: var(--gradient-hero);
+  .glass {
+    @apply bg-white/70 dark:bg-black/70 backdrop-blur-md border border-white/20 shadow-sm;
   }
   
-  .bg-gradient-background {
-    background: var(--gradient-background);
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
   
-  .bg-gradient-card {
-    background: var(--gradient-card);
+  .focus-ring {
+    @apply focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background transition-all duration-200;
   }
 }
 
-/* react confirm alert */
-.react-confirm-alert-overlay {
-  background: rgba(150, 147, 147, 0.3); /* Dimmed background */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.react-confirm-alert-body {
-    background: white !important;
-    border-radius: 10px;
-    box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13);
-    color: #0c0c0c;
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out forwards;
 }
 
-.react-confirm-alert-body h1 {
-    font-size: 20px;
-    margin-bottom: 10px;
+/* Custom UI Polish */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
 }
 
-.react-confirm-alert-button-group button:first-child{
-  background-image: linear-gradient(to right, #2563eb, #8b5cf6); /* blue-600 to purple-600 */
-  transition: background-image 0.3s ease;
-  color: white; /* optional if text needs to be white */
-  border: none;
-  font-size: 15px !important;
-}
-.react-confirm-alert-button-group button:first-child:hover{
-  background-image: linear-gradient(to right, #1d4ed8, #7c3aed);
-}
-.react-confirm-alert-button-group button:last-child{
-  background-image: linear-gradient(to right, #dc2626, #f97316); /* red-600 to orange-600 */
-  transition: background-image 0.3s ease;
-  color: white; /* optional */
-  border: none;
-  font-size: 15px !important;
-}
-.react-confirm-alert-button-group button:last-child:hover{
-  background-image: linear-gradient(to right, #b91c1c, #ea580c);
-}
-
-/* custom disabled */
-
-.disabled\:opacity-50:disabled {
-    opacity: 0.8 !important;
-    background-color: #f1f5f9;
-}
-
-/* Date input styles - fix calendar icon alignment */
-input[type="date"] {
-  position: relative;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  opacity: 0.6;
-  padding: 0;
-  margin: 0;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
-/* Custom Toast Notification Styles */
-.Toastify__toast-container {
-  z-index: 9999 !important;
-}
-
+/* Toast Overrides */
 .Toastify__toast {
-  border-radius: 12px !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
-  padding: 0 !important;
-  min-height: auto !important;
-  background: white !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-.Toastify__toast-body {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.Toastify__close-button {
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  color: #64748b !important;
-  opacity: 0.7 !important;
-}
-
-.Toastify__close-button:hover {
-  opacity: 1 !important;
+  @apply border border-border shadow-xl rounded-lg font-sans !important;
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
 }
 
 .Toastify__progress-bar {
-  height: 3px !important;
+  background: hsl(var(--primary)) !important;
 }
 
-.Toastify__toast--success .Toastify__progress-bar {
-  background: linear-gradient(to right, #10b981, #34d399) !important;
+/* Date input styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  @apply opacity-40 hover:opacity-100 cursor-pointer transition-opacity;
 }
-
-.Toastify__toast--error .Toastify__progress-bar {
-  background: linear-gradient(to right, #ef4444, #f87171) !important;
-}
-
-.Toastify__toast--info .Toastify__progress-bar {
-  background: linear-gradient(to right, #3b82f6, #60a5fa) !important;
-}
-
-.Toastify__toast--warning .Toastify__progress-bar {
-  background: linear-gradient(to right, #f59e0b, #fbbf24) !important;
-}
-
-/* Custom notification content styling */
-.custom-toast {
-  display: flex;
-  align-items: flex-start;
-  padding: 16px;
-  gap: 12px;
-}
-
-.custom-toast-icon {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-toast-icon.success {
-  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-}
-
-.custom-toast-icon.error {
-  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-}
-
-.custom-toast-icon.info {
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-}
-
-.custom-toast-icon.warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-}
-
-.custom-toast-icon.leave {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-}
-
-.custom-toast-icon svg {
-  width: 20px;
-  height: 20px;
-  color: white;
-}
-
-.custom-toast-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.custom-toast-title {
-  font-weight: 600;
-  font-size: 14px;
-  color: #1e293b;
-  margin-bottom: 4px;
-  line-height: 1.4;
-}
-
-.custom-toast-message {
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-.custom-toast-time {
-  font-size: 11px;
-  color: #94a3b8;
-  margin-top: 6px;
-}
-

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { leaveApi } from "../api/leave/leave";
 import LoadingSpinner from "./LoadingSpinner";
+import { Button } from "@/components/ui/button";
 
 const MONTHS = [
   { value: "all", label: "All Months" },
@@ -125,27 +126,28 @@ const EmployeeLeaveTable = () => {
   );
 
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="pb-4">
+    <Card className="border border-border/50 shadow-sm">
+      <CardHeader className="pb-4 border-b border-border/50 bg-muted/20">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center space-x-2 text-base font-medium">
+            <Calendar className="h-5 w-5 text-primary" />
             <span>Employee Leave Summary - {year}</span>
           </CardTitle>
-          {/* <button
+          <Button
             onClick={handleViewAllLeaves}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            variant="outline"
+            className="hidden md:flex items-center gap-2"
           >
             <Eye className="h-4 w-4" />
             View All Leaves
-          </button> */}
+          </Button>
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-slate-500" />
-            <span className="text-sm text-slate-600">Filters:</span>
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Filters:</span>
           </div>
 
           {/* Year Select */}
@@ -153,7 +155,7 @@ const EmployeeLeaveTable = () => {
             value={year.toString()}
             onValueChange={(v) => setYear(parseInt(v))}
           >
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-[120px] bg-background">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -170,7 +172,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Month Select */}
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px] bg-background">
               <SelectValue placeholder="Select Month" />
             </SelectTrigger>
             <SelectContent>
@@ -184,8 +186,8 @@ const EmployeeLeaveTable = () => {
 
           {/* Employee Select */}
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="w-[180px]">
-              <Users className="h-4 w-4 mr-2" />
+            <SelectTrigger className="w-[180px] bg-background">
+              <Users className="h-4 w-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Select Employee" />
             </SelectTrigger>
             <SelectContent>
@@ -199,16 +201,17 @@ const EmployeeLeaveTable = () => {
           </Select>
 
           {/* Reset Button */}
-          <button
+          <Button
+            variant="ghost"
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-300 rounded-md text-slate-600 hover:bg-slate-50 transition-colors"
+            className="text-muted-foreground hover:text-primary"
           >
             Reset
-          </button>
+          </Button>
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-0">
         {loading ? (
           <div className="py-8">
             <LoadingSpinner />
@@ -217,19 +220,19 @@ const EmployeeLeaveTable = () => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10">
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="font-semibold text-muted-foreground sticky left-0 bg-muted/50 z-10 w-[200px]">
                     Employee Name
                   </TableHead>
                   {columnsToShow.map((month) => (
                     <TableHead
                       key={month}
-                      className="font-semibold text-slate-700 text-center capitalize min-w-[80px]"
+                      className="font-semibold text-muted-foreground text-center capitalize min-w-[60px] text-xs"
                     >
                       {month.slice(0, 3).toUpperCase()}
                     </TableHead>
                   ))}
-                  <TableHead className="font-semibold text-slate-700 text-center bg-blue-50">
+                  <TableHead className="font-semibold text-primary text-center bg-primary/5 min-w-[80px]">
                     Total
                   </TableHead>
                 </TableRow>
@@ -240,9 +243,9 @@ const EmployeeLeaveTable = () => {
                     {summaryData.map((employee, index) => (
                       <TableRow
                         key={employee.employee_id || index}
-                        className="hover:bg-slate-50"
+                        className="hover:bg-muted/30 transition-colors border-b border-border"
                       >
-                        <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10">
+                        <TableCell className="font-medium text-foreground sticky left-0 bg-background z-10">
                           {employee.name}
                         </TableCell>
                         {columnsToShow.map((month) => (
@@ -250,47 +253,30 @@ const EmployeeLeaveTable = () => {
                             key={month}
                             className={`text-center ${
                               employee[month] > 0
-                                ? "text-orange-600 font-medium"
-                                : "text-slate-400"
+                                ? "text-destructive font-semibold"
+                                : "text-muted-foreground/30"
                             }`}
                           >
-                            {employee[month] || 0}
+                            {employee[month] > 0 ? employee[month] : "-"}
                           </TableCell>
                         ))}
                         <TableCell
-                          className={`text-center font-semibold bg-blue-50 ${
+                          className={`text-center font-bold bg-primary/5 ${
                             employee.total > 0
-                              ? "text-blue-700"
-                              : "text-slate-400"
+                              ? "text-primary"
+                              : "text-muted-foreground/50"
                           }`}
                         >
                           {employee.total || 0}
                         </TableCell>
                       </TableRow>
                     ))}
-                    {/* Totals Row */}
-                    {/* <TableRow className="bg-slate-100 font-semibold border-t-2">
-                      <TableCell className="sticky left-0 bg-slate-100 z-10 text-slate-800">
-                        Total
-                      </TableCell>
-                      {columnsToShow.map((month) => (
-                        <TableCell
-                          key={month}
-                          className="text-center text-slate-700"
-                        >
-                          {columnTotals[month] || 0}
-                        </TableCell>
-                      ))}
-                      <TableCell className="text-center text-blue-700 bg-blue-100">
-                        {grandTotal}
-                      </TableCell>
-                    </TableRow> */}
                   </>
                 ) : (
                   <TableRow>
                     <TableCell
                       colSpan={columnsToShow.length + 2}
-                      className="text-center py-8 text-slate-500"
+                      className="text-center py-8 text-muted-foreground"
                     >
                       No leave data found for the selected filters
                     </TableCell>
@@ -304,33 +290,33 @@ const EmployeeLeaveTable = () => {
 
       {/* Modal for View All Leaves */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* Overlay */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm transition-opacity duration-300"
             onClick={() => setShowModal(false)}
           />
-          {/* Modal Content */}
-          <div className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-lg shadow-2xl mx-4 flex flex-col">
+          <div className="relative w-full max-w-6xl max-h-[90vh] bg-card rounded-xl shadow-2xl border border-border flex flex-col overflow-hidden animate-enter">
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-lg">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
+            <div className="flex justify-between items-center px-6 py-4 border-b border-border bg-muted/30">
+              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-primary" />
                 Employee Leave Summary - {year}
               </h2>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setShowModal(false)}
-                className="text-white hover:text-red-200 text-2xl font-bold transition duration-200"
+                className="text-muted-foreground hover:text-destructive transition-colors"
               >
-                <X className="h-6 w-6" />
-              </button>
+                <X className="h-5 w-5" />
+              </Button>
             </div>
 
             {/* Filters in Modal */}
-            <div className="flex flex-wrap gap-4 p-4 border-b bg-slate-50">
+            <div className="flex flex-wrap gap-4 p-4 border-b border-border bg-card">
               <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-slate-500" />
-                <span className="text-sm text-slate-600">Filters:</span>
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Filters:</span>
               </div>
 
               <Select
@@ -380,16 +366,17 @@ const EmployeeLeaveTable = () => {
                 </SelectContent>
               </Select>
 
-              <button
+              <Button
+                variant="outline"
                 onClick={handleResetFilters}
-                className="px-4 py-2 border border-slate-300 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
+                className="text-muted-foreground"
               >
                 Reset
-              </button>
+              </Button>
             </div>
 
             {/* Table Content */}
-            <div className="flex-1 overflow-auto p-4">
+            <div className="flex-1 overflow-auto p-0">
               {loading ? (
                 <div className="py-8">
                   <LoadingSpinner />
@@ -397,19 +384,19 @@ const EmployeeLeaveTable = () => {
               ) : (
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-slate-50">
-                      <TableHead className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10">
+                    <TableRow className="bg-muted/50 hover:bg-muted/50">
+                      <TableHead className="font-semibold text-muted-foreground sticky left-0 bg-muted/50 z-10 w-[200px]">
                         Employee Name
                       </TableHead>
                       {MONTH_KEYS.map((month) => (
                         <TableHead
                           key={month}
-                          className="font-semibold text-slate-700 text-center capitalize min-w-[80px]"
+                          className="font-semibold text-muted-foreground text-center capitalize min-w-[60px] text-xs"
                         >
                           {month.slice(0, 3).toUpperCase()}
                         </TableHead>
                       ))}
-                      <TableHead className="font-semibold text-slate-700 text-center bg-blue-50">
+                      <TableHead className="font-semibold text-primary text-center bg-primary/5 min-w-[80px]">
                         Total
                       </TableHead>
                     </TableRow>
@@ -420,9 +407,9 @@ const EmployeeLeaveTable = () => {
                         {summaryData.map((employee, index) => (
                           <TableRow
                             key={employee.employee_id || index}
-                            className="hover:bg-slate-50"
+                            className="hover:bg-muted/30 transition-colors border-b border-border"
                           >
-                            <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10">
+                            <TableCell className="font-medium text-foreground sticky left-0 bg-background z-10">
                               {employee.name}
                             </TableCell>
                             {MONTH_KEYS.map((month) => (
@@ -430,18 +417,18 @@ const EmployeeLeaveTable = () => {
                                 key={month}
                                 className={`text-center ${
                                   employee[month] > 0
-                                    ? "text-orange-600 font-medium"
-                                    : "text-slate-400"
+                                    ? "text-destructive font-semibold"
+                                    : "text-muted-foreground/30"
                                 }`}
                               >
-                                {employee[month] || 0}
+                                {employee[month] > 0 ? employee[month] : "-"}
                               </TableCell>
                             ))}
                             <TableCell
-                              className={`text-center font-semibold bg-blue-50 ${
+                              className={`text-center font-bold bg-primary/5 ${
                                 employee.total > 0
-                                  ? "text-blue-700"
-                                  : "text-slate-400"
+                                  ? "text-primary"
+                                  : "text-muted-foreground/50"
                               }`}
                             >
                               {employee.total || 0}
@@ -449,8 +436,8 @@ const EmployeeLeaveTable = () => {
                           </TableRow>
                         ))}
                         {/* Totals Row */}
-                        <TableRow className="bg-slate-100 font-semibold border-t-2">
-                          <TableCell className="sticky left-0 bg-slate-100 z-10 text-slate-800">
+                        <TableRow className="bg-muted/30 font-semibold border-t-2 border-border">
+                          <TableCell className="sticky left-0 bg-muted/30 z-10 text-foreground">
                             Total
                           </TableCell>
                           {MONTH_KEYS.map((month) => {
@@ -461,13 +448,13 @@ const EmployeeLeaveTable = () => {
                             return (
                               <TableCell
                                 key={month}
-                                className="text-center text-slate-700"
+                                className="text-center text-muted-foreground"
                               >
                                 {total}
                               </TableCell>
                             );
                           })}
-                          <TableCell className="text-center text-blue-700 bg-blue-100">
+                          <TableCell className="text-center text-primary bg-primary/10">
                             {grandTotal}
                           </TableCell>
                         </TableRow>
@@ -476,7 +463,7 @@ const EmployeeLeaveTable = () => {
                       <TableRow>
                         <TableCell
                           colSpan={14}
-                          className="text-center py-8 text-slate-500"
+                          className="text-center py-8 text-muted-foreground"
                         >
                           No leave data found for the selected filters
                         </TableCell>

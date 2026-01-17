@@ -40,6 +40,7 @@ import { leaveApi } from "../api/leave/leave";
 import { leaveAPI } from "../api/settingsApi/leaveApi";
 import { employeeAPI } from "../api/employeeApi";
 import { useFormValidation } from "../hooks/useFormValidation";
+import holidayJsonData from "../data/holiday.json";
 
 const LEAVE = [
   {
@@ -232,15 +233,25 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
         for (let i = 0; i <= diffInDays; i++) {
           const currentDate = start.add(i, "day");
           const dayOfWeek = currentDate.day();
+          const dateString = currentDate.format("YYYY-MM-DD");
+          const currentYear = currentDate.year();
 
-          if (dayOfWeek === 0 || dayOfWeek === 6) {
+          // Check for public holiday
+          const yearData = holidayJsonData.holiday_data?.find(
+            (item) => item.year === currentYear
+          );
+          const isPublicHoliday = yearData?.fixed_holidays?.some(
+            (h) => h.date === dateString
+          );
+
+          if (dayOfWeek === 0 || dayOfWeek === 6 || isPublicHoliday) {
             continue;
           }
 
           validDayCount += 1;
 
           tempLeaveDays.push({
-            date: currentDate.format("YYYY-MM-DD"),
+            date: dateString,
             type: 0,
             id: "full_day",
             count: 1,

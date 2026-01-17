@@ -2,33 +2,49 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import NoDataFound from "../../common/NoDataFound";
 import ConfirmFn from "../../utility/confirmFn";
-import { Edit3, Eye, Plus, Trash2, Users } from "lucide-react";
+import { Edit3, Eye, EyeOff, Plus, Trash2, Users, Shield } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { authAPI } from "../../api/authapi/authAPI";
 import axiosInstance from "../../api/axiosInstance";
 import { useFormValidation } from "../../hooks/useFormValidation";
+
 const User = () => {
   const { toast } = useToast();
   const [listUser, setListUser] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [visiblePasswords, setVisiblePasswords] = useState({});
   const [user, setUser] = useState({
     email: "",
     password: "",
     first_name: "",
     last_name: "",
     phone_number: "",
-    password: "",
   });
   const [loader, setLoader] = useState(false);
-  const [viewPassword, setViewPassword] = useState(false);
 
   const initialValues = {
     first_name: "",
     last_name: "",
     phone_number: "",
     email: "",
+    password: "",
   };
 
   const validationSchema = {
@@ -53,7 +69,7 @@ const User = () => {
       user
     );
   };
-  // save
+
   const handleSubmit = async () => {
     const isValid = validationUserSection();
     if (!isValid) {
@@ -76,8 +92,8 @@ const User = () => {
         toast({
           title: "New user created",
           description: "User created successfully",
-          //   variant: "destructive",
         });
+        setShowAddModal(false);
       }
     } catch (error) {
       toast({
@@ -97,11 +113,14 @@ const User = () => {
     }
   };
 
-  //   get user
   const getUser = async () => {
-    const resp = await authAPI.getNewUser();
-    if (resp.status == 200) {
-      setListUser(resp.data?.data);
+    try {
+      const resp = await authAPI.getNewUser();
+      if (resp.status == 200) {
+        setListUser(resp.data?.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users", error);
     }
   };
 
@@ -109,155 +128,217 @@ const User = () => {
     getUser();
   }, []);
 
+  const togglePasswordVisibility = (id) => {
+    setVisiblePasswords((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
-    <div className="space-y-6 mb-7">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">User Management</h1>
-          <p className="text-slate-600">Manage users to your HR system</p>
-        </div>
-      </div>
-
-      <div className="p-4 bg-slate-50 rounded-lg">
-        <h3 className="font-medium text-slate-800 mb-4">Add New User</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label>First name *</Label>
-            <Input
-              placeholder="first name"
-              name="first name"
-              value={user.first_name}
-              onChange={(e) => setUser({ ...user, first_name: e.target.value })}
-            />
-            {errors.first_name && (
-              <p className="text-red-500 text-sm">{errors.first_name}</p>
-            )}
-          </div>
-          <div>
-            <Label>Last name</Label>
-            <Input
-              placeholder="first name"
-              name="last name"
-              value={user.last_name}
-              onChange={(e) => setUser({ ...user, last_name: e.target.value })}
-            />
-            {errors.last_name && (
-              <p className="text-red-500 text-sm">{errors.last_name}</p>
-            )}
-          </div>{" "}
-          <div>
-            <Label>Phone number</Label>
-            <Input
-              placeholder="first name"
-              name="phone number"
-              value={user.phone_number}
-              onChange={(e) =>
-                setUser({ ...user, phone_number: e.target.value })
-              }
-            />
-            {errors.phone_number && (
-              <p className="text-red-500 text-sm">{errors.phone_number}</p>
-            )}
-          </div>
-          <div>
-            <Label>Email *</Label>
-            <Input
-              placeholder="Email"
-              name="email"
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
-            )}
-          </div>
-          <div>
-            <Label>Password *</Label>
-            <Input
-              placeholder="password"
-              name="password"
-              value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password}</p>
-            )}
-          </div>{" "}
-        </div>
-        <Button
-          className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          onClick={() => handleSubmit()}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          {loader ? "saving data..." : "Add User"}
-        </Button>
-      </div>
-
-      {/* Existing Departments */}
-      <div className="space-y-4">
-        {listUser?.map((dept) => (
-          <div
-            key={dept.id}
-            className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
-          >
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
             <div>
-              <h4 className="font-medium text-slate-800">
-                {dept.first_name + " " + dept.last_name + ""}
-              </h4>
-              <p className="text-sm text-slate-500">{dept.email}</p>
-            </div>
-            <div className="flex space-x-2 items-center">
-              <div className="flex items-center">
-                <Label>password</Label>
-                <Input
-                  placeholder="password"
-                  type={`${viewPassword ? "text" : "password"}`}
-                  name="password"
-                  value={dept.password_without_hash}
-                  className="h-6 w-32 mx-2"
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-blue-600"
-                  onClick={() => {
-                    setViewPassword(!viewPassword);
-                  }}
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-              </div>{" "}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-red-600"
-                onClick={() => {
-                  ConfirmFn({
-                    onDelete: async () => {
-                      try {
-                        const resp = await axiosInstance.delete(
-                          `/user/new-user/${dept?.id}`
-                        );
-                        if (resp?.status === 200) {
-                          getUser();
-                        }
-                      } catch (error) {
-                        console.log(error);
-                      }
-                    },
-                    text_no: "Cancel",
-                    text_yes: "Delete",
-                  });
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <h1 className="text-2xl font-bold">User Management</h1>
+              <p className="text-blue-100 text-sm">Manage system access and HR users</p>
             </div>
           </div>
-        ))}
+          <Button
+            onClick={() => setShowAddModal(true)}
+            className="bg-white text-blue-600 hover:bg-blue-50 border-none shadow-md"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add User
+          </Button>
+        </div>
       </div>
 
-      {listUser?.length == 0 && <NoDataFound />}
+      {/* Users Table */}
+      <Card className="border-0 shadow-lg overflow-hidden">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100 py-4">
+          <CardTitle className="text-lg font-semibold text-slate-800">
+            Registered Users
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader className="bg-slate-50">
+                <TableRow>
+                  <TableHead className="w-[200px]">Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Password</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {listUser?.map((u) => (
+                  <TableRow key={u.id} className="hover:bg-slate-50/50">
+                    <TableCell className="font-medium text-slate-800">
+                      {u.first_name} {u.last_name}
+                    </TableCell>
+                    <TableCell className="text-slate-600">{u.email}</TableCell>
+                    <TableCell className="text-slate-600">{u.phone_number || "—"}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          type={visiblePasswords[u.id] ? "text" : "password"}
+                          value={u.password_without_hash || "********"}
+                          readOnly
+                          className="h-8 w-40 bg-slate-50 text-xs font-mono"
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-slate-400 hover:text-blue-600"
+                          onClick={() => togglePasswordVisibility(u.id)}
+                        >
+                          {visiblePasswords[u.id] ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => {
+                          ConfirmFn({
+                            onDelete: async () => {
+                              try {
+                                const resp = await axiosInstance.delete(
+                                  `/user/new-user/${u?.id}`
+                                );
+                                if (resp?.status === 200) {
+                                  getUser();
+                                  toast({
+                                    title: "User Deleted",
+                                    description: "User has been removed successfully",
+                                  });
+                                }
+                              } catch (error) {
+                                console.log(error);
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to delete user",
+                                  variant: "destructive",
+                                });
+                              }
+                            },
+                            text_no: "Cancel",
+                            text_yes: "Delete",
+                            title: "Delete User",
+                            message: "Are you sure you want to delete this user?",
+                            warning: true,
+                          });
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {listUser?.length === 0 && (
+              <div className="py-12">
+                 <NoDataFound />
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Add User Modal */}
+      <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+               <div className="p-2 bg-blue-100 rounded-lg">
+                  <Plus className="h-5 w-5 text-blue-600" />
+               </div>
+               Add New User
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>First Name <span className="text-red-500">*</span></Label>
+                <Input
+                  placeholder="John"
+                  value={user.first_name}
+                  onChange={(e) => setUser({ ...user, first_name: e.target.value })}
+                />
+                {errors.first_name && (
+                  <p className="text-red-500 text-xs">{errors.first_name}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label>Last Name</Label>
+                <Input
+                  placeholder="Doe"
+                  value={user.last_name}
+                  onChange={(e) => setUser({ ...user, last_name: e.target.value })}
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Email <span className="text-red-500">*</span></Label>
+              <Input
+                placeholder="john.doe@example.com"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Phone Number</Label>
+              <Input
+                placeholder="+1 234 567 890"
+                value={user.phone_number}
+                onChange={(e) => setUser({ ...user, phone_number: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Password <span className="text-red-500">*</span></Label>
+              <Input
+                type="password"
+                placeholder="********"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs">{errors.password}</p>
+              )}
+            </div>
+            
+            <Button
+              className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              onClick={handleSubmit}
+              disabled={loader}
+            >
+              {loader ? "Creating..." : "Create User"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -10,12 +10,15 @@ import {
   Clock,
   CheckCircle,
   XCircle,
+  AlertCircle,
+  MoreHorizontal
 } from "lucide-react";
 import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
 import ConfirmFn from "../../utility/confirmFn";
 import NoDataFound from "../../common/NoDataFound";
 import { useSocketContext } from "../../contexts/SocketContext";
+import { Progress } from "@/components/ui/progress";
 
 const LEAVE_STATUS = {
   pending: "Pending",
@@ -30,69 +33,30 @@ const EmployeeLeave = () => {
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [readOnly, setReadOnly] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
-  const leaveRequests = [
-    {
-      id: 1,
-      type: "Annual Leave",
-      startDate: "2024-02-20",
-      endDate: "2024-02-22",
-      days: 3,
-      status: "Approved",
-      reason: "Family vacation",
-      appliedDate: "2024-02-01",
-    },
-    {
-      id: 2,
-      type: "Sick Leave",
-      startDate: "2024-01-15",
-      endDate: "2024-01-15",
-      days: 1,
-      status: "Approved",
-      reason: "Medical appointment",
-      appliedDate: "2024-01-14",
-    },
-    {
-      id: 3,
-      type: "Personal Leave",
-      startDate: "2024-03-10",
-      endDate: "2024-03-12",
-      days: 3,
-      status: "Pending",
-      reason: "Personal matters",
-      appliedDate: "2024-02-28",
-    },
-  ];
-
-  const leaveBalance = [
-    { type: "Annual Leave", total: 25, used: 7, remaining: 18 },
-    { type: "Sick Leave", total: 15, used: 5, remaining: 10 },
-    { type: "Personal Leave", total: 10, used: 3, remaining: 7 },
-    { type: "Emergency Leave", total: 5, used: 0, remaining: 5 },
-  ];
 
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved":
-        return "bg-green-100 text-green-800";
+        return "bg-emerald-100 text-emerald-700 border-emerald-200";
       case "Pending":
-        return "bg-orange-100 text-orange-800";
+        return "bg-amber-100 text-amber-700 border-amber-200";
       case "Rejected":
-        return "bg-red-100 text-red-800";
+        return "bg-rose-100 text-rose-700 border-rose-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-700 border-slate-200";
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
       case "Approved":
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-3.5 w-3.5" />;
       case "Pending":
-        return <Clock className="h-4 w-4 text-orange-600" />;
+        return <Clock className="h-3.5 w-3.5" />;
       case "Rejected":
-        return <XCircle className="h-4 w-4 text-red-600" />;
+        return <XCircle className="h-3.5 w-3.5" />;
       default:
-        return <Clock className="h-4 w-4 text-gray-600" />;
+        return <Clock className="h-3.5 w-3.5" />;
     }
   };
 
@@ -118,16 +82,17 @@ const EmployeeLeave = () => {
     fetchLeave();
     getLeaveRequest();
   }, [updateDashboard]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Leave Management
           </h1>
-          <p className="text-slate-600">
-            Request and manage your leave applications
+          <p className="text-sm text-muted-foreground">
+            View balance and manage your leave requests
           </p>
         </div>
         <Button
@@ -136,7 +101,7 @@ const EmployeeLeave = () => {
             setLeaveRequestViewMode({});
             setShowRequestModal(true);
           }}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="shadow-lg shadow-primary/20"
         >
           <Plus className="h-4 w-4 mr-2" />
           Request Leave
@@ -144,235 +109,234 @@ const EmployeeLeave = () => {
       </div>
 
       {/* Leave Balance */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <CalendarDays className="h-5 w-5 text-blue-600" />
+      <Card className="border border-border/50 shadow-sm">
+        <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20">
+          <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+            <CalendarDays className="h-5 w-5 text-primary" />
             <span>Leave Balance</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {leaveDash?.leaves?.map((leave, index) => (
-              <div
-                key={index}
-                className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border"
-              >
-                <h3 className="font-semibold text-slate-800">
-                  {leave.leave_type}
-                </h3>
-                <div className="mt-3 space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Total:</span>
-                    <span className="font-medium">
-                      {leave.leave_count || 0} days
-                    </span>
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {leaveDash?.leaves?.map((leave, index) => {
+              const percentage = ((leave.leave_remaing || 0) / leave.leave_count) * 100;
+              return (
+                <div
+                  key={index}
+                  className="p-5 bg-card rounded-xl border border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300 group"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="font-semibold text-foreground text-sm">
+                      {leave.leave_type}
+                    </h3>
+                    <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
+                      {leave.leave_count} Total
+                    </Badge>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Used:</span>
-                    <span className="font-medium text-red-600">
-                      {leave.leave_used || 0} days
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Remaining:</span>
-                    <span className="font-medium text-green-600">
-                      {leave.leave_remaing || 0} days
-                    </span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2 mt-3">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
-                      style={{
-                        width: `${
-                          ((leave.leave_remaing || 0) / leave.leave_count) * 100
-                        }%`,
-                      }}
-                    />
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <p className="text-3xl font-bold text-foreground">
+                          {leave.leave_remaing || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mt-1">Remaining</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold text-destructive">
+                          {leave.leave_used || 0}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Used</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1.5">
+                      <Progress value={percentage} className="h-2 bg-muted" indicatorClassName="bg-primary" />
+                      <p className="text-[10px] text-right text-muted-foreground">{Math.round(percentage)}% Available</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
 
-      {/* Leave Requests */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5 text-purple-600" />
-            <span>My Leave Requests</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {leaveRequest?.map((request) => (
-              <div
-                key={request.id}
-                className="p-4 border border-slate-200 rounded-lg hover:shadow-md transition-shadow"
-              >
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-slate-800">
-                        {request.type}
-                      </h3>
-                      <Badge
-                        className={getStatusColor(
-                          LEAVE_STATUS[request?.status]
-                        )}
-                      >
-                        <div className="flex items-center space-x-1">
-                          {getStatusIcon(LEAVE_STATUS[request?.status])}
-                          <span>{request?.status}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Quick Stats */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="grid grid-cols-1 gap-4">
+            <Card className="border border-border/50 shadow-sm bg-emerald-50/50 dark:bg-emerald-900/10">
+              <CardContent className="p-6 flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                  <CheckCircle className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Approved</p>
+                  <p className="text-2xl font-bold text-foreground">{leaveDash?.total_approved || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-border/50 shadow-sm bg-amber-50/50 dark:bg-amber-900/10">
+              <CardContent className="p-6 flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                  <Clock className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-amber-700 uppercase tracking-wider">Pending</p>
+                  <p className="text-2xl font-bold text-foreground">{leaveDash?.total_pending || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-border/50 shadow-sm bg-purple-50/50 dark:bg-purple-900/10">
+              <CardContent className="p-6 flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+                  <CalendarDays className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-purple-700 uppercase tracking-wider">Total Balance</p>
+                  <p className="text-2xl font-bold text-foreground">{leaveDash?.total_remaining || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Leave Requests List */}
+        <Card className="lg:col-span-2 border border-border/50 shadow-sm h-full">
+          <CardHeader className="border-b border-border/50 px-6 py-4 bg-muted/20 flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+              <Calendar className="h-5 w-5 text-primary" />
+              <span>Request History</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="divide-y divide-border/50">
+              {leaveRequest?.length > 0 ? (
+                leaveRequest.map((request) => (
+                  <div
+                    key={request.id}
+                    className="p-6 hover:bg-muted/30 transition-colors flex flex-col sm:flex-row justify-between gap-4 group"
+                  >
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center justify-between sm:justify-start gap-3">
+                        <h3 className="font-semibold text-foreground text-sm">
+                          {request.type}
+                        </h3>
+                        <Badge
+                          variant="outline"
+                          className={`font-medium border ${getStatusColor(
+                            LEAVE_STATUS[request?.status]
+                          )}`}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            {getStatusIcon(LEAVE_STATUS[request?.status])}
+                            <span>{request?.status}</span>
+                          </div>
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div>
+                          <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">Duration</p>
+                          <p className="text-foreground mt-0.5 font-medium">
+                            {new Date(request.start_date).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                            })} 
+                            <span className="text-muted-foreground mx-2">→</span>
+                            {new Date(request.end_date).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                            })}
+                            <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                              {request.total_days} days
+                            </span>
+                          </p>
                         </div>
-                      </Badge>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <span className="text-slate-600">Duration:</span>
-                        <p className="font-medium">
-                          {new Date(request.start_date).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}{" "}
-                          -{" "}
-                          {new Date(request.end_date).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </p>
-
-                        <p className="text-slate-500">
-                          {request.total_days} day
-                          {request.total_days > 1 ? "s" : ""}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-slate-600">Reason:</span>
-                        <p className="font-medium">{request.reason}</p>
-                      </div>
-                      <div>
-                        <span className="text-slate-600">Applied Date:</span>
-                        <p className="font-medium">
-                          {new Date(request.createdAt).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </p>
+                        <div>
+                          <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">Applied On</p>
+                          <p className="text-foreground mt-0.5">
+                            {new Date(request.createdAt).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                        </div>
+                        <div className="col-span-2 mt-2">
+                          <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">Note</p>
+                          <p className="text-muted-foreground mt-0.5 italic text-xs">
+                            "{request.reason || "No reason provided"}"
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex space-x-2">
-                    {request.status === "pending" && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-600 border-red-200 hover:bg-red-50"
-                        onClick={async () => {
-                          ConfirmFn({
-                            onDelete: async () => {
-                              try {
-                                const resp =
-                                  await employeeLeaveApi.cancelLeaveRequest(
-                                    request.id
-                                  );
 
-                                if (resp?.status === 200) {
-                                  fetchLeave();
-                                  getLeaveRequest();
+                    <div className="flex items-center sm:items-start gap-2 pt-2 sm:pt-0">
+                      {request.status === "pending" && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-destructive border-destructive/20 hover:bg-destructive/10 h-8 text-xs"
+                          onClick={async () => {
+                            ConfirmFn({
+                              onDelete: async () => {
+                                try {
+                                  const resp =
+                                    await employeeLeaveApi.cancelLeaveRequest(
+                                      request.id
+                                    );
+
+                                  if (resp?.status === 200) {
+                                    fetchLeave();
+                                    getLeaveRequest();
+                                  }
+                                } catch (error) {
+                                  console.log(error);
                                 }
-                              } catch (error) {
-                                console.log(error);
-                              }
-                            },
-                            text_no: "No",
-                            text_yes: "Yes cancel",
-                            title: "Cancel leave request",
-                            message:
-                              "Are you sure you want to cancel this leave request?",
-                          });
+                              },
+                              text_no: "No",
+                              text_yes: "Yes, Cancel",
+                              title: "Cancel Request",
+                              message:
+                                "Are you sure you want to cancel this pending leave request?",
+                            });
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 text-xs text-muted-foreground hover:text-foreground"
+                        onClick={() => {
+                          setReadOnly(true);
+                          setLeaveRequestViewMode(request || {});
+                          setShowRequestModal(true);
                         }}
                       >
-                        Cancel
+                        Details
                       </Button>
-                    )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setReadOnly(true);
-                        setLeaveRequestViewMode(request || {});
-                        setShowRequestModal(true);
-                      }}
-                    >
-                      View Details
-                    </Button>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="p-12 flex justify-center">
+                  <NoDataFound message="No leave requests found" />
                 </div>
-              </div>
-            ))}
-
-            {leaveRequest?.length === 0 && <NoDataFound />}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-white" />
+              )}
             </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Total Approved
-            </h3>
-            <p className="text-2xl font-bold text-green-600">
-              {leaveDash?.total_approved || 0} days
-            </p>
-            <p className="text-sm text-slate-600">This year</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-              <Clock className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Pending
-            </h3>
-            <p className="text-2xl font-bold text-orange-600">
-              {leaveDash?.total_pending || 0} days
-            </p>
-            <p className="text-sm text-slate-600">Awaiting approval</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-              <CalendarDays className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Remaining
-            </h3>
-            <p className="text-2xl font-bold text-purple-600">
-              {leaveDash?.total_remaining || 0} days
-            </p>
-            <p className="text-sm text-slate-600">Available balance</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Leave Request Modal */}
       <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0 border-border bg-card shadow-2xl">
           <LeaveRequestModal
             onClose={() => {
               setShowRequestModal(false);

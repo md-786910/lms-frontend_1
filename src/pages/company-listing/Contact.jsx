@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageSquare, Send } from "lucide-react";
 import { useState } from "react";
+import MotionWrapper from "../../components/MotionWrapper";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -31,182 +32,191 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Office Address",
-      details: ["123 Business Street", "Tech City, TC 12345", "United States"]
+      title: "Global Headquarters",
+      details: ["123 Innovation Drive", "Tech Valley, CA 94043", "United States"]
     },
     {
       icon: Phone,
-      title: "Phone Number",
-      details: ["+1 (555) 123-4567", "Mon-Fri 9AM-6PM EST"]
+      title: "Direct Line",
+      details: ["+1 (888) 555-0123", "Mon-Fri 9AM-6PM PST"]
     },
     {
       icon: Mail,
-      title: "Email Address",
-      details: ["sales@hrms.com", "support@hrms.com"]
+      title: "Email Support",
+      details: ["enterprise@leanport.com", "support@leanport.com"]
     },
     {
       icon: Clock,
-      title: "Business Hours",
-      details: ["Monday - Friday: 9AM - 6PM", "Saturday: 10AM - 4PM", "Sunday: Closed"]
+      title: "Operating Hours",
+      details: ["Monday - Friday: 24 Hours", "Weekend: Emergency Only"]
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-background">
-      {/* Hero Section */}
-      <section className="py-20 px-4 text-center bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h1 className="text-4xl font-bold mb-6 text-white">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-white/80 mb-8">
-            Have questions about our HRMS? We're here to help you find the perfect solution for your business.
-          </p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-background font-sans">
+      <MotionWrapper>
+        {/* Hero Section */}
+        <section className="relative py-24 px-6 text-center overflow-hidden bg-[#020817]">
+           {/* Background Gradients */}
+           <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-blue-900/20 rounded-full blur-[120px] -z-10" />
+           <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-indigo-900/20 rounded-full blur-[100px] -z-10" />
 
-      {/* Contact Section */}
-      <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-background"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <Card className="bg-gradient-card border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle>Send us a Message</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">Full Name *</Label>
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-800 text-blue-400 text-xs font-bold uppercase tracking-wider mb-6 animate-enter">
+              <MessageSquare className="h-3 w-3" /> We're here to help
+            </div>
+            <h1 className="text-4xl lg:text-6xl font-black text-white tracking-tighter mb-6">
+              Get in Touch
+            </h1>
+            <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Have questions about our enterprise solutions? Our team is ready to provide answers.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className="py-24 px-6 relative bg-slate-50">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
+              {/* Contact Form */}
+              <Card className="border border-slate-200 shadow-xl bg-white">
+                <CardHeader className="p-8 pb-0">
+                  <CardTitle className="text-2xl font-bold text-slate-900">Send us a Message</CardTitle>
+                  <p className="text-slate-500 mt-2">Fill out the form below and we'll get back to you shortly.</p>
+                </CardHeader>
+                <CardContent className="p-8">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name" className="text-xs font-bold uppercase text-slate-500 tracking-wider">Full Name *</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          className="h-11 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-xs font-bold uppercase text-slate-500 tracking-wider">Email Address *</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="john@company.com"
+                          className="h-11 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="company" className="text-xs font-bold uppercase text-slate-500 tracking-wider">Company Name</Label>
                       <Input
-                        id="name"
-                        name="name"
+                        id="company"
+                        name="company"
                         type="text"
-                        required
-                        value={formData.name}
+                        value={formData.company}
                         onChange={handleChange}
-                        placeholder="Your full name"
+                        placeholder="Acme Inc."
+                        className="h-11 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="email">Email Address *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
+                    <div className="space-y-2">
+                      <Label htmlFor="message" className="text-xs font-bold uppercase text-slate-500 tracking-wider">Message *</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
                         required
-                        value={formData.email}
+                        value={formData.message}
                         onChange={handleChange}
-                        placeholder="your.email@company.com"
+                        placeholder="How can we help you?"
+                        rows={5}
+                        className="bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500 resize-none"
                       />
                     </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="company">Company Name</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      type="text"
-                      value={formData.company}
-                      onChange={handleChange}
-                      placeholder="Your company name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="message">Message *</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell us about your HR needs and how we can help..."
-                      rows={5}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full bg-primary">
-                    Send Message
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                    <Button type="submit" size="lg" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-12 shadow-lg shadow-blue-600/20">
+                      <Send className="w-4 h-4 mr-2" /> Send Message
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
 
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-                <p className="text-muted-foreground mb-8">
-                  Reach out to us through any of the following channels. Our team is ready to assist you.
-                </p>
-              </div>
+              {/* Contact Information */}
+              <div className="space-y-10 lg:pt-10">
+                <div>
+                  <h2 className="text-3xl font-black text-slate-900 mb-6">Contact Information</h2>
+                  <p className="text-slate-500 text-lg leading-relaxed">
+                    Prefer to reach out directly? Our support team is available 24/7 to assist you with any inquiries.
+                  </p>
+                </div>
 
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <Card key={index} className="bg-gradient-card border-0 shadow-lg">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <info.icon className="h-6 w-6 text-primary mt-1" />
+                <div className="grid gap-6">
+                  {contactInfo.map((info, index) => (
+                    <Card key={index} className="border border-slate-200 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group bg-white">
+                      <CardContent className="p-6 flex items-start gap-5">
+                        <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          <info.icon className="h-6 w-6" />
+                        </div>
                         <div>
-                          <h3 className="font-semibold mb-2">{info.title}</h3>
+                          <h3 className="font-bold text-slate-900 mb-2">{info.title}</h3>
                           {info.details.map((detail, idx) => (
-                            <p key={idx} className="text-muted-foreground text-sm">
+                            <p key={idx} className="text-slate-500 text-sm">
                               {detail}
                             </p>
                           ))}
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-primary relative">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-white">Quick Answers</h2>
-            <p className="text-white/80 text-lg">
-              Common questions from our customers
-            </p>
-          </div>
-          <div className="bg-white p-8 rounded-xl shadow-xl">
-            <div className="grid md:grid-cols-2 gap-8">
+        {/* FAQ Section */}
+        <section className="py-24 px-6 bg-white border-t border-slate-200">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-black text-slate-900 mb-4">Quick Answers</h2>
+              <p className="text-slate-500 text-lg">
+                Common questions from our prospective partners
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-10">
               <div>
-                <h3 className="font-semibold mb-2">How quickly can we get started?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Most companies are up and running within 24-48 hours of signing up.
+                <h3 className="font-bold text-slate-900 mb-2">How quickly can we onboard?</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Our dedicated success team ensures most enterprise clients are fully operational within 5 business days.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold mb-2">Do you offer training?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Yes, we provide comprehensive onboarding and training for all new customers.
+                <h3 className="font-bold text-slate-900 mb-2">Do you offer custom SLA?</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Yes, enterprise plans come with customizable Service Level Agreements to meet your compliance needs.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold mb-2">Can you migrate our existing data?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Absolutely! Our team will help you migrate all your existing HR data seamlessly.
+                <h3 className="font-bold text-slate-900 mb-2">Data migration support?</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  We provide full migration assistance from legacy systems like SAP, Oracle, or spreadsheets.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold mb-2">What about data security?</h3>
-                <p className="text-muted-foreground text-sm">
-                  We use enterprise-grade security with encryption and comply with all major standards.
+                <h3 className="font-bold text-slate-900 mb-2">Security certifications?</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  We are SOC2 Type II certified, GDPR compliant, and host data on AWS ISO 27001 secure servers.
                 </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </MotionWrapper>
     </div>
   );
 };

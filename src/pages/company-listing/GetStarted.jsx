@@ -13,13 +13,14 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle, Building, Users, Globe } from "lucide-react";
+import { CheckCircle, Building, Users, Globe, ArrowRight, ArrowLeft } from "lucide-react";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { industries } from "../../data/industries";
 import { companySizes } from "../../data/companySize";
 import axiosInstance from "../../api/axiosInstance";
 import { companyPayload } from "../../utility/companyPayload";
 import { useAuth } from "../../contexts/AuthContext";
+import MotionWrapper from "../../components/MotionWrapper";
 
 const GetStarted = () => {
   const { login, user: userData } = useAuth();
@@ -92,9 +93,9 @@ const GetStarted = () => {
   );
 
   const steps = [
-    { number: 1, title: "Company Information", icon: Building },
-    { number: 2, title: "Admin Details", icon: Users },
-    { number: 3, title: "Account Setup", icon: Globe },
+    { number: 1, title: "Company", icon: Building },
+    { number: 2, title: "Admin", icon: Users },
+    { number: 3, title: "Account", icon: Globe },
   ];
 
   // Handle Next Button Click
@@ -172,387 +173,329 @@ const GetStarted = () => {
   return (
     <>
       {init && (
-        <div className="fixed min-h-screen z-30  w-full bg-gradient-background">
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 text-center">
-            <h5 className="text-lg font-medium mb-4">
-              Initializing company, please wait...
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="flex flex-col items-center p-8 bg-card border border-border shadow-xl rounded-2xl">
+            <h5 className="text-lg font-bold mb-4 text-foreground">
+              Initializing your workspace...
             </h5>
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent" />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent" />
           </div>
         </div>
       )}
-      <div className=" min-h-screen bg-gradient-background py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
+      
+      <div className="min-h-screen bg-background font-sans flex items-center justify-center py-12 px-4 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[#020817] -z-20" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] -z-10" />
+
+        <MotionWrapper className="w-full max-w-5xl">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">
-              Get Started with Our HRMS
+            <div className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-600/20 mb-6">
+                <Globe className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-4xl font-black text-white tracking-tight mb-4">
+              Setup Your Organization
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Create your company account and start your free trial today
+            <p className="text-xl text-slate-400">
+              Complete these steps to access your admin dashboard
             </p>
           </div>
 
-          {/* Progress Steps */}
-          <div className="flex justify-center mb-12">
-            <div className="flex items-center space-x-8">
-              {steps.map((step, index) => (
-                <div key={step.number} className="flex items-center">
-                  <div
-                    className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
-                      currentStep >= step.number
-                        ? "bg-primary border-primary text-primary-foreground"
-                        : "border-muted-foreground text-muted-foreground"
-                    }`}
-                  >
-                    {currentStep > step.number ? (
-                      <CheckCircle className="h-6 w-6" />
-                    ) : (
-                      <step.icon className="h-6 w-6" />
-                    )}
-                  </div>
-                  <div className="ml-3 hidden sm:block">
-                    <p
-                      className={`font-medium ${
-                        currentStep >= step.number
-                          ? "text-primary"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      {step.title}
-                    </p>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`hidden sm:block w-16 h-0.5 ml-8 ${
-                        currentStep > step.number
-                          ? "bg-primary"
-                          : "bg-muted-foreground"
-                      }`}
-                    />
-                  )}
+          <div className="grid lg:grid-cols-12 gap-8 items-start">
+            {/* Steps Sidebar */}
+            <div className="lg:col-span-4 hidden lg:block sticky top-8">
+                <div className="space-y-6">
+                    {steps.map((step, index) => (
+                        <div key={step.number} className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${
+                            currentStep === step.number 
+                                ? "bg-white border-l-4 border-blue-600 shadow-lg" 
+                                : currentStep > step.number 
+                                    ? "bg-blue-900/20 opacity-60" 
+                                    : "opacity-40"
+                        }`}>
+                            <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
+                                currentStep === step.number ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-600"
+                            }`}>
+                                {currentStep > step.number ? <CheckCircle className="h-6 w-6" /> : <step.icon className="h-5 w-5" />}
+                            </div>
+                            <div>
+                                <p className={`text-xs font-bold uppercase tracking-wider ${currentStep === step.number ? "text-blue-600" : "text-slate-500"}`}>Step 0{step.number}</p>
+                                <h3 className={`font-bold ${currentStep === step.number ? "text-slate-900" : "text-slate-400"}`}>{step.title}</h3>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-              ))}
             </div>
+
+            {/* Form Card */}
+            <Card className="lg:col-span-8 border-0 shadow-2xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                <div className="h-2 bg-slate-100 w-full">
+                    <div className="h-full bg-blue-600 transition-all duration-500 ease-out" style={{ width: `${(currentStep / 3) * 100}%` }} />
+                </div>
+                
+                <CardHeader className="p-8 pb-0">
+                    <CardTitle className="text-2xl font-bold text-slate-900">
+                        {steps[currentStep - 1].title} Details
+                    </CardTitle>
+                </CardHeader>
+                
+                <CardContent className="p-8 pt-6 space-y-6">
+                    {/* Step 1: Company Information */}
+                    {currentStep === 1 && (
+                        <div className="space-y-6 animate-enter">
+                            <div className="space-y-2">
+                                <Label htmlFor="companyName" className="text-xs font-bold uppercase tracking-wider text-slate-500">Company Name *</Label>
+                                <Input
+                                    id="companyName"
+                                    type="text"
+                                    value={values.companyName}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name="companyName"
+                                    placeholder="Acme Corp"
+                                    className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                />
+                                {errors.companyName && <p className="text-red-500 text-xs mt-1">{errors.companyName}</p>}
+                            </div>
+                            
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="industry" className="text-xs font-bold uppercase tracking-wider text-slate-500">Industry *</Label>
+                                    <Select
+                                        value={values.industry}
+                                        onValueChange={(value) => handleChange({ target: { name: "industry", value } })}
+                                    >
+                                        <SelectTrigger className="h-12 bg-slate-50 border-slate-200">
+                                            <SelectValue placeholder="Select industry" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Object.entries(industries).map(([id, industry]) => (
+                                                <SelectItem key={id} value={id}>{industry}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.industry && <p className="text-red-500 text-xs mt-1">{errors.industry}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="companySize" className="text-xs font-bold uppercase tracking-wider text-slate-500">Size *</Label>
+                                    <Select
+                                        value={values.companySize}
+                                        onValueChange={(value) => handleChange({ target: { name: "companySize", value } })}
+                                    >
+                                        <SelectTrigger className="h-12 bg-slate-50 border-slate-200">
+                                            <SelectValue placeholder="Select size" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {companySizes.map((size) => (
+                                                <SelectItem key={size} value={size}>{size}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.companySize && <p className="text-red-500 text-xs mt-1">{errors.companySize}</p>}
+                                </div>
+                            </div>
+                            
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="country" className="text-xs font-bold uppercase tracking-wider text-slate-500">Country</Label>
+                                    <Input
+                                        id="country"
+                                        type="text"
+                                        value={values.country}
+                                        name="country"
+                                        disabled
+                                        className="h-12 bg-slate-100 text-slate-500 border-slate-200 cursor-not-allowed"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="website" className="text-xs font-bold uppercase tracking-wider text-slate-500">Website</Label>
+                                    <Input
+                                        id="website"
+                                        type="url"
+                                        value={values.website}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="website"
+                                        placeholder="https://acme.com"
+                                        className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 2: Admin Details */}
+                    {currentStep === 2 && (
+                        <div className="space-y-6 animate-enter">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="firstName" className="text-xs font-bold uppercase tracking-wider text-slate-500">First Name *</Label>
+                                    <Input
+                                        id="firstName"
+                                        value={values.firstName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="firstName"
+                                        placeholder="John"
+                                        className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                    {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="lastName" className="text-xs font-bold uppercase tracking-wider text-slate-500">Last Name</Label>
+                                    <Input
+                                        id="lastName"
+                                        value={values.lastName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="lastName"
+                                        placeholder="Doe"
+                                        className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                    {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">Work Email *</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name="email"
+                                    placeholder="john@acme.com"
+                                    className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                />
+                                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                            </div>
+                            
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-slate-500">Phone *</Label>
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        value={values.phone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="phone"
+                                        placeholder="+1 (555) 000-0000"
+                                        className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="jobTitle" className="text-xs font-bold uppercase tracking-wider text-slate-500">Job Title *</Label>
+                                    <Input
+                                        id="jobTitle"
+                                        value={values.jobTitle}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="jobTitle"
+                                        placeholder="HR Manager"
+                                        className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                    {errors.jobTitle && <p className="text-red-500 text-xs mt-1">{errors.jobTitle}</p>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 3: Account Setup */}
+                    {currentStep === 3 && (
+                        <div className="space-y-6 animate-enter">
+                            <div className="space-y-2">
+                                <Label htmlFor="password" class="text-xs font-bold uppercase tracking-wider text-slate-500">Password *</Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name="password"
+                                    placeholder="••••••••"
+                                    className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                />
+                                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <Label htmlFor="confirmPassword" class="text-xs font-bold uppercase tracking-wider text-slate-500">Confirm Password *</Label>
+                                <Input
+                                    id="confirmPassword"
+                                    type="password"
+                                    value={values.confirmPassword}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    name="confirmPassword"
+                                    placeholder="••••••••"
+                                    className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                />
+                                {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+                            </div>
+                            
+                            <div className="pt-4 space-y-4">
+                                <div className="flex items-start space-x-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                                    <Checkbox
+                                        id="agreeToTerms"
+                                        checked={values.agreeToTerms}
+                                        onCheckedChange={(checked) => handleChange({ target: { name: "agreeToTerms", value: checked } })}
+                                        className="mt-1"
+                                    />
+                                    <div className="space-y-1">
+                                        <Label htmlFor="agreeToTerms" className="text-sm font-medium text-slate-700 cursor-pointer">
+                                            I agree to the Terms of Service and Privacy Policy
+                                        </Label>
+                                        <p className="text-xs text-slate-500">By creating an account, you agree to our comprehensive terms and data processing agreement.</p>
+                                    </div>
+                                </div>
+                                {errors.agreeToTerms && <p className="text-red-500 text-xs">{errors.agreeToTerms}</p>}
+                                
+                                <div className="flex items-center space-x-3 p-4">
+                                    <Checkbox
+                                        id="subscribeNewsletter"
+                                        checked={values.subscribeNewsletter}
+                                        onCheckedChange={(checked) => handleChange({ target: { name: "subscribeNewsletter", value: checked } })}
+                                    />
+                                    <Label htmlFor="subscribeNewsletter" className="text-sm text-slate-600 font-normal cursor-pointer">
+                                        Keep me updated with product news and HR tips
+                                    </Label>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Navigation Buttons */}
+                    <div className="flex justify-between pt-8 border-t border-slate-100">
+                        <Button
+                            variant="ghost"
+                            onClick={handlePrevious}
+                            disabled={currentStep === 1}
+                            className="text-slate-500 hover:text-slate-900"
+                        >
+                            <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+                        </Button>
+                        
+                        {currentStep < 3 ? (
+                            <Button onClick={handleNext} className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 h-12 shadow-lg shadow-blue-600/20">
+                                Next Step <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => handleSubmitForm()}
+                                disabled={errors.agreeToTerms}
+                                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 h-12 shadow-lg shadow-emerald-600/20"
+                            >
+                                Create Account
+                            </Button>
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
           </div>
-
-          {/* Form */}
-          <Card className="max-w-2xl mx-auto bg-gradient-card border-0 shadow-xl">
-            <CardHeader>
-              <CardTitle>
-                Step {currentStep}: {steps[currentStep - 1].title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Step 1: Company Information */}
-              {currentStep === 1 && (
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="companyName">Company Name *</Label>
-                    <Input
-                      id="companyName"
-                      type="text"
-                      value={values.companyName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="companyName"
-                      placeholder="Enter your country"
-                      // disabled
-                    />
-                    {errors.companyName && (
-                      <p className="text-red-500 text-sm">
-                        {errors.companyName}
-                      </p>
-                    )}
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="industry">Industry *</Label>
-                      <Select
-                        value={values.industry}
-                        onValueChange={(value) =>
-                          handleChange({ target: { name: "industry", value } })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select industry" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(industries).map(([id, industry]) => (
-                            <SelectItem key={id} value={id}>
-                              {industry}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {errors.industry && (
-                        <p className="text-red-500 text-sm">
-                          {errors.industry}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="companySize">Company Size *</Label>
-                      <Select
-                        value={values.companySize}
-                        onValueChange={(value) =>
-                          handleChange({
-                            target: { name: "companySize", value },
-                          })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select company size" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {companySizes.map((size) => (
-                            <SelectItem key={size} value={size}>
-                              {size}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {errors.companySize && (
-                        <p className="text-red-500 text-sm">
-                          {errors.companySize}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="country">Country *</Label>
-                      <Input
-                        id="country"
-                        type="text"
-                        value={values.country}
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        name="country"
-                        placeholder="Enter your company"
-                        disabled
-                      />
-                      {errors.country && (
-                        <p className="text-red-500 text-sm">{errors.country}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="website">Website (Optional)</Label>
-                      <Input
-                        id="website"
-                        type="url"
-                        value={values.website}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        name="website"
-                        placeholder="https://yourcompany.com"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 2: Admin Details */}
-              {currentStep === 2 && (
-                <div className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">First Name *</Label>
-                      <Input
-                        id="firstName"
-                        type="text"
-                        value={values.firstName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        name="firstName"
-                        placeholder="Enter your first name"
-                      />
-                      {errors.firstName && (
-                        <p className="text-red-500 text-sm">
-                          {errors.firstName}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName">Last Name </Label>
-                      <Input
-                        id="lastName"
-                        type="text"
-                        value={values.lastName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        name="lastName"
-                        placeholder="Enter your last name"
-                      />
-                      {errors.lastName && (
-                        <p className="text-red-500 text-sm">
-                          {errors.lastName}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="email"
-                      placeholder="your.email@company.com"
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">{errors.email}</p>
-                    )}
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="phone">Phone Number *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={values.phone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        name="phone"
-                        placeholder="+1 (555) 123-4567"
-                      />
-                      {errors.phone && (
-                        <p className="text-red-500 text-sm">{errors.phone}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="jobTitle">Job Title *</Label>
-                      <Input
-                        id="jobTitle"
-                        type="text"
-                        value={values.jobTitle}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        name="jobTitle"
-                        placeholder="e.g., HR Manager"
-                      />
-                      {errors.jobTitle && (
-                        <p className="text-red-500 text-sm">
-                          {errors.jobTitle}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 3: Account Setup */}
-              {currentStep === 3 && (
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="password">Password *</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="password"
-                      placeholder="Create a strong password"
-                    />
-                    {errors.password && (
-                      <p className="text-red-500 text-sm">{errors.password}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="confirmPassword">Confirm Password *</Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      value={values.confirmPassword}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="confirmPassword"
-                      placeholder="Confirm your password"
-                    />
-                    {errors.confirmPassword && (
-                      <p className="text-red-500 text-sm">
-                        {errors.confirmPassword}
-                      </p>
-                    )}
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="agreeToTerms"
-                        checked={values.agreeToTerms}
-                        onCheckedChange={(checked) =>
-                          handleChange({
-                            target: { name: "agreeToTerms", value: checked },
-                          })
-                        }
-                      />
-                      <Label htmlFor="agreeToTerms" className="text-sm">
-                        I agree to the{" "}
-                        <a href="#" className="text-primary hover:underline">
-                          Terms of Service
-                        </a>{" "}
-                        and{" "}
-                        <a href="#" className="text-primary hover:underline">
-                          Privacy Policy
-                        </a>{" "}
-                        *
-                      </Label>
-                      {errors.agreeToTerms && (
-                        <p className="text-red-500 text-sm">
-                          {errors.agreeToTerms}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="subscribeNewsletter"
-                        checked={values.subscribeNewsletter}
-                        onCheckedChange={(checked) =>
-                          handleChange({
-                            target: {
-                              name: "subscribeNewsletter",
-                              value: checked,
-                            },
-                          })
-                        }
-                      />
-                      <Label htmlFor="subscribeNewsletter" className="text-sm">
-                        Subscribe to our newsletter for updates and tips
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6">
-                <Button
-                  variant="outline"
-                  onClick={handlePrevious}
-                  disabled={currentStep === 1}
-                >
-                  Previous
-                </Button>
-                {currentStep < 3 ? (
-                  <Button onClick={handleNext} className="bg-primary">
-                    Next
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => handleSubmitForm()}
-                    disabled={errors.agreeToTerms}
-                    className="bg-primary"
-                  >
-                    Create Account
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        </MotionWrapper>
       </div>
     </>
   );

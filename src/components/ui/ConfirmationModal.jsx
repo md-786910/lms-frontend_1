@@ -1,36 +1,47 @@
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
-import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const ConfirmationModal = ({
   open,
   onClose,
   onConfirm,
-  message = "Are you sure you want to delete employee",
+  title = "Are you sure?",
+  message = "This action cannot be undone.",
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  variant = "destructive" // default to destructive as it's mostly used for delete/suspend
 }) => {
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure you want to Suspend this employee?</DialogTitle>    
-        </DialogHeader>
-        <div className="flex justify-center space-x-4 pt-4">
-          <Button variant="outline" onClick={() => onClose(false)}>
-            No
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={() => {
+    <AlertDialog open={open} onOpenChange={onClose}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {message}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={() => onClose(false)}>{cancelText}</AlertDialogCancel>
+          <AlertDialogAction 
+             className={variant === "destructive" ? "bg-red-600 hover:bg-red-700" : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"}
+             onClick={() => {
               onConfirm();
               onClose(false);
             }}
           >
-            Yes
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+            {confirmText}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

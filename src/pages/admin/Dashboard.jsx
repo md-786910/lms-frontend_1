@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { format, isSameDay } from "date-fns";
 import {
   Users,
@@ -17,27 +18,29 @@ import {
   Loader2,
   Download,
   BellRing,
-  CalendarX
+  CalendarX,
 } from "lucide-react";
 
 import { toast } from "sonner";
 
-import holidayJsonData from "../../data/holiday.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { companyAPI } from "../../api/companyApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { useSocketContext } from "../../contexts/SocketContext";
 import EmployeeLeaveTable from "../../components/EmployeeLeaveTable";
 import dayjs from "dayjs";
+import HolidayModal from "../../components/HolidayModal";
+
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showHolidayModal, setShowHolidayModal] = useState(false);
-  const [holidayList, setHolidayList] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -54,13 +57,6 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    const year = new Date().getFullYear();
-    const holidayData = holidayJsonData.holiday_data?.find(
-      (item) => item.year === year
-    );
-    if (holidayData) {
-      setHolidayList(holidayData);
-    }
     const fetchDashboardData = async () => {
       try {
         const response = await companyAPI.dashboard();
@@ -86,46 +82,37 @@ const AdminDashboard = () => {
     {
       title: "Total Employees",
       value: dashboardData?.total_employee ?? 0,
-      change: "+0",
-      changeType: "neutral",
       icon: Users,
-      color: "from-blue-500 to-blue-600",
+      color: "text-blue-600",
+      bg: "bg-blue-100",
     },
     {
       title: "On Leave Today",
       value: dashboardData?.on_leave_today_count ?? 0,
-      change: "+0",
-      changeType: "neutral",
       icon: UserX,
-      color: "from-orange-500 to-orange-600",
+      color: "text-orange-600",
+      bg: "bg-orange-100",
     },
     {
       title: "Active Employees",
       value: dashboardData?.active_employee ?? 0,
-      change: "+0",
-      changeType: "positive",
       icon: UserCheck,
-      color: "from-green-500 to-green-600",
+      color: "text-emerald-600",
+      bg: "bg-emerald-100",
     },
-    // {
-    //   title: "Avg Working Hours",
-    //   value: "7.8h", // Replace if your API provides this
-    //   change: "+0.2h",
-    //   changeType: "positive",
-    //   icon: Clock,
-    //   color: "from-purple-500 to-purple-600",
-    // },
   ];
 
   const leaveData = (dashboardData?.on_leave_today || []).map(
     (leave, index) => ({
       id: index,
-      employeeName: `${leave.employee.first_name} ${leave.employee.last_name}`,
-      employeeId: leave.employee?.employee_no ?? leave?.employee?.id,
+      employeeName: leave?.employee
+        ? `${leave.employee.first_name} ${leave.employee.last_name}`
+        : "Unknown",
+      employeeId: leave?.employee?.employee_no ?? leave?.employee?.id ?? "N/A",
       date: new Date(),
-      type: leave.leave_type.leave_type,
-      status: leave.status,
-      leaveOn: JSON.parse(leave?.leave_on)?.find(
+      type: leave?.leave_type?.leave_type || "N/A",
+      status: leave?.status || "Pending",
+      leaveOn: JSON.parse(leave?.leave_on || "[]")?.find(
         (f) => f.date === format(new Date(), "yyyy-MM-dd")
       ),
     })
@@ -140,15 +127,10 @@ const AdminDashboard = () => {
     })
   );
 
-  const topPerformers = [
-    // { name: "Md Ashif", department: "Engineering", score: 98 },
-    // { name: "Md Amir", department: "Engineering", score: 95 },
-    // { name: "Sohail", department: "Engineering", score: 92 },
-    // { name: "Saddam", department: "Marketing", score: 90 },
-  ];
-
-  const getEmployeesOnLeave = (date) =>
-    leaveData?.filter((leave) => isSameDay(leave.date, date));
+  const getEmployeesOnLeave = (date) => {
+    if (!date) return [];
+    return leaveData?.filter((leave) => isSameDay(leave.date, date));
+  };
 
   const handleSendMail = async () => {
     try {
@@ -199,139 +181,97 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="space-y-6">
-        {/* Welcome Header */}
-
+      <div className="space-y-8 animate-enter">
+        {/* Notifications */}
         {notifications
           ?.filter((a) => !a.read)
-          ?.map((notification) => {
-            const isLeaveRequest = notification.title?.toLowerCase().includes("leave");
-            const isApproved = notification.message?.toLowerCase().includes("approved");
-            const isRejected = notification.message?.toLowerCase().includes("rejected");
-
-            const getIcon = () => {
-              if (isApproved) return <CheckCircle className="h-5 w-5 text-white" />;
-              if (isRejected) return <X className="h-5 w-5 text-white" />;
-              if (isLeaveRequest) return <CalendarIcon className="h-5 w-5 text-white" />;
-              return <Bell className="h-5 w-5 text-white" />;
-            };
-
-            const getGradient = () => {
-              if (isApproved) return "from-emerald-500 to-green-600";
-              if (isRejected) return "from-red-500 to-rose-600";
-              if (isLeaveRequest) return "from-violet-500 to-purple-600";
-              return "from-blue-500 to-indigo-600";
-            };
-
-            const getTitle = () => {
-              if (isApproved) return "Leave Approved";
-              if (isRejected) return "Leave Rejected";
-              if (isLeaveRequest) return "New Leave Request";
-              return notification.title || "Notification";
-            };
-
-            return (
-              <div
-                key={notification.id}
-                className="relative bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-200"
-                onClick={async () => {
-                  const resp = await companyAPI.readNotification(notification.id);
-                  if (resp.status) {
-                    fetchNotification();
-                  }
-                }}
-              >
-                <div className="flex items-start gap-4 p-4">
-                  {/* Icon */}
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${getGradient()} flex items-center justify-center shadow-md`}>
-                    {getIcon()}
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-slate-800 text-sm">
-                        {getTitle()}
-                      </h4>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                        New
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      {notification.message}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {dayjs(notification.createdAt).fromNow()}
-                    </p>
-                  </div>
-
-                  {/* Close button */}
-                  <button
-                    className="flex-shrink-0 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      const resp = await companyAPI.readNotification(notification.id);
-                      if (resp.status) {
-                        fetchNotification();
-                      }
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+          ?.map((notification) => (
+            <div
+              key={notification.id}
+              className="relative bg-card rounded-xl shadow-sm border border-border overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 animate-enter"
+              onClick={async () => {
+                const resp = await companyAPI.readNotification(notification.id);
+                if (resp.status) fetchNotification();
+              }}
+            >
+              <div className="flex items-start gap-4 p-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Bell className="h-5 w-5 text-primary" />
                 </div>
-
-                {/* Accent line */}
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${getGradient()}`} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-bold text-foreground text-sm">
+                      {notification.title}
+                    </h4>
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] h-4 uppercase bg-primary/5"
+                    >
+                      New
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {notification.message}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/50 mt-2 font-bold uppercase tracking-widest">
+                    {dayjs(notification.createdAt).fromNow()}
+                  </p>
+                </div>
+                <button className="p-1 text-muted-foreground/40 hover:text-destructive">
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-            );
-          })}
+            </div>
+          ))}
 
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
-          <div className="flex justify-between items-center">
+        {/* Welcome Header */}
+        <div className="bg-primary rounded-2xl p-8 text-primary-foreground shadow-xl shadow-primary/20 relative overflow-hidden border border-white/10">
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white/10 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-black/10 blur-3xl"></div>
+
+          <div className="flex justify-between items-center relative z-10">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Welcome back, Admin!</h1>
-              <p className="text-blue-100">
-                Here's what's happening with your team today.
+              <h1 className="text-3xl font-black mb-2 tracking-tighter uppercase">
+                Admin Console
+              </h1>
+              <p className="text-primary-foreground/80 font-medium text-lg">
+                Performance tracking and operational overview for today.
               </p>
             </div>
-            <button
+            <Button
               onClick={() => setShowHolidayModal(true)}
-              className="bg-white text-blue-700 font-semibold px-4 py-2 rounded-md hover:bg-blue-100 shadow"
+              variant="secondary"
+              className="font-bold shadow-lg"
             >
-              View Holidays
-            </button>
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              Holiday List
+            </Button>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <Card
                 key={index}
-                className="border-0 shadow-lg bg-white hover:shadow-xl transition-shadow"
+                className="border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 card-hover group"
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-slate-600 text-sm font-medium">
+                    <div className="space-y-1">
+                      <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest">
                         {stat.title}
                       </p>
-                      <p className="text-2xl font-bold text-slate-800 mt-2">
+                      <p className="text-4xl font-black text-foreground tracking-tighter">
                         {stat.value}
                       </p>
-                      {/* <p className={`text-sm font-medium mt-2 ${stat.changeType === 'positive' ? 'text-green-600' :
-                        stat.changeType === 'negative' ? 'text-red-600' : 'text-orange-600'
-                        }`}>
-                        {stat.change} from last month
-                      </p> */}
                     </div>
                     <div
-                      className={`p-3 rounded-2xl bg-gradient-to-r ${stat.color}`}
+                      className={`p-4 rounded-xl ${stat.bg} group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <Icon className="h-6 w-6 text-white" />
+                      <Icon className={`h-7 w-7 ${stat.color}`} />
                     </div>
                   </div>
                 </CardContent>
@@ -340,106 +280,158 @@ const AdminDashboard = () => {
           })}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Calendar */}
-          <Card className="lg:col-span-2 border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <CalendarIcon className="h-5 w-5 text-blue-600" />
-                <span>Employee Leave Calendar</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
+        {/* Full Width Calendar Section */}
+        <Card className="border border-border/50 shadow-sm overflow-hidden flex flex-col">
+          <CardHeader className="border-b border-border/50 bg-muted/20 px-8 py-5">
+            <CardTitle className="flex items-center space-x-3 text-base font-bold text-foreground">
+              <CalendarIcon className="h-5 w-5 text-primary" />
+              <span>Global Attendance & Leave Calendar</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0 flex-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12">
+              {/* Large Calendar Side */}
+              <div className="lg:col-span-8 p-8 flex justify-center border-b lg:border-b-0 lg:border-r border-border/50 bg-card">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
-                  // onSelect={setSelectedDate}
-                  className="W-full max-w-md"
+                  onSelect={setSelectedDate}
+                  required
+                  className="w-full max-w-full"
+                  classNames={{
+                    months: "w-full space-y-4",
+                    month: "w-full space-y-6",
+                    table: "w-full border-collapse",
+                    head_row: "flex w-full justify-between mb-4",
+                    head_cell:
+                      "text-muted-foreground rounded-md w-12 font-bold text-[10px] uppercase tracking-[0.2em] text-center",
+                    row: "flex w-full justify-between mt-2",
+                    cell: "h-14 w-14 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                    day: "h-12 w-12 p-0 font-bold aria-selected:opacity-100 hover:bg-primary/5 rounded-full transition-all duration-200",
+                    day_selected:
+                      "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground shadow-xl shadow-primary/40 scale-110",
+                    day_today:
+                      "bg-muted text-foreground border border-primary/20",
+                  }}
                   modifiers={{
                     hasLeave: leaveData.map((leave) => leave.date),
                   }}
                   modifiersStyles={{
                     hasLeave: {
-                      backgroundColor: "#fef3c7",
-                      color: "#d97706",
-                      fontWeight: "bold",
+                      border: "2px solid hsl(var(--primary) / 0.3)",
+                      backgroundColor: "hsl(var(--primary) / 0.05)",
                     },
                   }}
                 />
-                <div className="space-y-4">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
-                  <h4 className="text-2xl font-bold text-slate-900">
-                    {selectedDate
-                      ? format(selectedDate, "EEEE, dd MMMM")
-                      : "Select a date"}
+              </div>
+
+              {/* Leave Details Side */}
+              <div className="lg:col-span-4 bg-muted/5 flex flex-col h-full min-h-[500px]">
+                <div className="p-8 border-b border-border/50 bg-muted/10">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-1">
+                    Timeline for
+                  </p>
+                  <h4 className="text-2xl font-black text-foreground tracking-tight">
+                    {format(selectedDate, "EEEE, dd MMMM")}
                   </h4>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-6 custom-scrollbar space-y-4">
                   {selectedDateLeaves.length > 0 ? (
-                    <div className="space-y-3">
-                      {selectedDateLeaves.map((leave) => (
-                        <div
-                          key={leave.id}
-                          className="p-3 bg-orange-50 rounded-lg border border-orange-200"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="font-medium text-slate-800 flex  items-center justify-between">
+                    selectedDateLeaves.map((leave) => (
+                      <div
+                        key={leave.id}
+                        className="p-4 bg-card border border-border/60 rounded-2xl shadow-sm hover:border-primary/40 hover:shadow-md transition-all group animate-enter"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="h-11 w-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-sm border border-primary/10 shadow-inner">
+                            {leave.employeeName.charAt(0)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start mb-1">
+                              <p className="font-bold text-foreground text-sm truncate pr-2">
                                 {leave.employeeName}
-                                <span className="mx-3 border p-1 rounded text-[12px] text-blue-600">
-                                  {leave?.leaveOn?.id}
-                                </span>
                               </p>
-                              <p className="text-sm text-slate-600">
-                                {leave.employeeId}
-                              </p>
-                              <p className="text-sm text-orange-700 font-medium">
-                                {leave.type}
-                              </p>
+                              <Badge
+                                variant="outline"
+                                className={`text-[10px] font-bold h-5 px-2 rounded-full uppercase tracking-tighter ${
+                                  leave.status === "Approved"
+                                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                    : "bg-amber-50 text-amber-700 border-amber-200"
+                                }`}
+                              >
+                                {leave.status}
+                              </Badge>
                             </div>
-                            <Badge className="bg-green-100 text-green-800">
-                              {leave.status}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-black text-muted-foreground bg-muted px-2 py-0.5 rounded uppercase">
+                                {leave.employeeId}
+                              </span>
+                              <span className="text-[10px] text-muted-foreground opacity-30">
+                                •
+                              </span>
+                              <span className="text-xs font-medium text-muted-foreground truncate">
+                                {leave.type}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <div>
-                        <CalendarX className="mb-2 text-4xl text-slate-300" />
-                        <h4 className="font-bold text-slate-700 dark:text-white mb-2">No events scheduled</h4>
-                        <p className="text-sm text-slate-400 max-w-xs leading-relaxed">Relax! There are no leave requests, holidays, or meetings for this date.</p>
                       </div>
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-center py-12 px-6">
+                      <div className="h-20 w-20 rounded-full bg-muted/30 flex items-center justify-center mb-6 border border-border/50 shadow-inner">
+                        <CalendarX className="h-10 w-10 text-muted-foreground/20" />
+                      </div>
+                      <h4 className="font-bold text-foreground text-base mb-2 tracking-tight uppercase">
+                        Team Full Power
+                      </h4>
+                      <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed font-medium uppercase tracking-tighter opacity-60">
+                        No leaves scheduled for this date.
+                      </p>
                     </div>
                   )}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Recent Activities */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <BellRing className="h-5 w-5 text-blue-600" />
-                <span>Recent Activities</span>
+                <div className="p-6 border-t border-border/50 bg-muted/10 mt-auto">
+                  <Button
+                    variant="outline"
+                    className="w-full text-xs font-black uppercase tracking-widest h-10 border-border/60 hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
+                    onClick={() => navigate("/admin/leave")}
+                  >
+                    Enter Leave Portal
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Bottom Row - Activity & Summary Tables */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* System Activities */}
+          <Card className="border border-border/50 shadow-sm flex flex-col h-full">
+            <CardHeader className="border-b border-border/50 bg-muted/20 px-6 py-4">
+              <CardTitle className="flex items-center space-x-2 text-sm font-black uppercase tracking-[0.2em] text-foreground">
+                <BellRing className="h-4 w-4 text-primary" />
+                <span>System Log</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="p-0 flex-1 overflow-hidden">
+              <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
                 {recentActivities.map((activity, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-4 p-3 bg-slate-50 rounded-lg"
+                    className="flex items-start gap-4 p-5 border-b border-border last:border-0 hover:bg-muted/30 transition-colors group"
                   >
-                    <div className="flex-shrink-0">
-                      <AlertCircle className="h-5 w-5 text-blue-500" />
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/10 group-hover:scale-125 transition-transform"></div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-800">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-foreground font-bold leading-snug line-clamp-2">
                         {activity.message}
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-[10px] text-muted-foreground/60 mt-2 font-black uppercase tracking-widest">
                         {dayjs(activity.createdAt).fromNow()}
                       </p>
                     </div>
@@ -448,47 +440,38 @@ const AdminDashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Employee of the Month */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Current Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center space-x-2">
-                <Award className="h-5 w-5 text-yellow-600" />
-                <span>
-                  List of leaves of Employees for Month -{" "}
-                  {format(new Date(), "MMMM yyyy")}
-                </span>
+          {/* Current Month Leave */}
+          <Card className="border border-border/50 shadow-sm">
+            <CardHeader className="pb-3 border-b border-border/50 bg-muted/20 px-6 py-4">
+              <CardTitle className="flex items-center space-x-2 text-sm font-black uppercase tracking-[0.2em] text-foreground">
+                <Award className="h-4 w-4 text-yellow-500" />
+                <span>{format(new Date(), "MMMM")} Overview</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
-                        Employee Name
+                  <thead className="bg-muted/30">
+                    <tr>
+                      <th className="text-left py-3 px-6 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                        Employee
                       </th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
-                        Total Leave (Days)
+                      <th className="text-right py-3 px-6 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                        Days
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-border/50">
                     {(dashboardData?.current_month_leaves || []).length > 0 ? (
                       dashboardData.current_month_leaves.map(
                         ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                            className="hover:bg-muted/20 transition-colors"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${last_name || ""
-                                }`.trim() || "N/A"}
-                            </td>
-                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                            <td className="py-4 px-6 text-sm text-foreground font-bold">{`${first_name} ${last_name}`}</td>
+                            <td className="py-4 px-6 text-sm text-right font-black text-primary bg-primary/[0.02]">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -498,9 +481,9 @@ const AdminDashboard = () => {
                       <tr>
                         <td
                           colSpan="2"
-                          className="py-6 text-center text-slate-500 text-sm"
+                          className="py-12 text-center text-muted-foreground italic text-xs"
                         >
-                          No leave data available for this month
+                          No records found
                         </td>
                       </tr>
                     )}
@@ -510,75 +493,57 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Previous Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-purple-600" />
+          {/* Previous Month Leave */}
+          <Card className="border border-border/50 shadow-sm">
+            <CardHeader className="pb-3 border-b border-border/50 bg-muted/20 px-6 py-4">
+              <div className="flex justify-between items-center">
+                <CardTitle className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.2em] text-foreground">
+                  <Award className="h-4 w-4 text-purple-500" />
                   <span>
-                    List of leaves of Employees for Month -{" "}
-                    {format(
-                      new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                      "MMMM yyyy"
-                    )}
+                    {format(dayjs().subtract(1, "month").toDate(), "MMMM")} Log
                   </span>
-                </div>
+                </CardTitle>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={handleSendMail}
                     disabled={sendingEmail}
-                    title="Send Report via Email"
-                    className="flex items-center justify-center text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
                   >
-                    {sendingEmail ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
-                    ) : (
-                      <Mail className="h-4 w-4 text-indigo-600 hover:text-indigo-700" />
-                    )}
+                    <Mail className="h-4 w-4" />
                   </button>
-                  
                   <button
                     onClick={handleDownload}
                     disabled={downloading}
-                    title="Download Report"
-                    className="flex items-center justify-center p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
                   >
-                    {downloading ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
-                    ) : (
-                      <Download className="h-4 w-4 text-emerald-600 hover:text-emerald-700" />
-                    )}
+                    <Download className="h-4 w-4" />
                   </button>
                 </div>
-              </CardTitle>
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
-                        Employee Name
+                  <thead className="bg-muted/30">
+                    <tr>
+                      <th className="text-left py-3 px-6 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                        Employee
                       </th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
-                        Total Leave (Days)
+                      <th className="text-right py-3 px-6 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                        Days
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-border/50">
                     {(dashboardData?.previous_month_leaves || []).length > 0 ? (
                       dashboardData.previous_month_leaves.map(
                         ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                            className="hover:bg-muted/20 transition-colors"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${last_name || ""
-                                }`.trim() || "N/A"}
-                            </td>
-                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                            <td className="py-4 px-6 text-sm text-foreground font-bold">{`${first_name} ${last_name}`}</td>
+                            <td className="py-4 px-6 text-sm text-right font-black text-primary bg-primary/[0.02]">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -588,9 +553,9 @@ const AdminDashboard = () => {
                       <tr>
                         <td
                           colSpan="2"
-                          className="py-6 text-center text-slate-500 text-sm"
+                          className="py-12 text-center text-muted-foreground italic text-xs"
                         >
-                          No leave data available for previous month
+                          No records found
                         </td>
                       </tr>
                     )}
@@ -600,75 +565,16 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </div>
-        {/* Yearly Leave Summary Table - Moved to top */}
+
+        {/* Yearly Summary Table */}
         <EmployeeLeaveTable />
       </div>
-      {showHolidayModal && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Overlay */}
-          <div
-            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-            onClick={() => setShowHolidayModal(false)}
-          />
-          {/* Slide-in panel */}
-          <div className="relative w-full max-w-md h-full bg-white shadow-2xl transform translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
-            {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-slate-100">
-              <h2 className="text-lg font-semibold text-slate-800">
-                📅 Holiday List
-              </h2>
-              <button
-                onClick={() => setShowHolidayModal(false)}
-                className="text-slate-500 hover:text-red-500 text-2xl font-bold transition duration-200"
-              >
-                &times;
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              <h4 className="font-medium ">Fixed Holidays</h4>
-              {holidayList?.fixed_holidays?.map((holiday, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-slate-50 hover:bg-slate-100 border rounded-lg transition duration-200"
-                >
-                  <h3 className="font-medium text-slate-800">
-                    {index + 1}. {holiday.name}
-                  </h3>
-                  <p className="text-sm text-[#ea580c]">
-                    {new Date(holiday.date).toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-              ))}
 
-              <br />
-              <h4 className="font-medium ">Floating Holidays</h4>
-              {holidayList?.restricted_holidays?.map((holiday, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-slate-50 hover:bg-slate-100 border rounded-lg transition duration-200"
-                >
-                  <h3 className="font-medium text-slate-800">
-                    {index + 1}. {holiday.name}
-                  </h3>
-                  <p className="text-sm  text-[#ea580c]">
-                    {new Date(holiday.date).toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Holiday Modal */}
+      <HolidayModal
+        isOpen={showHolidayModal}
+        onClose={() => setShowHolidayModal(false)}
+      />
     </>
   );
 };

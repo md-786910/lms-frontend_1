@@ -87,15 +87,15 @@ function ResetPassword() {
 
     return (
         <>
-            <Card className="border-0 shadow-lg">
-                <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                        <Lock className="h-5 w-5" />
-                        <span>Reset Password</span>
+            <Card className="border border-border/50 shadow-sm max-w-2xl">
+                <CardHeader className="border-b border-border/50 bg-muted/20 px-6 py-4">
+                    <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+                        <Lock className="h-5 w-5 text-primary" />
+                        <span>Security Settings</span>
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CardContent className="p-6 space-y-6">
+                    <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
                             <Label htmlFor="password">New Password</Label>
                             <div className="relative">
@@ -111,7 +111,7 @@ function ResetPassword() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
                                     aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
                                     {showPassword ? (
@@ -122,7 +122,7 @@ function ResetPassword() {
                                 </button>
                             </div>
                             {errors.password && (
-                                <p className="text-red-500 text-sm">{errors.password}</p>
+                                <p className="text-destructive text-sm font-medium">{errors.password}</p>
                             )}
                         </div>
                         <div className="space-y-2">
@@ -140,7 +140,7 @@ function ResetPassword() {
                                 <button
                                     type="button"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
                                     aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                                 >
                                     {showConfirmPassword ? (
@@ -151,18 +151,20 @@ function ResetPassword() {
                                 </button>
                             </div>
                             {errors.confirm_password && (
-                                <p className="text-red-500 text-sm">{errors.confirm_password}</p>
+                                <p className="text-destructive text-sm font-medium">{errors.confirm_password}</p>
                             )}
                         </div>
                     </div>
-                    <Button
-                        onClick={handleSave}
-                        disabled={loader}
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                    >
-                        <Save className="h-4 w-4 mr-2" />
-                        {loader ? "Saving..." : "Save New Password"}
-                    </Button>
+                    <div className="flex justify-end pt-4">
+                        <Button
+                            onClick={handleSave}
+                            disabled={loader}
+                            className="shadow-lg shadow-primary/20"
+                        >
+                            <Save className="h-4 w-4 mr-2" />
+                            {loader ? "Updating..." : "Update Password"}
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
         </>
