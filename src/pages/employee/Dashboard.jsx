@@ -24,7 +24,8 @@ import {
   CalendarPlus,
   Contact,
   Code,
-  Ribbon
+  Ribbon,
+  CalendarX,
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
 import { useSocketContext } from "../../contexts/SocketContext";
@@ -502,137 +503,76 @@ const EmployeeDashboard = () => {
           })}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* My Leave Calendar */}
-          <Card className="lg:col-span-2 bg-white border border-slate-100 shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <CalendarIcon className="h-5 w-5 text-blue-600" />
-                <span>My Leave Calendar</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Full Width Calendar Section */}
+        <Card className="border border-border/50 shadow-sm overflow-hidden flex flex-col">
+          <CardHeader className="border-b border-border/50 bg-muted/20 px-5 py-5">
+            <CardTitle className="text-base font-bold flex items-center gap-3 text-foreground">
+              <CalendarIcon className="h-5 w-5 text-primary" />
+              <span>My Personal Schedule & Attendance</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0 flex-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12">
+              {/* Large Calendar Side */}
+              <div className="lg:col-span-4 p-4 flex justify-center border-b lg:border-b-0 lg:border-r border-border/50 bg-card">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
-                  // onSelect={setSelectedDate}
-                  className="w-full"
+                  onSelect={setSelectedDate}
+                  required
+                  className="w-full max-w-md"
+                  classNames={{
+                    months: "w-full space-y-4",
+                    month: "w-full space-y-6",
+                    table: "w-full border-collapse",
+                    head_row: "flex w-full justify-between",
+                    head_cell: "text-muted-foreground rounded-md w-12 font-bold text-[10px] uppercase tracking-[0.2em] text-center",
+                    row: "flex w-full justify-between mt-2",
+                    cell: "h-14 w-14 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                    day: "h-12 w-12 p-0 font-bold aria-selected:opacity-100 hover:bg-primary/5 rounded-full transition-all duration-200",
+                    day_selected: "bg-[#111827] text-primary-foreground hover:bg-[#111827] hover:text-white",
+                    day_today: "bg-muted text-foreground border border-primary/20",
+                  }}
                   modifiers={{
                     hasLeave: myLeaveData.map((leave) => leave.date),
                   }}
                   modifiersStyles={{
                     hasLeave: {
-                      backgroundColor: "#dbeafe",
-                      color: "#1d4ed8",
-                      fontWeight: "bold",
+                      border: "2px solid hsl(var(--primary) / 0.3)",
+                      backgroundColor: "hsl(var(--primary) / 0.05)",
                     },
                   }}
                 />
+              </div>
 
-                <div className="space-y-4">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
-                  <h4 className="text-2xl font-bold text-slate-900">
-                    {selectedDate
-                      ? format(selectedDate, "EEEE, dd MMMM")
-                      : "Select a date"}
+              {/* Side Panel */}
+              <div className="lg:col-span-8 bg-muted/5 flex flex-col h-full min-h-[400px]">
+                <div className="p-4 border-b border-border/50 bg-muted/10">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Timeline</p>
+                  <h4 className="text-xl font-black text-foreground tracking-tight">
+                    {format(selectedDate, "EEEE, dd MMMM")}
                   </h4>
-                  {leaveData?.length > 0 ? (
-                    <div className="space-y-3">
-                      {leaveData?.map((leave) => (
-                        <div
-                          key={leave.id}
-                          className="p-3 bg-blue-50 rounded-lg border border-blue-200"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="font-medium text-slate-800">
-                                <p className="font-medium text-slate-800 flex  items-center justify-between">
-                                  {leave.employeeName}{" "}
-                                  <span className="mx-3 border p-1 rounded text-[12px] text-blue-600">
-                                    {leave?.leaveOn?.id}
-                                  </span>
-                                </p>
-                              </span>
-                              <p className="text-sm text-slate-600">
-                                {leave.employeeId}
-                              </p>
-                              <p className="text-sm text-orange-700 font-medium">
-                                {leave.type}
-                              </p>
-                              {/* <p className="text-sm text-slate-600">
-                              {leave.reason}
-                            </p> */}
-                            </div>
-                            <Badge
-                              className={
-                                leave.status === "approved"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-green-100 text-orange-800"
-                              }
-                            >
-                              {leave.status}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <NoDataFound />
-                  )}
+                </div>
+                
+                <div className="flex-1 flex flex-col justify-center p-4">
+                   <div className="p-10 border-2 border-dashed border-border/50 rounded-3xl flex flex-col items-center justify-center text-center bg-card/50 shadow-inner animate-enter">
+                      <div className="h-20 w-20 rounded-full bg-muted/30 flex items-center justify-center mb-6 border border-border/50">
+                         <CalendarX className="h-10 w-10 text-muted-foreground/20" />
+                      </div>
+                      <h4 className="font-bold text-foreground text-base mb-2 tracking-tight uppercase">Clear Day</h4>
+                      <p className="text-xs text-muted-foreground max-w-[180px] leading-relaxed font-medium uppercase tracking-tighter opacity-60">No leaves or events recorded for this specific date.</p>
+                   </div>
+                </div>
+                
+                <div className="p-6 border-t border-border/50 bg-muted/10">
+                   <Button variant="outline" className="w-full text-[12px] font-black uppercase tracking-[0.2em] h-11 border-border/60 hover:bg-gray-900 hover:text-white transition-all duration-300 shadow-sm" onClick={() => navigate('/employee/leave')}>
+                      Request New Leave
+                   </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activities */}
-          <Card className="bg-white border border-slate-100 shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <BellRing className="h-5 w-5 text-blue-600" />
-                <span>Recent Activities</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {recentActivities?.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-2 p-3 bg-slate-50 rounded-lg"
-                  >
-                    <div className="flex-shrink-0 mt-[0.4rem]">
-                      <AlertCircle className="h-5 w-5 text-blue-500" />
-                    </div>
-                    <div className="flex-shrink-0 mt-1">
-                      {activity.type === "success" && (
-                        <div className="h-2 w-2 bg-green-500 rounded-full" />
-                      )}
-                      {activity.type === "info" && (
-                        <div className="h-2 w-2 bg-blue-500 rounded-full" />
-                      )}
-                      {activity.type === "warning" && (
-                        <div className="h-2 w-2 bg-orange-500 rounded-full" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-800">
-                        {activity.title}
-                      </p>
-                      <p className="text-sm text-slate-600 mt-1">
-                        {activity.message}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-2">
-                        {dayjs(activity.createdAt).fromNow()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-                {recentActivities?.length === 0 && <NoDataFound />}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
         {/* Employee of the Month */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Current Month Employee of the Month */}
