@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -31,69 +30,30 @@ const EmployeeLeave = () => {
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [readOnly, setReadOnly] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
-  const leaveRequests = [
-    {
-      id: 1,
-      type: "Annual Leave",
-      startDate: "2024-02-20",
-      endDate: "2024-02-22",
-      days: 3,
-      status: "Approved",
-      reason: "Family vacation",
-      appliedDate: "2024-02-01",
-    },
-    {
-      id: 2,
-      type: "Sick Leave",
-      startDate: "2024-01-15",
-      endDate: "2024-01-15",
-      days: 1,
-      status: "Approved",
-      reason: "Medical appointment",
-      appliedDate: "2024-01-14",
-    },
-    {
-      id: 3,
-      type: "Personal Leave",
-      startDate: "2024-03-10",
-      endDate: "2024-03-12",
-      days: 3,
-      status: "Pending",
-      reason: "Personal matters",
-      appliedDate: "2024-02-28",
-    },
-  ];
-
-  const leaveBalance = [
-    { type: "Annual Leave", total: 25, used: 7, remaining: 18 },
-    { type: "Sick Leave", total: 15, used: 5, remaining: 10 },
-    { type: "Personal Leave", total: 10, used: 3, remaining: 7 },
-    { type: "Emergency Leave", total: 5, used: 0, remaining: 5 },
-  ];
 
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved":
-        return "bg-green-100 text-green-800";
+        return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
       case "Pending":
-        return "bg-orange-100 text-orange-800";
+        return "bg-amber-50 text-amber-700 ring-1 ring-amber-200";
       case "Rejected":
-        return "bg-red-100 text-red-800";
+        return "bg-rose-50 text-rose-700 ring-1 ring-rose-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-800 ring-1 ring-slate-200";
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
       case "Approved":
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-emerald-600" />;
       case "Pending":
-        return <Clock className="h-4 w-4 text-orange-600" />;
+        return <Clock className="h-4 w-4 text-amber-600" />;
       case "Rejected":
-        return <XCircle className="h-4 w-4 text-red-600" />;
+        return <XCircle className="h-4 w-4 text-rose-600" />;
       default:
-        return <Clock className="h-4 w-4 text-gray-600" />;
+        return <Clock className="h-4 w-4 text-slate-600" />;
     }
   };
 
@@ -120,124 +80,184 @@ const EmployeeLeave = () => {
     getLeaveRequest();
   }, [updateDashboard]);
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Leave Management</h1>
-          <p className="text-slate-500 text-sm mt-1">Request and manage your leave applications efficiently.</p>
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-7 shadow-xl text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#60a5fa,transparent_35%),radial-gradient(circle_at_80%_0%,#a78bfa,transparent_25%)] opacity-10" />
+        <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-2">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-white/15">
+              <Calendar className="h-4 w-4" />
+              Leave workspace
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight md:text-3xl">
+              Leave Management
+            </h1>
+            <p className="max-w-2xl text-sm text-slate-200">
+              Track balances, submit requests, and keep approvals flowing with a clear, human-friendly layout.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-200">
+              <span className="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                {leaveRequest?.length || 0} active request{leaveRequest?.length !== 1 ? "s" : ""}
+              </span>
+              <span className="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
+                {leaveDash?.total_remaining || 0} days remaining
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setReadOnly(false);
+              setLeaveRequestViewMode({});
+              setShowRequestModal(true);
+            }}
+            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:shadow-xl"
+          >
+            <Plus className="h-4 w-4" />
+            Request Leave
+          </button>
         </div>
-        <button 
-          onClick={() => {
-            setReadOnly(false);
-            setLeaveRequestViewMode({});
-            setShowRequestModal(true);
-          }}
-          className="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2.5 rounded-md text-sm font-bold shadow-glow transition-all flex items-center gap-2 hover:-translate-y-0.5"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Request Leave
-        </button>
       </div>
 
       {/* Leave Balance */}
-      <div className="bg-white rounded-md border border-border shadow-card p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-            <CalendarDays className="h-5 w-5 text-blue-600" />
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-100">
+              <CalendarDays className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900">Leave Balance</h3>
+              <p className="text-xs text-slate-500">Snapshot of each leave type with usage highlights.</p>
+            </div>
           </div>
-          <h3 className="font-bold text-lg text-slate-900">Leave Balance</h3>
+          <span className="hidden rounded-full bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 sm:inline-flex">
+            Updated automatically
+          </span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {leaveDash?.leaves?.map((leave, index) => (
-            <div 
+            <div
               key={index}
-              className="bg-slate-50 rounded-2xl p-5 border border-slate-100"
+              className="group rounded-2xl border border-slate-100 bg-slate-50/80 p-5 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-md"
             >
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-bold text-slate-900">{leave.leave_type}</h4>
-                <span className="text-xs font-semibold bg-white px-2 py-1 rounded-md border border-slate-200 text-slate-600">Annual</span>
+              <div className="mb-4 flex items-start justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-slate-500">Leave Type</p>
+                  <h4 className="text-lg font-semibold text-slate-900">{leave.leave_type}</h4>
+                </div>
+                <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
+                  Annual
+                </span>
               </div>
-              <div className="space-y-3 text-sm">
+              <div className="space-y-3 text-sm text-slate-600">
                 <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-slate-400">Total:</span>
-                  <span className="font-bold text-slate-900">{leave.leave_count || 0} days</span>
+                  <span>Total</span>
+                  <span className="font-semibold text-slate-900">{leave.leave_count || 0} days</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Used:</span>
-                  <span className="font-bold text-red-500">{leave.leave_used || 0} days</span>
+                  <span>Used</span>
+                  <span className="font-semibold text-amber-600">{leave.leave_used || 0} days</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Remaining:</span>
-                  <span className="font-bold text-[#7BCD40]">{leave.leave_remaing || 0} days</span>
+                  <span>Remaining</span>
+                  <span className="font-semibold text-emerald-600">{leave.leave_remaing || 0} days</span>
                 </div>
               </div>
-              <div className="mt-4 pt-4 border-t border-slate-200">
-                <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                  <div 
-                    className="bg-[#7BCD40] h-2 rounded-full" 
-                    style={{ width: `${
-                          ((leave.leave_remaing || 0) / leave.leave_count) * 100
-                        }%` }}
-                    ></div>
+              <div className="mt-4 border-t border-slate-200 pt-4">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                  <div
+                    className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all"
+                    style={{
+                      width: `${((leave.leave_remaing || 0) / leave.leave_count) * 100}%`,
+                    }}
+                  ></div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-4 space-y-6">
+        <div className="col-span-12 lg:col-span-4 space-y-4">
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="bg-white dark:bg-dark-surface p-6 rounded-md border border-border dark:border-border-dark shadow-card flex flex-row items-center justify-center text-center gap-3">
-              <div className="w-14 h-14 rounded-md bg-green-50 dark:bg-green-900/20 text-green-600 flex items-center justify-center mb-2">
-                <CheckCircle className="h-8 w-8 text-base" />
+          <div className="grid grid-cols-1 gap-4">
+            <div className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-[0_8px_24px_rgba(16,185,129,0.12)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                  <CheckCircle className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-wide text-slate-500">Total Approved</p>
+                  <p className="text-3xl font-semibold text-slate-900">
+                    {leaveDash?.total_approved || 0}
+                    <span className="text-sm font-medium text-slate-400"> days</span>
+                  </p>
+                  <p className="text-xs text-slate-500">Year to date</p>
+                </div>
               </div>
-              <h4 className="text-slate-500 dark:text-slate-400 font-medium text-sm">Total Approved</h4>
-              <p className="text-3xl font-bold text-green-600 dark:text-green-400">{leaveDash?.total_approved || 0} <span className="text-sm text-slate-400 font-normal">days</span></p>
-              <p className="text-xs text-slate-400">This year</p>
             </div>
-            <div className="bg-white dark:bg-dark-surface p-6 rounded-md border border-border dark:border-border-dark shadow-card flex flex-row items-center justify-center text-center gap-3">
-              <div className="w-14 h-14 rounded-md bg-orange-50 dark:bg-orange-900/20 text-orange-600 flex items-center justify-center mb-2">
-                <Clock className="h-8 w-8 text-base" />
+            <div className="rounded-2xl border border-amber-100 bg-white p-5 shadow-[0_8px_24px_rgba(245,158,11,0.12)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                  <Clock className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-wide text-slate-500">Pending</p>
+                  <p className="text-3xl font-semibold text-slate-900">
+                    {leaveDash?.total_pending || 0}
+                    <span className="text-sm font-medium text-slate-400"> days</span>
+                  </p>
+                  <p className="text-xs text-slate-500">Awaiting approval</p>
+                </div>
               </div>
-              <h4 className="text-slate-500 dark:text-slate-400 font-medium text-sm">Pending</h4>
-              <p className="text-3xl font-bold text-orange-500">{leaveDash?.total_pending || 0} <span className="text-sm text-slate-400 font-normal">days</span></p>
-              <p className="text-xs text-slate-400">Awaiting approval</p>
             </div>
-            <div className="bg-white dark:bg-dark-surface p-6 rounded-md border border-border dark:border-border-dark shadow-card flex flex-row items-center justify-center text-center gap-3">
-              <div className="w-14 h-14 rounded-md bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center mb-2">
-                <CalendarDays className="h-8 w-8 text-base" />
+            <div className="rounded-2xl border border-indigo-100 bg-white p-5 shadow-[0_8px_24px_rgba(99,102,241,0.12)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                  <CalendarDays className="h-6 w-6" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-wide text-slate-500">Remaining</p>
+                  <p className="text-3xl font-semibold text-slate-900">
+                    {leaveDash?.total_remaining || 0}
+                    <span className="text-sm font-medium text-slate-400"> days</span>
+                  </p>
+                  <p className="text-xs text-slate-500">Available balance</p>
+                </div>
               </div>
-              <h4 className="text-slate-500 dark:text-slate-400 font-medium text-sm">Remaining</h4>
-              <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{leaveDash?.total_remaining || 0} <span className="text-sm text-slate-400 font-normal">days</span></p>
-              <p className="text-xs text-slate-400">Available balance</p>
             </div>
           </div>
         </div>
         {/* Leave Requests */}
-        <div className="col-span-12 lg:col-span-8 bg-white rounded-md border border-border shadow-card p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <FileText className="h-5 w-5 text-purple-600" />
+        <div className="col-span-12 lg:col-span-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+                <FileText className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">My Leave Requests</h3>
+                <p className="text-xs text-slate-500">Stay on top of what's pending, approved, or rejected.</p>
+              </div>
             </div>
-            <h3 className="font-bold text-lg text-slate-900">My Leave Requests</h3>
+            <div className="hidden rounded-full bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 md:block">
+              Most recent first
+            </div>
           </div>
           {leaveRequest?.map((request) => (
-            <div 
+            <div
               key={request.id}
-              className="bg-slate-50 my-2 rounded-2xl border border-slate-100 p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 hover:shadow-md transition-shadow"
+              className="my-3 flex flex-col gap-6 rounded-2xl border border-slate-100 bg-slate-50/60 p-6 shadow-[0_6px_20px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-lg lg:flex-row lg:items-center lg:justify-between"
             >
-              <div className="flex flex-col gap-2">
-                <div className="inline-flex items-center rounded-full text-xs font-bold uppercase tracking-wider w-fit">
-                  <h3 className="font-semibold text-slate-800">
-                    {request.type}
-                  </h3>
+              <div className="flex flex-col gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 ring-1 ring-slate-200">
+                  <span>{request.type}</span>
                   <Badge
-                    className={getStatusColor(
+                    className={`${getStatusColor(
                       LEAVE_STATUS[request?.status]
-                    )}
+                    )} ring-inset`}
                   >
                     <div className="flex items-center space-x-1">
                       {getStatusIcon(LEAVE_STATUS[request?.status])}
@@ -245,9 +265,11 @@ const EmployeeLeave = () => {
                     </div>
                   </Badge>
                 </div>
-                <div className="mt-2">
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide">Duration</p>
-                  <p className="font-bold text-slate-900 text-base">
+                <div className="mt-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    Duration
+                  </p>
+                  <p className="text-base font-semibold text-slate-900">
                     {new Date(request.start_date).toLocaleDateString("en-GB", {
                       day: "2-digit",
                       month: "short",
@@ -260,20 +282,22 @@ const EmployeeLeave = () => {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="mt-1 text-xs text-slate-500">
                     {request.total_days} day
                     {request.total_days > 1 ? "s" : ""}
                   </p>
                 </div>
               </div>
-              <div className="flex-1 lg:px-8">
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-1">Reason</p>
-                <p className="text-sm font-medium text-slate-700">{request.reason}</p>
+              <div className="flex-1 rounded-xl bg-white p-4 ring-1 ring-slate-100 lg:px-6">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Reason</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">{request.reason}</p>
               </div>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
                 <div>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-1">Applied Date</p>
-                  <p className="font-bold text-slate-900 text-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    Applied Date
+                  </p>
+                  <p className="text-sm font-semibold text-slate-900">
                     {new Date(request.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
                       month: "short",
@@ -282,10 +306,10 @@ const EmployeeLeave = () => {
                   </p>
                 </div>
                 {request.status === "pending" && (
-                  <button 
+                  <button
                     variant="outline"
                     size="sm"
-                    className="px-4 py-2 bg-white border border-slate-200 dark:border-slate-600 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors shadow-sm"
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50"
                     onClick={async () => {
                       ConfirmFn({
                         onDelete: async () => {
@@ -316,6 +340,7 @@ const EmployeeLeave = () => {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="rounded-xl border-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:border-slate-300"
                   onClick={() => {
                     setReadOnly(true);
                     setLeaveRequestViewMode(request || {});
@@ -328,7 +353,7 @@ const EmployeeLeave = () => {
             </div>
           ))}
           {leaveRequest?.length === 0 && <NoDataFound />}
-        </div> 
+        </div>
       </div>
       {/* Leave Request Modal */}
       <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
