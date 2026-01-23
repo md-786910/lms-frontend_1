@@ -12,15 +12,15 @@ import LeaveRequestModal from "@/components/LeaveRequestModal";
 import {
   Calendar as CalendarIcon,
   Clock,
-  DollarSign,
+  RotateCcw,
   IndianRupee,
   TrendingUp,
-  CheckCircle,
-  Users,
+  Check,
+  OctagonAlert,
   Award,
   X,
   AlertCircle,
-  BellRing,
+  Bell,
   CalendarPlus,
   Contact,
   Code,
@@ -395,7 +395,7 @@ const EmployeeDashboard = () => {
                 </button>
                 <button 
                   onClick={() => setShowHolidayModal(true)}
-                  className="bg-white  text-slate-700 border border-slate-200 hover:bg-gray-800 hover:text-white hover:border-none hover:shadow-lg hover:shadow-slate-900/20 px-6 py-3 rounded-xl text-sm font-bold transition-all"
+                  className="bg-white  text-slate-700 border border-slate-200 hover:bg-gray-800 hover:text-white hover:shadow-lg px-6 py-3 rounded-xl text-sm font-bold transition-all"
                 >
                   View Policy
                 </button>
@@ -529,8 +529,8 @@ const EmployeeDashboard = () => {
                     head_cell: "text-muted-foreground rounded-md w-12 font-bold text-[10px] uppercase tracking-[0.2em] text-center",
                     row: "flex w-full justify-between mt-2",
                     cell: "h-14 w-14 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                    day: "h-12 w-12 p-0 font-bold aria-selected:opacity-100 hover:bg-primary/5 rounded-full transition-all duration-200",
-                    day_selected: "bg-[#111827] text-primary-foreground hover:bg-[#111827] hover:text-white",
+                    day: "h-12 w-12 p-0 font-bold aria-selected:opacity-100 rounded-full transition-all duration-200",
+                    day_selected: "bg-[#111827] text-white",
                     day_today: "text-foreground border border-primary/20",
                   }}
                   modifiers={{
@@ -546,15 +546,15 @@ const EmployeeDashboard = () => {
               </div>
 
               {/* Side Panel */}
-              <div className="lg:col-span-8 bg-muted/5 flex flex-col h-full min-h-[400px]">
-                <div className="p-4 border-b border-border/50 bg-muted/10">
+              <div className="lg:col-span-4 bg-muted/5 flex flex-col h-full min-h-[400px]">
+                <div className="p-4 border-b border-r border-border/50 bg-muted/10">
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Timeline</p>
                   <h4 className="text-xl font-black text-foreground tracking-tight">
                     {format(selectedDate, "EEEE, dd MMMM")}
                   </h4>
                 </div>
                 
-                <div className="flex-1 flex flex-col justify-center p-4">
+                <div className="flex-1 flex flex-col justify-center p-4 border-r border-border/50">
                    <div className="p-10 border-2 border-dashed border-border/50 rounded-3xl flex flex-col items-center justify-center text-center bg-card/50 shadow-inner animate-enter">
                       <div className="h-20 w-20 rounded-full bg-muted/30 flex items-center justify-center mb-6 border border-border/50">
                          <CalendarX className="h-10 w-10 text-muted-foreground/20" />
@@ -564,10 +564,66 @@ const EmployeeDashboard = () => {
                    </div>
                 </div>
                 
-                <div className="p-6 border-t border-border/50 bg-muted/10">
-                   <Button variant="outline" className="w-full text-[12px] font-black uppercase tracking-[0.2em] h-11 border-border/60 hover:bg-gray-900 hover:text-white transition-all duration-300 shadow-sm" onClick={() => navigate('/employee/leave')}>
+                <div className="p-4 mt-auto border-t border-slate-50">
+                   <Button className="w-full py-2 text-sm text-primary bg-white font-bold hover:bg-primary/5 rounded-xl transition-colors" onClick={() => navigate('/employee/leave')}>
                       Request New Leave
                    </Button>
+                </div>
+              </div>
+              {/* Recent Activities */}
+              <div className="lg:col-span-4 bg-white shadow-card flex flex-col h-full">
+                {/* Header */}
+                <div className="p-6 border-b border-slate-100 dark:border-slate-700/50 flex items-center gap-2">
+                  <Bell className="h-5 w-5 text-blue-600" />
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-white">
+                    Recent Activity
+                  </h3>
+                </div>
+                {/* Content */}
+                <div className="p-6 relative overflow-hidden">
+                  {/* Vertical Line */}
+                  <div className="absolute top-8 bottom-8 left-[39px] w-[2px] bg-slate-100 dark:bg-slate-700 z-0"></div>
+                  <div className="space-y-6 relative z-10">
+                    {recentActivities?.map((activity, index) => (
+                      <div key={index} className="flex gap-4">
+                        {/* Icon */}
+                        <div className="flex items-start justify-center w-8">
+                          {activity.type === "success" && (
+                            <Check className="h-4 w-4 p-1 text-white bg-green-500 rounded-full" />
+                          )}
+
+                          {activity.type === "info" && (
+                            <RotateCcw className="h-4 w-4 p-1 text-white bg-blue-500 rounded-full" />
+                          )}
+
+                          {activity.type === "warning" && (
+                            <OctagonAlert className="h-4 w-4 p-1 text-white bg-orange-500 rounded-full" />
+                          )}
+                        </div>
+                        
+                        {/* Text */}
+                        <div>
+                          <p className="text-sm font-bold text-slate-900 dark:text-white">
+                            {activity.title}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                            {activity.message}
+                          </p>
+                          <p className="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-wide">
+                            {dayjs(activity.createdAt).fromNow()}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+
+                    {recentActivities?.length === 0 && <NoDataFound />}
+                  </div>
+                </div> 
+                {/* Footer */}
+                <div className="p-4 mt-auto border-t border-slate-50 dark:border-slate-700/50">
+                  <button className="w-full py-2 text-sm text-primary font-bold hover:bg-primary/5 rounded-xl transition-colors">
+                    View All Activity
+                  </button>
                 </div>
               </div>
             </div>
