@@ -270,15 +270,23 @@ const EmployeeDashboard = () => {
     })
   );
 
-  const recentActivities = (dashboardData?.activities || []).map(
-    (activity) => ({
-      type: "employee",
+  const recentActivities = (dashboardData?.activities || []).map((activity) => {
+    const activityType = (
+      activity?.type ||
+      activity?.status ||
+      "info"
+    )
+      ?.toString()
+      .toLowerCase();
+
+    return {
+      type: activityType,
       message: activity.title,
       time: new Date(activity.createdAt).toLocaleString(),
       status: "completed",
       createdAt: activity.createdAt,
-    })
-  );
+    };
+  });
   return (
     <>
       <div className="space-y-6">
@@ -587,17 +595,15 @@ const EmployeeDashboard = () => {
                     {recentActivities?.map((activity, index) => (
                       <div key={index} className="flex gap-4">
                         {/* Icon */}
-                        <div className="flex items-start justify-center w-8">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-glow">
                           {activity.type === "success" && (
-                            <Check className="h-4 w-4 p-1 text-white bg-green-500 rounded-full" />
+                            <OctagonAlert className="p-1 text-white bg-orange-500 rounded-full" />
                           )}
-
                           {activity.type === "info" && (
-                            <RotateCcw className="h-4 w-4 p-1 text-white bg-blue-500 rounded-full" />
+                            <Check className="p-1 text-white bg-green-500 rounded-full" />
                           )}
-
                           {activity.type === "warning" && (
-                            <OctagonAlert className="h-4 w-4 p-1 text-white bg-orange-500 rounded-full" />
+                            <RotateCcw className="p-1 text-white bg-blue-500 rounded-full" />
                           )}
                         </div>
                         
