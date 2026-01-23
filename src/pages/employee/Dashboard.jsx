@@ -531,7 +531,7 @@ const EmployeeDashboard = () => {
                     cell: "h-14 w-14 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
                     day: "h-12 w-12 p-0 font-bold aria-selected:opacity-100 hover:bg-primary/5 rounded-full transition-all duration-200",
                     day_selected: "bg-[#111827] text-primary-foreground hover:bg-[#111827] hover:text-white",
-                    day_today: "bg-muted text-foreground border border-primary/20",
+                    day_today: "text-foreground border border-primary/20",
                   }}
                   modifiers={{
                     hasLeave: myLeaveData.map((leave) => leave.date),
