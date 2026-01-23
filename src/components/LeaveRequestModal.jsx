@@ -73,10 +73,6 @@ const LeaveRequestModal = ({
   const [dayCount, setDayCount] = useState(0);
   const [leaveCalculate, setLeaveCalculate] = useState(null);
 
-  // const [leaveCalculate, setLeaveCalculate] = useState(() => {
-  //   return leaves?.find((l) => l.leave_id == Number(leaveType));
-  // });
-
   const [leaveDays, setLeaveDays] = useState([]);
   const [totalLeaveCount, setTotalLeaveCount] = useState(0);
   const [dates, setDates] = useState({
@@ -108,7 +104,6 @@ const LeaveRequestModal = ({
   );
 
   const validateLeaveSection = () => {
-    // Main form validation
     const isMainValid = formValidation(
       ["leave_type", "start_date", "end_date", "reason", "name"],
       {
@@ -120,7 +115,6 @@ const LeaveRequestModal = ({
       }
     );
 
-    // Validate each day's leave type
     const tempErrors = [];
     leaveDays.forEach((day, index) => {
       if (!day.type || day.type.toString() === "0") {
@@ -136,14 +130,6 @@ const LeaveRequestModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!startDate || !endDate || !leaveType || !reason) {
-    //   toast({
-    //     title: "Missing Information",
-    //     description: "Please fill in all required fields.",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
 
     const isValid = validateLeaveSection();
     if (!isValid) {
@@ -176,21 +162,17 @@ const LeaveRequestModal = ({
     setLeaveCalculate(acc);
   }, []);
 
-  // calculate date diff
   const handleLeaveTypeChange = (index, selectedId) => {
     const updated = [...leaveDays];
 
-    // Update the selected leave type and its count
     const selectedType = parseInt(selectedId);
     const typeObj = LEAVE.find((t) => t.id === selectedType);
     updated[index].type = selectedType;
     updated[index].count = typeObj?.count || 0;
     updated[index].id = typeObj?.name;
 
-    // Update state once with modified leaveDays
     setLeaveDays(updated);
 
-    // Recalculate total leave count
     const total = updated.reduce((sum, day) => sum + (day.count || 0), 0);
     setTotalLeaveCount(total);
   };
@@ -207,9 +189,8 @@ const LeaveRequestModal = ({
 
         for (let i = 0; i <= diffInDays; i++) {
           const currentDate = start.add(i, "day");
-          const dayOfWeek = currentDate.day(); // 0 = Sunday, 6 = Saturday
+          const dayOfWeek = currentDate.day();
 
-          // Skip Saturday and Sunday
           if (dayOfWeek === 0 || dayOfWeek === 6) {
             continue;
           }
@@ -232,33 +213,6 @@ const LeaveRequestModal = ({
       }
     }
   }, [startDate, endDate]);
-
-  // useEffect(() => {
-  //   if (startDate && endDate) {
-  //     const start = dayjs(startDate);
-  //     const end = dayjs(endDate);
-  //     const diffInDays = end.diff(start, "day");
-  //     setDayCount(diffInDays + 1);
-
-  //     if (diffInDays >= 0) {
-  //       setDayCount(diffInDays + 1);
-  //       const tempLeaveDays = [];
-  //       for (let i = 0; i <= diffInDays; i++) {
-  //         const date = start.add(i, "day").format("YYYY-MM-DD");
-  //         tempLeaveDays.push({
-  //           date,
-  //           type: 0,
-  //           id: "full_day",
-  //           count: 1,
-  //         });
-  //       }
-  //       setLeaveDays(tempLeaveDays);
-  //     } else {
-  //       setDayCount(0);
-  //       setLeaveDays([]);
-  //     }
-  //   }
-  // }, [startDate, endDate]);
 
   useEffect(() => {
     if (readOnly) {
@@ -283,7 +237,6 @@ const LeaveRequestModal = ({
     }
   }, [leaveRequestViewMode?.leave_type_id, readOnly]);
 
-  // cuurent
   const today = new Date();
   const disablePast = {
     before: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -308,398 +261,450 @@ const LeaveRequestModal = ({
     setLeaveCalculate(match);
   }, [leaveType, leaves]);
 
+  const formattedStart =
+    startDate || dates?.start_date
+      ? format(startDate || dates?.start_date, "dd MMM, yyyy")
+      : "Start date";
+
+  const formattedEnd =
+    endDate || dates?.end_date
+      ? format(endDate || dates?.end_date, "dd MMM, yyyy")
+      : "End date";
+
+  const leaveTypeLabel = leaveCalculate?.leave_type || "Select leave type";
+
   return (
-    <div className="w-full overflow-hidden">
-      {/* Header with Gradient */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-              <CalendarPlus className="h-6 w-6 text-white" />
+    <div className="w-full">
+      <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-[0_20px_60px_-32px_rgba(15,23,42,0.45)]">
+        <div className="relative bg-gradient-to-r from-slate-900 via-sky-900 to-slate-800 px-6 py-6 sm:px-8 sm:py-7 text-white">
+          <div className="absolute right-12 top-0 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -left-10 -bottom-10 h-28 w-28 rounded-full bg-sky-500/20 blur-3xl" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
+                <CalendarPlus className="h-6 w-6" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold sm:text-2xl">
+                  {readOnly ? "Leave Request Details" : "New Leave Request"}
+                </h2>
+                <p className="text-sm text-slate-200">
+                  {readOnly
+                    ? "Review what you submitted and its current status."
+                    : "Submit time away with clear dates, reasons, and coverage."}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2 text-[13px] text-slate-50/90">
+                  <span className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5">
+                    <CalendarIcon className="h-3.5 w-3.5" />
+                    {formattedStart} to {formattedEnd}
+                  </span>
+                  <span className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5">
+                    <FileText className="h-3.5 w-3.5" />
+                    {leaveTypeLabel}
+                  </span>
+                  <span className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5">
+                    <Clock className="h-3.5 w-3.5" />
+                    {dayCount || 0} working day{dayCount === 1 ? "" : "s"}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-white">
-                {readOnly ? "Leave Request Details" : "New Leave Request"}
-              </h2>
-              <p className="text-blue-100 text-sm">
-                {readOnly
-                  ? "View your submitted request"
-                  : "Submit your leave application"}
-              </p>
-            </div>
-          </div>
-          {readOnly && leaveRequestViewMode?.status && (
-            <span
-              className={cn(
-                "px-3 py-1.5 rounded-full text-sm font-medium border capitalize",
-                getStatusBadge(leaveRequestViewMode?.status)
-              )}
-            >
-              {leaveRequestViewMode?.status}
-            </span>
-          )}
-        </div>
-      </div>
-      <div className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Leave Type Selection */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="leaveType"
-              className="flex items-center space-x-2 text-slate-700 font-medium"
-            >
-              <FileText className="h-4 w-4 text-blue-600" />
-              <span>
-                Leave Type <span className="text-red-500">*</span>
+            {readOnly && leaveRequestViewMode?.status && (
+              <span
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium capitalize shadow-sm",
+                  getStatusBadge(leaveRequestViewMode?.status)
+                )}
+              >
+                <CheckCircle2 className="h-4 w-4" />
+                {leaveRequestViewMode?.status}
               </span>
-            </Label>
-            <Select
-              value={parseInt(leaveType)}
-              onValueChange={(val) => {
-                setLeaveType(Number(val));
-                calculateLeave(Number(val));
-              }}
-              disabled={readOnly}
-            >
-              <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500">
-                <SelectValue placeholder="Select leave type" />
-              </SelectTrigger>
-              <SelectContent>
-                {leaves?.map((type) => (
-                  <SelectItem
-                    key={type?.id}
-                    value={type?.leave_id}
-                    className="py-2.5"
-                  >
-                    {type?.leave_type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.leave_type && (
-              <p className="text-red-500 text-sm flex items-center space-x-1">
-                <AlertCircle className="h-3 w-3" />
-                <span>{errors.leave_type}</span>
-              </p>
             )}
           </div>
+        </div>
 
-          {/* Date Range */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="flex items-center space-x-2 text-slate-700 font-medium">
-                <CalendarIcon className="h-4 w-4 text-blue-600" />
-                <span>
-                  Start Date <span className="text-red-500">*</span>
-                </span>
-              </Label>
-              <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full h-11 justify-start text-left font-normal border-slate-200 hover:bg-slate-50",
-                      !startDate &&
-                        !dates?.start_date &&
-                        "text-muted-foreground"
-                    )}
-                    disabled={readOnly}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
-                    {startDate || dates?.start_date ? (
-                      <span className="text-slate-700">
-                        {format(startDate || dates?.start_date, "dd/MM/yy")}
+        <div className="p-6 sm:p-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr] lg:gap-8">
+              <div className="space-y-6">
+                <div className="rounded-2xl border border-slate-100 bg-white/80 shadow-sm backdrop-blur">
+                  <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                    <div className="flex items-center gap-2 text-slate-800">
+                      <User className="h-4 w-4 text-sky-600" />
+                      <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                        Leave Details
                       </span>
-                    ) : (
-                      <span>Select start date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={startDate || dates?.start_date}
-                    onSelect={(date) => {
-                      setStartDate(date);
-                      setStartDateOpen(false);
-                    }}
-                    initialFocus
-                    className="pointer-events-auto"
-                    disabled={[disablePast, disableWeekends]}
-                  />
-                </PopoverContent>
-              </Popover>
-              {errors.start_date && (
-                <p className="text-red-500 text-sm flex items-center space-x-1">
-                  <AlertCircle className="h-3 w-3" />
-                  <span>{errors.start_date}</span>
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label className="flex items-center space-x-2 text-slate-700 font-medium">
-                <CalendarIcon className="h-4 w-4 text-purple-600" />
-                <span>
-                  End Date <span className="text-red-500">*</span>
-                </span>
-              </Label>
-              <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full h-11 justify-start text-left font-normal border-slate-200 hover:bg-slate-50",
-                      !endDate && !dates?.end_date && "text-muted-foreground"
-                    )}
-                    disabled={readOnly}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
-                    {endDate || dates?.end_date ? (
-                      <span className="text-slate-700">
-                        {format(endDate || dates?.end_date, "dd/MM/yy")}
-                      </span>
-                    ) : (
-                      <span>Select end date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={endDate || dates?.end_date}
-                    onSelect={(date) => {
-                      setEndDate(date);
-                      setEndDateOpen(false);
-                    }}
-                    initialFocus
-                    className="pointer-events-auto"
-                    disabled={[disablePast, disableWeekends]}
-                  />
-                </PopoverContent>
-              </Popover>
-              {errors.end_date && (
-                <p className="text-red-500 text-sm flex items-center space-x-1">
-                  <AlertCircle className="h-3 w-3" />
-                  <span>{errors.end_date}</span>
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Leave Days Selection */}
-          {dayCount > 0 && (
-            <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
-                <h4 className="font-medium text-slate-700 flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-blue-600" />
-                  <span>Select Leave Duration for Each Day</span>
-                </h4>
-              </div>
-              <div className="divide-y divide-slate-100">
-                {leaveDays?.map((day, index) => (
-                  <div
-                    key={day.date}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-4 hover:bg-slate-50 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
-                        {dayjs(day.date).format("DD")}
-                      </div>
-                      <div>
-                        <p className="font-medium text-slate-800">
-                          {dayjs(day.date).format("dddd")}
-                        </p>
-                        <p className="text-sm text-slate-500">
-                          {dayjs(day.date).format("DD MMM YYYY")}
-                        </p>
-                      </div>
                     </div>
-                    <div>
+                    {!readOnly && (
+                      <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                        Complete the steps below
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="space-y-5 px-5 py-5">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="leaveType"
+                        className="flex items-center gap-2 text-sm font-semibold text-slate-700"
+                      >
+                        <FileText className="h-4 w-4 text-sky-600" />
+                        Leave Type <span className="text-red-500">*</span>
+                      </Label>
                       <Select
-                        value={day?.type?.toString()}
-                        onValueChange={(val) =>
-                          handleLeaveTypeChange(index, val)
-                        }
+                        value={parseInt(leaveType)}
+                        onValueChange={(val) => {
+                          setLeaveType(Number(val));
+                          calculateLeave(Number(val));
+                        }}
                         disabled={readOnly}
                       >
-                        <SelectTrigger className="h-10 border-slate-200">
-                          <SelectValue placeholder="Select duration" />
+                        <SelectTrigger className="h-11 rounded-xl border-slate-200 bg-slate-50/60 text-slate-800 shadow-inner focus:border-sky-500 focus:ring-sky-500">
+                          <SelectValue placeholder="Select leave type" />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value={"0"} className="text-slate-400">
-                            Select Duration
-                          </SelectItem>
-                          {LEAVE?.map((type) => (
+                        <SelectContent className="rounded-xl border-slate-100 shadow-lg">
+                          {leaves?.map((type) => (
                             <SelectItem
                               key={type?.id}
-                              value={type?.id.toString()}
-                              className="py-2"
+                              value={type?.leave_id}
+                              className="py-2.5"
                             >
-                              {type?.name}
+                              {type?.leave_type}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      {dayErrors[index] && (
-                        <p className="text-red-500 text-xs mt-1 flex items-center space-x-1">
-                          <AlertCircle className="h-3 w-3" />
-                          <span>{dayErrors[index]}</span>
+                      {errors.leave_type && (
+                        <p className="flex items-center gap-1 text-sm text-red-500">
+                          <AlertCircle className="h-3.5 w-3.5" />
+                          {errors.leave_type}
                         </p>
                       )}
                     </div>
+
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                          <CalendarIcon className="h-4 w-4 text-sky-600" />
+                          Start Date <span className="text-red-500">*</span>
+                        </Label>
+                        <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "h-11 w-full justify-start rounded-xl border-slate-200 bg-slate-50/60 text-left font-medium text-slate-800 hover:bg-slate-100",
+                                !startDate && !dates?.start_date && "text-slate-500"
+                              )}
+                              disabled={readOnly}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                              {startDate || dates?.start_date ? (
+                                <span>{formattedStart}</span>
+                              ) : (
+                                <span>Select start date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto rounded-2xl border-slate-100 p-0 shadow-xl" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={startDate || dates?.start_date}
+                              onSelect={(date) => {
+                                setStartDate(date);
+                                setStartDateOpen(false);
+                              }}
+                              initialFocus
+                              className="pointer-events-auto"
+                              disabled={[disablePast, disableWeekends]}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {errors.start_date && (
+                          <p className="flex items-center gap-1 text-sm text-red-500">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            {errors.start_date}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                          <CalendarIcon className="h-4 w-4 text-purple-600" />
+                          End Date <span className="text-red-500">*</span>
+                        </Label>
+                        <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "h-11 w-full justify-start rounded-xl border-slate-200 bg-slate-50/60 text-left font-medium text-slate-800 hover:bg-slate-100",
+                                !endDate && !dates?.end_date && "text-slate-500"
+                              )}
+                              disabled={readOnly}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                              {endDate || dates?.end_date ? (
+                                <span>{formattedEnd}</span>
+                              ) : (
+                                <span>Select end date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto rounded-2xl border-slate-100 p-0 shadow-xl" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={endDate || dates?.end_date}
+                              onSelect={(date) => {
+                                setEndDate(date);
+                                setEndDateOpen(false);
+                              }}
+                              initialFocus
+                              className="pointer-events-auto"
+                              disabled={[disablePast, disableWeekends]}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        {errors.end_date && (
+                          <p className="flex items-center gap-1 text-sm text-red-500">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            {errors.end_date}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Reason */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="reason"
-              className="flex items-center space-x-2 text-slate-700 font-medium"
-            >
-              <FileText className="h-4 w-4 text-blue-600" />
-              <span>
-                Reason for Leave <span className="text-red-500">*</span>
-              </span>
-            </Label>
-            <Textarea
-              id="reason"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Please provide details about your leave request..."
-              rows={3}
-              disabled={readOnly}
-              className="border-slate-200 focus:border-blue-500 focus:ring-blue-500 resize-none"
-            />
-            {errors.reason && (
-              <p className="text-red-500 text-sm flex items-center space-x-1">
-                <AlertCircle className="h-3 w-3" />
-                <span>{errors.reason}</span>
-              </p>
-            )}
-          </div>
-
-          {/* Emergency Contact */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="emergencyContact"
-              className="flex items-center space-x-2 text-slate-700 font-medium"
-            >
-              <Phone className="h-4 w-4 text-blue-600" />
-              <span>
-                Emergency Contact{" "}
-                <span className="text-slate-400 text-sm font-normal">
-                  (Optional)
-                </span>
-              </span>
-            </Label>
-            <Input
-              id="emergencyContact"
-              value={emergencyContact}
-              onChange={(e) => setEmergencyContact(e.target.value)}
-              placeholder="Contact person during your absence"
-              disabled={readOnly}
-              className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Leave Balance Info */}
-          <div className="rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-100 p-5">
-            <h4 className="font-semibold text-slate-800 mb-4 flex items-center space-x-2">
-              <CheckCircle2 className="h-5 w-5 text-blue-600" />
-              <span>Leave Summary</span>
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                  Leave Type
-                </p>
-                <p className="font-semibold text-slate-800">
-                  {leaveCalculate?.leave_type || "—"}
-                </p>
-              </div>
-              <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                  Available Balance
-                </p>
-                <p className="font-semibold text-blue-600">
-                  {leaveCalculate?.leave_remaing || 0} days
-                </p>
-              </div>
-              <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                  Days Selected
-                </p>
-                <p className="font-semibold text-slate-800">
-                  {dayCount || 0} days
-                </p>
-              </div>
-              {!["approved"].includes(leaveRequestViewMode?.status) && (
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Leave Count
-                  </p>
-                  <p className="font-semibold text-purple-600">
-                    {totalLeaveCount || 0}
-                  </p>
                 </div>
-              )}
-              {!["pending", "approved"].includes(
-                leaveRequestViewMode?.status
-              ) && (
-                <div className="bg-white rounded-lg p-3 border border-blue-100 shadow-sm col-span-2">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                    Remaining After Request
-                  </p>
-                  <p
-                    className={cn(
-                      "font-semibold",
-                      leaveCalculate?.leave_remaing - totalLeaveCount < 0
-                        ? "text-red-600"
-                        : "text-green-600"
-                    )}
-                  >
-                    {(!readOnly &&
-                      leaveCalculate?.leave_remaing - totalLeaveCount) ||
-                      0}{" "}
-                    days
-                    {leaveCalculate?.leave_remaing - totalLeaveCount < 0 && (
-                      <span className="text-xs ml-2 font-normal">
-                        (Insufficient balance)
+
+                {dayCount > 0 && (
+                  <div className="rounded-2xl border border-slate-100 bg-white/80 shadow-sm backdrop-blur">
+                    <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                      <div className="flex items-center gap-2 text-slate-800">
+                        <Clock className="h-4 w-4 text-sky-600" />
+                        <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                          Day-by-day duration
+                        </span>
+                      </div>
+                      <span className="text-xs text-slate-500">
+                        Weekends are skipped automatically
                       </span>
-                    )}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+                    </div>
+                    <div className="divide-y divide-slate-100">
+                      {leaveDays?.map((day, index) => (
+                        <div
+                          key={day.date}
+                          className="grid grid-cols-1 items-center gap-4 p-4 transition-colors md:grid-cols-2 hover:bg-slate-50/70"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-sm font-semibold text-white shadow-inner">
+                              {dayjs(day.date).format("DD")}
+                            </div>
+                            <div>
+                              <p className="font-medium text-slate-900">{dayjs(day.date).format("dddd")}</p>
+                              <p className="text-sm text-slate-500">{dayjs(day.date).format("DD MMM YYYY")}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <Select
+                              value={day?.type?.toString()}
+                              onValueChange={(val) => handleLeaveTypeChange(index, val)}
+                              disabled={readOnly}
+                            >
+                              <SelectTrigger className="h-11 rounded-xl border-slate-200 bg-slate-50/60 text-slate-800 focus:border-sky-500 focus:ring-sky-500">
+                                <SelectValue placeholder="Select duration" />
+                              </SelectTrigger>
+                              <SelectContent className="rounded-xl border-slate-100 shadow-lg">
+                                <SelectItem value={"0"} className="text-slate-400">
+                                  Select Duration
+                                </SelectItem>
+                                {LEAVE?.map((type) => (
+                                  <SelectItem
+                                    key={type?.id}
+                                    value={type?.id.toString()}
+                                    className="py-2"
+                                  >
+                                    {type?.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            {dayErrors[index] && (
+                              <p className="mt-1 flex items-center gap-1 text-xs text-red-500">
+                                <AlertCircle className="h-3 w-3" />
+                                {dayErrors[index]}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-slate-100">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="px-6 h-11 border-slate-200 hover:bg-slate-50"
-            >
-              <X className="h-4 w-4 mr-2" />
-              Cancel
-            </Button>
-            {!readOnly && (
-              <Button
-                type="submit"
-                className="px-6 h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/25"
-                disabled={leaveCalculate?.leave_remaing - totalLeaveCount < 0}
-              >
-                <CalendarPlus className="h-4 w-4 mr-2" />
-                Submit Request
-              </Button>
-            )}
-          </div>
-        </form>
+                <div className="rounded-2xl border border-slate-100 bg-white/80 shadow-sm backdrop-blur">
+                  <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 text-slate-800">
+                    <FileText className="h-4 w-4 text-sky-600" />
+                    <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                      Context & coverage
+                    </span>
+                  </div>
+                  <div className="space-y-5 px-5 py-5">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="reason"
+                        className="flex items-center gap-2 text-sm font-semibold text-slate-700"
+                      >
+                        <FileText className="h-4 w-4 text-sky-600" />
+                        Reason for Leave <span className="text-red-500">*</span>
+                      </Label>
+                      <Textarea
+                        id="reason"
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        placeholder="Provide brief context for your absence, projects impacted, or coverage plan."
+                        rows={4}
+                        disabled={readOnly}
+                        className="rounded-xl border-slate-200 bg-slate-50/60 text-slate-800 focus:border-sky-500 focus:ring-sky-500"
+                      />
+                      {errors.reason && (
+                        <p className="flex items-center gap-1 text-sm text-red-500">
+                          <AlertCircle className="h-3.5 w-3.5" />
+                          {errors.reason}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="emergencyContact"
+                        className="flex items-center gap-2 text-sm font-semibold text-slate-700"
+                      >
+                        <Phone className="h-4 w-4 text-sky-600" />
+                        Emergency Contact
+                        <span className="text-xs font-normal text-slate-500">(optional)</span>
+                      </Label>
+                      <Input
+                        id="emergencyContact"
+                        value={emergencyContact}
+                        onChange={(e) => setEmergencyContact(e.target.value)}
+                        placeholder="Who can be reached while you are away"
+                        disabled={readOnly}
+                        className="h-11 rounded-xl border-slate-200 bg-slate-50/60 text-slate-800 focus:border-sky-500 focus:ring-sky-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4 lg:gap-5">
+                <div className="rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-slate-50 shadow-sm">
+                  <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                    <div className="flex items-center gap-2 text-slate-800">
+                      <CheckCircle2 className="h-5 w-5 text-sky-600" />
+                      <div>
+                        <p className="text-sm font-semibold">Leave Summary</p>
+                        <p className="text-xs text-slate-500">Auto-updates as you fill the form.</p>
+                      </div>
+                    </div>
+                    <div className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                      {dayCount || 0} day{dayCount === 1 ? "" : "s"}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 px-5 py-5">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Leave Type</p>
+                        <p className="mt-1 text-base font-semibold text-slate-900">{leaveCalculate?.leave_type || "-"}</p>
+                      </div>
+                      <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Available Balance</p>
+                        <p className="mt-1 text-base font-semibold text-sky-700">{leaveCalculate?.leave_remaing || 0} days</p>
+                      </div>
+                      <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Working Days Selected</p>
+                        <p className="mt-1 text-base font-semibold text-slate-900">{dayCount || 0}</p>
+                      </div>
+                      {!["approved"].includes(leaveRequestViewMode?.status) && (
+                        <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                          <p className="text-xs uppercase tracking-wide text-slate-500">Leave Count</p>
+                          <p className="mt-1 text-base font-semibold text-indigo-700">{totalLeaveCount || 0}</p>
+                        </div>
+                      )}
+                      {!["pending", "approved"].includes(leaveRequestViewMode?.status) && (
+                        <div className="col-span-2 rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                          <p className="text-xs uppercase tracking-wide text-slate-500">Remaining after request</p>
+                          <p
+                            className={cn(
+                              "mt-1 text-base font-semibold",
+                              leaveCalculate?.leave_remaing - totalLeaveCount < 0
+                                ? "text-red-600"
+                                : "text-emerald-700"
+                            )}
+                          >
+                            {(!readOnly && leaveCalculate?.leave_remaing - totalLeaveCount) || 0} days
+                            {leaveCalculate?.leave_remaing - totalLeaveCount < 0 && (
+                              <span className="ml-2 text-xs font-normal text-red-600">
+                                Insufficient balance
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-4 py-3 text-sm text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="h-4 w-4 text-sky-600" />
+                        <span>
+                          Ensure dates exclude weekends; we pre-filter them for you. Balances update in real time.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-100 bg-white px-5 py-4 shadow-sm">
+                  <div className="flex items-center gap-3 text-slate-700">
+                    <User className="h-4 w-4 text-sky-600" />
+                    <div>
+                      <p className="text-sm font-semibold">Need help?</p>
+                      <p className="text-xs text-slate-500">Contact HR if your balance looks off or if you need an exception.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-end">
+              <div className="flex flex-1 items-center gap-2 text-xs text-slate-500 sm:justify-start">
+                <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                <span>Real-time validation keeps your request complete before submission.</span>
+              </div>
+              <div className="flex items-center gap-3 sm:justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onClose}
+                  className="h-11 rounded-xl border-slate-200 px-6 text-slate-700 hover:bg-slate-50"
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Cancel
+                </Button>
+                {!readOnly && (
+                  <Button
+                    type="submit"
+                    className="h-11 rounded-xl bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 px-6 text-white shadow-lg shadow-sky-500/25 transition-all hover:translate-y-[-1px] hover:shadow-sky-500/35"
+                    disabled={leaveCalculate?.leave_remaing - totalLeaveCount < 0}
+                  >
+                    <CalendarPlus className="mr-2 h-4 w-4" />
+                    Submit Request
+                  </Button>
+                )}
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

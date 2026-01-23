@@ -834,7 +834,7 @@ const EmployeeDashboard = () => {
         </div>
       )}
       <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto scroll-slim p-0 gap-0">
           <LeaveRequestModal
             onClose={() => {
               setShowRequestModal(false);
