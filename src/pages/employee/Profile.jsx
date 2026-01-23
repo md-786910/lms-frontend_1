@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+﻿import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   User,
@@ -14,12 +12,11 @@ import {
   DollarSign,
   Trash2,
   Loader2,
-  Check,
   CalendarDays,
   Phone,
   Mail,
 } from "lucide-react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
 import { useToast } from "@/hooks/use-toast";
 
@@ -58,6 +55,7 @@ const employeeProfileTab = [
 
 const Profile = ({ readOnly = false }) => {
   const { user } = useAuth();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [basicInfo, setBasicInfo] = useState(null);
@@ -78,6 +76,13 @@ const Profile = ({ readOnly = false }) => {
     };
     fetchBasicInfo();
   }, []);
+
+  useEffect(() => {
+    const segments = location.pathname.split("/").filter(Boolean);
+    const currentSegment = segments[segments.length - 1] || "basic";
+    const matchesTab = employeeProfileTab.some((tab) => tab.link.endsWith(currentSegment));
+    setActiveTab(matchesTab ? currentSegment : "basic");
+  }, [location.pathname]);
 
   const handleAvatarChange = async (event, employeeId) => {
     const file = event.target.files[0];
@@ -143,227 +148,266 @@ const Profile = ({ readOnly = false }) => {
     }
   };
 
+  const formatDate = (value) => {
+    if (!value) {
+      return loading ? "Loading..." : "N/A";
+    }
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+      return loading ? "Loading..." : "N/A";
+    }
+    return parsed.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const fullName = [basicInfo?.first_name, basicInfo?.last_name].filter(Boolean).join(" ") || (loading ? "Loading..." : "Employee");
+  const designationTitle = basicInfo?.designation?.title || (loading ? "Loading..." : "Employee");
+  const departmentName = basicInfo?.department?.name || (loading ? "Loading..." : "General");
+  const locationParts = [
+    basicInfo?.address?.city,
+    basicInfo?.address?.state,
+    basicInfo?.address?.country,
+    basicInfo?.city,
+    basicInfo?.country,
+  ].filter(Boolean);
+  const locationLabel = locationParts.length ? locationParts.join(", ") : "Bangalore, India";
+  const profileInitials = `${basicInfo?.first_name?.[0] || ""}${basicInfo?.last_name?.[0] || ""}`.trim().toUpperCase();
+  const joinedLabel = formatDate(user?.date_of_joining);
+  const profileJoinedLabel = formatDate(basicInfo?.date_of_joining);
+  const contactValue = (value) => value || (loading ? "Loading..." : "Not provided");
+
+  const contactItems = [
+    {
+      label: "Email address",
+      value: contactValue(basicInfo?.email),
+      icon: <Mail className="h-4 w-4" />,
+      accent: "from-blue-500/70 to-blue-600/80",
+    },
+    {
+      label: "Phone number",
+      value: contactValue(basicInfo?.phone_number),
+      icon: <Phone className="h-4 w-4" />,
+      accent: "from-emerald-500/70 to-teal-500/80",
+    },
+    {
+      label: "Location",
+      value: locationLabel,
+      icon: <MapPin className="h-4 w-4" />,
+      accent: "from-purple-500/70 to-fuchsia-500/80",
+    },
+  ];
+
+  const workStats = [
+    {
+      label: "Employee ID",
+      value: basicInfo?.employee_no ?? (loading ? "Loading..." : "N/A"),
+      icon: <User className="h-5 w-5 text-white" />,
+      iconBg: "from-sky-500 to-indigo-500",
+    },
+    {
+      label: "Designation",
+      value: designationTitle,
+      icon: <Briefcase className="h-5 w-5 text-white" />,
+      iconBg: "from-emerald-500 to-teal-500",
+    },
+    {
+      label: "Department",
+      value: departmentName,
+      icon: <MapPin className="h-5 w-5 text-white" />,
+      iconBg: "from-purple-500 to-fuchsia-500",
+    },
+    {
+      label: "Date of Joining",
+      value: profileJoinedLabel,
+      icon: <Calendar className="h-5 w-5 text-white" />,
+      iconBg: "from-orange-500 to-amber-500",
+    },
+  ];
+
   return (
     <div className="space-y-8 pb-10">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.45em] text-slate-400">
+          Team Member Profile
+        </p>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Profile Information</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your personal information and preferences</p>
+          <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Profile Information</h1>
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+            A contemporary view of your personal and professional details.
+          </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Profile Card */}
-        <div className="lg:col-span-3 space-y-3">
-          <div className="bg-white rounded-md border border-border shadow-card p-8 flex flex-col items-center text-center group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-100"></div>
-            <div className="relative z-10 w-24 h-24 bg-white shadow-md mb-3">
-              <div className="w-full h-full overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500">
-                {basicInfo?.profile ? (
-                  <img
-                    src={basicInfo.profile}
-                    alt={`${basicInfo.first_name} ${basicInfo.last_name}`}
-                    className="w-full h-full object-cover rounded-md"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
-                    {loading ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      <>
-                        {basicInfo?.first_name?.[0]}
-                        {basicInfo?.last_name?.[0]}
-                      </>
-                    )}
-                  </div>
-                )}
-                {!readOnly && (
-                  <div className="absolute bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
-                    <div className="relative flex items-center justify-center w-full h-full">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
-                        className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                        title="Change Avatar"
-                      />
-                      <Edit3 className="text-white w-4 h-4 z-10" />
+
+      <section className="grid gap-6 lg:grid-cols-[320px,1fr]">
+        <div className="flex flex-col gap-6">
+          <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
+            <div className="pointer-events-none absolute -right-10 top-4 h-40 w-40 rounded-full bg-gradient-to-br from-primary/40 to-slate-900/20 opacity-70 blur-3xl"></div>
+            <div className="relative z-10 space-y-6">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-gradient-to-br from-slate-800 via-slate-900 to-indigo-600 shadow-2xl">
+                  {basicInfo?.profile ? (
+                    <img
+                      src={basicInfo.profile}
+                      alt={`${basicInfo.first_name} ${basicInfo.last_name}`}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-3xl font-semibold tracking-tight text-white">
+                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : profileInitials || <User className="h-6 w-6" />}
                     </div>
-                    {basicInfo?.profile && (
-                      <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete h-8"
-                          onClick={() => handleDeleteAvatar(basicInfo?.id)}
-                          title="Delete Avatar"
-                        >
-                          <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="relative z-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">{basicInfo?.first_name} {basicInfo?.last_name}</h2>
-              <p className="text-gray-700 font-medium text-md mb-2">{basicInfo?.department?.name}</p>
-              <div className="flex flex-col gap-3 w-full">
-                <div className="flex items-center justify-center text-xs text-slate-500">
-                  <User className="h-4 w-4 text-base" />
-                  <span>ID: <span className="font-bold text-slate-700 ">{basicInfo?.employee_no}</span></span>
+                  )}
                 </div>
-                <div className="flex items-center justify-center gap-2 text-xs text-slate-600 bg-slate-100 py-2.5 px-6 rounded-md border border-slate-100">
-                  <CalendarDays className="h-4 w-4 text-base" />
-                  <span>Joined: 
-                    <span className="font-bold text-slate-700 dark:text-slate-200">{user?.date_of_joining
-                      ? new Date(user.date_of_joining).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })
-                      : "N/A"}
-                    </span>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.5em] text-slate-400 dark:text-slate-500">
+                    Profile snapshot
+                  </p>
+                  <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">{fullName}</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">
+                    {designationTitle}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    Joined {joinedLabel}
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
+                    <User className="h-3.5 w-3.5" />
+                    ID {basicInfo?.employee_no ?? "—"}
                   </span>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-md border border-border shadow-card overflow-hidden">
-            <div className="py-4 px-6 border-b border-slate-100">
-              <h3 className="font-bold text-sm uppercase tracking-wider text-slate-900">Contact Info</h3>
-            </div>
-            <div className="p-6 space-y-5">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-4 h-4 text-base" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-0.5">Email Address</p>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white break-all">{basicInfo?.email}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-4 h-4 text-base" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-0.5">Phone Number</p>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{basicInfo?.phone_number}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-4 w-4 text-base" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-0.5">Location</p>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">Bangalore, India</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Tabbed Information */}
-        <div className="lg:col-span-9 space-y-8">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-5 mb-5">
-                {employeeProfileTab.map((tab, index) => {
-                  return (
-                    <TabsTrigger
-                      key="index"
-                      value="basic"
-                      className="flex items-center space-x-2 "
+              {!readOnly && (
+                <div className="flex flex-col gap-3 text-sm">
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-center font-semibold text-slate-600 transition hover:border-slate-300 dark:border-slate-700/40 dark:bg-slate-900/40 dark:text-slate-200">
+                    <Edit3 className="h-4 w-4" />
+                    Update photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleAvatarChange(e, basicInfo?.id)}
+                      className="sr-only"
+                    />
+                  </label>
+                  {basicInfo?.profile && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full justify-center"
+                      onClick={() => handleDeleteAvatar(basicInfo?.id)}
                     >
-                      <NavLink
-                        to={tab.link}
-                        className={({ isActive }) =>
-                          `text-center w-full py-2 px-4 sm:px-8 rounded-md transition-colors whitespace-nowrap ${isActive
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "bg-transparent hover:bg-gray-200"
-                          }`
-                        }
-                      >
-                        <span className="text-xs sm:text-sm">{tab.name}</span>
-                      </NavLink>
-                    </TabsTrigger>
-                  );
-                })}
-              </TabsList>
-              <div className="bg-white rounded-md border border-border shadow-card p-6">
-                <div className="flex items-center gap-3 mb-2 pb-4 border-b border-slate-200">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                    <User className="h-4 w-4 text-base"/>
-                  </div>
-                  <h3 className="font-bold text-lg text-slate-900 dark:text-white">Personal Information</h3>
+                      Remove photo
+                    </Button>
+                  )}
                 </div>
-                <main className="h-[40vh] max-h-[60vh]">
-                  <Outlet
-                    context={activeTab === "basic" ? { basicInfo, loading } : {}}
-                  />
-                </main>
-              </div>
-            </Tabs>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Work Information */}
-      <div className="bg-white rounded-md border border-bordershadow-card px-6 py-6">
-        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700/50">
-          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-            <Briefcase className="h-5 w-5 text-purple-600" />
-          </div>
-          <h3 className="font-bold text-lg text-slate-900 dark:text-white">Work Information</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-              <User className="h-6 w-6 mx-auto mb-2 text-blue-600" />
+          <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400 dark:text-slate-500">
+                  Contact info
+                </p>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Stay connected</h3>
+              </div>
+              <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">Always synced</span>
             </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Employee ID</p>
-              <p className="font-bold text-slate-900 ">{basicInfo?.employee_no}</p>
-            </div>
-          </div>
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center gap-3 ">
-            <div className="w-12 h-12 rounded-xl bg-green-50  text-green-600 flex items-center justify-center">
-              <Briefcase className="h-6 w-6 mx-auto mb-2 text-green-600" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Designation</p>
-              <p className="font-bold text-slate-900">{basicInfo?.designation?.title || "N/A"}</p>
-            </div>
-          </div>
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-              <MapPin className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Department</p>
-              <p className="font-bold text-slate-900">{basicInfo?.department?.name || "N/A"}</p>
-            </div>
-          </div>
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center gap-3 ">
-            <div className="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
-              <Calendar className="h-6 w-6 mx-auto mb-2 text-orange-600" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Date of Joining</p>
-              <p className="font-bold text-slate-900">{basicInfo?.date_of_joining
-                  ? new Date(basicInfo.date_of_joining).toLocaleDateString()
-                  : "N/A"}</p>
+            <div className="space-y-3">
+              {contactItems.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-3 dark:border-slate-700/40 dark:bg-slate-900/40"
+                >
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} text-white shadow-sm`}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{item.label}</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.value}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+
+        <div className="flex flex-col gap-6">
+          <div className="rounded-[32px] border border-slate-200 bg-white shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
+            <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-4 dark:border-slate-700/50">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-slate-900 text-white">
+                <User className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400">Profile sections</p>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Personal details</h3>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 px-6 py-5">
+              {employeeProfileTab.map((tab) => (
+                <NavLink
+                  to={tab.link}
+                  key={tab.id}
+                  className={({ isActive }) =>
+                    `inline-flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-semibold transition-colors ${
+                      isActive
+                        ? "border-slate-900 bg-slate-900 text-white shadow-lg"
+                        : "border-transparent bg-slate-100 text-slate-600 hover:border-slate-200 hover:bg-slate-200 dark:border-slate-700/60 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white"
+                    }`
+                  }
+                >
+                  <span className="text-base">{tab.icon}</span>
+                  <span>{tab.name}</span>
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="px-6 pb-6">
+              <div className="min-h-[320px] rounded-2xl border border-slate-100 bg-slate-50/70 p-6 shadow-sm transition dark:border-slate-700/50 dark:bg-slate-900/40">
+                <Outlet context={activeTab === "basic" ? { basicInfo, loading } : {}} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-[32px] border border-slate-200 bg-white px-6 py-6 shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
+        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 dark:border-slate-700/50">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg">
+              <Briefcase className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400">Work information</p>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Employment snapshot</h3>
+            </div>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {workStats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4 shadow-sm transition hover:border-slate-200 dark:border-slate-700/40 dark:bg-slate-900/40"
+            >
+              <div className="flex items-center gap-3">
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.iconBg} text-white`}>
+                  {stat.icon}
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{stat.label}</p>
+                  <p className="text-lg font-semibold text-slate-900 dark:text-white">{stat.value}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
