@@ -28,9 +28,10 @@ const Settings = () => {
                 <NavLink
                   to={link}
                   className={({ isActive }) =>
-                    `text-center py-2 w-full rounded-md transition-colors ${isActive
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
-                      : "bg-transparent hover:bg-gray-200"
+                    `text-center py-2 w-full rounded-md transition-colors ${
+                      isActive
+                        ? "bg-primary text-white hover:bg-primary/90"
+                        : "bg-transparent hover:bg-slate-100 text-slate-700"
                     }`
                   }
                 >

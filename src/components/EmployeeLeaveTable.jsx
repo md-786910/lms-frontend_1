@@ -125,8 +125,8 @@ const EmployeeLeaveTable = () => {
   );
 
   return (
-    <Card className="border-0 shadow-lg">
-      <CardHeader className="pb-4">
+    <Card className="border border-slate-200 shadow-sm rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <CardTitle className="flex items-center space-x-2">
             <Calendar className="h-5 w-5 text-blue-600" />
@@ -313,14 +313,14 @@ const EmployeeLeaveTable = () => {
           {/* Modal Content */}
           <div className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-lg shadow-2xl mx-4 flex flex-col">
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-lg">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <div className="flex justify-between items-center px-6 py-4 border-b bg-primary text-white rounded-t-lg">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
                 Employee Leave Summary - {year}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-white hover:text-red-200 text-2xl font-bold transition duration-200"
+                className="text-white/80 hover:text-white text-2xl font-bold transition duration-200"
               >
                 <X className="h-6 w-6" />
               </button>

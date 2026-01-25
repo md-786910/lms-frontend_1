@@ -127,8 +127,10 @@ const Timing = () => {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline">Export Report</Button>
-          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+          <Button variant="outline" className="border-slate-200 text-slate-800">
+            Export Report
+          </Button>
+          <Button className="bg-primary text-white hover:bg-primary/90 shadow-sm">
             <Clock className="h-4 w-4 mr-2" />
             Time Settings
           </Button>
@@ -137,69 +139,69 @@ const Timing = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Present Today
                 </p>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {presentCount}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-green-500 to-green-600">
-                <CheckCircle className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
+                <CheckCircle className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Late Arrivals
                 </p>
-                <p className="text-2xl font-bold text-orange-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {lateCount}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600">
-                <AlertTriangle className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
+                <AlertTriangle className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">Absent</p>
-                <p className="text-2xl font-bold text-red-600">{absentCount}</p>
+                <p className="text-2xl font-bold text-slate-900">{absentCount}</p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-red-500 to-red-600">
-                <User className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-rose-100 text-rose-700">
+                <User className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Total Hours
                 </p>
-                <p className="text-2xl font-bold text-blue-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {totalWorkHours.toFixed(1)}h
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600">
-                <TrendingUp className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700">
+                <TrendingUp className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
@@ -207,7 +209,7 @@ const Timing = () => {
       </div>
 
       {/* Filters */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -234,7 +236,7 @@ const Timing = () => {
       </Card>
 
       {/* Time Records Table */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
         <CardHeader>
           <CardTitle>
             Today's Attendance - {new Date(selectedDate).toLocaleDateString()}
@@ -328,7 +330,7 @@ const Timing = () => {
       </Card>
 
       {/* Weekly Overview */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
         <CardHeader>
           <CardTitle>Weekly Overview</CardTitle>
         </CardHeader>

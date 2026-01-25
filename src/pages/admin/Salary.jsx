@@ -181,7 +181,7 @@ const Salary = () => {
             Export Report
           </Button>
           {/* <Button
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-primary text-white hover:bg-primary/90"
             onClick={handleProcessPayroll}
           >
             Process Payroll
@@ -189,82 +189,82 @@ const Salary = () => {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-600 text-sm font-medium">
-                  Total Payroll
-                </p>
-                <p className="text-2xl font-bold text-slate-800">
-                  ₹{dashboard?.total_netpay?.toLocaleString()}
-                </p>
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="border border-slate-200 shadow-sm rounded-2xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-600 text-sm font-medium">
+                    Total Payroll
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    ₹{dashboard?.total_netpay?.toLocaleString()}
+                  </p>
+                </div>
+                <div className="p-3 rounded-2xl bg-blue-100 text-blue-700">
+                  <DollarSign className="h-6 w-6" />
+                </div>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600">
-                <DollarSign className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-600 text-sm font-medium">
-                  Paid Amount
-                </p>
-                <p className="text-2xl font-bold text-green-600">
-                  ₹{dashboard?.paid_amount?.toLocaleString()}
-                </p>
+          <Card className="border border-slate-200 shadow-sm rounded-2xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-600 text-sm font-medium">
+                    Paid Amount
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    ₹{dashboard?.paid_amount?.toLocaleString()}
+                  </p>
+                </div>
+                <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
+                  <TrendingUp className="h-6 w-6" />
+                </div>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-green-500 to-green-600">
-                <TrendingUp className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-600 text-sm font-medium">
-                  Pending Amount
-                </p>
-                <p className="text-2xl font-bold text-orange-600">
-                  ₹{dashboard?.pending_amount?.toLocaleString()}
-                </p>
+          <Card className="border border-slate-200 shadow-sm rounded-2xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-600 text-sm font-medium">
+                    Pending Amount
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    ₹{dashboard?.pending_amount?.toLocaleString()}
+                  </p>
+                </div>
+                <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
+                  <Calendar className="h-6 w-6" />
+                </div>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600">
-                <Calendar className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-600 text-sm font-medium">Employees</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {dashboard?.employee_count}
-                </p>
+          <Card className="border border-slate-200 shadow-sm rounded-2xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-600 text-sm font-medium">Employees</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {dashboard?.employee_count}
+                  </p>
+                </div>
+                <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700">
+                  <Users className="h-6 w-6" />
+                </div>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600">
-                <Users className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
 
       {/* Search and Filters */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
@@ -308,7 +308,7 @@ const Salary = () => {
 
             <div className="relative ">
               <Button
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                className="bg-primary text-white hover:bg-primary/90 shadow-sm"
                 onClick={async () => {
                   const resp = await salaryAPI.importCurrentSalaryManually();
                   if (resp.status == 200) {
@@ -336,7 +336,7 @@ const Salary = () => {
       </Card>
 
       {/* Salary Table */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
         <CardHeader>
           <CardTitle>
             Salary Details

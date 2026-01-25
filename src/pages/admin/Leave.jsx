@@ -208,14 +208,15 @@ const Leave = () => {
         </div>
         <div className="flex gap-2">
           <Button
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-primary text-white hover:bg-primary/90 shadow-sm"
             onClick={() => setShowCreateLeaveModal(true)}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Leave
           </Button>
           <Button
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            variant="outline"
+            className="border-slate-200 text-slate-800 hover:bg-slate-100"
             onClick={() => setShowLeavePolicyModal(true)}
           >
             <Filter className="h-4 w-4 mr-2" />
@@ -226,72 +227,71 @@ const Leave = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Pending Requests
                 </p>
-                <p className="text-2xl font-bold text-orange-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {leaveDash?.pending_requests}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600">
-                <AlertCircle className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
+                <AlertCircle className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Approved Requests
                 </p>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {leaveDash?.approved_requests}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-green-500 to-green-600">
-                <CheckCircle className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
+                <CheckCircle className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">
                   Total Leave Days
                 </p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {" "}
+                <p className="text-2xl font-bold text-slate-900">
                   {leaveDash?.total_leave_days}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600">
-                <Calendar className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-blue-100 text-blue-700">
+                <Calendar className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border border-slate-200 shadow-sm rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-600 text-sm font-medium">This Month</p>
-                <p className="text-2xl font-bold text-purple-600">
+                <p className="text-2xl font-bold text-slate-900">
                   {leaveDash?.this_month}
                 </p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600">
-                <Clock className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700">
+                <Clock className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
@@ -299,8 +299,8 @@ const Leave = () => {
       </div>
 
       {/* Search and Filters */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
@@ -356,7 +356,7 @@ const Leave = () => {
         {leaveRequest?.map((request) => (
           <Card
             key={request.id}
-            className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+            className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">

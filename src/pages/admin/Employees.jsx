@@ -232,7 +232,7 @@ const Employees = ({
         {showAddButton && (
           <Button
             onClick={() => setShowAddForm(true)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-primary text-white hover:bg-primary/90 shadow-sm"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Employee
@@ -241,8 +241,8 @@ const Employees = ({
       </div>
 
       {/* Search and Filters */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
@@ -302,7 +302,7 @@ const Employees = ({
           return (
             <Card
               key={employee.id}
-              className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+              className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
               {/*  Header Box */}
               <CardHeader className="pb-4">
@@ -445,7 +445,7 @@ const Employees = ({
                       </span>
                     </div>
 
-                    <div className="w-[34vw] flex justify-between items-center text-sm">
+                    <div className="flex flex-wrap justify-between items-center gap-3 text-sm">
                       <div className="flex items-center space-x-3">
                         <Calendar className="h-4 w-4 text-slate-400" />
                         <span className="text-slate-600">
@@ -486,7 +486,7 @@ const Employees = ({
                         className="w-full h-full object-cover rounded-md border border-slate-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
+                      <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-2xl rounded-md uppercase border border-dashed border-primary/30">
                         {avatarLoadingId === employee.id ? (
                           <Loader2 className="animate-spin" />
                         ) : (
