@@ -135,6 +135,36 @@ All colors MUST be HSL.
   .bg-gradient-card {
     background: var(--gradient-card);
   }
+
+  /* Thin, auto-hiding scrollbars */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  .scroll-slim:hover::-webkit-scrollbar,
+  .scroll-slim:focus-visible::-webkit-scrollbar,
+  .scroll-slim:active::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.45);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+  }
+  .scroll-slim:hover::-webkit-scrollbar-thumb,
+  .scroll-slim:focus-visible::-webkit-scrollbar-thumb,
+  .scroll-slim:active::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.7);
+  }
 }
 
 /* react confirm alert */

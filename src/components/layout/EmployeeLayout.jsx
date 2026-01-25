@@ -184,13 +184,13 @@ const EmployeeLayout = () => {
               >
                 {/* Left active indicator */}
                 {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-r-full" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gray-900 rounded-r-full" />
                 )}
 
                 {/* Icon */}
                 <Icon
                   className={`h-5 w-5 ${
-                    isActive ? "text-primary" : "text-slate-500 group-hover:text-slate-700"
+                    isActive ? "text-gray-900" : "text-gray-900 group-hover:text-gray-900"
                   }`}
                 />
 

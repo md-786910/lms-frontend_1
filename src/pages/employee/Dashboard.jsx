@@ -443,7 +443,7 @@ const EmployeeDashboard = () => {
             return (
               <Card
                 key={index}
-                className="relative overflow-hidden border border-slate-100 bg-white/90 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+                className="relative overflow-hidden border border-slate-100 bg-white/90 shadow-md backdrop-blur transition-all duration-200"
               >
                 <div
                   className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${stat.color}`}
@@ -834,7 +834,7 @@ const EmployeeDashboard = () => {
         </div>
       )}
       <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto scroll-slim p-0 gap-0">
           <LeaveRequestModal
             onClose={() => {
               setShowRequestModal(false);
