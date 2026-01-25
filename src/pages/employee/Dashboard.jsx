@@ -52,6 +52,38 @@ const EmployeeDashboard = () => {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
   const [greeting, setGreeting] = useState("");
+  const statToneMap = {
+    amber: {
+      accent: "bg-amber-500",
+      chip: "bg-amber-50 text-amber-700",
+      dot: "bg-amber-500",
+      iconBg: "bg-amber-100 text-amber-700",
+    },
+    blue: {
+      accent: "bg-blue-600",
+      chip: "bg-blue-50 text-blue-700",
+      dot: "bg-blue-500",
+      iconBg: "bg-blue-100 text-blue-700",
+    },
+    violet: {
+      accent: "bg-violet-600",
+      chip: "bg-violet-50 text-violet-700",
+      dot: "bg-violet-500",
+      iconBg: "bg-violet-100 text-violet-700",
+    },
+    emerald: {
+      accent: "bg-emerald-600",
+      chip: "bg-emerald-50 text-emerald-700",
+      dot: "bg-emerald-500",
+      iconBg: "bg-emerald-100 text-emerald-700",
+    },
+    default: {
+      accent: "bg-slate-500",
+      chip: "bg-slate-100 text-slate-700",
+      dot: "bg-slate-500",
+      iconBg: "bg-slate-100 text-slate-700",
+    },
+  };
   const myLeaveData = [
     {
       id: 1,
@@ -145,21 +177,21 @@ const EmployeeDashboard = () => {
             value: `${leaves.total_approved || 0} days`,
             subtitle: "This year",
             icon: TrendingUp,
-            color: "from-orange-500 to-orange-600",
+            tone: "amber",
           },
           {
             title: "Leave Balance",
             value: `${dashboard.leave_balance || 0} days`,
             subtitle: "Available this year",
             icon: CalendarIcon,
-            color: "from-blue-500 to-blue-600",
+            tone: "blue",
           },
           {
             title: "Current Salary",
             value: `\u20B9${dashboard.net_salary || 0}`,
             subtitle: "Annual gross",
             icon: IndianRupee,
-            color: "from-purple-500 to-purple-600",
+            tone: "violet",
           },
         ];
 
@@ -269,20 +301,45 @@ const EmployeeDashboard = () => {
                 const isRejected =
                   notification.message?.toLowerCase().includes("rejected");
 
-                const getIcon = () => {
-                  if (isApproved)
-                    return <CheckCircle className="h-5 w-5 text-white" />;
-                  if (isRejected) return <X className="h-5 w-5 text-white" />;
-                  if (isLeaveRequest)
-                    return <CalendarIcon className="h-5 w-5 text-white" />;
-                  return <Bell className="h-5 w-5 text-white" />;
+                const tone = (() => {
+                  if (isApproved) return "emerald";
+                  if (isRejected) return "rose";
+                  if (isLeaveRequest) return "indigo";
+                  return "blue";
+                })();
+
+                const tonePalette = {
+                  emerald: {
+                    indicator: "bg-emerald-500",
+                    icon: "bg-emerald-100 text-emerald-700",
+                    badge: "bg-emerald-50 text-emerald-700",
+                  },
+                  rose: {
+                    indicator: "bg-rose-500",
+                    icon: "bg-rose-100 text-rose-700",
+                    badge: "bg-rose-50 text-rose-700",
+                  },
+                  indigo: {
+                    indicator: "bg-indigo-500",
+                    icon: "bg-indigo-100 text-indigo-700",
+                    badge: "bg-indigo-50 text-indigo-700",
+                  },
+                  blue: {
+                    indicator: "bg-blue-500",
+                    icon: "bg-blue-100 text-blue-700",
+                    badge: "bg-blue-50 text-blue-700",
+                  },
                 };
 
-                const getGradient = () => {
-                  if (isApproved) return "from-emerald-500 to-green-600";
-                  if (isRejected) return "from-red-500 to-rose-600";
-                  if (isLeaveRequest) return "from-indigo-500 to-purple-600";
-                  return "from-blue-500 to-indigo-600";
+                const palette = tonePalette[tone];
+
+                const getIcon = () => {
+                  if (isApproved)
+                    return <CheckCircle className="h-5 w-5" />;
+                  if (isRejected) return <X className="h-5 w-5" />;
+                  if (isLeaveRequest)
+                    return <CalendarIcon className="h-5 w-5" />;
+                  return <Bell className="h-5 w-5" />;
                 };
 
                 const getTitle = () => {
@@ -305,12 +362,10 @@ const EmployeeDashboard = () => {
                       }
                     }}
                   >
-                    <div
-                      className={`absolute inset-y-0 left-0 w-1 bg-gradient-to-b ${getGradient()}`}
-                    />
+                    <div className={`absolute inset-y-0 left-0 w-1 ${palette.indicator}`} />
                     <div className="flex items-start gap-4 p-4">
                       <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${getGradient()} flex items-center justify-center shadow-md`}
+                        className={`flex-shrink-0 w-10 h-10 rounded-xl ${palette.icon} flex items-center justify-center shadow-md`}
                       >
                         {getIcon()}
                       </div>
@@ -322,7 +377,7 @@ const EmployeeDashboard = () => {
                           </p>
                           <Badge
                             variant="secondary"
-                            className="text-[11px] font-semibold bg-slate-100 text-slate-700"
+                            className={`text-[11px] font-semibold ${palette.badge} border border-transparent`}
                           >
                             New
                           </Badge>
@@ -359,28 +414,25 @@ const EmployeeDashboard = () => {
           </div>
         )}
 
-        <Card className="relative overflow-hidden border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xl">
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_#a5b4fc_0,_transparent_40%),radial-gradient(circle_at_bottom_right,_#67e8f9_0,_transparent_35%)]" />
-          <CardContent className="relative p-8 md:p-10">
+        <Card className="border border-slate-200 shadow-lg rounded-3xl bg-[#111827] text-white">
+          <CardContent className="p-8 md:p-10">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
-                <Badge className="bg-white/15 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
+                <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
                   Active Employee
                 </Badge>
                 <div className="space-y-2">
                   <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
-                    {greeting}, {basicProfile?.first_name + " " + basicProfile?.last_name}!{" "}
-                    <span className="inline-block align-middle">??</span>
+                    {greeting}, {basicProfile?.first_name + " " + basicProfile?.last_name}!
                   </h2>
                   <p className="text-sm md:text-base text-slate-200 max-w-xl">
-                    Stay on top of your leave balance, team updates, and recent activity with a
-                    dashboard built for daily flow.
+                    Stay on top of your leave balance, team updates, and recent activity with a dashboard built for daily flow.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <Button
                     size="lg"
-                    className="bg-white text-slate-900 hover:bg-slate-100 rounded-xl px-6 shadow-lg shadow-slate-900/20"
+                    className="bg-white text-slate-900 hover:bg-slate-100 rounded-lg px-6 shadow-md"
                     onClick={() => {
                       setReadOnly(false);
                       setLeaveRequestViewMode({});
@@ -393,7 +445,7 @@ const EmployeeDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white/40 text-[#374151] hover:bg-white/10 hover:text-white rounded-xl px-6"
+                    className="border-white/40 text-white hover:bg-white/10 rounded-lg px-6"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Leave Policy
@@ -401,7 +453,7 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px]">
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm backdrop-blur">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Employee ID
                   </p>
@@ -409,7 +461,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.employee_no ?? `EMP-${basicProfile?.id}`}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm backdrop-blur">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Department
                   </p>
@@ -417,7 +469,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.department?.name || "N/A"}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm backdrop-blur">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Position
                   </p>
@@ -425,7 +477,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.designation?.title || "N/A"}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm backdrop-blur">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Leave Balance
                   </p>
@@ -440,19 +492,18 @@ const EmployeeDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickStat?.map((stat, index) => {
             const Icon = stat.icon;
+            const palette = statToneMap[stat.tone] || statToneMap.default;
             return (
               <Card
                 key={index}
-                className="relative overflow-hidden border border-slate-100 bg-white/90 shadow-md backdrop-blur transition-all duration-200"
+                className="relative overflow-hidden border border-slate-100 bg-white shadow-md transition-all duration-200"
               >
-                <div
-                  className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${stat.color}`}
-                />
+                <div className={`absolute inset-x-0 top-0 h-1 ${palette.accent}`} />
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
-                      <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
-                        <span className="h-2 w-2 rounded-full bg-slate-400" />
+                      <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${palette.chip}`}>
+                        <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
                         {stat.subtitle}
                       </span>
                       <p className="text-base font-semibold text-slate-900">
@@ -462,11 +513,8 @@ const EmployeeDashboard = () => {
                         {stat.value}
                       </p>
                     </div>
-                    <div
-                      className={`relative h-14 w-14 rounded-2xl bg-gradient-to-br ${stat.color} text-white flex items-center justify-center shadow-lg shadow-slate-300/40`}
-                    >
+                    <div className={`relative h-14 w-14 rounded-2xl ${palette.iconBg} flex items-center justify-center shadow-sm`}>
                       <Icon className="h-6 w-6" />
-                      <div className="absolute inset-0 rounded-2xl border border-white/30 opacity-60" />
                     </div>
                   </div>
                 </CardContent>

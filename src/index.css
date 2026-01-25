@@ -1,107 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 22% 98%;
+    --foreground: 222 47% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 10%;
 
-    --primary: 220 91% 50%;
+    --primary: 226 52% 32%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 16% 92%;
+    --secondary-foreground: 222 47% 22%;
 
-    --danger: 210 40% 96.1%;
-    --danger-foreground: 222.2 47.4% 11.2%;
+    --danger: 356 65% 48%;
+    --danger-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 16% 92%;
+    --muted-foreground: 220 12% 44%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 214 24% 94%;
+    --accent-foreground: 222 47% 18%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 356 65% 48%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 220 91% 50%;
+    --border: 220 18% 88%;
+    --input: 220 18% 88%;
+    --ring: 226 52% 32%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* SaaS Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(240, 91%, 65%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(200, 91%, 55%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220, 91%, 50%) 0%, hsl(240, 91%, 65%) 50%, hsl(260, 91%, 70%) 100%);
-    --gradient-background: linear-gradient(180deg, hsl(220, 91%, 97%) 0%, hsl(240, 40%, 98%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(220, 91%, 99%) 100%);
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-background: 220 20% 97%;
+    --sidebar-foreground: 222 43% 16%;
+    --sidebar-primary: 226 52% 32%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 218 16% 93%;
+    --sidebar-accent-foreground: 222 43% 16%;
+    --sidebar-border: 220 18% 88%;
+    --sidebar-ring: 226 52% 32%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 224 46% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 224 46% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 224 46% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 220 91% 60%;
+    --primary: 226 52% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 222 16% 20%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 222 16% 22%;
+    --muted-foreground: 215 20% 76%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 220 14% 24%;
+    --accent-foreground: 210 40% 96%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 356 65% 55%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 220 91% 60%;
+    --border: 220 18% 25%;
+    --input: 220 18% 25%;
+    --ring: 226 52% 55%;
 
-    /* Dark mode SaaS Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(240, 91%, 70%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(200, 91%, 65%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220, 91%, 60%) 0%, hsl(240, 91%, 70%) 50%, hsl(260, 91%, 75%) 100%);
-    --gradient-background: linear-gradient(180deg, hsl(222.2, 84%, 4.9%) 0%, hsl(217.2, 32.6%, 17.5%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(222.2, 84%, 4.9%) 0%, hsl(217.2, 32.6%, 17.5%) 100%);
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 224 46% 12%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 226 52% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 222 16% 20%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 220 18% 25%;
+    --sidebar-ring: 226 52% 55%;
   }
 }
 
@@ -110,36 +94,29 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    background-color: hsl(var(--background));
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: "Manrope", "Space Grotesk", system-ui, -apple-system,
+      sans-serif;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: hsla(226, 52%, 32%, 0.12);
   }
 }
 
 @layer utilities {
-  .bg-gradient-primary {
-    background: var(--gradient-primary);
-  }
-  
-  .bg-gradient-secondary {
-    background: var(--gradient-secondary);
-  }
-  
-  .bg-gradient-hero {
-    background: var(--gradient-hero);
-  }
-  
-  .bg-gradient-background {
-    background: var(--gradient-background);
-  }
-  
-  .bg-gradient-card {
-    background: var(--gradient-card);
-  }
-
   /* Thin, auto-hiding scrollbars */
   .scroll-slim {
     scrollbar-width: thin;
-    scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+    scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
   }
   .scroll-slim::-webkit-scrollbar {
     width: 0px;
@@ -156,20 +133,28 @@ All colors MUST be HSL.
     background: transparent;
   }
   .scroll-slim::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 116, 139, 0.45);
+    background-color: rgba(100, 116, 139, 0.35);
     border-radius: 9999px;
     border: 2px solid transparent;
   }
   .scroll-slim:hover::-webkit-scrollbar-thumb,
   .scroll-slim:focus-visible::-webkit-scrollbar-thumb,
   .scroll-slim:active::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 116, 139, 0.7);
+    background-color: rgba(100, 116, 139, 0.6);
+  }
+
+  .card-surface {
+    @apply bg-white border border-slate-200 rounded-2xl shadow-sm;
+  }
+
+  .soft-shadow {
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
   }
 }
 
 /* react confirm alert */
 .react-confirm-alert-overlay {
-  background: rgba(150, 147, 147, 0.3); /* Dimmed background */
+  background: rgba(12, 16, 28, 0.35);
   position: fixed;
   top: 0;
   left: 0;
@@ -181,43 +166,42 @@ All colors MUST be HSL.
 }
 
 .react-confirm-alert-body {
-    background: white !important;
-    border-radius: 10px;
-    box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13);
-    color: #0c0c0c;
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
+  color: #0f172a;
 }
 
 .react-confirm-alert-body h1 {
-    font-size: 20px;
-    margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
-.react-confirm-alert-button-group button:first-child{
-  background-image: linear-gradient(to right, #2563eb, #8b5cf6); /* blue-600 to purple-600 */
-  transition: background-image 0.3s ease;
-  color: white; /* optional if text needs to be white */
+.react-confirm-alert-button-group button:first-child {
+  background-color: #1f3b83;
+  transition: background-color 0.2s ease;
+  color: white;
   border: none;
   font-size: 15px !important;
 }
-.react-confirm-alert-button-group button:first-child:hover{
-  background-image: linear-gradient(to right, #1d4ed8, #7c3aed);
+.react-confirm-alert-button-group button:first-child:hover {
+  background-color: #233f8c;
 }
-.react-confirm-alert-button-group button:last-child{
-  background-image: linear-gradient(to right, #dc2626, #f97316); /* red-600 to orange-600 */
-  transition: background-image 0.3s ease;
-  color: white; /* optional */
+.react-confirm-alert-button-group button:last-child {
+  background-color: #c53030;
+  transition: background-color 0.2s ease;
+  color: white;
   border: none;
   font-size: 15px !important;
 }
-.react-confirm-alert-button-group button:last-child:hover{
-  background-image: linear-gradient(to right, #b91c1c, #ea580c);
+.react-confirm-alert-button-group button:last-child:hover {
+  background-color: #a82525;
 }
 
 /* custom disabled */
-
 .disabled\:opacity-50:disabled {
-    opacity: 0.8 !important;
-    background-color: #f1f5f9;
+  opacity: 0.8 !important;
+  background-color: #f1f5f9;
 }
 
 /* Date input styles - fix calendar icon alignment */
@@ -247,7 +231,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .Toastify__toast {
   border-radius: 12px !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
   padding: 0 !important;
   min-height: auto !important;
   background: white !important;
@@ -263,8 +247,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   position: absolute !important;
   top: 12px !important;
   right: 12px !important;
-  color: #64748b !important;
-  opacity: 0.7 !important;
+  color: #475569 !important;
+  opacity: 0.75 !important;
 }
 
 .Toastify__close-button:hover {
@@ -273,22 +257,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .Toastify__progress-bar {
   height: 3px !important;
+  background: #1f3b83 !important;
 }
 
 .Toastify__toast--success .Toastify__progress-bar {
-  background: linear-gradient(to right, #10b981, #34d399) !important;
+  background: #15803d !important;
 }
 
 .Toastify__toast--error .Toastify__progress-bar {
-  background: linear-gradient(to right, #ef4444, #f87171) !important;
+  background: #c53030 !important;
 }
 
 .Toastify__toast--info .Toastify__progress-bar {
-  background: linear-gradient(to right, #3b82f6, #60a5fa) !important;
+  background: #1f3b83 !important;
 }
 
 .Toastify__toast--warning .Toastify__progress-bar {
-  background: linear-gradient(to right, #f59e0b, #fbbf24) !important;
+  background: #b45309 !important;
 }
 
 /* Custom notification content styling */
@@ -310,23 +295,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .custom-toast-icon.success {
-  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  background: #15803d;
 }
 
 .custom-toast-icon.error {
-  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+  background: #c53030;
 }
 
 .custom-toast-icon.info {
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  background: #1f3b83;
 }
 
 .custom-toast-icon.warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  background: #b45309;
 }
 
 .custom-toast-icon.leave {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  background: #312e81;
 }
 
 .custom-toast-icon svg {
@@ -343,14 +328,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .custom-toast-title {
   font-weight: 600;
   font-size: 14px;
-  color: #1e293b;
+  color: #0f172a;
   margin-bottom: 4px;
   line-height: 1.4;
 }
 
 .custom-toast-message {
   font-size: 13px;
-  color: #64748b;
+  color: #475569;
   line-height: 1.5;
 }
 
@@ -375,5 +360,3 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
-
-

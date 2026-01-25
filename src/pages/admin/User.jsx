@@ -19,7 +19,6 @@ const User = () => {
     first_name: "",
     last_name: "",
     phone_number: "",
-    password: "",
   });
   const [loader, setLoader] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);

@@ -184,19 +184,19 @@ const Profile = ({ readOnly = false }) => {
       label: "Email address",
       value: contactValue(basicInfo?.email),
       icon: <Mail className="h-4 w-4" />,
-      accent: "from-blue-500/70 to-blue-600/80",
+      accentBg: "bg-blue-100 text-blue-700",
     },
     {
       label: "Phone number",
       value: contactValue(basicInfo?.phone_number),
       icon: <Phone className="h-4 w-4" />,
-      accent: "from-emerald-500/70 to-teal-500/80",
+      accentBg: "bg-emerald-100 text-emerald-700",
     },
     {
       label: "Location",
       value: locationLabel,
       icon: <MapPin className="h-4 w-4" />,
-      accent: "from-purple-500/70 to-fuchsia-500/80",
+      accentBg: "bg-violet-100 text-violet-700",
     },
   ];
 
@@ -204,26 +204,26 @@ const Profile = ({ readOnly = false }) => {
     {
       label: "Employee ID",
       value: basicInfo?.employee_no ?? (loading ? "Loading..." : "N/A"),
-      icon: <User className="h-5 w-5 text-white" />,
-      iconBg: "from-sky-500 to-indigo-500",
+      icon: <User className="h-5 w-5" />,
+      iconBg: "bg-sky-100 text-sky-700",
     },
     {
       label: "Designation",
       value: designationTitle,
-      icon: <Briefcase className="h-5 w-5 text-white" />,
-      iconBg: "from-emerald-500 to-teal-500",
+      icon: <Briefcase className="h-5 w-5" />,
+      iconBg: "bg-emerald-100 text-emerald-700",
     },
     {
       label: "Department",
       value: departmentName,
-      icon: <MapPin className="h-5 w-5 text-white" />,
-      iconBg: "from-purple-500 to-fuchsia-500",
+      icon: <MapPin className="h-5 w-5" />,
+      iconBg: "bg-violet-100 text-violet-700",
     },
     {
       label: "Date of Joining",
       value: profileJoinedLabel,
-      icon: <Calendar className="h-5 w-5 text-white" />,
-      iconBg: "from-orange-500 to-amber-500",
+      icon: <Calendar className="h-5 w-5" />,
+      iconBg: "bg-amber-100 text-amber-700",
     },
   ];
 
@@ -244,10 +244,10 @@ const Profile = ({ readOnly = false }) => {
       <section className="grid gap-6 lg:grid-cols-[320px,1fr]">
         <div className="flex flex-col gap-6">
           <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
-            <div className="pointer-events-none absolute -right-10 top-4 h-40 w-40 rounded-full bg-gradient-to-br from-primary/40 to-slate-900/20 opacity-70 blur-3xl"></div>
+            <div className="pointer-events-none absolute -right-10 top-4 h-40 w-40 rounded-full bg-primary/10 opacity-70 blur-3xl"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex flex-col items-center gap-3 text-center">
-                <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-gradient-to-br from-slate-800 via-slate-900 to-indigo-600 shadow-2xl">
+              <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
                   {basicInfo?.profile ? (
                     <img
                       src={basicInfo.profile}
@@ -324,7 +324,7 @@ const Profile = ({ readOnly = false }) => {
                   key={item.label}
                   className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-3 dark:border-slate-700/40 dark:bg-slate-900/40"
                 >
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${item.accent} text-white shadow-sm`}>
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${item.accentBg} shadow-sm`}>
                     {item.icon}
                   </div>
                   <div>
@@ -340,7 +340,7 @@ const Profile = ({ readOnly = false }) => {
         <div className="flex flex-col gap-6">
           <div className="rounded-[32px] border border-slate-200 bg-white shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
             <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-4 dark:border-slate-700/50">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-slate-900 text-white">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white">
                 <User className="h-5 w-5" />
               </div>
               <div>
@@ -379,10 +379,10 @@ const Profile = ({ readOnly = false }) => {
 
       <section className="rounded-[32px] border border-slate-200 bg-white px-6 py-6 shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
         <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 dark:border-slate-700/50">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 text-white shadow-lg">
-              <Briefcase className="h-5 w-5" />
-            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg">
+                <Briefcase className="h-5 w-5" />
+              </div>
             <div>
               <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400">Work information</p>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Employment snapshot</h3>
@@ -396,7 +396,7 @@ const Profile = ({ readOnly = false }) => {
               className="rounded-2xl border border-slate-100 bg-slate-50/60 p-4 shadow-sm transition hover:border-slate-200 dark:border-slate-700/40 dark:bg-slate-900/40"
             >
               <div className="flex items-center gap-3">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.iconBg} text-white`}>
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${stat.iconBg}`}>
                   {stat.icon}
                 </div>
                 <div>
