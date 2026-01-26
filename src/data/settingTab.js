@@ -20,7 +20,7 @@ const settingTabs = [
     id: "currency",
     name: "Currency",
     link: "/admin/settings/currency",
-    description: "Default currency, symbols, and formatting",
+    description: "Default currency, symbols",
     icon: Coins,
   },
   {
@@ -53,9 +53,9 @@ const settingTabs = [
   },
   {
     id: "document-category",
-    name: "Document Category",
+    name: "Documents",
     link: "/admin/settings/document-category",
-    description: "Organize employee documents and templates",
+    description: "Organize employee documents",
     icon: FolderTree,
   },
   // Templates are kept out for now but ready for reactivation

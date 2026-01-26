@@ -86,7 +86,7 @@ function Prefix({ value }) {
   return (
     <>
       {/* Prefix & Currency Settings */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <SettingsIcon className="h-5 w-5" />
@@ -126,7 +126,7 @@ function Prefix({ value }) {
           <Button
             onClick={() => handleSave("Prefix")}
             disabled={loader}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20"
           >
             <Save className="h-4 w-4 mr-2" />
             {loader ? "saving data..." : "Save Prefix Settings"}

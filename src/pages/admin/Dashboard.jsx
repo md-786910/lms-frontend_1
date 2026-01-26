@@ -212,7 +212,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="space-y-8">
+      <div className="space-y-6">
 
         {notifications?.filter((a) => !a.read)?.length > 0 && (
           <div className="grid gap-3">
@@ -341,8 +341,8 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        <Card className="border border-slate-200 shadow-lg rounded-3xl bg-slate-900 text-white">
-          <CardContent className="p-8 md:p-10">
+        <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+          <CardContent className="p-6 md:p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
                 <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
@@ -360,7 +360,7 @@ const AdminDashboard = () => {
                 <div className="flex flex-wrap items-center gap-3">
                   <Button
                     size="lg"
-                    className="bg-white text-slate-900 hover:bg-slate-100 rounded-lg px-6"
+                    className="border border-white/40 bg-white/10 text-white hover:bg-white hover:text-slate-900 rounded-lg px-6"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Holidays
@@ -368,7 +368,7 @@ const AdminDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white/40 text-white hover:bg-white/10 rounded-lg px-6"
+                    className="border-white/40 text-slate-900 hover:bg-white/10 hover:text-white rounded-lg px-6"
                     onClick={handleDownload}
                     disabled={downloading}
                   >
@@ -381,7 +381,7 @@ const AdminDashboard = () => {
                   </Button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px] w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px] w-auto">
                 <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Total employees
