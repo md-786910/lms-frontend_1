@@ -165,10 +165,7 @@ const EmployeeLayout = () => {
         </div>
 
         <div className="px-5 py-4 space-y-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
-            Navigate
-          </p>
-          <nav className="mt-2 space-y-1">
+          <nav className=" space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname.startsWith(item.path);
@@ -350,7 +347,6 @@ const EmployeeLayout = () => {
 
               <div className="hidden sm:flex items-center gap-3">
                 <div className="text-right">
-                  <p className="text-xs text-slate-500">Signed in</p>
                   <p className="text-sm font-semibold text-slate-900">
                     {user?.first_name && user?.last_name
                       ? `${user.first_name} ${user.last_name}`
