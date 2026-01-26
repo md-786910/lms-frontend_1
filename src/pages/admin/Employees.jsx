@@ -605,7 +605,7 @@ const Employees = ({
 
       {/* Add Employee Dialog */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh]">
+        <DialogContent className="max-w-4xl max-h-[100vh]">
           <DialogHeader>
             <CardTitle className="flex items-center space-x-2">
               <User className="h-5 w-5 text-blue-600" />

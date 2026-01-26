@@ -408,7 +408,7 @@ const EditEmployeeForm = ({
         {activeTab !== "leave" && (
           <Button
             onClick={handleSave}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={loader}
           >
             {loader ? "Saving..." : "Save Changes"}
