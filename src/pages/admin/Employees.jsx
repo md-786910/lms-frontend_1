@@ -125,6 +125,13 @@ const Employees = ({
     setShowEditForm(true);
   };
 
+  const totalEmployees = employees.length;
+  const activeEmployees = employees.filter((emp) => emp.is_active).length;
+  const suspendedEmployees = employees.filter((emp) => !emp.is_active).length;
+  const uniqueDepartments = new Set(
+    employees.map((emp) => emp.department?.name).filter(Boolean)
+  ).size;
+
   const handleDeleteEmployee = async () => {
     try {
       await employeeAPI.delete(employeeToDelete.id);
@@ -222,17 +229,20 @@ const Employees = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">{customTitle}</h1>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+            People
+          </p>
+          <h1 className="text-2xl font-bold text-slate-900">{customTitle}</h1>
           <p className="text-slate-600">{customSubtitle}</p>
         </div>
         {showAddButton && (
           <Button
             onClick={() => setShowAddForm(true)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-primary text-white hover:bg-primary/90 shadow-sm"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Employee
@@ -240,9 +250,54 @@ const Employees = ({
         )}
       </div>
 
+      {/* Snapshot */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Total employees", value: totalEmployees, tone: "primary" },
+          { label: "Active", value: activeEmployees, tone: "emerald" },
+          { label: "Suspended", value: suspendedEmployees, tone: "amber" },
+          { label: "Departments", value: uniqueDepartments, tone: "indigo" },
+        ].map((stat) => (
+          <Card
+            key={stat.label}
+            className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <CardContent className="p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                {stat.label}
+              </p>
+              <p className="mt-2 text-3xl font-bold text-slate-900">
+                {stat.value}
+              </p>
+              <div
+                className={`mt-3 h-1.5 w-14 rounded-full ${
+                  stat.tone === "primary"
+                    ? "bg-primary"
+                    : stat.tone === "emerald"
+                    ? "bg-emerald-500"
+                    : stat.tone === "amber"
+                    ? "bg-amber-500"
+                    : "bg-indigo-500"
+                }`}
+              />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       {/* Search and Filters */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="p-6 space-y-5">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">
+                Find and filter employees
+              </p>
+              <p className="text-xs text-slate-500">
+                Search by name, email, department or toggle suspended staff.
+              </p>
+            </div>
+          </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
@@ -268,14 +323,17 @@ const Employees = ({
                 ))}
               </SelectContent>
             </Select>
-            <div className="relative top-1 mx-2">
-              <Label>
-                {!employeeActiveStatus
-                  ? "Active Employees"
-                  : "Suspended Employees"}
-              </Label>
+            <div className="flex items-center gap-3 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+              <div className="space-y-0.5">
+                <p className="text-xs font-semibold text-slate-700">
+                  {employeeActiveStatus ? "Suspended" : "Active"}
+                </p>
+                <p className="text-[11px] text-slate-500">
+                  Toggle to view suspended records
+                </p>
+              </div>
               <Switch
-                className="relative top-1 mx-2 w-12"
+                className="relative top-0.5 w-12"
                 title="suspended employees"
                 defaultChecked={true}
                 onCheckedChange={(val) => {
@@ -302,255 +360,242 @@ const Employees = ({
           return (
             <Card
               key={employee.id}
-              className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+              className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
-              {/*  Header Box */}
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div>
-                      <CardTitle className="text-lg text-slate-800">
-                        {employee.first_name} {employee.last_name}
-                      </CardTitle>
-                      <p className="text-slate-600">
-                        {employee.designation?.title}
-                      </p>
+              <CardContent className="p-6 space-y-4">
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                  {/* Avatar & quick status */}
+                  <div className="flex md:flex-col items-center gap-3 md:w-32">
+                    <div
+                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50"
+                    >
+                      {employee.profile ? (
+                        <img
+                          src={employee.profile}
+                          alt={`${employee.first_name} ${employee.last_name}`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl uppercase">
+                          {avatarLoadingId === employee.id ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            <>
+                              {employee?.first_name?.charAt(0)}
+                              {employee?.last_name?.charAt(0)}
+                            </>
+                          )}
+                        </div>
+                      )}
+                      {!readOnly && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex gap-2">
+                            <label className="cursor-pointer text-white text-xs font-semibold bg-black/50 px-2 py-1 rounded-md shadow">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleAvatarChange(e, employee.id)}
+                                className="hidden"
+                              />
+                              Edit
+                            </label>
+                            {employee.profile && (
+                              <button
+                                className="text-white text-xs font-semibold bg-red-600/80 px-2 py-1 rounded-md shadow"
+                                onClick={() => handleDeleteAvatar(employee.id)}
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-2">
                       <Badge
                         className={
                           employee.is_active === true
-                            ? "mt-2 bg-green-100 text-green-800"
-                            : "bg-orange-100 text-orange-800"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                            : "bg-amber-50 text-amber-700 border border-amber-100"
                         }
                       >
                         {employee.is_active === true ? "Active" : "Not Active"}
                       </Badge>
+                      {employee.department?.name && (
+                        <Badge
+                          variant="outline"
+                          className="border-slate-200 text-slate-700 bg-white"
+                        >
+                          {employee.department?.name}
+                        </Badge>
+                      )}
                     </div>
                   </div>
 
-                  {/* Action buttons  */}
-                  {!readOnly && (
-                    <div className="flex space-x-2">
-                      <Button
-                        title="Edit"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEditEmployee(employee)}
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
-                      {!employeeActiveStatus ? (
-                        <Button
-                          title="Suspend"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600"
-                          onClick={() => {
-                            setEmployeeToDelete(employee);
-                            setShowConfirmDelete(true);
-                          }}
-                        >
-                          <UserRoundX className="h-4 w-4" />
-                        </Button>
-                      ) : (
-                        <Button
-                          title="Suspend"
-                          variant="danger"
-                          size="sm"
-                          className="text-red-600"
-                          onClick={async () => {
-                            const resp =
-                              await employeeAPI.activateSuspendedEmployee(
-                                employee.id
-                              );
-                            if (resp?.status) {
-                              fetchEmployees();
-                            }
-                          }}
-                        >
-                          Revoke-suspend
-                        </Button>
-                      )}
-
-                      {!employee?.is_password_created &&
-                        !employeeActiveStatus && (
+                  {/* Core details */}
+                  <div className="flex-1 space-y-3">
+                    <div className="flex flex-wrap items-start gap-3 justify-between">
+                      <div>
+                        <CardTitle className="text-lg text-slate-900">
+                          {employee.first_name} {employee.last_name}
+                        </CardTitle>
+                        <p className="text-sm text-slate-600">
+                          {employee.designation?.title || "Role not set"}
+                        </p>
+                      </div>
+                      {!readOnly && (
+                        <div className="flex gap-2">
                           <Button
-                            title="Resend invite"
-                            variant="outline"
-                            onClick={async () => {
-                              try {
-                                const resp = await employeeAPI.resendInvite(
-                                  employee.id
-                                );
-                                if (resp?.status) {
-                                  toast({
-                                    title: "Success",
-                                    description: resp?.data?.message,
-                                    variant: "success",
-                                  });
-                                }
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description:
-                                    error?.response?.data?.message ||
-                                    "Something went wrong",
-                                  variant: "destructive",
-                                });
-                              }
-                            }}
-                            boolean={true}
-                            className="px-1.5 py-1.5"
+                            title="Edit"
+                            variant="ghost"
+                            size="icon"
+                            className="text-slate-600"
+                            onClick={() => handleEditEmployee(employee)}
                           >
-                            Resend invite
+                            <Edit3 className="h-4 w-4" />
                           </Button>
-                        )}
-                    </div>
-                  )}
-                </div>
-              </CardHeader>
+                          {!employeeActiveStatus ? (
+                            <Button
+                              title="Suspend"
+                              variant="ghost"
+                              size="icon"
+                              className="text-rose-600"
+                              onClick={() => {
+                                setEmployeeToDelete(employee);
+                                setShowConfirmDelete(true);
+                              }}
+                            >
+                              <UserRoundX className="h-4 w-4" />
+                            </Button>
+                          ) : (
+                            <Button
+                              title="Suspend"
+                              variant="outline"
+                              size="sm"
+                              className="text-rose-600 border-rose-200"
+                              onClick={async () => {
+                                const resp =
+                                  await employeeAPI.activateSuspendedEmployee(
+                                    employee.id
+                                  );
+                                if (resp?.status) {
+                                  fetchEmployees();
+                                }
+                              }}
+                            >
+                              Revoke suspend
+                            </Button>
+                          )}
 
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/*Employee Details  */}
-                  <div className="md:col-span-2 space-y-3">
-                    <div className="flex items-center space-x-3 text-sm">
-                      <User className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        ID:{" "}
-                        {employee?.employee_no
-                          ? employee.employee_no
-                          : employee.id}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <Mail className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">{employee.email}</span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <Phone className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.phone_number}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <MapPin className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.address?.city}, {employee.address?.zip_code}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <IndianRupee className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-600">
-                        {employee.employee_salary?.payable_salary}
-                      </span>
-                    </div>
-
-                    <div className="w-[34vw] flex justify-between items-center text-sm">
-                      <div className="flex items-center space-x-3">
-                        <Calendar className="h-4 w-4 text-slate-400" />
-                        <span className="text-slate-600">
-                          Joined:{" "}
-                          {new Date(
-                            employee.date_of_joining
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      {readOnly && (
-                        <span className="text-slate-600">
-                          Suspended:{" "}
-                          {new Date(
-                            employee.date_of_joining
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
+                          {!employee?.is_password_created &&
+                            !employeeActiveStatus && (
+                              <Button
+                                title="Resend invite"
+                                variant="outline"
+                                size="sm"
+                                onClick={async () => {
+                                  try {
+                                    const resp = await employeeAPI.resendInvite(
+                                      employee.id
+                                    );
+                                    if (resp?.status) {
+                                      toast({
+                                        title: "Success",
+                                        description: resp?.data?.message,
+                                        variant: "success",
+                                      });
+                                    }
+                                  } catch (error) {
+                                    toast({
+                                      title: "Error",
+                                      description:
+                                        error?.response?.data?.message ||
+                                        "Something went wrong",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                }}
+                                className="px-3"
+                              >
+                                Resend invite
+                              </Button>
+                            )}
+                        </div>
                       )}
                     </div>
-                  </div>
 
-                  {/* Avatar Box */}
-                  <div
-                    className="relative group"
-                    style={{ width: "8rem", height: "8rem" }}
-                  >
-                    {employee.profile ? (
-                      <img
-                        src={employee.profile}
-                        alt={`${employee.first_name} ${employee.last_name}`}
-                        className="w-full h-full object-cover rounded-md border border-slate-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-2xl rounded-md uppercase">
-                        {avatarLoadingId === employee.id ? (
-                          <Loader2 className="animate-spin" />
-                        ) : (
-                          <>
-                            {employee?.first_name?.charAt(0)}
-                            {employee?.last_name?.charAt(0)}
-                          </>
-                        )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <User className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">ID</span>
+                        <span className="text-slate-600">
+                          {employee?.employee_no || employee.id}
+                        </span>
                       </div>
-                    )}
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <Mail className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">Email</span>
+                        <span className="text-slate-600 truncate">
+                          {employee.email}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <Phone className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">Phone</span>
+                        <span className="text-slate-600">
+                          {employee.phone_number}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <MapPin className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">Location</span>
+                        <span className="text-slate-600">
+                          {employee.address?.city}, {employee.address?.zip_code}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <IndianRupee className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">Payable</span>
+                        <span className="text-slate-600">
+                          {employee.employee_salary?.payable_salary ?? "—"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <Calendar className="h-4 w-4 text-slate-400" />
+                        <span className="font-medium">Joined</span>
+                        <span className="text-slate-600">
+                          {new Date(
+                            employee.date_of_joining
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Leave Balance */}
                     {!readOnly && (
-                      <div className="absolute border-1 bottom-0 left-0 right-0 h-8 bg-black bg-opacity-50 rounded-b-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
-                        <div className="relative flex items-center justify-center w-full h-full cursor-pointer">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleAvatarChange(e, employee.id)}
-                            className="absolute inset-0 opacity-0 cursor-pointer z-20"
-                            title="Change Avatar"
-                          />
-                          <Edit3 className="text-white w-4 h-4 z-10 cursor-pointer" />
+                      <div className="flex flex-wrap items-center justify-between gap-3 text-sm mt-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
+                        <span className="text-slate-700 font-semibold">
+                          Leave balance
+                        </span>
+                        <div className="flex flex-wrap gap-3 text-xs font-semibold">
+                          <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-100">
+                            Remaining: {leaveSummary.remaining}
+                          </Badge>
+                          <Badge className="bg-amber-50 text-amber-700 border border-amber-100">
+                            Used: {leaveSummary.used}
+                          </Badge>
+                          <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
+                            Total: {leaveSummary.total}
+                          </Badge>
                         </div>
-                        {employee.profile && (
-                          <div className="relative flex items-center justify-center w-full h-full border-l border-white border-opacity-20">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-full w-full hover:bg-red-600 rounded-none p-0 group/delete"
-                              onClick={() => handleDeleteAvatar(employee.id)}
-                              title="Delete Avatar"
-                            >
-                              <Trash2 className="text-white w-4 h-4 group-hover/delete:scale-110 transition-transform" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {avatarLoadingId === employee.id && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-md z-30">
-                        <Loader2 className="animate-spin text-white w-8 h-8" />
                       </div>
                     )}
                   </div>
                 </div>
-
-                {/* Leave Balance */}
-                {!readOnly && (
-                  <div className="flex items-center justify-between text-sm mt-4 p-2 bg-slate-50 rounded-md">
-                    <span className="text-slate-600 font-medium">
-                      Leave Balance:
-                    </span>
-                    <div className="flex space-x-4 text-xs">
-                      <span className="text-green-600">
-                        Remaining: {leaveSummary.remaining}
-                      </span>
-                      <span className="text-orange-600">
-                        Used: {leaveSummary.used}
-                      </span>
-                      <span className="text-slate-500">
-                        Total: {leaveSummary.total}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
           );
@@ -560,7 +605,7 @@ const Employees = ({
 
       {/* Add Employee Dialog */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh]">
+        <DialogContent className="max-w-4xl max-h-[100vh]">
           <DialogHeader>
             <CardTitle className="flex items-center space-x-2">
               <User className="h-5 w-5 text-blue-600" />

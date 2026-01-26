@@ -88,7 +88,7 @@ function Leave({ value }) {
 
   return (
     <>
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Calendar className="h-5 w-5" />
@@ -134,7 +134,7 @@ function Leave({ value }) {
             <Button
               onClick={addLeaveType}
               disabled={loader}
-              className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20"
             >
               <Plus className="h-4 w-4 mr-2" />
               {loader ? "saving data..." : "Save Leave"}

@@ -138,7 +138,7 @@ const DocumentsForm = ({
           <Button
             type="button"
             onClick={handleAddDocument}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:from-blue-700 hover:to-purple-700 transition"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             + Add Document
           </Button>

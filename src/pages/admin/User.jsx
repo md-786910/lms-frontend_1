@@ -19,7 +19,6 @@ const User = () => {
     first_name: "",
     last_name: "",
     phone_number: "",
-    password: "",
   });
   const [loader, setLoader] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
@@ -185,7 +184,7 @@ const User = () => {
           </div>{" "}
         </div>
         <Button
-          className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="mt-4 bg-primary text-white hover:bg-primary/90 shadow-sm"
           onClick={() => handleSubmit()}
         >
           <Plus className="h-4 w-4 mr-2" />

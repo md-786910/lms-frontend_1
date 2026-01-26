@@ -172,7 +172,7 @@ const TimeLogs = () => {
   return (
     <div className="space-y-6 ">
       {/* Header with Current Status */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+      <div className="bg-primary rounded-2xl p-6 text-white shadow-md">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-bold mb-2">Time Tracking</h1>
@@ -206,7 +206,7 @@ const TimeLogs = () => {
                 <Button
                   onClick={handleClockIn}
                   disabled={clockedIn || isLoading}
-                  className="flex-1 h-16 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
+                  className="flex-1 h-16 bg-emerald-600 hover:bg-emerald-700 text-white transition-colors"
                 >
                   <Play className="h-6 w-6 mr-2" />
                   {isLoading && clockedIn === false
@@ -280,16 +280,16 @@ const TimeLogs = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="border-0 shadow-lg">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-600 text-sm font-medium">
-                  Today's Hours
-                </p>
-                <p className="text-2xl font-bold text-slate-800 mt-2">8h 30m</p>
-                <p className="text-sm text-green-600 mt-1">On target</p>
-              </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600">
-                <Clock className="h-6 w-6 text-white" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-600 text-sm font-medium">
+                    Today's Hours
+                  </p>
+                  <p className="text-2xl font-bold text-slate-800 mt-2">8h 30m</p>
+                  <p className="text-sm text-green-600 mt-1">On target</p>
+                </div>
+              <div className="p-3 rounded-2xl bg-blue-100 text-blue-700">
+                <Clock className="h-6 w-6 text-blue-700" />
               </div>
             </div>
           </CardContent>
@@ -305,8 +305,8 @@ const TimeLogs = () => {
                 </p>
                 <p className="text-sm text-slate-500 mt-1">5 days worked</p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-green-500 to-green-600">
-                <TrendingUp className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
+                <TrendingUp className="h-6 w-6 text-emerald-700" />
               </div>
             </div>
           </CardContent>
@@ -320,8 +320,8 @@ const TimeLogs = () => {
                 <p className="text-2xl font-bold text-slate-800 mt-2">144h</p>
                 <p className="text-sm text-orange-600 mt-1">32h remaining</p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600">
-                <CalendarIcon className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-violet-100 text-violet-700">
+                <CalendarIcon className="h-6 w-6 text-violet-700" />
               </div>
             </div>
           </CardContent>
@@ -335,8 +335,8 @@ const TimeLogs = () => {
                 <p className="text-2xl font-bold text-slate-800 mt-2">95%</p>
                 <p className="text-sm text-green-600 mt-1">Excellent</p>
               </div>
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600">
-                <CheckCircle className="h-6 w-6 text-white" />
+              <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
+                <CheckCircle className="h-6 w-6 text-amber-700" />
               </div>
             </div>
           </CardContent>

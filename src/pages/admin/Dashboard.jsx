@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { format, isSameDay } from "date-fns";
 import {
   Users,
@@ -17,12 +16,13 @@ import {
   Loader2,
   Download,
   BellRing,
-  CalendarX
+  CalendarX,
 } from "lucide-react";
 
 import { toast } from "sonner";
 
 import holidayJsonData from "../../data/holiday.json";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
@@ -86,35 +86,21 @@ const AdminDashboard = () => {
     {
       title: "Total Employees",
       value: dashboardData?.total_employee ?? 0,
-      change: "+0",
-      changeType: "neutral",
       icon: Users,
-      color: "from-blue-500 to-blue-600",
+      tone: "indigo",
     },
     {
       title: "On Leave Today",
       value: dashboardData?.on_leave_today_count ?? 0,
-      change: "+0",
-      changeType: "neutral",
       icon: UserX,
-      color: "from-orange-500 to-orange-600",
+      tone: "amber",
     },
     {
       title: "Active Employees",
       value: dashboardData?.active_employee ?? 0,
-      change: "+0",
-      changeType: "positive",
       icon: UserCheck,
-      color: "from-green-500 to-green-600",
+      tone: "emerald",
     },
-    // {
-    //   title: "Avg Working Hours",
-    //   value: "7.8h", // Replace if your API provides this
-    //   change: "+0.2h",
-    //   changeType: "positive",
-    //   icon: Clock,
-    //   color: "from-purple-500 to-purple-600",
-    // },
   ];
 
   const leaveData = (dashboardData?.on_leave_today || []).map(
@@ -146,6 +132,33 @@ const AdminDashboard = () => {
     // { name: "Sohail", department: "Engineering", score: 92 },
     // { name: "Saddam", department: "Marketing", score: 90 },
   ];
+
+  const toneStyles = {
+    indigo: {
+      accent: "bg-indigo-600",
+      icon: "bg-indigo-100 text-indigo-700",
+      chip: "bg-indigo-50 text-indigo-700",
+      dot: "bg-indigo-600",
+    },
+    amber: {
+      accent: "bg-amber-500",
+      icon: "bg-amber-100 text-amber-700",
+      chip: "bg-amber-50 text-amber-700",
+      dot: "bg-amber-500",
+    },
+    emerald: {
+      accent: "bg-emerald-600",
+      icon: "bg-emerald-100 text-emerald-700",
+      chip: "bg-emerald-50 text-emerald-700",
+      dot: "bg-emerald-600",
+    },
+    slate: {
+      accent: "bg-slate-600",
+      icon: "bg-slate-100 text-slate-700",
+      chip: "bg-slate-50 text-slate-700",
+      dot: "bg-slate-600",
+    },
+  };
 
   const getEmployeesOnLeave = (date) =>
     leaveData?.filter((leave) => isSameDay(leave.date, date));
@@ -200,138 +213,243 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="space-y-6">
-        {/* Welcome Header */}
 
-        {notifications
-          ?.filter((a) => !a.read)
-          ?.map((notification) => {
-            const isLeaveRequest = notification.title?.toLowerCase().includes("leave");
-            const isApproved = notification.message?.toLowerCase().includes("approved");
-            const isRejected = notification.message?.toLowerCase().includes("rejected");
+        {notifications?.filter((a) => !a.read)?.length > 0 && (
+          <div className="grid gap-3">
+            {notifications
+              ?.filter((a) => !a.read)
+              ?.map((notification) => {
+                const isLeaveRequest =
+                  notification.title?.toLowerCase().includes("leave");
+                const isApproved = notification.message
+                  ?.toLowerCase()
+                  .includes("approved");
+                const isRejected = notification.message
+                  ?.toLowerCase()
+                  .includes("rejected");
 
-            const getIcon = () => {
-              if (isApproved) return <CheckCircle className="h-5 w-5 text-white" />;
-              if (isRejected) return <X className="h-5 w-5 text-white" />;
-              if (isLeaveRequest) return <CalendarIcon className="h-5 w-5 text-white" />;
-              return <Bell className="h-5 w-5 text-white" />;
-            };
+                const tone = (() => {
+                  if (isApproved) return "emerald";
+                  if (isRejected) return "rose";
+                  if (isLeaveRequest) return "indigo";
+                  return "blue";
+                })();
 
-            const getGradient = () => {
-              if (isApproved) return "from-emerald-500 to-green-600";
-              if (isRejected) return "from-red-500 to-rose-600";
-              if (isLeaveRequest) return "from-violet-500 to-purple-600";
-              return "from-blue-500 to-indigo-600";
-            };
+                const tonePalette = {
+                  emerald: {
+                    indicator: "bg-emerald-500",
+                    icon: "bg-emerald-50 text-emerald-700",
+                    badge: "bg-emerald-50 text-emerald-700",
+                  },
+                  rose: {
+                    indicator: "bg-rose-500",
+                    icon: "bg-rose-50 text-rose-700",
+                    badge: "bg-rose-50 text-rose-700",
+                  },
+                  indigo: {
+                    indicator: "bg-indigo-500",
+                    icon: "bg-indigo-50 text-indigo-700",
+                    badge: "bg-indigo-50 text-indigo-700",
+                  },
+                  blue: {
+                    indicator: "bg-blue-500",
+                    icon: "bg-blue-50 text-blue-700",
+                    badge: "bg-blue-50 text-blue-700",
+                  },
+                };
 
-            const getTitle = () => {
-              if (isApproved) return "Leave Approved";
-              if (isRejected) return "Leave Rejected";
-              if (isLeaveRequest) return "New Leave Request";
-              return notification.title || "Notification";
-            };
+                const palette = tonePalette[tone];
 
-            return (
-              <div
-                key={notification.id}
-                className="relative bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-200"
-                onClick={async () => {
-                  const resp = await companyAPI.readNotification(notification.id);
-                  if (resp.status) {
-                    fetchNotification();
-                  }
-                }}
-              >
-                <div className="flex items-start gap-4 p-4">
-                  {/* Icon */}
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${getGradient()} flex items-center justify-center shadow-md`}>
-                    {getIcon()}
-                  </div>
+                const getIcon = () => {
+                  if (isApproved) return <CheckCircle className="h-5 w-5" />;
+                  if (isRejected) return <X className="h-5 w-5" />;
+                  if (isLeaveRequest)
+                    return <CalendarIcon className="h-5 w-5" />;
+                  return <Bell className="h-5 w-5" />;
+                };
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-slate-800 text-sm">
-                        {getTitle()}
-                      </h4>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                        New
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                      {notification.message}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {dayjs(notification.createdAt).fromNow()}
-                    </p>
-                  </div>
+                const getTitle = () => {
+                  if (isApproved) return "Leave Approved";
+                  if (isRejected) return "Leave Rejected";
+                  if (isLeaveRequest) return "Leave Update";
+                  return notification.title || "Notification";
+                };
 
-                  {/* Close button */}
-                  <button
-                    className="flex-shrink-0 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      const resp = await companyAPI.readNotification(notification.id);
+                return (
+                  <div
+                    key={notification.id}
+                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                    onClick={async () => {
+                      const resp = await companyAPI.readNotification(
+                        notification.id
+                      );
                       if (resp.status) {
                         fetchNotification();
                       }
                     }}
                   >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
+                    <div
+                      className={`absolute inset-y-0 left-0 w-1 ${palette.indicator}`}
+                    />
+                    <div className="flex items-start gap-4 p-4">
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 rounded-xl ${palette.icon} flex items-center justify-center shadow-md`}
+                      >
+                        {getIcon()}
+                      </div>
 
-                {/* Accent line */}
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${getGradient()}`} />
-              </div>
-            );
-          })}
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-slate-900 text-sm">
+                            {getTitle()}
+                          </p>
+                          <span
+                            className={`inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${palette.badge} border border-transparent`}
+                          >
+                            New
+                          </span>
+                        </div>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-slate-400 flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {dayjs(notification.createdAt).fromNow()}
+                        </p>
+                      </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">Welcome back, Admin!</h1>
-              <p className="text-blue-100">
-                Here's what's happening with your team today.
-              </p>
-            </div>
-            <button
-              onClick={() => setShowHolidayModal(true)}
-              className="bg-white text-blue-700 font-semibold px-4 py-2 rounded-md hover:bg-blue-100 shadow"
-            >
-              View Holidays
-            </button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-8 w-8 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          const resp = await companyAPI.readNotification(
+                            notification.id
+                          );
+                          if (resp.status) {
+                            fetchNotification();
+                          }
+                        }}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
-        </div>
+        )}
+
+        <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+              <div className="space-y-4 max-w-2xl">
+                <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
+                  Admin Workspace
+                </Badge>
+                <div className="space-y-2">
+                  <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
+                    Welcome back, Admin!
+                  </h2>
+                  <p className="text-sm md:text-base text-slate-200 max-w-xl">
+                    Keep a pulse on people, leave, and payroll with a clean
+                    control room built for quick actions.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    size="lg"
+                    className="border border-white/40 bg-white/10 text-white hover:bg-white hover:text-slate-900 rounded-lg px-6"
+                    onClick={() => setShowHolidayModal(true)}
+                  >
+                    View Holidays
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/40 text-slate-900 hover:bg-white/10 hover:text-white rounded-lg px-6"
+                    onClick={handleDownload}
+                    disabled={downloading}
+                  >
+                    {downloading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Download className="h-4 w-4 mr-2" />
+                    )}
+                    Download leave CSV
+                  </Button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px] w-auto">
+                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                    Total employees
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold">
+                    {dashboardData?.total_employee ?? 0}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                    On leave today
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold">
+                    {dashboardData?.on_leave_today_count ?? 0}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                    Active employees
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold">
+                    {dashboardData?.active_employee ?? 0}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                    Pending leave
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold">
+                    {dashboardData?.pending_leave ?? 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
+            const palette = toneStyles[stat.tone] || toneStyles.slate;
             return (
               <Card
                 key={index}
-                className="border-0 shadow-lg bg-white hover:shadow-xl transition-shadow"
+                className="relative overflow-hidden border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-slate-600 text-sm font-medium">
+                <div className={`absolute inset-x-0 top-0 h-1 ${palette.accent}`} />
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="space-y-2">
+                      <span
+                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${palette.chip}`}
+                      >
+                        <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
+                        Live metric
+                      </span>
+                      <p className="text-base font-semibold text-slate-900">
                         {stat.title}
                       </p>
-                      <p className="text-2xl font-bold text-slate-800 mt-2">
+                      <p className="text-3xl font-bold text-slate-900 leading-tight">
                         {stat.value}
                       </p>
-                      {/* <p className={`text-sm font-medium mt-2 ${stat.changeType === 'positive' ? 'text-green-600' :
-                        stat.changeType === 'negative' ? 'text-red-600' : 'text-orange-600'
-                        }`}>
-                        {stat.change} from last month
-                      </p> */}
                     </div>
                     <div
-                      className={`p-3 rounded-2xl bg-gradient-to-r ${stat.color}`}
+                      className={`h-12 w-12 rounded-2xl ${palette.icon} flex items-center justify-center shadow-sm`}
                     >
-                      <Icon className="h-6 w-6 text-white" />
+                      <Icon className="h-6 w-6" />
                     </div>
                   </div>
                 </CardContent>
@@ -342,136 +460,174 @@ const AdminDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Calendar */}
-          <Card className="lg:col-span-2 border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <CalendarIcon className="h-5 w-5 text-blue-600" />
-                <span>Employee Leave Calendar</span>
+          <Card className="lg:col-span-2 border border-slate-200 shadow-sm overflow-hidden">
+            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                <CalendarIcon className="h-5 w-5 text-primary" />
+                Employee Leave Calendar
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  // onSelect={setSelectedDate}
-                  className="W-full max-w-md"
-                  modifiers={{
-                    hasLeave: leaveData.map((leave) => leave.date),
-                  }}
-                  modifiersStyles={{
-                    hasLeave: {
-                      backgroundColor: "#fef3c7",
-                      color: "#d97706",
-                      fontWeight: "bold",
-                    },
-                  }}
-                />
-                <div className="space-y-4">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
-                  <h4 className="text-2xl font-bold text-slate-900">
-                    {selectedDate
-                      ? format(selectedDate, "EEEE, dd MMMM")
-                      : "Select a date"}
-                  </h4>
-                  {selectedDateLeaves.length > 0 ? (
-                    <div className="space-y-3">
-                      {selectedDateLeaves.map((leave) => (
-                        <div
-                          key={leave.id}
-                          className="p-3 bg-orange-50 rounded-lg border border-orange-200"
-                        >
-                          <div className="flex items-center justify-between">
+            <CardContent className="p-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                <div className="p-6 border-b md:border-b-0 md:border-r border-slate-100 bg-slate-50">
+                  <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-3">
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      required
+                      className="w-full"
+                      classNames={{
+                        months: "space-y-4",
+                        month: "space-y-4",
+                        table: "w-full border-collapse",
+                        head_row:
+                          "grid grid-cols-7 text-xs text-slate-500 font-semibold",
+                        head_cell: "text-center py-1",
+                        row: "grid grid-cols-7 text-center",
+                        cell: "p-2 text-sm relative",
+                        day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
+                        day_selected:
+                          "bg-slate-900 text-white shadow-lg shadow-slate-900/15",
+                        day_today:
+                          "border border-slate-900/30 text-slate-900",
+                      }}
+                      modifiers={{
+                        hasLeave: leaveData.map((leave) => leave.date),
+                      }}
+                      modifiersStyles={{
+                        hasLeave: {
+                          border: "2px solid rgba(59,130,246,0.35)",
+                          backgroundColor: "rgba(59,130,246,0.08)",
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="p-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                        Selected Date
+                      </p>
+                      <h4 className="text-lg font-semibold text-slate-900">
+                        {selectedDate
+                          ? format(selectedDate, "EEEE, dd MMMM")
+                          : "Select a date"}
+                      </h4>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className="rounded-full border-slate-200 text-slate-700"
+                    >
+                      Calendar
+                    </Badge>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                    <div className="p-4 border-b border-slate-100 flex items-center gap-2">
+                      <CalendarIcon className="h-4 w-4 text-primary" />
+                      <p className="text-sm font-semibold text-slate-900">
+                        Team on leave today
+                      </p>
+                    </div>
+                    <div className="divide-y divide-slate-100">
+                      {selectedDateLeaves.length > 0 ? (
+                        selectedDateLeaves.map((leave) => (
+                          <div
+                            key={leave.id}
+                            className="p-4 flex items-center justify-between gap-3"
+                          >
                             <div>
-                              <p className="font-medium text-slate-800 flex  items-center justify-between">
+                              <p className="text-sm font-semibold text-slate-900">
                                 {leave.employeeName}
-                                <span className="mx-3 border p-1 rounded text-[12px] text-blue-600">
-                                  {leave?.leaveOn?.id}
-                                </span>
                               </p>
-                              <p className="text-sm text-slate-600">
-                                {leave.employeeId}
-                              </p>
-                              <p className="text-sm text-orange-700 font-medium">
-                                {leave.type}
+                              <p className="text-xs text-slate-500">
+                                ID: {leave.employeeId}
                               </p>
                             </div>
-                            <Badge className="bg-green-100 text-green-800">
-                              {leave.status}
+                            <Badge
+                              className="rounded-full text-xs font-semibold"
+                              variant="outline"
+                            >
+                              {leave.type}
                             </Badge>
                           </div>
+                        ))
+                      ) : (
+                        <div className="p-6 flex flex-col items-center text-center gap-2">
+                          <div className="h-10 w-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                            <CalendarX className="h-5 w-5" />
+                          </div>
+                          <p className="text-sm font-semibold text-slate-900">
+                            Clear schedule
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            No one is on leave today.
+                          </p>
                         </div>
-                      ))}
+                      )}
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <div>
-                        <CalendarX className="mb-2 text-4xl text-slate-300" />
-                        <h4 className="font-bold text-slate-700 dark:text-white mb-2">No events scheduled</h4>
-                        <p className="text-sm text-slate-400 max-w-xs leading-relaxed">Relax! There are no leave requests, holidays, or meetings for this date.</p>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Recent Activities */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <BellRing className="h-5 w-5 text-blue-600" />
-                <span>Recent Activities</span>
+          <Card className="border border-slate-200 shadow-sm">
+            <CardHeader className="border-b border-slate-100 bg-slate-50/80">
+              <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
+                <BellRing className="h-5 w-5 text-primary" />
+                Recent Activities
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivities.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4 p-3 bg-slate-50 rounded-lg"
-                  >
-                    <div className="flex-shrink-0">
-                      <AlertCircle className="h-5 w-5 text-blue-500" />
+            <CardContent className="p-6 space-y-5">
+              {recentActivities.map((activity, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 shadow-sm">
+                      <AlertCircle className="h-5 w-5 text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-800">
-                        {activity.message}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        {dayjs(activity.createdAt).fromNow()}
-                      </p>
-                    </div>
+                    {index !== recentActivities.length - 1 && (
+                      <div className="absolute left-1/2 top-10 -ml-px h-8 w-[2px] bg-slate-100" />
+                    )}
                   </div>
-                ))}
-              </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-slate-900">
+                      {activity.message}
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      {dayjs(activity.createdAt).fromNow()}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
         </div>
 
-        {/* Employee of the Month */}
+        {/* Monthly Leave Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Current Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
+          <Card className="relative overflow-hidden border border-slate-200 shadow-sm">
+            <div className="absolute inset-x-0 top-0 h-1 bg-amber-500" />
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center space-x-2">
-                <Award className="h-5 w-5 text-yellow-600" />
+              <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
+                <Award className="h-5 w-5 text-amber-600" />
                 <span>
-                  List of leaves of Employees for Month -{" "}
-                  {format(new Date(), "MMMM yyyy")}
+                  Leaves - {format(new Date(), "MMMM yyyy")}
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                <table className="w-full border-t border-slate-100">
+                  <thead className="bg-slate-50 text-left">
+                    <tr>
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600 text-right">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -482,13 +638,13 @@ const AdminDashboard = () => {
                         ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                            className="border-t border-slate-100 hover:bg-slate-50/70"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${last_name || ""
-                                }`.trim() || "N/A"}
+                            <td className="py-3 px-4 text-sm text-slate-900">
+                              {`${first_name || ""} ${last_name || ""}`.trim() ||
+                                "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -510,58 +666,61 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Previous Month Employee of the Month */}
-          <Card className="border-0 shadow-lg">
+          <Card className="relative overflow-hidden border border-slate-200 shadow-sm">
+            <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
             <CardHeader className="pb-3">
-              <CardTitle className="flex justify-between items-center">
+              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900">
                 <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-purple-600" />
+                  <Award className="h-5 w-5 text-primary" />
                   <span>
-                    List of leaves of Employees for Month -{" "}
+                    Leaves -{" "}
                     {format(
                       new Date(new Date().setMonth(new Date().getMonth() - 1)),
                       "MMMM yyyy"
                     )}
                   </span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="border-slate-200"
                     onClick={handleSendMail}
                     disabled={sendingEmail}
-                    title="Send Report via Email"
-                    className="flex items-center justify-center text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    title="Send report via email"
                   >
                     {sendingEmail ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
                     ) : (
-                      <Mail className="h-4 w-4 text-indigo-600 hover:text-indigo-700" />
+                      <Mail className="h-4 w-4 text-primary" />
                     )}
-                  </button>
-                  
-                  <button
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="border-slate-200"
                     onClick={handleDownload}
                     disabled={downloading}
-                    title="Download Report"
-                    className="flex items-center justify-center p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    title="Download report"
                   >
                     {downloading ? (
                       <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
                     ) : (
-                      <Download className="h-4 w-4 text-emerald-600 hover:text-emerald-700" />
+                      <Download className="h-4 w-4 text-emerald-600" />
                     )}
-                  </button>
+                  </Button>
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                <table className="w-full border-t border-slate-100">
+                  <thead className="bg-slate-50 text-left">
+                    <tr>
+                      <th className="text-left py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                      <th className="text-right py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -572,13 +731,13 @@ const AdminDashboard = () => {
                         ({ first_name, last_name, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                            className="border-t border-slate-100 hover:bg-slate-50/70"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-800">
-                              {`${first_name || ""} ${last_name || ""
-                                }`.trim() || "N/A"}
+                            <td className="py-3 px-4 text-sm text-slate-900">
+                              {`${first_name || ""} ${last_name || ""}`.trim() ||
+                                "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-600 text-right">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -600,7 +759,6 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </div>
-        {/* Yearly Leave Summary Table - Moved to top */}
         <EmployeeLeaveTable />
       </div>
       {showHolidayModal && (
@@ -613,9 +771,10 @@ const AdminDashboard = () => {
           {/* Slide-in panel */}
           <div className="relative w-full max-w-md h-full bg-white shadow-2xl transform translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-slate-100">
-              <h2 className="text-lg font-semibold text-slate-800">
-                📅 Holiday List
+            <div className="flex justify-between items-center px-6 py-4 border-b bg-slate-50">
+              <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                <CalendarIcon className="h-5 w-5 text-primary" />
+                Holiday List
               </h2>
               <button
                 onClick={() => setShowHolidayModal(false)}

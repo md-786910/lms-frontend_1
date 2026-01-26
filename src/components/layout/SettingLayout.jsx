@@ -5,13 +5,12 @@ import ResetPassword from "../settings/ResetPassword";
 
 function SettingLayout() {
   return (
-    <>
-      <Settings />
-      <Outlet />
-      <div className="mt-6">
+    <Settings>
+      <div className="space-y-6">
+        <Outlet />
         <ResetPassword />
       </div>
-    </>
+    </Settings>
   );
 }
 

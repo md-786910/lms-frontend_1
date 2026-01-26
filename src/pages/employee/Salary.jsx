@@ -55,19 +55,19 @@ const Salary = () => {
     return Math.max(0, Math.min(100, (net / gross) * 100));
   }, [salaryInfo, mandatoryDeductions]);
 
-  const ytdSummary = useMemo(() => {
-    const total_deducation =
-      (parseFloat(salaryInfo?.epf_admin) || 0) +
-      (parseFloat(salaryInfo?.epf_pension) || 0);
+    const ytdSummary = useMemo(() => {
+      const total_deducation =
+        (parseFloat(salaryInfo?.epf_admin) || 0) +
+        (parseFloat(salaryInfo?.epf_pension) || 0);
 
-    const ytdBasic = {
-      grossPay: month_in_digit * (salaryInfo?.salary_with_allowance ?? 0),
-      totalDeductions: month_in_digit * total_deducation ?? 0,
-      netPay: month_in_digit * (salaryInfo?.payable_salary ?? 0),
-      taxPaid: 0,
-    };
-    return ytdBasic;
-  }, [salaryInfo]);
+      const ytdBasic = {
+        grossPay: month_in_digit * (salaryInfo?.salary_with_allowance ?? 0),
+        totalDeductions: month_in_digit * (total_deducation ?? 0),
+        netPay: month_in_digit * (salaryInfo?.payable_salary ?? 0),
+        taxPaid: 0,
+      };
+      return ytdBasic;
+    }, [salaryInfo]);
 
   const getSalary = async () => {
     const resp = await salaryAPI.getSalary();
@@ -141,7 +141,7 @@ const Salary = () => {
             View History
           </Button>
           <Button
-            className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 hover:from-indigo-700 hover:via-blue-700 hover:to-cyan-600 shadow-md"
+            className="bg-primary text-white hover:bg-primary/90 shadow-md"
             onClick={async () => {
               const currentMonth = salaryHistory?.find(
                 (item) => item?.month_in_digit === month_in_digit
@@ -160,8 +160,7 @@ const Salary = () => {
       </div>
 
       {/* Current Salary Overview */}
-      <Card className="relative overflow-hidden border border-slate-800/10 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 text-white shadow-2xl">
-        <div className="pointer-events-none absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_20%_20%,rgba(94,234,212,0.12),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.12),transparent_25%),radial-gradient(circle_at_60%_80%,rgba(168,85,247,0.16),transparent_28%)]" />
+      <Card className="relative overflow-hidden border border-slate-800/10 bg-[#111827] text-white shadow-2xl">
         <CardContent className="relative p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-2">
@@ -199,7 +198,7 @@ const Salary = () => {
             </div>
             <div className="h-2 rounded-full bg-white/10 overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-sky-400"
+                className="h-full rounded-full bg-emerald-400"
                 style={{ width: `${netRetention}%` }}
               />
             </div>

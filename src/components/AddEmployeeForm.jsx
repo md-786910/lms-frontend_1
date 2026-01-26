@@ -105,7 +105,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
       <p className="text-red-500 text-sm">{errors[field]}</p>
     ) : null;
   return (
-    <Card className="w-full max-w-4xl mx-auto min-h-[70vh] max-h-[70vh] flex flex-col">
+    <Card className="w-full max-w-4xl mx-auto min-h-[50vh] max-h-[70vh] flex flex-col">
       <CardContent className="flex-1 overflow-y-auto px-6 mt-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Basic Info */}
@@ -302,7 +302,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
             </Button>
             <Button
               type="submit"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <Mail className="h-4 w-4 mr-2" />
               Create & Send Invitation

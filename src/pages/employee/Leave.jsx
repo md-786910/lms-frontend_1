@@ -82,8 +82,7 @@ const EmployeeLeave = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-7 shadow-xl text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#60a5fa,transparent_35%),radial-gradient(circle_at_80%_0%,#a78bfa,transparent_25%)] opacity-10" />
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-[#111827] px-6 py-7 shadow-xl text-white">
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-white/15">
@@ -167,7 +166,7 @@ const EmployeeLeave = () => {
               <div className="mt-4 border-t border-slate-200 pt-4">
                 <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
                   <div
-                    className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all"
+                    className="h-2 rounded-full bg-emerald-500 transition-all"
                     style={{
                       width: `${((leave.leave_remaing || 0) / leave.leave_count) * 100}%`,
                     }}
