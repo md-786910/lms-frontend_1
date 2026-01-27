@@ -445,7 +445,7 @@ const EmployeeDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white/40 text-white hover:bg-white/10 rounded-lg px-6"
+                    className="bg-white text-slate-900 hover:bg-slate-100 rounded-lg px-6 shadow-md"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Leave Policy
