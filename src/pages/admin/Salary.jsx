@@ -168,24 +168,39 @@ const Salary = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">
-            Salary Management
-          </h1>
-          <p className="text-slate-600">Manage employee salaries and payroll</p>
-        </div>
-        <div className="flex space-x-2">
-          <Button variant="outline" onClick={handleExportReport}>
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
-          </Button>
-          {/* <Button
-            className="bg-primary text-white hover:bg-primary/90"
-            onClick={handleProcessPayroll}
-          >
-            Process Payroll
-          </Button> */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_12%_18%,rgba(59,130,246,0.25),transparent_22%),radial-gradient(circle_at_82%_8%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_60%_88%,rgba(99,102,241,0.18),transparent_22%)]" />
+        <div className="relative p-6 md:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-3 max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Payroll Center
+            </span>
+            <div className="space-y-2">
+              <h1 className="text-3xl md:text-4xl font-semibold leading-tight text-white">
+                Salary Management
+              </h1>
+              <p className="text-sm md:text-base text-slate-200 max-w-2xl">
+                Manage employee salaries, payouts, and monthly payroll flows with a clear snapshot of totals.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant="secondary"
+              className="bg-white text-slate-900 hover:bg-slate-100 border border-white/60 shadow-lg rounded-xl px-4"
+              onClick={handleExportReport}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export Report
+            </Button>
+            {/* <Button
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={handleProcessPayroll}
+            >
+              Process Payroll
+            </Button> */}
+          </div>
         </div>
       </div>
 

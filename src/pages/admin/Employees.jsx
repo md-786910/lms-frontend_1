@@ -229,64 +229,79 @@ const Employees = ({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
-            People
-          </p>
-          <h1 className="text-2xl font-bold text-slate-900">{customTitle}</h1>
-          <p className="text-slate-600">{customSubtitle}</p>
+    <div className="space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_15%_20%,rgba(94,234,212,0.18),transparent_25%),radial-gradient(circle_at_82%_0%,rgba(59,130,246,0.22),transparent_23%),radial-gradient(circle_at_58%_85%,rgba(99,102,241,0.16),transparent_22%)]" />
+        <div className="relative p-4 md:p-6 space-y-6">
+          {/* Header */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-3 max-w-3xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                People Operations
+              </span>
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-semibold leading-tight text-white">
+                  {customTitle}
+                </h1>
+                <p className="text-sm md:text-base text-slate-200 max-w-2xl">
+                  {customSubtitle}
+                </p>
+              </div>
+            </div>
+            {showAddButton && (
+              <Button
+                onClick={() => setShowAddForm(true)}
+                className="bg-white text-slate-900 hover:bg-slate-100 shadow-lg border border-white/60 rounded-xl px-4 py-2"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Employee
+              </Button>
+            )}
+          </div>
+
+          {/* Snapshot */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                label: "Total employees",
+                value: totalEmployees,
+                tone: "primary",
+              },
+              { label: "Active", value: activeEmployees, tone: "emerald" },
+              { label: "Suspended", value: suspendedEmployees, tone: "amber" },
+              { label: "Departments", value: uniqueDepartments, tone: "indigo" },
+            ].map((stat) => (
+              <Card
+                key={stat.label}
+                className="border border-white/10 bg-white/10 text-white shadow-lg rounded-md backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+              >
+                <CardContent className="p-4 space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-200">
+                    {stat.label}
+                  </p>
+                  <p className="text-3xl font-bold leading-tight text-white">
+                    {stat.value}
+                  </p>
+                  <div
+                    className={`mt-3 h-1.5 w-16 rounded-full ${
+                      stat.tone === "primary"
+                        ? "bg-primary"
+                        : stat.tone === "emerald"
+                        ? "bg-emerald-400"
+                        : stat.tone === "amber"
+                        ? "bg-amber-400"
+                        : "bg-indigo-400"
+                    }`}
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-        {showAddButton && (
-          <Button
-            onClick={() => setShowAddForm(true)}
-            className="bg-primary text-white hover:bg-primary/90 shadow-sm"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Employee
-          </Button>
-        )}
       </div>
-
-      {/* Snapshot */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: "Total employees", value: totalEmployees, tone: "primary" },
-          { label: "Active", value: activeEmployees, tone: "emerald" },
-          { label: "Suspended", value: suspendedEmployees, tone: "amber" },
-          { label: "Departments", value: uniqueDepartments, tone: "indigo" },
-        ].map((stat) => (
-          <Card
-            key={stat.label}
-            className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <CardContent className="p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                {stat.label}
-              </p>
-              <p className="mt-2 text-3xl font-bold text-slate-900">
-                {stat.value}
-              </p>
-              <div
-                className={`mt-3 h-1.5 w-14 rounded-full ${
-                  stat.tone === "primary"
-                    ? "bg-primary"
-                    : stat.tone === "emerald"
-                    ? "bg-emerald-500"
-                    : stat.tone === "amber"
-                    ? "bg-amber-500"
-                    : "bg-indigo-500"
-                }`}
-              />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
       {/* Search and Filters */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+      <Card className="border border-slate-200 shadow-sm rounded-md">
         <CardContent className="p-6 space-y-5">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
