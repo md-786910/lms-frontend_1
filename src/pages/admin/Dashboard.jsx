@@ -212,7 +212,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-5">
 
         {notifications?.filter((a) => !a.read)?.length > 0 && (
           <div className="grid gap-3">
@@ -342,7 +342,7 @@ const AdminDashboard = () => {
         )}
 
         <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
-          <CardContent className="p-6 md:p-8">
+          <CardContent className="p-5 md:p-7">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
                 <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
@@ -360,7 +360,7 @@ const AdminDashboard = () => {
                 <div className="flex flex-wrap items-center gap-3">
                   <Button
                     size="lg"
-                    className="border border-white/40 bg-white/10 text-white hover:bg-white hover:text-slate-900 rounded-lg px-6"
+                    className="border border-white/40 bg-white/10 text-white hover:bg-white hover:text-slate-900 rounded-lg px-4"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Holidays
@@ -368,7 +368,7 @@ const AdminDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white/40 text-slate-900 hover:bg-white/10 hover:text-white rounded-lg px-6"
+                    className="border-white/40 text-slate-900 hover:bg-white/10 hover:text-white rounded-lg px-4"
                     onClick={handleDownload}
                     disabled={downloading}
                   >
@@ -382,35 +382,35 @@ const AdminDashboard = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px] w-auto">
-                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Total employees
                   </p>
-                  <p className="mt-2 text-2xl font-semibold">
+                  <p className="mt-1 text-xl font-semibold">
                     {dashboardData?.total_employee ?? 0}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     On leave today
                   </p>
-                  <p className="mt-2 text-2xl font-semibold">
+                  <p className="mt-1 text-xl font-semibold">
                     {dashboardData?.on_leave_today_count ?? 0}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Active employees
                   </p>
-                  <p className="mt-2 text-2xl font-semibold">
+                  <p className="mt-1 text-xl font-semibold">
                     {dashboardData?.active_employee ?? 0}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/15 p-4 shadow-sm">
+                <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Pending leave
                   </p>
-                  <p className="mt-2 text-2xl font-semibold">
+                  <p className="mt-1 text-xl font-semibold">
                     {dashboardData?.pending_leave ?? 0}
                   </p>
                 </div>
@@ -429,7 +429,7 @@ const AdminDashboard = () => {
                 key={index}
                 className="relative overflow-hidden border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
               >
-                <div className={`absolute inset-x-0 top-0 h-1 ${palette.accent}`} />
+                <div className={`absolute inset-x-0 top-0 h-[1px] ${palette.accent}`} />
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
@@ -470,7 +470,7 @@ const AdminDashboard = () => {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                 <div className="p-6 border-b md:border-b-0 md:border-r border-slate-100 bg-slate-50">
-                  <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-3">
+                  <div className="rounded-xl border border-slate-200 bg-white shadow-sm p-3">
                     <Calendar
                       mode="single"
                       selected={selectedDate}
@@ -486,7 +486,7 @@ const AdminDashboard = () => {
                         head_cell: "text-center py-1",
                         row: "grid grid-cols-7 text-center",
                         cell: "p-2 text-sm relative",
-                        day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
+                        day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold",
                         day_selected:
                           "bg-slate-900 text-white shadow-lg shadow-slate-900/15",
                         day_today:
@@ -504,7 +504,7 @@ const AdminDashboard = () => {
                     />
                   </div>
                 </div>
-                <div className="p-6 space-y-4">
+                <div className="p-6 space-y-4 bg-slate-50">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -576,7 +576,7 @@ const AdminDashboard = () => {
 
           {/* Recent Activities */}
           <Card className="border border-slate-200 shadow-sm">
-            <CardHeader className="border-b border-slate-100 bg-slate-50/80">
+            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
               <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
                 <BellRing className="h-5 w-5 text-primary" />
                 Recent Activities
@@ -610,7 +610,7 @@ const AdminDashboard = () => {
         {/* Monthly Leave Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card className="relative overflow-hidden border border-slate-200 shadow-sm">
-            <div className="absolute inset-x-0 top-0 h-1 bg-amber-500" />
+            <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-500" />
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
                 <Award className="h-5 w-5 text-amber-600" />
@@ -667,8 +667,8 @@ const AdminDashboard = () => {
           </Card>
 
           <Card className="relative overflow-hidden border border-slate-200 shadow-sm">
-            <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
-            <CardHeader className="pb-3">
+            <div className="absolute inset-x-0 top-0 h-[1px] bg-primary" />
+            <CardHeader className="py-3">
               <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900">
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-primary" />
@@ -690,9 +690,9 @@ const AdminDashboard = () => {
                     title="Send report via email"
                   >
                     {sendingEmail ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
                     ) : (
-                      <Mail className="h-4 w-4 text-primary" />
+                      <Mail className="h-3 w-3 text-primary" />
                     )}
                   </Button>
                   <Button
@@ -704,9 +704,9 @@ const AdminDashboard = () => {
                     title="Download report"
                   >
                     {downloading ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
+                      <Loader2 className="h-3 w-3 animate-spin text-emerald-600" />
                     ) : (
-                      <Download className="h-4 w-4 text-emerald-600" />
+                      <Download className="h-3 w-3 text-emerald-600" />
                     )}
                   </Button>
                 </div>

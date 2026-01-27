@@ -125,10 +125,10 @@ const EmployeeLeaveTable = () => {
   );
 
   return (
-    <Card className="border border-slate-200 shadow-sm rounded-2xl">
+    <Card className="border border-slate-200 shadow-sm rounded-md">
       <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 ">
             <Calendar className="h-5 w-5 text-blue-600" />
             <span>Employee Leave Summary - {year}</span>
           </CardTitle>
@@ -144,8 +144,8 @@ const EmployeeLeaveTable = () => {
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-slate-500" />
-            <span className="text-sm text-slate-600">Filters:</span>
+            <Filter className="h-4 w-4 text-slate-900" />
+            <span className="text-sm text-slate-900">Filters:</span>
           </div>
 
           {/* Year Select */}
@@ -153,7 +153,7 @@ const EmployeeLeaveTable = () => {
             value={year.toString()}
             onValueChange={(v) => setYear(parseInt(v))}
           >
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -170,7 +170,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Month Select */}
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Select Month" />
             </SelectTrigger>
             <SelectContent>
@@ -184,7 +184,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Employee Select */}
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
               <Users className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Select Employee" />
             </SelectTrigger>
@@ -201,7 +201,7 @@ const EmployeeLeaveTable = () => {
           {/* Reset Button */}
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-300 rounded-md text-slate-600 hover:bg-slate-50 transition-colors"
+            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500"
           >
             Reset
           </button>
