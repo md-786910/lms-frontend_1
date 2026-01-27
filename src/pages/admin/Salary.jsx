@@ -168,7 +168,7 @@ const Salary = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_12%_18%,rgba(59,130,246,0.25),transparent_22%),radial-gradient(circle_at_82%_8%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_60%_88%,rgba(99,102,241,0.18),transparent_22%)]" />
         <div className="relative p-6 md:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-3 max-w-3xl">

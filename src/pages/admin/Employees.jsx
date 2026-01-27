@@ -230,7 +230,7 @@ const Employees = ({
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_15%_20%,rgba(94,234,212,0.18),transparent_25%),radial-gradient(circle_at_82%_0%,rgba(59,130,246,0.22),transparent_23%),radial-gradient(circle_at_58%_85%,rgba(99,102,241,0.16),transparent_22%)]" />
         <div className="relative p-4 md:p-6 space-y-6">
           {/* Header */}
@@ -327,7 +327,7 @@ const Employees = ({
               value={selectedDepartment}
               onValueChange={setSelectedDepartment}
             >
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-72">
                 <SelectValue placeholder="Filter by Department" />
               </SelectTrigger>
               <SelectContent>
@@ -338,14 +338,14 @@ const Employees = ({
                 ))}
               </SelectContent>
             </Select>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-              <div className="space-y-0.5">
-                <p className="text-xs font-semibold text-slate-700">
+            <div className="flex items-center gap-3 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 w-96">
+              <div className="flex-1">
+                <span className="text-xs font-semibold text-slate-700">
                   {employeeActiveStatus ? "Suspended" : "Active"}
-                </p>
-                <p className="text-[11px] text-slate-500">
+                </span>
+                <span className="text-[11px] text-slate-500 pl-2">
                   Toggle to view suspended records
-                </p>
+                </span>
               </div>
               <Switch
                 className="relative top-0.5 w-12"

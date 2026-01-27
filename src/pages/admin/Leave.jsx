@@ -151,13 +151,13 @@ const Leave = () => {
           <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 font-semibold">
             Leave workspace
           </p>
-          <div className="flex flex-wrap items-baseline gap-2">
+          <div className="flex flex-wrap flex-col items-baseline gap-2">
             <h1 className="text-2xl font-semibold text-slate-900">
               Leave Management
             </h1>
-            <span className="text-sm text-slate-500">
+            <div className="text-sm text-slate-500">
               Approvals, balances, and audit-ready context
-            </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -223,7 +223,7 @@ const Leave = () => {
                             Duration
                           </p>
                           <p className="font-semibold text-slate-900">
-                            {dayjs(request?.start_date).format("D MMM YYYY")} – {dayjs(request?.end_date).format("D MMM YYYY")}
+                            {dayjs(request?.start_date).format("D MMM YYYY")} - {dayjs(request?.end_date).format("D MMM YYYY")}
                           </p>
                         </div>
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
@@ -253,7 +253,6 @@ const Leave = () => {
                           </div>
                         )}
                       </div>
-
                       <div className="p-3 rounded-lg border border-slate-200 bg-white">
                         <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
                           Reason
