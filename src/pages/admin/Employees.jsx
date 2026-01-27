@@ -30,6 +30,7 @@ import {
   User,
   UserRoundX,
   Loader2,
+  Pencil,
 } from "lucide-react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
 import EditEmployeeForm from "@/components/EditEmployeeForm";
@@ -412,14 +413,14 @@ const Employees = ({
                                 onChange={(e) => handleAvatarChange(e, employee.id)}
                                 className="hidden"
                               />
-                              Edit
+                              <Pencil className="h-4 w-4" />
                             </label>
                             {employee.profile && (
                               <button
                                 className="text-white text-xs font-semibold bg-red-600/80 px-2 py-1 rounded-md shadow"
                                 onClick={() => handleDeleteAvatar(employee.id)}
                               >
-                                Delete
+                                <Trash2 className="h-4 w-4" />
                               </button>
                             )}
                           </div>
