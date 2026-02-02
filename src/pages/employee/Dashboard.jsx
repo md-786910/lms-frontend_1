@@ -415,7 +415,7 @@ const EmployeeDashboard = () => {
         )}
 
         <Card className="border border-slate-200 shadow-lg rounded-3xl bg-[#111827] text-white">
-          <CardContent className="p-8 md:p-10">
+          <CardContent className="p-6 md:p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
                 <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
@@ -453,7 +453,7 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px]">
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Employee ID
                   </p>
@@ -461,7 +461,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.employee_no ?? `EMP-${basicProfile?.id}`}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Department
                   </p>
@@ -469,7 +469,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.department?.name || "N/A"}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Position
                   </p>
@@ -477,7 +477,7 @@ const EmployeeDashboard = () => {
                     {basicProfile?.designation?.title || "N/A"}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-white/10 border border-white/10 p-4 shadow-sm">
+                <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Leave Balance
                   </p>
@@ -498,7 +498,7 @@ const EmployeeDashboard = () => {
                 key={index}
                 className="relative overflow-hidden border border-slate-100 bg-white shadow-md transition-all duration-200"
               >
-                <div className={`absolute inset-x-0 top-0 h-1 ${palette.accent}`} />
+                <div className={`absolute inset-x-0 top-0 h-[1px] ${palette.accent}`} />
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
@@ -548,7 +548,7 @@ const EmployeeDashboard = () => {
                       head_cell: "text-center py-1",
                       row: "grid grid-cols-7 text-center",
                       cell: "p-2 text-sm relative",
-                      day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
+                      day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold text-slate-700",
                       day_selected: "bg-slate-900 text-white shadow-lg shadow-slate-900/15",
                       day_today: "border border-slate-900/30 text-slate-900",
                     }}
