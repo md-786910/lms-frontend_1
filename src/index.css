@@ -178,24 +178,24 @@
 }
 
 .react-confirm-alert-button-group button:first-child {
-  background-color: #1f3b83;
+  background-color: #dc0808;
   transition: background-color 0.2s ease;
   color: white;
   border: none;
   font-size: 15px !important;
 }
 .react-confirm-alert-button-group button:first-child:hover {
-  background-color: #233f8c;
+  background-color: #dd1414;
 }
 .react-confirm-alert-button-group button:last-child {
-  background-color: #c53030;
+  background-color: #059669;
   transition: background-color 0.2s ease;
   color: white;
   border: none;
   font-size: 15px !important;
 }
 .react-confirm-alert-button-group button:last-child:hover {
-  background-color: #a82525;
+  background-color: #047857;
 }
 
 /* custom disabled */

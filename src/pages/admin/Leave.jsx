@@ -316,8 +316,8 @@ const Leave = () => {
                                     console.log(error);
                                   }
                                 },
-                                text_no: "Cancel",
                                 text_yes: "Reject",
+                                text_no: "Cancel",
                                 title: "Reject Leave",
                                 message:
                                   "Reject this leave request? The employee will be notified.",
