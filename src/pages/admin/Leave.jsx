@@ -373,7 +373,7 @@ const Leave = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-4">
+        <div className="space-y-4 sticky top-20 self-start z-40">
           <Card className="border-slate-200 shadow-sm rounded-xl">
             <CardContent className="p-5 space-y-4">
               <p className="text-sm font-semibold text-slate-800">Overview</p>

@@ -181,7 +181,7 @@ const EmployeeLeave = () => {
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-4 space-y-4">
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-3 sticky top-20 self-start z-40">
             <div className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-[0_8px_24px_rgba(16,185,129,0.12)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
