@@ -262,6 +262,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   border: 1px solid #e2e8f0 !important;
 }
 
+.radix-select-trigger .select-arrow {
+  transition: transform 0.2s ease;
+}
+
+.radix-select-trigger[data-state="open"] .select-arrow {
+  transform: rotate(180deg);
+}
+
 .Toastify__toast-body {
   padding: 0 !important;
   margin: 0 !important;
