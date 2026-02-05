@@ -1,4 +1,4 @@
-import { ArrowUpRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ShieldCheck, Sparkles } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import settingTabs from "../../data/settingTab";
 
@@ -10,7 +10,7 @@ const Settings = ({ children }) => {
     <div className="space-y-4 mb-4">
       {/* Hero / Page header */}
       <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-primary shadow-[0_24px_80px_rgba(15,23,42,0.22)] px-6 py-6 sm:px-10 sm:py-8 text-white">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_35%),radial-gradient(circle_at_80%_0,rgba(59,130,246,0.18),transparent_30%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-slate-900" />
         <div className="absolute -right-10 top-6 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-4 max-w-2xl">
@@ -74,66 +74,38 @@ const Settings = ({ children }) => {
           </div>
 
           <div className="p-2 sm:p-6">
-            <div className="grid gap-3 md:grid-cols-7 xl:grid-cols-7">
-              {settingTabs?.map((tab) => {
-                const isActive =
-                  activePath === tab.link.toLowerCase() ||
-                  activePath.startsWith(`${tab.link.toLowerCase()}/`);
-                const Icon = tab.icon;
+            <div className="overflow-x-auto pb-1">
+              <div className="flex flex-wrap gap-3">
+                {settingTabs?.map((tab) => {
+                  const isActive =
+                    activePath === tab.link.toLowerCase() ||
+                    activePath.startsWith(`${tab.link.toLowerCase()}/`);
+                  const Icon = tab.icon;
 
-                return (
-                  <NavLink
-                    to={tab.link}
-                    key={tab.id}
-                    className={`group relative flex items-start gap-4 rounded-2xl border px-4 py-4 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
-                      isActive
-                        ? "border-slate-900 bg-slate-900 text-white shadow-xl shadow-slate-900/20"
-                        : "border-slate-100 bg-slate-50 hover:-translate-y-0.5 hover:border-slate-200 hover:bg-white"
-                    }`}
-                  >
-                    <div
-                      className={`flex h-11 w-11 items-center justify-center rounded-xl ${
+                  return (
+                    <NavLink
+                      to={tab.link}
+                      key={tab.id}
+                      className={`group inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 ${
                         isActive
-                          ? "bg-white/10 text-white"
-                          : "bg-white text-slate-900 shadow-sm border border-slate-100"
+                          ? "border-slate-900 bg-slate-900 text-white shadow-lg shadow-slate-900/30"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
                       }`}
                     >
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center gap-2">
-                        <p
-                          className={`text-sm font-semibold ${
-                            isActive ? "text-white" : "text-slate-900"
-                          }`}
-                        >
-                          {tab.name}
-                        </p>
-                        {isActive && (
-                          <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                        )}
-                      </div>
-                      <p
-                        className={`text-xs leading-relaxed ${
-                          isActive ? "text-slate-200" : "text-slate-500"
+                      <span
+                        className={`flex h-7 w-7 items-center justify-center rounded-full border text-base ${
+                          isActive
+                            ? "border-transparent bg-white text-slate-900"
+                            : "border-slate-200 bg-slate-100 text-slate-500"
                         }`}
                       >
-                        {tab.description}
-                      </p>
-                      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]">
-                        <span className={isActive ? "text-slate-200" : "text-slate-400"}>
-                          Configure
-                        </span>
-                        <ArrowUpRight
-                          className={`h-3.5 w-3.5 ${
-                            isActive ? "text-slate-200" : "text-slate-400"
-                          } transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5`}
-                        />
-                      </div>
-                    </div>
-                  </NavLink>
-                );
-              })}
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <span>{tab.name}</span>
+                    </NavLink>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
