@@ -178,6 +178,11 @@ const LeaveRequestModal = ({
   };
 
   useEffect(() => {
+    if (startDate && endDate && dayjs(endDate).isBefore(dayjs(startDate), "day")) {
+      setEndDate(null);
+      return;
+    }
+
     if (startDate && endDate) {
       const start = dayjs(startDate);
       const end = dayjs(endDate);
@@ -207,9 +212,11 @@ const LeaveRequestModal = ({
 
         setDayCount(validDayCount);
         setLeaveDays(tempLeaveDays);
+        setTotalLeaveCount(validDayCount);
       } else {
         setDayCount(0);
         setLeaveDays([]);
+        setTotalLeaveCount(0);
       }
     }
   }, [startDate, endDate]);
@@ -244,6 +251,11 @@ const LeaveRequestModal = ({
   const disableWeekends = (date) => {
     const day = date.getDay();
     return day === 0 || day === 6;
+  };
+
+  const disableBeforeStartDate = (date) => {
+    if (!startDate) return false;
+    return dayjs(date).isBefore(dayjs(startDate), "day");
   };
   const getStatusBadge = (status) => {
     const statusStyles = {
@@ -461,7 +473,8 @@ const LeaveRequestModal = ({
                               }}
                               initialFocus
                               className="pointer-events-auto"
-                              disabled={[disablePast, disableWeekends]}
+                              disabled={[disablePast, disableWeekends, disableBeforeStartDate]}
+                              fromDate={startDate}
                             />
                           </PopoverContent>
                         </Popover>

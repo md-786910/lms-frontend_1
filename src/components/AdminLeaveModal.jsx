@@ -199,6 +199,11 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   };
 
   useEffect(() => {
+    if (startDate && endDate && dayjs(endDate).isBefore(dayjs(startDate), "day")) {
+      setEndDate(null);
+      return;
+    }
+
     if (startDate && endDate) {
       const start = dayjs(startDate);
       const end = dayjs(endDate);
@@ -238,6 +243,12 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   const disableWeekends = (date) => {
     const day = date.getDay();
     return day === 0 || day === 6;
+  };
+
+  const disableBeforeStartDate = (date) => {
+    if (!startDate) return false;
+    // disable dates before the selected start date (exclusive)
+    return dayjs(date).isBefore(dayjs(startDate), "day");
   };
 
   const selectedEmployeeData = employees.find(
@@ -451,7 +462,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                             }}
                             initialFocus
                             className="pointer-events-auto"
-                            disabled={[disableWeekends]}
+                            disabled={[disableWeekends, disableBeforeStartDate]}
+                            fromDate={startDate}
                           />
                         </PopoverContent>
                       </Popover>

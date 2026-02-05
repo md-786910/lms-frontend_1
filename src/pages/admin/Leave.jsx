@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,6 @@ import {
 } from "lucide-react";
 import { leaveApi } from "../../api/leave/leave";
 import { leaveAPI } from "../../api/settingsApi/leaveApi";
-import debounce from "lodash/debounce";
 import NoDataFound from "../../common/NoDataFound";
 import ConfirmFn from "../../utility/confirmFn";
 import {
@@ -103,12 +102,13 @@ const Leave = () => {
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [leavePolicy, setLeavePolicy] = useState([]);
 
-  const fetchLeaveData = async (query = "", statusFilter = {}) => {
+  const fetchLeaveData = async (query = "", overrides) => {
+    const activeFilter = overrides ?? statusFilter;
     try {
       const [dashboardResult, requestsResult, policyResult] =
         await Promise.allSettled([
           leaveApi.getDashboard(),
-          leaveApi.getLeaveRequest(query, { ...statusFilter }),
+          leaveApi.getLeaveRequest(query, { ...activeFilter }),
           leaveAPI.getleave(),
         ]);
 
@@ -130,18 +130,29 @@ const Leave = () => {
     }
   };
 
-  const debouncedSearch = useCallback(
-    debounce((query, sort) => fetchLeaveData(query, sort), 500),
-    []
-  );
 
   useEffect(() => {
-    fetchLeaveData();
-  }, [updateDashboard]);
+    fetchLeaveData("", statusFilter);
+  }, [statusFilter, updateDashboard]);
 
-  useEffect(() => {
-    debouncedSearch(searchTerm, statusFilter);
-  }, [searchTerm, statusFilter]);
+  const filteredLeaveRequest = useMemo(() => {
+    if (!searchTerm) return leaveRequest;
+    const normalized = searchTerm.toLowerCase();
+    return leaveRequest.filter((request) => {
+      const employeeName = `${request.employee?.first_name || ""} ${
+        request.employee?.last_name || ""
+      }`.toLowerCase();
+      const leaveType = request.leave_type?.leave_type?.toLowerCase() || "";
+      const employeeNo = request.employee?.employee_no?.toLowerCase() || "";
+      return (
+        employeeName.includes(normalized) ||
+        leaveType.includes(normalized) ||
+        employeeNo.includes(normalized)
+      );
+    });
+  }, [leaveRequest, searchTerm]);
+
+  const filteredRequestCount = filteredLeaveRequest?.length ?? 0;
 
   return (
     <div className="space-y-6">
@@ -183,7 +194,7 @@ const Leave = () => {
         {/* Left column */}
         <div className="space-y-5">
           <div className="grid grid-cols-1 gap-5">
-            {leaveRequest?.map((request) => (
+            {filteredLeaveRequest?.map((request) => (
               <Card
                 key={request.id}
                 className="border-slate-200 rounded-xl shadow-sm hover:shadow-md transition"
@@ -316,8 +327,8 @@ const Leave = () => {
                                     console.log(error);
                                   }
                                 },
-                                text_no: "Cancel",
                                 text_yes: "Reject",
+                                text_no: "Cancel",
                                 title: "Reject Leave",
                                 message:
                                   "Reject this leave request? The employee will be notified.",
@@ -369,7 +380,7 @@ const Leave = () => {
             ))}
           </div>
 
-          {leaveRequest?.length === 0 && <NoDataFound />}
+          {filteredLeaveRequest?.length === 0 && <NoDataFound />}
         </div>
 
         {/* Sidebar */}
@@ -438,7 +449,8 @@ const Leave = () => {
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-slate-800">Filters</p>
                 <p className="text-xs text-slate-500">
-                  {leaveRequest?.length ?? 0} requests
+                  {filteredRequestCount} request
+                  {filteredRequestCount !== 1 ? "s" : ""}
                 </p>
               </div>
               <div className="space-y-3">

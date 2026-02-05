@@ -47,7 +47,7 @@ import Documents from "./components/settings/Documents";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPassword";
 import SetNewPassword from "./pages/SetNewPassword";
-import HistoryPage from "./pages/admin/History";
+import EmployeeHistory from "./pages/admin/EmployeeHistory";
 import EmployeProfileLayout from "./components/layout/EmployeProfileLayout";
 import BasicInfo from "./pages/employee/profile/BasicInfo";
 import Address from "./pages/employee/profile/Address";
@@ -112,7 +112,10 @@ const App = () => (
                 <Route path="timing" element={<AdminTiming />} />
                 <Route path="user" element={<User />} />
 
-                <Route path="history" element={<HistoryPage />} />
+                <Route
+                  path="employees/:employeeId/history"
+                  element={<EmployeeHistory />}
+                />
                 <Route path="settings" element={<AdminSettings />} />
 
                 {/* keep as children setting */}
