@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -62,6 +63,12 @@ const Employees = ({
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
   const [avatarLoadingId, setAvatarLoadingId] = useState(null);
+  const navigate = useNavigate();
+
+  const goToEmployeeHistory = (id) => {
+    if (readOnly) return;
+    navigate(`/admin/employees/${id}/history`);
+  };
   const fetchEmployees = async () => {
     try {
       const params = {
@@ -376,7 +383,15 @@ const Employees = ({
           return (
             <Card
               key={employee.id}
-              className="border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              onClick={() => goToEmployeeHistory(employee.id)}
+              role={readOnly ? undefined : "button"}
+              tabIndex={readOnly ? undefined : 0}
+              className={[
+                "border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md",
+                readOnly ? "" : "cursor-pointer",
+              ]
+                .filter(Boolean)
+                .join(" ")}
             >
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-col md:flex-row md:items-start gap-6">
@@ -406,7 +421,10 @@ const Employees = ({
                       {!readOnly && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="flex gap-2">
-                            <label className="cursor-pointer text-white text-xs font-semibold bg-black/50 px-2 py-1 rounded-md shadow">
+                            <label
+                              className="cursor-pointer text-white text-xs font-semibold bg-black/50 px-2 py-1 rounded-md shadow"
+                              onClick={(event) => event.stopPropagation()}
+                            >
                               <input
                                 type="file"
                                 accept="image/*"
@@ -418,7 +436,10 @@ const Employees = ({
                             {employee.profile && (
                               <button
                                 className="text-white text-xs font-semibold bg-red-600/80 px-2 py-1 rounded-md shadow"
-                                onClick={() => handleDeleteAvatar(employee.id)}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleDeleteAvatar(employee.id);
+                                }}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -466,7 +487,10 @@ const Employees = ({
                             variant="ghost"
                             size="icon"
                             className="text-slate-600"
-                            onClick={() => handleEditEmployee(employee)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleEditEmployee(employee);
+                            }}
                           >
                             <Edit3 className="h-4 w-4" />
                           </Button>
@@ -476,7 +500,8 @@ const Employees = ({
                               variant="ghost"
                               size="icon"
                               className="text-rose-600"
-                              onClick={() => {
+                              onClick={(event) => {
+                                event.stopPropagation();
                                 setEmployeeToDelete(employee);
                                 setShowConfirmDelete(true);
                               }}
@@ -489,7 +514,8 @@ const Employees = ({
                               variant="outline"
                               size="sm"
                               className="text-rose-600 border-rose-200"
-                              onClick={async () => {
+                              onClick={async (event) => {
+                                event.stopPropagation();
                                 const resp =
                                   await employeeAPI.activateSuspendedEmployee(
                                     employee.id
@@ -509,7 +535,8 @@ const Employees = ({
                                 title="Resend invite"
                                 variant="outline"
                                 size="sm"
-                                onClick={async () => {
+                                onClick={async (event) => {
+                                  event.stopPropagation();
                                   try {
                                     const resp = await employeeAPI.resendInvite(
                                       employee.id
