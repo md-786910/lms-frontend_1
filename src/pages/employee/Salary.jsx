@@ -127,9 +127,6 @@ const Salary = () => {
             <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
               Current Month • {dayjs().format("MMMM YYYY")}
             </Badge>
-            <Badge className="bg-indigo-50 text-indigo-700 border border-indigo-100">
-              Fiscal Year {dayjs().year()}
-            </Badge>
           </div>
         </div>
         <div className="flex flex-wrap gap-3">

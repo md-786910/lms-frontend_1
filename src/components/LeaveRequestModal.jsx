@@ -287,10 +287,8 @@ const LeaveRequestModal = ({
 
   return (
     <div className="w-full">
-      <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-[0_20px_60px_-32px_rgba(15,23,42,0.45)]">
-        <div className="relative bg-gradient-to-r from-slate-900 via-sky-900 to-slate-800 px-6 py-6 sm:px-8 sm:py-7 text-white">
-          <div className="absolute right-12 top-0 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -left-10 -bottom-10 h-28 w-28 rounded-full bg-sky-500/20 blur-3xl" />
+      <div className="overflow-hidden">
+        <div className="relative bg-gray-800 px-6 py-6 sm:px-8 sm:py-7 text-white">
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
@@ -699,18 +697,18 @@ const LeaveRequestModal = ({
                   type="button"
                   variant="outline"
                   onClick={onClose}
-                  className="h-11 rounded-xl border-slate-200 px-6 text-slate-700 hover:bg-slate-50"
+                  className="border border-slate-300 text-slate-700  hover:bg-slate-100 px-4 py-2 rounded-xl transition-colors duration-200"
                 >
-                  <X className="mr-2 h-4 w-4" />
+                  <X className="h-4 w-4" />
                   Cancel
                 </Button>
                 {!readOnly && (
                   <Button
                     type="submit"
-                    className="h-11 rounded-xl bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 px-6 text-white shadow-lg shadow-sky-500/25 transition-all hover:translate-y-[-1px] hover:shadow-sky-500/35"
+                    className="bg-[#273C7D] hover:bg-[#1F2F63] text-white px-4 py-2 rounded-xl transition-all duration-200 ease-in-out hover:shadow-lg  shadow-[#273C7D]/30"
                     disabled={leaveCalculate?.leave_remaing - totalLeaveCount < 0}
                   >
-                    <CalendarPlus className="mr-2 h-4 w-4" />
+                    <CalendarPlus className="h-4 w-4" />
                     Submit Request
                   </Button>
                 )}

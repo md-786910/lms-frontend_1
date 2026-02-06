@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format, isSameDay } from "date-fns";
 import {
   Users,
@@ -33,6 +34,7 @@ import EmployeeLeaveTable from "../../components/EmployeeLeaveTable";
 import dayjs from "dayjs";
 const AdminDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -125,6 +127,7 @@ const AdminDashboard = () => {
       createdAt: activity?.createdAt,
     })
   );
+  const pendingLeaveRequests = dashboardData?.pending_leave_requests || [];
 
   const topPerformers = [
     // { name: "Md Ashif", department: "Engineering", score: 98 },
@@ -457,6 +460,75 @@ const AdminDashboard = () => {
             );
           })}
         </div>
+
+        <Card className="border border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-2xl md:flex-row md:items-center md:justify-between">
+            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
+              <CalendarIcon className="h-5 w-5 text-primary" />
+              Pending leave requests
+            </CardTitle>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => navigate("/admin/leave")}
+            >
+              View all
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {pendingLeaveRequests.length === 0 ? (
+              <div className="py-8 text-center text-sm text-slate-500">
+                No pending leave requests at the moment.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {pendingLeaveRequests.map((request) => (
+                  <div
+                    key={request.id}
+                    className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-sm font-semibold uppercase text-white">
+                        {request.employee?.first_name?.[0]}
+                        {request.employee?.last_name?.[0]}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 truncate">
+                          {request.employee?.first_name}{" "}
+                          {request.employee?.last_name}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {request.employee?.employee_no}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {dayjs(request.start_date).format("D MMM YYYY")} -{" "}
+                          {dayjs(request.end_date).format("D MMM YYYY")} -{" "}
+                          {request.total_days || 0} days
+                        </p>
+                        {request.reason && (
+                          <p className="text-xs text-slate-400">
+                            {request.reason}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-2 text-right">
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-700">
+                        Pending
+                      </span>
+                      <p className="text-[11px] text-slate-500">
+                        Applied {dayjs(request.createdAt).fromNow()}
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        {request.leave_type?.leave_type || "Leave"}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Calendar */}

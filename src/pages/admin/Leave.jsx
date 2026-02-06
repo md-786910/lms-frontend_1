@@ -216,11 +216,17 @@ const Leave = () => {
                           </p>
                         </div>
                         <Badge className={getStatusColor(LEAVE_STATUS[request?.status])}>
-                          {request?.status}
+                          {request?.status?.charAt(0).toUpperCase() + request?.status?.slice(1)}
                         </Badge>
                       </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                      <div
+                        className={`grid gap-3 text-sm ${
+                          request?.status === "approved"
+                            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+                            : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+                        }`}
+                      >
+                        {/* Leave Type */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
                           <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
                             Leave type
@@ -229,14 +235,19 @@ const Leave = () => {
                             {request.leave_type?.leave_type}
                           </p>
                         </div>
+                      
+                        {/* Duration */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
                           <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
                             Duration
                           </p>
                           <p className="font-semibold text-slate-900">
-                            {dayjs(request?.start_date).format("D MMM YYYY")} - {dayjs(request?.end_date).format("D MMM YYYY")}
+                            {dayjs(request?.start_date).format("D MMM YYYY")} –{" "}
+                            {dayjs(request?.end_date).format("D MMM YYYY")}
                           </p>
                         </div>
+                      
+                        {/* Days */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
                           <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
                             Days
@@ -245,6 +256,8 @@ const Leave = () => {
                             {request?.total_days} days
                           </p>
                         </div>
+                      
+                        {/* Applied */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
                           <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
                             Applied
@@ -253,6 +266,8 @@ const Leave = () => {
                             {dayjs(request?.createdAt).format("D MMM YYYY")}
                           </p>
                         </div>
+                      
+                        {/* Approved (only when status is approved) */}
                         {request?.status === "approved" && (
                           <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
                             <p className="text-xs uppercase tracking-[0.08em] text-emerald-600 font-semibold">

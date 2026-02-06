@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import NoDataFound from "../../common/NoDataFound";
 import { employeeAPI } from "../../api/employeeApi";
 import { leaveApi } from "../../api/leave/leave";
@@ -41,6 +49,9 @@ const EmployeeHistory = () => {
   const [leaveRecords, setLeaveRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
 
   useEffect(() => {
     if (!employeeId) {
@@ -75,13 +86,75 @@ const EmployeeHistory = () => {
     fetchHistory();
   }, [employeeId]);
 
+  const leaveTypeOptions = useMemo(() => {
+    const types = new Set();
+    leaveRecords.forEach((leave) => {
+      const typeLabel = leave?.leave_type?.leave_type;
+      if (typeLabel) {
+        types.add(typeLabel);
+      }
+    });
+    return Array.from(types);
+  }, [leaveRecords]);
+
+  const filteredLeaves = useMemo(() => {
+    let results = leaveRecords;
+
+    const normalizedStatus = statusFilter?.toLowerCase() ?? "all";
+    if (normalizedStatus !== "all") {
+      results = results.filter(
+        (leave) => (leave?.status ?? "").toLowerCase() === normalizedStatus
+      );
+    }
+
+    const normalizedTypeFilter = leaveTypeFilter?.toLowerCase() ?? "all";
+    if (normalizedTypeFilter !== "all") {
+      results = results.filter(
+        (leave) =>
+          (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
+          normalizedTypeFilter
+      );
+    }
+
+    const normalizedSearch = searchTerm?.trim().toLowerCase();
+    if (normalizedSearch) {
+      results = results.filter((leave) => {
+        const employeeName = `${leave.employee?.first_name ?? ""} ${
+          leave.employee?.last_name ?? ""
+        }`.toLowerCase();
+        const leaveType = leave.leave_type?.leave_type?.toLowerCase() ?? "";
+        const employeeNo = leave.employee?.employee_no?.toLowerCase() ?? "";
+        const reason = leave.reason?.toLowerCase() ?? "";
+        const dateValues = [
+          leave.start_date,
+          leave.end_date,
+          leave.createdAt,
+        ]
+          .map((value) =>
+            value ? dayjs(value).format("D MMM YYYY").toLowerCase() : ""
+          )
+          .join(" ");
+
+        return (
+          employeeName.includes(normalizedSearch) ||
+          leaveType.includes(normalizedSearch) ||
+          employeeNo.includes(normalizedSearch) ||
+          reason.includes(normalizedSearch) ||
+          dateValues.includes(normalizedSearch)
+        );
+      });
+    }
+
+    return results;
+  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter]);
+
   const sortedLeaves = useMemo(() => {
-    return [...leaveRecords].sort((a, b) => {
+    return [...filteredLeaves].sort((a, b) => {
       const dateA = new Date(a.start_date || a.createdAt || Date.now());
       const dateB = new Date(b.start_date || b.createdAt || Date.now());
       return dateB - dateA;
     });
-  }, [leaveRecords]);
+  }, [filteredLeaves]);
 
   const summary = useMemo(() => {
     const counts = {
@@ -116,11 +189,11 @@ const EmployeeHistory = () => {
         <CardContent className="space-y-4 p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary font-semibold text-2xl">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-800 text-white font-semibold text-2xl">
                 {getInitials(employee)}
               </div>
               <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.35em] text-slate-500">
+                <p className="text-[15px] uppercase tracking-[0.15em] text-slate-500">
                   Employee history
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
@@ -149,11 +222,6 @@ const EmployeeHistory = () => {
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              {employee?.email ? (
-                <span className="text-slate-500">{employee.email}</span>
-              ) : (
-                <span className="text-slate-400">No email on file</span>
-              )}
               <Button
                 size="sm"
                 variant="outline"
@@ -174,7 +242,7 @@ const EmployeeHistory = () => {
       </Card>
 
       <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardContent className="grid grid-cols-1 gap-4 px-6 py-5 sm:grid-cols-2 lg:grid-cols-4">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 px-6 py-5">
           {[
             { label: "Total entries", value: leaveRecords.length },
             { label: "Approved", value: summary.counts.approved },
@@ -187,7 +255,7 @@ const EmployeeHistory = () => {
               key={item.label}
               className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3"
             >
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-lg uppercase tracking-[0.15em] text-slate-400">
                 {item.label}
               </p>
               <p className="text-2xl font-semibold text-slate-900">
@@ -195,6 +263,61 @@ const EmployeeHistory = () => {
               </p>
             </div>
           ))}
+        </CardContent>
+      </Card>
+
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="space-y-4 p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-slate-800">Filters</p>
+            <p className="text-xs text-slate-500">
+              Showing {filteredLeaves.length} of {leaveRecords.length} entries
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <Input
+                placeholder="Search by type, reason, or date..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 h-11"
+              />
+            </div>
+
+            <Select
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value)}
+            >
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="approved">Approved</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={leaveTypeFilter}
+              onValueChange={(value) => setLeaveTypeFilter(value)}
+            >
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="Leave type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All types</SelectItem>
+                {leaveTypeOptions.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </CardContent>
       </Card>
 
@@ -206,6 +329,11 @@ const EmployeeHistory = () => {
         <NoDataFound
           title="No leave history yet"
           description="This employee has not taken any leaves that are recorded in the system."
+        />
+      ) : filteredLeaves.length === 0 ? (
+        <NoDataFound
+          title="No matching leaves"
+          description="Try relaxing the search or filters to see more results."
         />
       ) : (
         <div className="space-y-4">
@@ -229,93 +357,106 @@ const EmployeeHistory = () => {
             return (
               <Card
                 key={leave.id}
-                className="border border-slate-200 shadow-sm rounded-2xl"
+                className="rounded-2xl border border-slate-200 bg-white shadow-sm"
               >
-                <CardContent className="p-5 space-y-4">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
-                        {leaveTypeLabel}
-                      </p>
-                      <div className="flex flex-wrap items-center gap-2 text-base font-semibold text-slate-900">
-                        <span>
-                          {startDate} - {endDate}
-                        </span>
-                        <Badge
-                          className={
-                            statusStyles[leave.status?.toLowerCase()] ||
-                            statusStyles.other
-                          }
-                        >
-                          {leave.status || "unknown"}
-                        </Badge>
+                <CardContent className="space-y-5 p-5">
+                  {/* ===== Header ===== */}
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    {/* Left */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
+                        {getInitials(employee)}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            className={
+                              statusStyles[leave.status?.toLowerCase()] ||
+                              statusStyles.other
+                            }
+                          >
+                            {leave?.status?.charAt(0).toUpperCase() + leave?.status?.slice(1)}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-slate-500">
+                          {leave.employee?.employee_code}
+                        </p>
                       </div>
                     </div>
-                    <div className="text-sm text-slate-500">
-                      Applied on {appliedOn}
-                    </div>
                   </div>
-
-                  <div className="grid grid-cols-1 gap-3 text-sm text-slate-600 md:grid-cols-2">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                        Total days
+                    
+                  {/* ===== Info Row (ONE ROW) ===== */}
+                  <div
+                    className={`grid gap-3 text-sm ${
+                      leave.status === "approved"
+                        ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+                        : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+                    }`}
+                  >
+                    {/* Leave Type */}
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                        Leave type
                       </p>
-                      <p className="text-base font-semibold text-slate-900">
-                        {dayCount} day{dayCount === 1 ? "" : "s"}
+                      <p className="mt-1 font-semibold text-slate-900">
+                        {leave.leave_type?.leave_type}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                  
+                    {/* Duration */}
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
                         Duration
                       </p>
-                      <p className="text-base font-semibold text-slate-900">
-                        {startDate} - {endDate}
+                      <p className="mt-1 font-semibold text-slate-900">
+                        {dayjs(leave.start_date).format("D MMM YYYY")} –{" "}
+                        {dayjs(leave.end_date).format("D MMM YYYY")}
                       </p>
                     </div>
+                  
+                    {/* Days */}
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                        Days
+                      </p>
+                      <p className="mt-1 font-semibold text-slate-900">
+                        {leave.total_days} day
+                        {leave.total_days > 1 ? "s" : ""}
+                      </p>
+                    </div>
+                  
+                    {/* Applied */}
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                        Applied
+                      </p>
+                      <p className="mt-1 font-semibold text-slate-900">
+                        {dayjs(leave.createdAt).format("D MMM YYYY")}
+                      </p>
+                    </div>
+                  
+                    {/* Approved */}
+                    {leave.status === "approved" && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                        <p className="text-xs uppercase tracking-[0.25em] text-emerald-600">
+                          Approved
+                        </p>
+                        <p className="mt-1 font-semibold text-slate-900">
+                          {dayjs(leave.updatedAt).format("D MMM YYYY")}
+                        </p>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="rounded-2xl border border-slate-100 bg-white/80 p-4 text-sm text-slate-700">
-                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                  
+                  {/* ===== Reason ===== */}
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-slate-400">
                       Reason
                     </p>
-                    <p className="mt-2 text-slate-900">
+                    <p className="mt-2 text-sm text-slate-900">
                       {leave.reason || "No reason provided."}
                     </p>
                   </div>
-
-                  {leaveDays?.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                        Dates covered ({leaveDays.length})
-                      </p>
-                      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                        {leaveDays.map((chunk, index) => {
-                          const chunkDays =
-                            Number(chunk?.count) ||
-                            (chunk?.day === "half" ? 0.5 : 1);
-                          return (
-                            <div
-                              key={`${leave.id}-${chunk?.date}-${index}`}
-                              className="rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2 text-sm"
-                            >
-                              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                                {chunk?.date
-                                  ? dayjs(chunk.date).format("D MMM YYYY")
-                                  : "Unknown"}
-                              </p>
-                              <p className="text-sm font-semibold text-slate-900">
-                                {chunkDays} day{chunkDays === 1 ? "" : "s"}
-                              </p>
-                              <p className="text-[11px] text-slate-500 capitalize">
-                                {chunk?.day || "full"} day
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             );
