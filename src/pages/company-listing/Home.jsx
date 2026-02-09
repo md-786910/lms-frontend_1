@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
+import ScrollRevealSection from "@/components/landing/ScrollRevealSection";
 import featureImage from "../../assets/images/general.png";
 import decisionImage from "../../assets/images/managers-decision-making.png";
 
@@ -117,9 +119,31 @@ const decisions = [
 ]
 
 const stats = [
-  { value: "1,200+", label: "Global teams onboarded" },
-  { value: "99.9%", label: "Uptime & reliability" },
-  { value: "45 hrs", label: "Average HR admin time saved per week" },
+  {
+    target: 10,
+    label: "Projects Managed",
+    formatter: (value) => `${Math.round(value)}K+`,
+  },
+  {
+    target: 500,
+    label: "Happy Teams",
+    formatter: (value) => `${Math.round(value)}+`,
+  },
+  {
+    target: 99.9,
+    label: "Uptime",
+    formatter: (value) => `${value.toFixed(1)}%`,
+  },
+  {
+    target: 4.9,
+    label: "User Rating",
+    formatter: (value) => (
+      <span className="flex items-center gap-1">
+        <span>{value.toFixed(1)}</span>
+        <span className="text-yellow-400">★</span>
+      </span>
+    ),
+  },
 ];
 
 const journey = [
@@ -164,9 +188,57 @@ const testimonials = [
 const trustedLogos = ["Fortune 500", "Global Retail", "HealthTech", "Enterprise Finance"];
 
 const Home = () => {
+  const statsRef = useRef(null);
+  const [animatedValues, setAnimatedValues] = useState(
+    stats.map(() => 0),
+  );
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (hasAnimated) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setHasAnimated(true);
+          observer.disconnect();
+          const startTime = performance.now();
+          const duration = 1200;
+
+          const animate = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            setAnimatedValues(
+              stats.map((stat) => stat.target * progress),
+            );
+
+            if (progress < 1) {
+              window.requestAnimationFrame(animate);
+            }
+          };
+
+          window.requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasAnimated]);
   return (
     <div className="bg-gradient-background text-white">
-      <section className="relative overflow-hidden bg-[#222875] pb-20 pt-40 px-4 h-[100vh] curved-section shell-sky section-animate min-h-screen flex items-center ">
+      <ScrollRevealSection
+        className="relative overflow-hidden bg-[#222875] pb-20 pt-40 px-4 h-[100vh] curved-section shell-sky section-animate min-h-screen flex items-center "
+        threshold={0.3}
+        delay={0}
+      >
         <div className="absolute -top-44 right-[-100px] w-80 h-80 rounded-[90px] bg-white/10" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-[140px] bg-white/5" />
         <div className="absolute top-1/4 left-96 w-60 h-60 rounded-[90px] bg-white/10 z-0" />
@@ -195,15 +267,7 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
-            <div className="flex flex-wrap gap-6 text-sm text-[#CBEFFF]">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-3xl font-semibold text-[#CBEFFF]">{stat.value}</p>
-                  <p className="text-gray-400">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
           <div className="space-y-6 rounded-3xl bg-white/10 p-10 shadow-2xl backdrop-blur">
             <div className="flex items-center justify-between text-sm text-white/70">
               <span>Trusted by</span>
@@ -226,9 +290,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 max-w-[1580px] mx-auto ">
+      <ScrollRevealSection
+        className="py-20 px-4 max-w-[1580px] mx-auto "
+        delay={120}
+        threshold={0.2}
+      >
         <div className="space-y-6 text-center mb-20">
           <p className="text-lg text-[#222875] font-bold uppercase tracking-[0.5em]">Why choose us</p>
           <h2 className="text-3xl font-bold text-[#222875] tracking-[0.01em]">Everything your People Team needs</h2>
@@ -238,31 +306,40 @@ const Home = () => {
         </div>
         <div className=" grid gap-20 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <Card key={index} className="border-0 bg-gradient-card w-[390px] h-auto bg-gradient-card p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
-              <CardHeader className="pb-2">
-                {/* Icon Wrapper */}
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 ${feature.iconBg}`}
-                >
-                  <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
+            <ScrollRevealSection
+              delay={120}
+              threshold={0.2}
+            >
+              <Card key={index} className="border-0 bg-gradient-card w-[390px] h-auto bg-gradient-card p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
+                <CardHeader className="pb-2">
+                  {/* Icon Wrapper */}
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 ${feature.iconBg}`}
+                  >
+                    <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
+                  </div>
+                  <CardTitle className="mt-4 text-xl text-[#222875] pb-2">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+                <div>
+                  <Button variant="outline" size="sm" className="mt-4 text-sm border-primary text-primary hover:bg-primary/10">
+                    Learn more
+                    <ArrowRight className="h-4 w-4 text-[#222875]" />
+                  </Button> 
                 </div>
-                <CardTitle className="mt-4 text-xl text-[#222875] pb-2">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </CardContent>
-              <div>
-                <Button variant="outline" size="sm" className="mt-4 text-sm border-primary text-primary hover:bg-primary/10">
-                  Learn more
-                  <ArrowRight className="h-4 w-4 text-[#222875]" />
-                </Button> 
-              </div>
-            </Card>
+              </Card>
+            </ScrollRevealSection>
           ))}
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="grid grid-row-1 md:grid-row-2 gap-20 py-20 px-4 bg-gradient-to-bl from-[#F5FBFF] via-[#CBEFFF] to-[#EAF7FF] h-[100vh] curved-section shell-sky section-animate">
+      <ScrollRevealSection
+        className="grid grid-row-1 md:grid-row-2 gap-20 py-20 px-4 bg-gradient-to-bl from-[#F5FBFF] via-[#CBEFFF] to-[#EAF7FF] h-[100vh] curved-section shell-sky section-animate"
+        delay={220}
+        threshold={0.2}
+      >
         <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
           <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
             <img src={featureImage} alt="feature iamges" />
@@ -282,28 +359,37 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Managers’ Decision Making</h2>
-            <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
-              Managers can easily see who will be away, enabling them to make swift, smart decisions and avoid potential scheduling conflicts. Leave management is automated email sent to relevant manager and the employee to confirm the leave status.
-            </p>
-            <div className="space-y-3 pt-5">
-              {decisions.map((decision) => (
-                <div key={decision} className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-[#2D5356]" />
-                  <span className="text-[#131313]">{decision}</span>
-                </div>
-              ))}
+        <ScrollRevealSection
+          delay={220}
+          threshold={0.2}
+        >
+          <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Managers’ Decision Making</h2>
+              <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
+                Managers can easily see who will be away, enabling them to make swift, smart decisions and avoid potential scheduling conflicts. Leave management is automated email sent to relevant manager and the employee to confirm the leave status.
+              </p>
+              <div className="space-y-3 pt-5">
+                {decisions.map((decision) => (
+                  <div key={decision} className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-[#2D5356]" />
+                    <span className="text-[#131313]">{decision}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
+              <img src={decisionImage} alt="decision Image" />
             </div>
           </div>
-          <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
-            <img src={decisionImage} alt="decision Image" />
-          </div>
-        </div>
-      </section>
+        </ScrollRevealSection>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 max-w-[1580px] mx-auto">
+      <ScrollRevealSection
+        className="py-20 px-4 max-w-[1580px] mx-auto"
+        delay={320}
+        threshold={0.25}
+      >
         <div className="max-w-6xl mx-auto text-center space-y-6">
           <p className="text-lg font-bold text-[#222875] uppercase tracking-[0.5em]">How it works</p>
           <h2 className="text-3xl font-bold text-[#222875]">Go live in three simple steps</h2>
@@ -322,35 +408,39 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="relative py-20 px-4 bg-[#222875]">
+      <ScrollRevealSection
+        className="relative py-20 px-4 bg-[#222875]"
+        delay={380}
+        threshold={0.25}
+      >
         <div className="absolute top-24 -left-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="absolute bottom-24 -right-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="max-w-[1580px] mx-auto">
-          {/* Stats Row - Moved Below */}
-          <div className="flex flex-wrap justify-center lg:justify-center gap-20 reveal stagger-5">
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">10K+</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Projects Managed</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">500+</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Happy Teams</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">99.9%</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Uptime</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">4.9<span class="text-yellow-500">★</span></div>
-              <div className="text-sm text-[#FFFCF3] font-medium">User Rating</div>
-            </div>
+          <div
+            ref={statsRef}
+            className="flex flex-wrap justify-center lg:justify-center gap-20 reveal stagger-5"
+          >
+            {stats.map((stat, index) => (
+              <div key={stat.label} className="text-center lg:text-left">
+                <div className="text-4xl font-black text-[#CBEFFF] mb-1">
+                  {stat.formatter(animatedValues[index])}
+                </div>
+                <div className="text-sm text-[#FFFCF3] font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 text-center">
+      <ScrollRevealSection
+        className="py-20 px-4 text-center"
+        delay={440}
+        threshold={0.25}
+      >
         <div className="max-w-4xl mx-auto space-y-6">
           <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
           <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
@@ -369,7 +459,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
       <LandingFooter />
     </div>

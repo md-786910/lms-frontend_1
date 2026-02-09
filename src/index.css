@@ -97,6 +97,7 @@
   html {
     scroll-behavior: smooth;
     background-color: hsl(var(--background));
+    overflow-x: hidden;
   }
 
   body {
@@ -105,6 +106,40 @@
       sans-serif;
     letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }
+
+  body.page-scrolling {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+  }
+
+  body::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+
+  body.page-scrolling::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+  }
+
+  body.page-scrolling::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  body.page-scrolling::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.35);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  body.page-scrolling:hover::-webkit-scrollbar-thumb,
+  body.page-scrolling:active::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.65);
   }
 
   ::selection {
