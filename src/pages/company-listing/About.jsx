@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Award, Globe, Heart } from "lucide-react";
+import LandingFooter from "@/components/landing/LandingFooter";
+
 
 const About = () => {
   const stats = [
@@ -118,6 +120,8 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <LandingFooter />
     </div>
   );
 };

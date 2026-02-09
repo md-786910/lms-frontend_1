@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import LandingFooter from "@/components/landing/LandingFooter";
 
 const Pricing = () => {
   const plans = [
@@ -235,6 +236,7 @@ const Pricing = () => {
           </div>
         </div>
       </section>
+      <LandingFooter />
     </div>
   );
 };
