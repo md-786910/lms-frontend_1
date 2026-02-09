@@ -43,6 +43,8 @@ const AdminDashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
+  const [showEmailConfirm, setShowEmailConfirm] = useState(false);
 
   const fetchNotification = async () => {
     try {
@@ -372,7 +374,7 @@ const AdminDashboard = () => {
                     size="lg"
                     variant="outline"
                     className="border-white/40 text-slate-900 hover:bg-white/10 hover:text-white rounded-lg px-4"
-                    onClick={handleDownload}
+                    onClick={() => setShowDownloadConfirm(true)}
                     disabled={downloading}
                   >
                     {downloading ? (
@@ -757,7 +759,7 @@ const AdminDashboard = () => {
                     variant="outline"
                     size="icon"
                     className="border-slate-200"
-                    onClick={handleSendMail}
+                    onClick={() => setShowEmailConfirm(true)}
                     disabled={sendingEmail}
                     title="Send report via email"
                   >
@@ -771,7 +773,7 @@ const AdminDashboard = () => {
                     variant="outline"
                     size="icon"
                     className="border-slate-200"
-                    onClick={handleDownload}
+                    onClick={() => setShowDownloadConfirm(true)}
                     disabled={downloading}
                     title="Download report"
                   >
@@ -896,6 +898,94 @@ const AdminDashboard = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {showDownloadConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+          <div
+            className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+            onClick={() => setShowDownloadConfirm(false)}
+          />
+          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+            <div className="flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-500" />
+              <h3 className="text-lg font-semibold text-slate-900">
+                Confirm download
+              </h3>
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Are you sure you want to download the latest leave report? This
+              will generate a fresh CSV of all leave records.
+            </p>
+            <div className="flex justify-end gap-2 pt-1">
+              <Button
+                variant="ghost"
+                onClick={() => setShowDownloadConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowDownloadConfirm(false);
+                  handleDownload();
+                }}
+                disabled={downloading}
+              >
+                {downloading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Downloading...
+                  </>
+                ) : (
+                  "Confirm download"
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showEmailConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+          <div
+            className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+            onClick={() => setShowEmailConfirm(false)}
+          />
+          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+            <div className="flex items-center gap-3">
+              <Mail className="h-5 w-5 text-primary" />
+              <h3 className="text-lg font-semibold text-slate-900">
+                Confirm email
+              </h3>
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Are you sure you want to send the latest leave report via email?
+              This will trigger the notification workflow immediately.
+            </p>
+            <div className="flex justify-end gap-2 pt-1">
+              <Button
+                variant="ghost"
+                onClick={() => setShowEmailConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowEmailConfirm(false);
+                  handleSendMail();
+                }}
+                disabled={sendingEmail}
+              >
+                {sendingEmail ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Confirm send"
+                )}
+              </Button>
             </div>
           </div>
         </div>
