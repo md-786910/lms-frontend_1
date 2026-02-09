@@ -60,6 +60,9 @@ const Employees = ({
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [showResendConfirm, setShowResendConfirm] = useState(false);
+  const [resendTarget, setResendTarget] = useState(null);
+  const [resendingInvite, setResendingInvite] = useState(false);
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
   const [activeTabEdit, setActiveTabEdit] = useState("basic");
   const [avatarLoadingId, setAvatarLoadingId] = useState(null);
@@ -160,6 +163,32 @@ const Employees = ({
         variant: "destructive",
       });
       console.error("Error deleting employee:", error);
+    }
+  };
+
+  const handleResendInvite = async () => {
+    if (!resendTarget) return;
+    try {
+      setResendingInvite(true);
+      const resp = await employeeAPI.resendInvite(resendTarget.id);
+      if (resp?.status) {
+        toast({
+          title: "Success",
+          description: resp?.data?.message,
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error?.response?.data?.message || "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setResendingInvite(false);
+      setShowResendConfirm(false);
+      setResendTarget(null);
     }
   };
   const handleAddSuccess = () => {
@@ -535,28 +564,10 @@ const Employees = ({
                                 title="Resend invite"
                                 variant="outline"
                                 size="sm"
-                                onClick={async (event) => {
+                                onClick={(event) => {
                                   event.stopPropagation();
-                                  try {
-                                    const resp = await employeeAPI.resendInvite(
-                                      employee.id
-                                    );
-                                    if (resp?.status) {
-                                      toast({
-                                        title: "Success",
-                                        description: resp?.data?.message,
-                                        variant: "success",
-                                      });
-                                    }
-                                  } catch (error) {
-                                    toast({
-                                      title: "Error",
-                                      description:
-                                        error?.response?.data?.message ||
-                                        "Something went wrong",
-                                      variant: "destructive",
-                                    });
-                                  }
+                                  setResendTarget(employee);
+                                  setShowResendConfirm(true);
                                 }}
                                 className="px-3"
                               >
@@ -702,6 +713,59 @@ const Employees = ({
         onConfirm={() => handleDeleteEmployee()}
         employee={employeeToDelete}
       />
+      {showResendConfirm && resendTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+          <div
+            className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+            onClick={() => {
+              setShowResendConfirm(false);
+              setResendTarget(null);
+            }}
+          />
+          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+            <div className="flex items-center gap-3">
+              <Mail className="h-5 w-5 text-primary" />
+              <h3 className="text-lg font-semibold text-slate-900">
+                Confirm resend invite
+              </h3>
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Are you sure you want to resend the invitation to{" "}
+              <span className="font-semibold text-slate-900">
+                {resendTarget?.email ||
+                  `${resendTarget?.first_name || ""} ${
+                    resendTarget?.last_name || ""
+                  }`.trim()}
+              </span>
+              ? This will trigger the onboarding invite again.
+            </p>
+            <div className="flex justify-end gap-2 pt-1">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowResendConfirm(false);
+                  setResendTarget(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleResendInvite}
+                disabled={resendingInvite}
+              >
+                {resendingInvite ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Confirm send invite"
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
