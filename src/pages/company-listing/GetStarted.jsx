@@ -173,7 +173,7 @@ const GetStarted = () => {
   return (
     <>
       {init && (
-        <div className="fixed min-h-screen z-30  w-full bg-gradient-background">
+        <div className="fixed min-h-screen z-30 w-full bg-gradient-to-br from-white via-[#eaf7ff] to-white">
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 text-center">
             <h5 className="text-lg font-medium mb-4">
               Initializing company, please wait...
@@ -182,7 +182,7 @@ const GetStarted = () => {
           </div>
         </div>
       )}
-      <div className=" min-h-screen bg-gradient-background py-12 px-4">
+      <div className="landing-shell min-h-screen py-12 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -199,13 +199,13 @@ const GetStarted = () => {
             <div className="flex items-center space-x-8">
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-center">
-                  <div
-                    className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
-                      currentStep >= step.number
-                        ? "bg-primary border-primary text-primary-foreground"
-                        : "border-muted-foreground text-muted-foreground"
-                    }`}
-                  >
+                <div
+                  className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
+                    currentStep >= step.number
+                      ? "bg-[#EAF7FF] border-[#CDE7FF] text-[#0f172a]"
+                      : "border-white/30 text-[#0f172a]/70"
+                  }`}
+                >
                     {currentStep > step.number ? (
                       <CheckCircle className="h-6 w-6" />
                     ) : (
@@ -216,8 +216,8 @@ const GetStarted = () => {
                     <p
                       className={`font-medium ${
                         currentStep >= step.number
-                          ? "text-primary"
-                          : "text-muted-foreground"
+                          ? "text-[#0f172a]"
+                          : "text-[#0f172a]/60"
                       }`}
                     >
                       {step.title}
@@ -227,8 +227,8 @@ const GetStarted = () => {
                     <div
                       className={`hidden sm:block w-16 h-0.5 ml-8 ${
                         currentStep > step.number
-                          ? "bg-primary"
-                          : "bg-muted-foreground"
+                          ? "bg-[#EAF7FF]"
+                          : "bg-white/30"
                       }`}
                     />
                   )}
@@ -238,9 +238,9 @@ const GetStarted = () => {
           </div>
 
           {/* Form */}
-          <Card className="max-w-2xl mx-auto bg-gradient-card border-0 shadow-xl">
+          <Card className="max-w-2xl mx-auto landing-panel border-0 shadow-xl">
             <CardHeader>
-              <CardTitle>
+              <CardTitle className="text-[#0f172a]">
                 Step {currentStep}: {steps[currentStep - 1].title}
               </CardTitle>
             </CardHeader>
@@ -492,11 +492,11 @@ const GetStarted = () => {
                       />
                       <Label htmlFor="agreeToTerms" className="text-sm">
                         I agree to the{" "}
-                        <a href="#" className="text-primary hover:underline">
+                        <a href="#" className="text-[#0f172a] hover:underline">
                           Terms of Service
                         </a>{" "}
                         and{" "}
-                        <a href="#" className="text-primary hover:underline">
+                        <a href="#" className="text-[#0f172a] hover:underline">
                           Privacy Policy
                         </a>{" "}
                         *
@@ -532,20 +532,24 @@ const GetStarted = () => {
               <div className="flex justify-between pt-6">
                 <Button
                   variant="outline"
+                  className="text-[#0f172a] border-white/40"
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
                 >
                   Previous
                 </Button>
                 {currentStep < 3 ? (
-                  <Button onClick={handleNext} className="bg-primary">
+                  <Button
+                    onClick={handleNext}
+                    className="bg-[#EAF7FF] text-[#0f172a]"
+                  >
                     Next
                   </Button>
                 ) : (
                   <Button
                     onClick={() => handleSubmitForm()}
                     disabled={errors.agreeToTerms}
-                    className="bg-primary"
+                    className="bg-[#EAF7FF] text-[#0f172a]"
                   >
                     Create Account
                   </Button>

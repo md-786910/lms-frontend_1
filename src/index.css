@@ -8,6 +8,9 @@
   :root {
     --background: 220 22% 98%;
     --foreground: 222 47% 10%;
+    --landing-sky: 201 239 255;
+    --landing-surface: 0 0% 100%;
+    --landing-accent: 34 40 63;
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 10%;
@@ -148,6 +151,36 @@
 }
 
 @layer utilities {
+  .landing-shell {
+    background: linear-gradient(180deg, #ffffff, #eaf7ff 65%);
+    color: #1f2937;
+    font-family: "Space Grotesk", "Manrope", system-ui, -apple-system, sans-serif;
+  }
+
+  .landing-hero {
+    background: linear-gradient(180deg, #ffffff, #e4f2ff 80%);
+    color: #0f172a;
+  }
+
+  .landing-section {
+    background: #ffffff;
+    color: #0f172a;
+  }
+
+  .landing-panel {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(14, 165, 233, 0.15);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    color: inherit;
+  }
+
+  .landing-panel h2,
+  .landing-panel h3,
+  .landing-panel p,
+  .landing-panel span {
+    color: inherit;
+  }
+
   /* Thin, auto-hiding scrollbars */
   .scroll-slim {
     scrollbar-width: thin;

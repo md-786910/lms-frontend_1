@@ -19,6 +19,7 @@ import LandingFooter from "@/components/landing/LandingFooter";
 import ScrollRevealSection from "@/components/landing/ScrollRevealSection";
 import featureImage from "../../assets/images/general.png";
 import decisionImage from "../../assets/images/managers-decision-making.png";
+import HeroImage from "../../assets/images/heroImage.png";
 
 const features = [
   {
@@ -240,34 +241,34 @@ const Home = () => {
         delay={0}
       >
         <div className="absolute -top-44 right-[-100px] w-80 h-80 rounded-[90px] bg-white/10" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-[140px] bg-white/5" />
-        <div className="absolute top-1/4 left-96 w-60 h-60 rounded-[90px] bg-white/10 z-0" />
-        <div className="absolute inset-0 bg-black/30"></div>
-        <div className="relative max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 z-10">
-          <div className="space-y-6">
-            <div className="rounded-full bg-[#FFFFFF1A] px-4 py-2 text-xs uppercase tracking-[0.4em] text-[#CBEFFF] inline">
-              Human-first HRMS
-            </div>
-            <h1 className="text-6xl font-bold text-[#CEBFFF] leading-tight md:text-7xl tracking-[0.01em] pb-2">
-              Smart leave tracking, faster approvals, and complete control—on one secure platform.
-            </h1>
-            <p className="text-xl text-[#CEBFFF] tracking-[0.1em] pb-2">
-              Manage employee leave effortlessly with a centralized system that automates requests, approvals, and tracking in real time. Eliminate manual processes, reduce errors, and stay compliant with company policies while giving employees and managers full visibility and control over leave data—all in one secure, easy-to-use platform.
-            </p>
-            <div className="flex flex-wrap gap-4 pb-5">
-              <Link to="/company/get-started">
-                <Button size="lg" className="bg-white hover:text-[#CBEFFF] text-primary py-8 text-lg">
-                  <Zap className="mr-2 h-5 w-5 text-primary" />
-                  Start free for 30 days
-                </Button>
-              </Link>
-              <Link to="/company/contact">
-                <Button size="lg" variant="outline" className="bg-[#FFFFFFF1A] text-white border-white/50 py-8 text-lg hvoer:text-[#222875]">
-                  Schedule a demo
-                </Button>
-              </Link>
-            </div>
-        </div>
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-[140px] bg-white/5" />
+          <div className="absolute top-1/4 left-96 w-60 h-60 rounded-[90px] bg-white/10 z-0" />
+          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="relative max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 z-10">
+            <div className="space-y-6">
+              <div className="rounded-full bg-[#FFFFFF1A] px-4 py-2 text-xs uppercase tracking-[0.4em] text-[#CBEFFF] inline">
+                Human-first HRMS
+              </div>
+              <h1 className="text-6xl font-bold text-[#CEBFFF] leading-tight md:text-7xl tracking-[0.01em] pb-2">
+                Smart leave tracking, faster approvals, and complete control—on one secure platform.
+              </h1>
+              <p className="text-xl text-[#CEBFFF] tracking-[0.1em] pb-2">
+                Manage employee leave effortlessly with a centralized system that automates requests, approvals, and tracking in real time. Eliminate manual processes, reduce errors, and stay compliant with company policies while giving employees and managers full visibility and control over leave data—all in one secure, easy-to-use platform.
+              </p>
+              <div className="flex flex-wrap gap-4 pb-5">
+                <Link to="/company/get-started">
+                  <Button size="lg" className="bg-white hover:text-[#CBEFFF] text-primary py-8 text-lg">
+                    <Zap className="mr-2 h-5 w-5 text-primary" />
+                    Start free for 30 days
+                  </Button>
+                </Link>
+                <Link to="/company/contact">
+                  <Button size="lg" variant="outline" className="bg-[#FFFFFFF1A] text-white border-white/50 py-8 text-lg hvoer:text-[#222875]">
+                    Schedule a demo
+                  </Button>
+                </Link>
+              </div>
+          </div>
           <div className="space-y-6 rounded-3xl bg-white/10 p-10 shadow-2xl backdrop-blur">
             <div className="flex items-center justify-between text-sm text-white/70">
               <span>Trusted by</span>
@@ -342,7 +343,7 @@ const Home = () => {
       >
         <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
           <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
-            <img src={featureImage} alt="feature iamges" />
+            <img src={HeroImage} alt="feature iamges" />
           </div>
           <div className="space-y-4">
             <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Intuitive Features</h2>
