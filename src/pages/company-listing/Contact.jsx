@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
+import LandingFooter from "@/components/landing/LandingFooter";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -207,6 +208,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      <LandingFooter />
     </div>
   );
 };

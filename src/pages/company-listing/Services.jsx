@@ -5,6 +5,7 @@ import {
   Smartphone, Cloud, Headphones, Settings 
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import LandingFooter from "@/components/landing/LandingFooter";
 
 const Services = () => {
   const coreServices = [
@@ -173,6 +174,7 @@ const Services = () => {
           </div>
         </div>
       </section>
+      <LandingFooter />
     </div>
   );
 };
