@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -118,9 +119,31 @@ const decisions = [
 ]
 
 const stats = [
-  { value: "1,200+", label: "Global teams onboarded" },
-  { value: "99.9%", label: "Uptime & reliability" },
-  { value: "45 hrs", label: "Average HR admin time saved per week" },
+  {
+    target: 10,
+    label: "Projects Managed",
+    formatter: (value) => `${Math.round(value)}K+`,
+  },
+  {
+    target: 500,
+    label: "Happy Teams",
+    formatter: (value) => `${Math.round(value)}+`,
+  },
+  {
+    target: 99.9,
+    label: "Uptime",
+    formatter: (value) => `${value.toFixed(1)}%`,
+  },
+  {
+    target: 4.9,
+    label: "User Rating",
+    formatter: (value) => (
+      <span className="flex items-center gap-1">
+        <span>{value.toFixed(1)}</span>
+        <span className="text-yellow-400">★</span>
+      </span>
+    ),
+  },
 ];
 
 const journey = [
@@ -165,6 +188,50 @@ const testimonials = [
 const trustedLogos = ["Fortune 500", "Global Retail", "HealthTech", "Enterprise Finance"];
 
 const Home = () => {
+  const statsRef = useRef(null);
+  const [animatedValues, setAnimatedValues] = useState(
+    stats.map(() => 0),
+  );
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (hasAnimated) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setHasAnimated(true);
+          observer.disconnect();
+          const startTime = performance.now();
+          const duration = 1200;
+
+          const animate = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            setAnimatedValues(
+              stats.map((stat) => stat.target * progress),
+            );
+
+            if (progress < 1) {
+              window.requestAnimationFrame(animate);
+            }
+          };
+
+          window.requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasAnimated]);
   return (
     <div className="bg-gradient-background text-white">
       <ScrollRevealSection
@@ -200,15 +267,7 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
-            <div className="flex flex-wrap gap-6 text-sm text-[#CBEFFF]">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-3xl font-semibold text-[#CBEFFF]">{stat.value}</p>
-                  <p className="text-gray-400">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
           <div className="space-y-6 rounded-3xl bg-white/10 p-10 shadow-2xl backdrop-blur">
             <div className="flex items-center justify-between text-sm text-white/70">
               <span>Trusted by</span>
@@ -359,24 +418,20 @@ const Home = () => {
         <div className="absolute top-24 -left-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="absolute bottom-24 -right-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="max-w-[1580px] mx-auto">
-          {/* Stats Row - Moved Below */}
-          <div className="flex flex-wrap justify-center lg:justify-center gap-20 reveal stagger-5">
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">10K+</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Projects Managed</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">500+</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Happy Teams</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">99.9%</div>
-              <div className="text-sm text-[#FFFCF3] font-medium">Uptime</div>
-            </div>
-            <div className="text-center lg:text-left">
-              <div className="text-4xl font-black text-[#CBEFFF] mb-1">4.9<span class="text-yellow-500">★</span></div>
-              <div className="text-sm text-[#FFFCF3] font-medium">User Rating</div>
-            </div>
+          <div
+            ref={statsRef}
+            className="flex flex-wrap justify-center lg:justify-center gap-20 reveal stagger-5"
+          >
+            {stats.map((stat, index) => (
+              <div key={stat.label} className="text-center lg:text-left">
+                <div className="text-4xl font-black text-[#CBEFFF] mb-1">
+                  {stat.formatter(animatedValues[index])}
+                </div>
+                <div className="text-sm text-[#FFFCF3] font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </ScrollRevealSection>
