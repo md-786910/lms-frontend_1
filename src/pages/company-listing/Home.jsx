@@ -420,14 +420,14 @@ const Home = () => {
         <div className="max-w-[1580px] mx-auto">
           <div
             ref={statsRef}
-            className="flex flex-wrap justify-center lg:justify-center gap-20 reveal stagger-5"
+            className="flex flex-wrap justify-center lg:justify-center gap-48 reveal stagger-5 max-w-[1580px] mx-auto section-animate"
           >
             {stats.map((stat, index) => (
               <div key={stat.label} className="text-center lg:text-left">
-                <div className="text-4xl font-black text-[#CBEFFF] mb-1">
+                <div className="text-6xl font-black text-[#CBEFFF] mb-1">
                   {stat.formatter(animatedValues[index])}
                 </div>
-                <div className="text-sm text-[#FFFCF3] font-medium">
+                <div className="text-xl text-[#FFFCF3] font-medium">
                   {stat.label}
                 </div>
               </div>
