@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,7 +21,6 @@ import AdminTiming from "./pages/admin/Timing";
 import AdminSettings from "./pages/admin/Settings";
 
 import EmployeeDashboard from "./pages/employee/Dashboard";
-import EmployeeProfile from "./pages/employee/Profile";
 import EmployeeLeave from "./pages/employee/Leave";
 import EmployeeTimeLogs from "./pages/employee/TimeLogs";
 import EmployeeSalary from "./pages/employee/Salary";
@@ -59,125 +59,154 @@ import User from "./pages/admin/User";
 import { SocketProvider } from "./contexts/SocketContext";
 import EmployeeResetPassword from "./pages/employee/ResetPassword";
 
-const App = () => (
-  <TooltipProvider>
-    <Toaster />
-    <Sonner position="top-right" />
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop
-      closeOnClick={false}
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-      icon={false}
-    />
-    <AuthProvider>
-      <SocketProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Company Website Routes */}
-            <Route path="/company" element={<CompanyLayout />}>
-              <Route index element={<CompanyHome />} />
-              <Route path="about" element={<CompanyAbout />} />
-              <Route path="services" element={<CompanyServices />} />
-              <Route path="pricing" element={<CompanyPricing />} />
-              <Route path="contact" element={<CompanyContact />} />
-              <Route path="get-started" element={<CompanyGetStarted />} />
-            </Route>
+const App = () => {
+  useEffect(() => {
+    let scrollTimeout;
 
-            {/* Auth Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Navigate to="/company" replace />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/employee/verify-email" element={<SetNewPassword />} />
+    const handleScroll = () => {
+      document.body.classList.add("page-scrolling");
+      if (scrollTimeout) {
+        window.clearTimeout(scrollTimeout);
+      }
+      scrollTimeout = window.setTimeout(() => {
+        document.body.classList.remove("page-scrolling");
+      }, 700);
+    };
 
-            {/* Admin Routes */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "light_admin"]} />
-              }
-            >
-              <Route element={<AdminLayout />}>
-                <Route path="dashboard" element={<AdminDashboard />} />
-                <Route path="employees" element={<AdminEmployees />} />
-                <Route path="salary" element={<AdminSalary />} />
-                <Route path="leave" element={<AdminLeave />} />
-                <Route path="timing" element={<AdminTiming />} />
-                <Route path="user" element={<User />} />
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-                <Route
-                  path="employees/:employeeId/history"
-                  element={<EmployeeHistory />}
-                />
-                <Route path="settings" element={<AdminSettings />} />
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout) {
+        window.clearTimeout(scrollTimeout);
+      }
+      document.body.classList.remove("page-scrolling");
+    };
+  }, []);
 
-                {/* keep as children setting */}
-                {/* <Route path="company" element={<AdminSettings />} /> */}
-                <Route path="settings" element={<SettingLayout />}>
-                  <Route index element={<Navigate to="company" replace />} />
-                  <Route
-                    path="company"
-                    element={<Company value="comp" />}
-                    index
-                  />
-                  <Route path="prefix" element={<Prefix value="comp" />} />
-                  <Route path="currency" element={<Currency value="comp" />} />
-                  <Route
-                    path="departments"
-                    element={<Departments value="comp" />}
-                  />
-                  <Route
-                    path="designations"
-                    element={<Designations value="comp" />}
-                  />
-                  <Route path="leave" element={<Leave value="comp" />} />
-                  <Route
-                    path="document-category"
-                    element={<Documents value="comp" />}
-                  />
-                  <Route
-                    path="templates"
-                    element={<Templates value="comp" />}
-                  />
-                </Route>
-                <Route index element={<Navigate to="dashboard" replace />} />
+  return (
+    <TooltipProvider>
+      <Toaster />
+      <Sonner position="top-right" />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        icon={false}
+      />
+      <AuthProvider>
+        <SocketProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Company Website Routes */}
+              <Route path="/company" element={<CompanyLayout />}>
+                <Route index element={<CompanyHome />} />
+                <Route path="about" element={<CompanyAbout />} />
+                <Route path="services" element={<CompanyServices />} />
+                <Route path="pricing" element={<CompanyPricing />} />
+                <Route path="contact" element={<CompanyContact />} />
+                <Route path="get-started" element={<CompanyGetStarted />} />
               </Route>
-            </Route>
 
-            {/* Employee Routes */}
-            <Route
-              path="/employee"
-              element={<ProtectedRoute allowedRoles={["employee"]} />}
-            >
-              <Route element={<EmployeeLayout />}>
-                <Route path="dashboard" element={<EmployeeDashboard />} />
-                <Route path="profile" element={<EmployeProfileLayout />}>
-                  <Route index element={<Navigate to="basic" replace />} />
-                  <Route path="basic" element={<BasicInfo />} index />
-                  <Route path="address" element={<Address />} />
-                  <Route path="documents" element={<Document />} />
-                  <Route path="personal" element={<PersonanInfo />} />
-                  <Route path="salary" element={<SalaryInfo />} />
+              {/* Auth Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Navigate to="/company" replace />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/employee/verify-email" element={<SetNewPassword />} />
+
+              {/* Admin Routes */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "light_admin"]} />
+                }
+              >
+                <Route element={<AdminLayout />}>
+                  <Route path="dashboard" element={<AdminDashboard />} />
+                  <Route path="employees" element={<AdminEmployees />} />
+                  <Route path="salary" element={<AdminSalary />} />
+                  <Route path="leave" element={<AdminLeave />} />
+                  <Route path="timing" element={<AdminTiming />} />
+                  <Route path="user" element={<User />} />
+
+                  <Route
+                    path="employees/:employeeId/history"
+                    element={<EmployeeHistory />}
+                  />
+                  <Route path="settings" element={<AdminSettings />} />
+
+                  {/* keep as children setting */}
+                  {/* <Route path="company" element={<AdminSettings />} /> */}
+                  <Route path="settings" element={<SettingLayout />}>
+                    <Route index element={<Navigate to="company" replace />} />
+                    <Route
+                      path="company"
+                      element={<Company value="comp" />}
+                      index
+                    />
+                    <Route path="prefix" element={<Prefix value="comp" />} />
+                    <Route path="currency" element={<Currency value="comp" />} />
+                    <Route
+                      path="departments"
+                      element={<Departments value="comp" />}
+                    />
+                    <Route
+                      path="designations"
+                      element={<Designations value="comp" />}
+                    />
+                    <Route path="leave" element={<Leave value="comp" />} />
+                    <Route
+                      path="document-category"
+                      element={<Documents value="comp" />}
+                    />
+                    <Route
+                      path="templates"
+                      element={<Templates value="comp" />}
+                    />
+                  </Route>
+                  <Route index element={<Navigate to="dashboard" replace />} />
                 </Route>
-                <Route path="leave" element={<EmployeeLeave />} />
-                <Route path="time-logs" element={<EmployeeTimeLogs />} />
-                <Route path="salary" element={<EmployeeSalary />} />
-                <Route path="settings/reset-password" element={<EmployeeResetPassword />} />
-                <Route index element={<Navigate to="dashboard" replace />} />
               </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </SocketProvider>
-    </AuthProvider>
-  </TooltipProvider>
-);
+
+              {/* Employee Routes */}
+              <Route
+                path="/employee"
+                element={<ProtectedRoute allowedRoles={["employee"]} />}
+              >
+                <Route element={<EmployeeLayout />}>
+                  <Route path="dashboard" element={<EmployeeDashboard />} />
+                  <Route path="profile" element={<EmployeProfileLayout />}>
+                    <Route index element={<Navigate to="basic" replace />} />
+                    <Route path="basic" element={<BasicInfo />} index />
+                    <Route path="address" element={<Address />} />
+                    <Route path="documents" element={<Document />} />
+                    <Route path="personal" element={<PersonanInfo />} />
+                    <Route path="salary" element={<SalaryInfo />} />
+                  </Route>
+                  <Route path="leave" element={<EmployeeLeave />} />
+                  <Route path="time-logs" element={<EmployeeTimeLogs />} />
+                  <Route path="salary" element={<EmployeeSalary />} />
+                  <Route
+                    path="settings/reset-password"
+                    element={<EmployeeResetPassword />}
+                  />
+                  <Route index element={<Navigate to="dashboard" replace />} />
+                </Route>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </SocketProvider>
+      </AuthProvider>
+    </TooltipProvider>
+  );
+};
 
 export default App;
