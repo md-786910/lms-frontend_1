@@ -59,6 +59,7 @@ const Profile = ({ readOnly = false }) => {
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [basicInfo, setBasicInfo] = useState(null);
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -298,7 +299,7 @@ const Profile = ({ readOnly = false }) => {
                       variant="outline"
                       size="sm"
                       className="w-full justify-center"
-                      onClick={() => handleDeleteAvatar(basicInfo?.id)}
+                      onClick={() => setShowRemoveConfirm(true)}
                     >
                       Remove photo
                     </Button>
@@ -408,6 +409,51 @@ const Profile = ({ readOnly = false }) => {
           ))}
         </div>
       </section>
+      {showRemoveConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+          <div
+            className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+            onClick={() => setShowRemoveConfirm(false)}
+          />
+          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+            <div className="flex items-center gap-3">
+              <Trash2 className="h-5 w-5 text-rose-500" />
+              <h3 className="text-lg font-semibold text-slate-900">
+                Confirm removal
+              </h3>
+            </div>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Are you sure you want to permanently delete your profile picture?
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-2 pt-1">
+              <Button
+                variant="ghost"
+                onClick={() => setShowRemoveConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  setShowRemoveConfirm(false);
+                  handleDeleteAvatar(basicInfo?.id);
+                }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  "Permanently delete"
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

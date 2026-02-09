@@ -342,9 +342,7 @@ const Home = () => {
         threshold={0.2}
       >
         <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
-          <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
-            <img src={HeroImage} alt="feature iamges" />
-          </div>
+          <img src={HeroImage} alt="feature iamges" />
           <div className="space-y-4">
             <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Intuitive Features</h2>
             <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
@@ -379,9 +377,7 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
-              <img src={decisionImage} alt="decision Image" />
-            </div>
+            <img src={decisionImage} alt="decision Image" />
           </div>
         </ScrollRevealSection>
       </ScrollRevealSection>
