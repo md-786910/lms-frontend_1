@@ -60,6 +60,7 @@ const Profile = ({ readOnly = false }) => {
   const [loading, setLoading] = useState(true);
   const [basicInfo, setBasicInfo] = useState(null);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+  const [avatarUploading, setAvatarUploading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -88,6 +89,7 @@ const Profile = ({ readOnly = false }) => {
   const handleAvatarChange = async (event, employeeId) => {
     const file = event.target.files[0];
     if (!file) return;
+    setAvatarUploading(true);
 
     try {
       const formData = new FormData();
@@ -119,6 +121,8 @@ const Profile = ({ readOnly = false }) => {
         description: "There was an issue uploading the avatar.",
         variant: "destructive",
       });
+    } finally {
+      setAvatarUploading(false);
     }
   };
 
@@ -248,7 +252,7 @@ const Profile = ({ readOnly = false }) => {
             <div className="pointer-events-none absolute -right-10 top-4 h-40 w-40 rounded-full bg-primary/10 opacity-70 blur-3xl"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex flex-col items-center gap-3 text-center">
-              <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
+                <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
                   {basicInfo?.profile ? (
                     <img
                       src={basicInfo.profile}
@@ -258,6 +262,11 @@ const Profile = ({ readOnly = false }) => {
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-3xl font-semibold tracking-tight text-white">
                       {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : profileInitials || <User className="h-6 w-6" />}
+                    </div>
+                  )}
+                  {avatarUploading && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-slate-900 text-[#CBEFFF] backdrop-blur-sm">
+                      <Loader2 className="h-9 w-9 animate-spin" />
                     </div>
                   )}
                 </div>
