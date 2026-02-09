@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
+import ScrollRevealSection from "@/components/landing/ScrollRevealSection";
 import featureImage from "../../assets/images/general.png";
 import decisionImage from "../../assets/images/managers-decision-making.png";
 
@@ -166,7 +167,11 @@ const trustedLogos = ["Fortune 500", "Global Retail", "HealthTech", "Enterprise 
 const Home = () => {
   return (
     <div className="bg-gradient-background text-white">
-      <section className="relative overflow-hidden bg-[#222875] pb-20 pt-40 px-4 h-[100vh] curved-section shell-sky section-animate min-h-screen flex items-center ">
+      <ScrollRevealSection
+        className="relative overflow-hidden bg-[#222875] pb-20 pt-40 px-4 h-[100vh] curved-section shell-sky section-animate min-h-screen flex items-center "
+        threshold={0.3}
+        delay={0}
+      >
         <div className="absolute -top-44 right-[-100px] w-80 h-80 rounded-[90px] bg-white/10" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-[140px] bg-white/5" />
         <div className="absolute top-1/4 left-96 w-60 h-60 rounded-[90px] bg-white/10 z-0" />
@@ -226,9 +231,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 max-w-[1580px] mx-auto ">
+      <ScrollRevealSection
+        className="py-20 px-4 max-w-[1580px] mx-auto "
+        delay={120}
+        threshold={0.2}
+      >
         <div className="space-y-6 text-center mb-20">
           <p className="text-lg text-[#222875] font-bold uppercase tracking-[0.5em]">Why choose us</p>
           <h2 className="text-3xl font-bold text-[#222875] tracking-[0.01em]">Everything your People Team needs</h2>
@@ -238,31 +247,40 @@ const Home = () => {
         </div>
         <div className=" grid gap-20 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <Card key={index} className="border-0 bg-gradient-card w-[390px] h-auto bg-gradient-card p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
-              <CardHeader className="pb-2">
-                {/* Icon Wrapper */}
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 ${feature.iconBg}`}
-                >
-                  <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
+            <ScrollRevealSection
+              delay={120}
+              threshold={0.2}
+            >
+              <Card key={index} className="border-0 bg-gradient-card w-[390px] h-auto bg-gradient-card p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
+                <CardHeader className="pb-2">
+                  {/* Icon Wrapper */}
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 ${feature.iconBg}`}
+                  >
+                    <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
+                  </div>
+                  <CardTitle className="mt-4 text-xl text-[#222875] pb-2">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+                <div>
+                  <Button variant="outline" size="sm" className="mt-4 text-sm border-primary text-primary hover:bg-primary/10">
+                    Learn more
+                    <ArrowRight className="h-4 w-4 text-[#222875]" />
+                  </Button> 
                 </div>
-                <CardTitle className="mt-4 text-xl text-[#222875] pb-2">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </CardContent>
-              <div>
-                <Button variant="outline" size="sm" className="mt-4 text-sm border-primary text-primary hover:bg-primary/10">
-                  Learn more
-                  <ArrowRight className="h-4 w-4 text-[#222875]" />
-                </Button> 
-              </div>
-            </Card>
+              </Card>
+            </ScrollRevealSection>
           ))}
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="grid grid-row-1 md:grid-row-2 gap-20 py-20 px-4 bg-gradient-to-bl from-[#F5FBFF] via-[#CBEFFF] to-[#EAF7FF] h-[100vh] curved-section shell-sky section-animate">
+      <ScrollRevealSection
+        className="grid grid-row-1 md:grid-row-2 gap-20 py-20 px-4 bg-gradient-to-bl from-[#F5FBFF] via-[#CBEFFF] to-[#EAF7FF] h-[100vh] curved-section shell-sky section-animate"
+        delay={220}
+        threshold={0.2}
+      >
         <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
           <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
             <img src={featureImage} alt="feature iamges" />
@@ -282,28 +300,37 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Managers’ Decision Making</h2>
-            <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
-              Managers can easily see who will be away, enabling them to make swift, smart decisions and avoid potential scheduling conflicts. Leave management is automated email sent to relevant manager and the employee to confirm the leave status.
-            </p>
-            <div className="space-y-3 pt-5">
-              {decisions.map((decision) => (
-                <div key={decision} className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-[#2D5356]" />
-                  <span className="text-[#131313]">{decision}</span>
-                </div>
-              ))}
+        <ScrollRevealSection
+          delay={220}
+          threshold={0.2}
+        >
+          <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Managers’ Decision Making</h2>
+              <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
+                Managers can easily see who will be away, enabling them to make swift, smart decisions and avoid potential scheduling conflicts. Leave management is automated email sent to relevant manager and the employee to confirm the leave status.
+              </p>
+              <div className="space-y-3 pt-5">
+                {decisions.map((decision) => (
+                  <div key={decision} className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-[#2D5356]" />
+                    <span className="text-[#131313]">{decision}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
+              <img src={decisionImage} alt="decision Image" />
             </div>
           </div>
-          <div className="rounded-2xl bg-black/10 p-8 shadow-xl">
-            <img src={decisionImage} alt="decision Image" />
-          </div>
-        </div>
-      </section>
+        </ScrollRevealSection>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 max-w-[1580px] mx-auto">
+      <ScrollRevealSection
+        className="py-20 px-4 max-w-[1580px] mx-auto"
+        delay={320}
+        threshold={0.25}
+      >
         <div className="max-w-6xl mx-auto text-center space-y-6">
           <p className="text-lg font-bold text-[#222875] uppercase tracking-[0.5em]">How it works</p>
           <h2 className="text-3xl font-bold text-[#222875]">Go live in three simple steps</h2>
@@ -322,9 +349,13 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="relative py-20 px-4 bg-[#222875]">
+      <ScrollRevealSection
+        className="relative py-20 px-4 bg-[#222875]"
+        delay={380}
+        threshold={0.25}
+      >
         <div className="absolute top-24 -left-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="absolute bottom-24 -right-20 w-48 h-48 rounded-[140px] bg-white/20" />
         <div className="max-w-[1580px] mx-auto">
@@ -348,9 +379,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
-      <section className="py-20 px-4 text-center">
+      <ScrollRevealSection
+        className="py-20 px-4 text-center"
+        delay={440}
+        threshold={0.25}
+      >
         <div className="max-w-4xl mx-auto space-y-6">
           <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
           <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
@@ -369,7 +404,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
       <LandingFooter />
     </div>
