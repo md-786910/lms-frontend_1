@@ -82,7 +82,7 @@ const About = () => {
         </div>
         <div className="relative z-10 mx-auto max-w-[1580px] gap-8">
           <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.5em] text-[#CBEFFF]">
-            Learning, reimagined
+            Leave Management System
           </div>
           <div className="mt-10 flex flex-col items-center gap-6 text-center">
             <h1 className="text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl mb-3" > 
