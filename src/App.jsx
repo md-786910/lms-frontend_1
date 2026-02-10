@@ -57,6 +57,7 @@ import Salary from "./pages/employee/Salary";
 import SalaryInfo from "./pages/employee/profile/SalaryInfo";
 import User from "./pages/admin/User";
 import { SocketProvider } from "./contexts/SocketContext";
+import ScrollToTop from "./components/navigation/ScrollToTop";
 import EmployeeResetPassword from "./pages/employee/ResetPassword";
 
 const App = () => {
@@ -104,6 +105,7 @@ const App = () => {
       <AuthProvider>
         <SocketProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Company Website Routes */}
               <Route path="/company" element={<CompanyLayout />}>
