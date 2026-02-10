@@ -97,15 +97,15 @@ const servicePillars = [
             <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.5em] text-[#CBEFFF]">
               Service Management
             </div>
-            <h1 className="text-6xl xl:text-7xl font-bold text-[#CBEFFF] tracking-[0.08em] leading-tight">
+            <h1 className="landing-h1">
               Services Designed to Simplify Leave Management—End to End
             </h1>
             {/* Large description */}
-            <p className="text-lg xl:text-xl text-[#CBEFFF] tracking-wide max-w-3xl">
+            <p className="landing-body max-w-3xl">
               Our Leave Management System simplifies the entire leave lifecycle—from employee requests and manager approvals to balance tracking and reporting. Built for modern organizations, it automates workflows, reduces manual effort, and gives managers real-time visibility into team availability.
             </p>
             {/* Small supporting line */}
-            <p className="text-sm text-[#CBEFFF]/80 tracking-wide pb-5">
+            <p className="landing-body">
               Clear workflows. Faster decisions. Better balance for teams.
             </p>
             <Link to="/company/get-started">
@@ -143,11 +143,11 @@ const servicePillars = [
         <div className="relative max-w-[1580px] mx-auto space-y-16">
           {/* Section Heading */}
           <div className="text-center max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-semibold text-[#222785] mb-6">
+            <h2 className="landing-h2 landing-h2-dark mb-6">
               HR Services Focused on Smarter Leave Management
             </h2>
 
-            <p className="text-[#131313]/70 text-lg leading-relaxed">
+            <p className="landing-body landing-body-dark leading-relaxed">
               Our HR services are designed to simplify and automate leave management
               across the organization. From employee leave requests to approvals,
               tracking, and reporting—everything works together to reduce manual effort,
@@ -181,12 +181,12 @@ const servicePillars = [
                 </div>
             
                 {/* Title */}
-                <h3 className="text-xl font-semibold text-[#0f172a] mb-3">
+                <h3 className="landing-h3 text-[#222785] mb-3">
                   {service.title}
                 </h3>
             
                 {/* Description */}
-                <p className="text-[#0f172a]/70 mb-6 leading-relaxed">
+                <p className="landing-card-text mb-6">
                   {service.description}
                 </p>
             
@@ -195,7 +195,7 @@ const servicePillars = [
                   {service.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-3 text-sm text-[#0f172a]/70"
+                    className="landing-card-text flex items-start gap-3"
                     >
                       <span className="mt-1.5 w-2 h-2 rounded-full bg-[#222785]" />
                       {feature}
@@ -213,12 +213,9 @@ const servicePillars = [
 
           {/* Heading */}
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl font-semibold text-[#222785] mb-4">
-              Additional Services
-            </h2>
-            <p className="text-[#131313]/70 text-lg">
-              Extend your leave management experience with powerful, supportive services
-              built for modern HR teams.
+            <h2 className="landing-h2 landing-h2-dark mb-4">Additional Services</h2>
+            <p className="landing-body landing-body-dark">
+              Extend your leave management experience with powerful, supportive services built for modern HR teams.
             </p>
           </div>
 
@@ -245,11 +242,11 @@ const servicePillars = [
                   <service.icon className="h-7 w-7 text-[#222785]" />
                 </div>
             
-                <h3 className="text-lg font-semibold text-[#0f172a] mb-2">
+                <h3 className="landing-h3 text-[#222785] mb-2">
                   {service.title}
                 </h3>
             
-                <p className="text-[#0f172a]/70 text-sm leading-relaxed">
+                <p className="landing-card-text text-sm leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -263,15 +260,12 @@ const servicePillars = [
 
           {/* Heading */}
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-lg font-bold uppercase tracking-[0.4em] text-[#222785]/60 mb-3">
-              How we partner
-            </p>
-            <h2 className="text-4xl font-bold text-[#222785] mb-4">
+            <p className="landing-subheading mb-3">How we partner</p>
+            <h2 className="landing-h2 landing-h2-dark mb-4">
               Services that match how modern HR works
             </h2>
-            <p className="text-[#131313] text-lg">
-              Every implementation is guided by the principles modern HR teams rely on—
-              speed, accuracy, transparency, and trust.
+            <p className="landing-body landing-body-dark">
+              Every implementation is guided by the principles modern HR teams rely on—speed, accuracy, transparency, and trust.
             </p>
           </div>
 
@@ -288,10 +282,10 @@ const servicePillars = [
                   transition-all
                 "
               >
-                <h3 className="text-xl font-semibold text-[#0f172a] mb-3">
+                <h3 className="landing-h3 text-[#222785] mb-3">
                   {pillar.title}
                 </h3>
-                <p className="text-[#0f172a]/70 text-sm leading-relaxed">
+                <p className="landing-card-text text-sm leading-relaxed">
                   {pillar.description}
                 </p>
               </div>
@@ -306,10 +300,8 @@ const servicePillars = [
             shadow-[0_20px_50px_rgba(0,0,0,0.08)]
           ">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-[#0f172a]/60">
-                Book a session
-              </p>
-              <h3 className="text-2xl font-semibold text-[#0f172a]">
+              <p className="text-[#131313] font-bold">Book a session</p>
+              <h3 className="landing-h2 landing-h2-dark">
                 Let’s audit your HR workflow and share a tailored roadmap
               </h3>
             </div>
@@ -332,8 +324,8 @@ const servicePillars = [
         threshold={0.25}
       >
         <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
-          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+          <h2 className="landing-h2 landing-h2-dark">Tackle HR complexity with clarity</h2>
+          <p className="landing-body landing-body-dark">
             Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
           </p>
           <div className="flex flex-wrap justify-center gap-4">
