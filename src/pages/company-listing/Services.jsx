@@ -6,6 +6,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
+import visionImage from "../../assets/images/vision.png";
+import ScrollRevealSection from "@/components/landing/ScrollRevealSection";
 
 const Services = () => {
   const coreServices = [
@@ -88,169 +90,266 @@ const servicePillars = [
   return (
     <div className="landing-shell min-h-screen">
       {/* Hero Section */}
-      <section className="landing-hero py-20 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-40 bg-black"></div>
-        <div className="max-w-4xl mx-auto relative z-10 space-y-6">
-          <h1 className="text-4xl font-bold text-[#0f172a] tracking-[0.08em]">
-            Our Services
-          </h1>
-          <p className="text-xl text-[#0f172a]/70">
-            Comprehensive HR solutions designed to streamline your operations and empower your workforce.
-          </p>
-          <Link to="/company/get-started">
-            <Button
-              size="lg"
-              className="px-8 bg-white text-[#0f172a] hover:bg-white/90"
-            >
-              Start Your Free Trial
-            </Button>
-          </Link>
+      <ScrollRevealSection className="py-24 px-4 bg-[#222785] relative overflow-hidden">
+        <div className="max-w-[1580px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+          {/* LEFT: CONTENT (LARGE) */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.5em] text-[#CBEFFF]">
+              Service Management
+            </div>
+            <h1 className="text-6xl xl:text-7xl font-bold text-[#CBEFFF] tracking-[0.08em] leading-tight">
+              Services Designed to Simplify Leave Management—End to End
+            </h1>
+            {/* Large description */}
+            <p className="text-lg xl:text-xl text-[#CBEFFF] tracking-wide max-w-3xl">
+              Our Leave Management System simplifies the entire leave lifecycle—from employee requests and manager approvals to balance tracking and reporting. Built for modern organizations, it automates workflows, reduces manual effort, and gives managers real-time visibility into team availability.
+            </p>
+            {/* Small supporting line */}
+            <p className="text-sm text-[#CBEFFF]/80 tracking-wide pb-5">
+              Clear workflows. Faster decisions. Better balance for teams.
+            </p>
+            <Link to="/company/get-started">
+              <Button
+                size="lg"
+                className="px-8 bg-white text-[#0f172a] hover:bg-[#222875] hover:text-white transition-colors duration-300 hover:border hover:border-white/30"
+              >
+                Start Your Free Trial
+              </Button>
+            </Link>
+          </div>
+          {/* RIGHT: IMAGE (SMALL) */}
+          <div className="lg:col-span-4 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-sm rounded-2xl">
+              <img
+                src={visionImage}
+                alt="Leave Management Dashboard"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
         </div>
-      </section>
+      </ScrollRevealSection>
+
+
 
       {/* Core Services */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-[#0f172a] mb-4">
-              Core HR Services
+      <ScrollRevealSection className="relative py-24 px-4 overflow-hidden bg-[#CBEFFF]">
+        {/* Soft background shape */}
+        <div className="absolute inset-0">
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#222785]/10 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white/60 blur-2xl" />
+        </div>
+
+        <div className="relative max-w-[1580px] mx-auto space-y-16">
+          {/* Section Heading */}
+          <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-semibold text-[#222785] mb-6">
+              HR Services Focused on Smarter Leave Management
             </h2>
-            <p className="text-[#0f172a]/70 text-lg">
-              Everything you need to manage your workforce effectively
+
+            <p className="text-[#131313]/70 text-lg leading-relaxed">
+              Our HR services are designed to simplify and automate leave management
+              across the organization. From employee leave requests to approvals,
+              tracking, and reporting—everything works together to reduce manual effort,
+              improve transparency, and keep teams productive.
             </p>
           </div>
+          {/* Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {coreServices.map((service, index) => (
-              <Card
-                key={index}
-                className="landing-panel hover:border-white/30 transition-all duration-300 border-0"
-              >
-                <CardHeader>
-                  <service.icon className="h-12 w-12 text-[#0f172a] mb-4" />
-                  <CardTitle className="text-[#0f172a]">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-[#0f172a]/70 mb-4">{service.description}</p>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="text-sm flex items-start gap-2 text-[#0f172a]/70"
-                      >
-                        <div className="w-1.5 h-1.5 bg-[#EAF7FF] rounded-full mt-1" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Additional Services */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-[#0f172a] mb-4">
-              Additional Services
-            </h2>
-            <p className="text-[#0f172a]/70 text-lg">
-              Extended features to enhance your HR experience
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {additionalServices.map((service, index) => (
-              <Card
-                key={index}
-                className="landing-panel text-center transition-all duration-300 border-0"
-              >
-                <CardHeader>
-                  <service.icon className="h-12 w-12 text-[#0f172a] mx-auto mb-4" />
-                  <CardTitle className="text-[#0f172a]">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-[#0f172a]/70">{service.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Approach Section */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center">
-            <p className="text-xs uppercase tracking-[0.4em] text-[#0f172a]/60">
-              How we partner
-            </p>
-            <h2 className="text-3xl font-bold text-[#0f172a]">
-              Services that match how modern HR works
-            </h2>
-            <p className="text-[#0f172a]/70 text-lg">
-              Every implementation is guided by the same principles your HR team lives by—speed, accuracy, and trust.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {servicePillars.map((pillar) => (
               <div
-                key={pillar.title}
-                className="landing-panel p-6 rounded-2xl border-white/30 space-y-3"
+                key={index}
+                className="
+                  group relative bg-white rounded-2xl p-8
+                  border border-[#222785]/10
+                  shadow-[0_10px_30px_rgba(0,0,0,0.05)]
+                  transition-all duration-300
+                  hover:-translate-y-2
+                  hover:shadow-[0_20px_40px_rgba(34,39,133,0.15)]
+                  hover:border-[#222785]/30
+                "
               >
-                <h3 className="text-xl font-semibold text-[#0f172a]">{pillar.title}</h3>
-                <p className="text-[#0f172a]/70 text-sm">{pillar.description}</p>
+                {/* Icon */}
+                <div className="
+                  w-14 h-14 flex items-center justify-center rounded-xl
+                  bg-[#CBEFFF]
+                  mb-6
+                  group-hover:bg-[#222785]/10
+                  transition
+                ">
+                  <service.icon className="h-7 w-7 text-[#222785]" />
+                </div>
+            
+                {/* Title */}
+                <h3 className="text-xl font-semibold text-[#0f172a] mb-3">
+                  {service.title}
+                </h3>
+            
+                {/* Description */}
+                <p className="text-[#0f172a]/70 mb-6 leading-relaxed">
+                  {service.description}
+                </p>
+            
+                {/* Features */}
+                <ul className="space-y-3">
+                  {service.features.map((feature, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-3 text-sm text-[#0f172a]/70"
+                    >
+                      <span className="mt-1.5 w-2 h-2 rounded-full bg-[#222785]" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
-          <div className="landing-panel p-8 rounded-3xl border-0 flex flex-col md:flex-row items-center gap-6">
+        </div>
+      </ScrollRevealSection>
+      {/* Additional Services */}
+      <ScrollRevealSection className="relative py-24 px-4 bg-white">
+        <div className="max-w-[1580px] mx-auto space-y-16">
+
+          {/* Heading */}
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-4xl font-semibold text-[#222785] mb-4">
+              Additional Services
+            </h2>
+            <p className="text-[#131313]/70 text-lg">
+              Extend your leave management experience with powerful, supportive services
+              built for modern HR teams.
+            </p>
+          </div>
+
+          {/* Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {additionalServices.map((service, index) => (
+              <div
+                key={index}
+                className="
+                  group bg-[#CBEFFF]/40 rounded-2xl p-8 text-center
+                  border border-[#222785]/10
+                  transition-all duration-300
+                  hover:-translate-y-2
+                  hover:shadow-[0_20px_40px_rgba(34,39,133,0.12)]
+                "
+              >
+                <div className="
+                  w-14 h-14 mx-auto mb-5 rounded-xl
+                  flex items-center justify-center
+                  bg-white
+                  group-hover:bg-[#222785]/10
+                  transition
+                ">
+                  <service.icon className="h-7 w-7 text-[#222785]" />
+                </div>
+            
+                <h3 className="text-lg font-semibold text-[#0f172a] mb-2">
+                  {service.title}
+                </h3>
+            
+                <p className="text-[#0f172a]/70 text-sm leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollRevealSection>
+      {/* Approach Section */}
+      <ScrollRevealSection className="relative py-28 px-4 bg-[#CBEFFF]">
+        <div className="max-w-[1580px] mx-auto space-y-20">
+
+          {/* Heading */}
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-lg font-bold uppercase tracking-[0.4em] text-[#222785]/60 mb-3">
+              How we partner
+            </p>
+            <h2 className="text-4xl font-bold text-[#222785] mb-4">
+              Services that match how modern HR works
+            </h2>
+            <p className="text-[#131313] text-lg">
+              Every implementation is guided by the principles modern HR teams rely on—
+              speed, accuracy, transparency, and trust.
+            </p>
+          </div>
+
+          {/* Pillars */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {servicePillars.map((pillar) => (
+              <div
+                key={pillar.title}
+                className="
+                  bg-white rounded-2xl p-8
+                  border border-[#222785]/10
+                  shadow-[0_10px_30px_rgba(0,0,0,0.05)]
+                  hover:shadow-[0_20px_40px_rgba(34,39,133,0.12)]
+                  transition-all
+                "
+              >
+                <h3 className="text-xl font-semibold text-[#0f172a] mb-3">
+                  {pillar.title}
+                </h3>
+                <p className="text-[#0f172a]/70 text-sm leading-relaxed">
+                  {pillar.description}
+                </p>
+              </div>
+            ))}
+          </div>
+          
+          {/* CTA */}
+          <div className="
+            bg-white rounded-3xl p-10
+            border border-[#222785]/10
+            flex flex-col md:flex-row items-center justify-between gap-6
+            shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+          ">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-[#0f172a]/60">
                 Book a session
               </p>
               <h3 className="text-2xl font-semibold text-[#0f172a]">
-                Let's audit your HR workflow and share a tailored roadmap
+                Let’s audit your HR workflow and share a tailored roadmap
               </h3>
             </div>
+          
             <Link to="/company/contact">
-              <Button size="lg" className="bg-[#EAF7FF] text-[#0f172a] px-10">
+              <Button
+                size="lg"
+                className="bg-[#222785] text-white px-10 hover:bg-[#1b1f6b] transition"
+              >
                 Talk to our team
               </Button>
             </Link>
           </div>
+          
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="landing-panel p-12 rounded-xl border-0">
-            <h2 className="text-3xl font-bold text-[#0f172a] mb-6">
-              Ready to Transform Your HR?
-            </h2>
-            <p className="text-xl text-[#0f172a]/70 mb-8">
-              Join thousands of companies already using our platform to streamline their HR operations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/company/get-started">
-                <Button size="lg" className="px-8 bg-[#EAF7FF] text-[#0f172a]">
-                  Get Started Free
-                </Button>
-              </Link>
-              <Link to="/company/contact">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 text-[#0f172a] border-white/50"
-                >
-                  Contact Sales
-                </Button>
-              </Link>
-            </div>
+      </ScrollRevealSection>
+      <ScrollRevealSection
+        className="py-20 px-4 text-center"
+        delay={440}
+        threshold={0.25}
+      >
+        <div className="max-w-4xl mx-auto space-y-6">
+          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
+          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+            Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/company/get-started">
+              <Button size="lg" className="bg-primary text-white">
+                Launch a pilot
+              </Button>
+            </Link>
+            <Link to="/company/contact">
+              <Button size="lg" variant="outline" className="border border-primary text-primary hover:bg-primary hover:text-[#CBEFFF]">
+                Talk with sales
+              </Button>
+            </Link>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
       <LandingFooter />
     </div>
   );
