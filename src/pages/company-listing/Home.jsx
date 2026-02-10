@@ -234,7 +234,7 @@ const Home = () => {
     };
   }, [hasAnimated]);
   return (
-    <div className="bg-gradient-background text-white">
+    <div className="landing-shell bg-gradient-background text-white">
       <ScrollRevealSection
         className="relative overflow-hidden bg-[#222875] pb-20 pt-40 px-4 h-[100vh] curved-section shell-sky section-animate min-h-screen flex items-center "
         threshold={0.3}
@@ -249,10 +249,10 @@ const Home = () => {
               <div className="rounded-full bg-[#FFFFFF1A] px-4 py-2 text-xs uppercase tracking-[0.4em] text-[#CBEFFF] inline">
                 Human-first HRMS
               </div>
-              <h1 className="text-6xl font-bold text-[#CEBFFF] leading-tight md:text-7xl tracking-[0.01em] pb-2">
+              <h1 className="landing-h1 pb-2">
                 Smart leave tracking, faster approvals, and complete control—on one secure platform.
               </h1>
-              <p className="text-xl text-[#CEBFFF] tracking-[0.1em] pb-2">
+              <p className="landing-body pb-2">
                 Manage employee leave effortlessly with a centralized system that automates requests, approvals, and tracking in real time. Eliminate manual processes, reduce errors, and stay compliant with company policies while giving employees and managers full visibility and control over leave data—all in one secure, easy-to-use platform.
               </p>
               <div className="flex flex-wrap gap-4 pb-5">
@@ -299,9 +299,9 @@ const Home = () => {
         threshold={0.2}
       >
         <div className="space-y-6 text-center mb-20">
-          <p className="text-lg text-[#222875] font-bold uppercase tracking-[0.5em]">Why choose us</p>
-          <h2 className="text-3xl font-bold text-[#222875] tracking-[0.01em]">Everything your People Team needs</h2>
-          <p className="text-gray-600 text-lg tracking-[0.1em]">
+          <p className="landing-subheading">Why choose us</p>
+          <h2 className="landing-h2 landing-h2-dark">Everything your People Team needs</h2>
+          <p className="landing-body landing-body-dark">
             Automate repetitive work, create beautiful employee journeys, and keep everyone safe with auditable, policy-driven workflows.
           </p>
         </div>
@@ -344,8 +344,8 @@ const Home = () => {
         <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
           <img src={HeroImage} alt="feature iamges" />
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Intuitive Features</h2>
-            <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
+            <h2 className="landing-h2 landing-h2-dark">Intuitive Features</h2>
+            <p className="landing-body landing-body-dark">
               Intuitive features designed to simplify leave management for everyone—from employees to HR teams. Each tool is thoughtfully built to reduce manual work, speed up approvals, and deliver complete visibility, so your organization runs smoother every day.
             </p>
             <div className="space-y-3 pt-5">
@@ -364,8 +364,8 @@ const Home = () => {
         >
           <div className="max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 items-center">
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-[#222875] leading-tight tracking-[0.1em]">Managers’ Decision Making</h2>
-              <p className="text-[#131313] text-xl leading-tight tracking-[0.1em]">
+              <h2 className="landing-h2 landing-h2-dark">Managers’ Decision Making</h2>
+              <p className="landing-body landing-body-dark">
                 Managers can easily see who will be away, enabling them to make swift, smart decisions and avoid potential scheduling conflicts. Leave management is automated email sent to relevant manager and the employee to confirm the leave status.
               </p>
               <div className="space-y-3 pt-5">
@@ -388,9 +388,9 @@ const Home = () => {
         threshold={0.25}
       >
         <div className="max-w-6xl mx-auto text-center space-y-6">
-          <p className="text-lg font-bold text-[#222875] uppercase tracking-[0.5em]">How it works</p>
-          <h2 className="text-3xl font-bold text-[#222875]">Go live in three simple steps</h2>
-          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+          <p className="landing-subheading">How it works</p>
+          <h2 className="landing-h2 landing-h2-dark">Go live in three simple steps</h2>
+          <p className="landing-body landing-body-dark">
             We give you a partner, a detailed rollout plan, and the confidence to launch with the same tools we build every day.
           </p>
         </div>
@@ -400,8 +400,8 @@ const Home = () => {
               <div className={`flex h-12 w-12 items-center justify-center rounded-2xl text-primary ${item.iconBg}`}>
                 <item.icon className={`h-6 w-6 ${item.iconColor}`}/>
               </div>
-              <h3 className="text-lg font-semibold text-[#222875]">{item.title}</h3>
-              <p className="text-sm text-[#131313]">{item.description}</p>
+              <h3 className="landing-h3 landing-h2-dark">{item.title}</h3>
+              <p className="landing-card-text">{item.description}</p>
             </div>
           ))}
         </div>
@@ -439,8 +439,8 @@ const Home = () => {
         threshold={0.25}
       >
         <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
-          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+          <h2 className="landing-h2 landing-h2-dark">Tackle HR complexity with clarity</h2>
+          <p className="landing-body landing-body-dark">
             Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
           </p>
           <div className="flex flex-wrap justify-center gap-4">

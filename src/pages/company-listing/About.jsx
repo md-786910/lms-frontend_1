@@ -70,7 +70,7 @@ const values = [
 
 const About = () => {
   return (
-    <div className="text-white">
+    <div className="landing-shell text-white">
       <ScrollRevealSection
         className="relative overflow-hidden bg-[#222875] px-4 pb-28 pt-24"
         delay={0}
@@ -85,13 +85,12 @@ const About = () => {
             Leave Management System
           </div>
           <div className="mt-10 flex flex-col items-center gap-6 text-center">
-            <h1 className="text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl mb-3" > 
-              A smarter Leave Management System that respects people, time, and productivity
-            </h1>
-            <p className="text-xl text-[#CBEFFF] md:text-2xl">
-              A next-generation Leave Management System that combines automation, transparency, and data intelligence—helping teams manage leave faster, approve requests smarter, and maintain productivity without disruption.
-Built to reduce manual work, prevent conflicts, and give managers complete visibility into availability and trends.
-            </p>
+          <h1 className="landing-h1 mb-3"> 
+            A smarter Leave Management System that respects people, time, and productivity
+          </h1>
+          <p className="landing-body">
+            A next-generation Leave Management System that combines automation, transparency, and data intelligence—helping teams manage leave faster, approve requests smarter, and maintain productivity without disruption. Built to reduce manual work, prevent conflicts, and give managers complete visibility into availability and trends.
+          </p>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-5">
               <Link to="/company/get-started">
                 <Button className="bg-[#CBEFFF] text-[#222875] hover:text-[#CBEFFF] hover:bg-[#1F2F63] px-10 py-4 rounded-xl hover:border hover:boter-[#CBEFFF] transition-all duration-200 ease-in-out hover:shadow-sm  shadow-[#273C7D]/10" size="xl">
@@ -118,30 +117,30 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
 
       <ScrollRevealSection className="px-4 py-20" delay={120} threshold={0.25}>
         <div className="mx-auto max-w-[1580px] space-y-10 text-center">
-          <p className="text-md font-bold uppercase tracking-[0.4em] text-[#131313]">About the platform</p>
+          <p className="landing-subheading">About the platform</p>
           <div className="space-y-4">
-            <h2 className="text-4xl font-bold text-[#222785]">Designed for the pace of modern work</h2>
-            <p className="text-[#131313]/90 text-xl tracking-[0.1em]">
+            <h2 className="landing-h2 landing-h2-dark">Designed for the pace of modern work</h2>
+            <p className="landing-body landing-body-dark">
               From onboarding to compliance and leadership development, every experience is shaped by clarity, trust, and delightful transitions. Content is organized by themes, nudged into action with smart automations, and measured end-to-end.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-3xl border border-white/15 bg-white/5 p-6 text-left backdrop-blur">
-              <h3 className="text-md font-semibold text-[#222875]">Mission & Vision</h3>
-              <p className="mt-3 text-[#131313]/90 text-lg">
+              <h3 className="landing-h3 landing-h2-dark">Mission & Vision</h3>
+              <p className="landing-body landing-body-dark mt-4">
                 Mission: Give every learner the tools to master their craft while empowering people teams with the data and workflows they need to lead confidently.
               </p>
-              <p className="mt-3 text-[#131313]/90 text-lg">
+              <p className="landing-body landing-body-dark mt-3">
                 Vision: A world where learning is simple, inspiring, and measurable across every stage of the employee journey.
               </p>
             </div>
             <div className="rounded-3xl border border-[#CBEFFF]/30 bg-[#CBEFFF]/10 p-6 text-left shadow-2xl">
-              <h3 className="text-xl font-semibold text-[#222875]">How we stay ahead</h3>
-              <ul className="mt-4 space-y-3 text-[#131313]/90 text-lg">
+              <h3 className="landing-h3 landing-h2-dark">How we stay ahead</h3>
+              <ul className="mt-4 space-y-3">
                 {reasons.map((reason) => (
                   <li key={reason} className="flex items-start gap-3 text-lg">
                     <span className="mt-1 h-2 w-2 rounded-full bg-[#222785]" />
-                    <span>{reason}</span>
+                    <span className="landing-body landing-body-dark">{reason}</span>
                   </li>
                 ))}
               </ul>
@@ -153,9 +152,9 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
       <ScrollRevealSection className="px-4 pb-20" delay={200} threshold={0.3}>
         <div className="mx-auto max-w-[1580px]">
           <div className="flex flex-col gap-2 text-center">
-            <p className="text-lg font-bold uppercase tracking-[0.4em] text-[#131313] pb-5">Core LMS Features</p>
-            <h2 className="text-4xl font-semibold text-[#222785] pb-2">Everything your people team needs to move fast</h2>
-            <p className="text-[#131313]/90 text-xl tracking-[0.1em]">
+            <p className="landing-subheading">Core LMS Features</p>
+            <h2 className="landing-h2 landing-h2-dark">Everything your people team needs to move fast</h2>
+            <p className="landing-body landing-body-dark">
               We blended modern UX, automation, and analytics so every workflow feels premium and effortless.
             </p>
           </div>
@@ -168,8 +167,8 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#222875] shadow-lg shadow-[#222875]/40">
                   <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-5 text-2xl font-semibold text-[#222875]">{feature.title}</h3>
-                <p className="mt-3 text-[#131313]/90 trackin-[0.1em] text-lg">{feature.description}</p>
+                <h3 className="mt-5 landing-h3 landing-h2-dark">{feature.title}</h3>
+                <p className="landing-body landing-body-dark mt-3">{feature.description}</p>
                 <div className="mt-4 flex items-center text-sm text-[#222785] font-medium group-hover:text-[#1b26be] cursor-pointer transition-colors duration-300">
                   More about {feature.title}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -183,9 +182,9 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
         <ScrollRevealSection className="px-4 py-20" delay={260} threshold={0.3}>
           <div className="mx-auto max-w-[1580px]">
             <div className="flex flex-col gap-4 text-center">
-              <p className="text-md font-bold uppercase tracking-[0.4em] text-[#131313]">Why choose us</p>
-              <h2 className="text-3xl font-semibold text-[#222785]">A partner that keeps learning clear and consistent</h2>
-              <p className="text-[#131313]/80 text-xl tracking-[0.1em]">
+              <p className="landing-subheading">Why choose us</p>
+              <h2 className="landing-h2 landing-h2-dark">A partner that keeps learning clear and consistent</h2>
+              <p className="landing-body landing-body-dark">
                 Every release is guided by learner feedback, accessibility best practices, and measurable business results.
               </p>
             </div>
@@ -206,9 +205,9 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
         <ScrollRevealSection className="px-4 pb-24" delay={320} threshold={0.3}>
         <div className="mx-auto max-w-[1580px] space-y-10">
           <div className="flex flex-col gap-2 text-center">
-            <p className="text-md font-bold uppercase tracking-[0.4em] text-[#131313]">Our values</p>
-            <h2 className="text-4xl font-semibold text-[#222875]">Values that power every release</h2>
-            <p className="text-[#131313]/80 tracking-[0.1em] text-xl">We pair high standards with empathy to move people, not just processes.</p>
+            <p className="landing-subheading">Our values</p>
+            <h2 className="landing-h2 landing-h2-dark">Values that power every release</h2>
+            <p className="landing-body landing-body-dark">We pair high standards with empathy to move people, not just processes.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {values.map((value) => (
@@ -219,8 +218,8 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#5c9db9]">
                   <value.icon className="h-7 w-7" />
                 </div>
-                <h3 className="mt-4 text-2xl font-semibold text-[#222875]">{value.title}</h3>
-                <p className="mt-2 text-[#131313]/80">{value.description}</p>
+                <h3 className="mt-4 landing-h3 landing-h2-dark">{value.title}</h3>
+                <p className="landing-body landing-body-dark mt-2">{value.description}</p>
               </div>
             ))}
           </div>
@@ -232,8 +231,8 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
         threshold={0.25}
       >
         <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
-          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+          <h2 className="landing-h2 landing-h2-dark">Tackle HR complexity with clarity</h2>
+          <p className="landing-body landing-body-dark">
             Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
           </p>
           <div className="flex flex-wrap justify-center gap-4">

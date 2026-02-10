@@ -132,15 +132,15 @@ const faqData = [
   return (
     <div className="landing-shell min-h-screen">
     {/* ------------------ HERO SECTION ------------------ */}
-    <section className="relative py-24 px-4 text-center overflow-hidden bg-gradient-to-br from-[#CBEFFF]/70 via-white to-white">
-      <div className="max-w-[1580px] mx-auto space-y-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-[#0f172a]">
-          Predictable Pricing Built for Modern HR Teams
-        </h1>
-        <p className="text-lg md:text-xl text-[#0f172a]/70 max-w-2xl mx-auto">
-          Automate leave tracking, approvals, and compliance with transparent
-          pricing that scales as your organization grows.
-        </p>
+      <section className="relative py-24 px-4 text-center overflow-hidden bg-gradient-to-br from-[#CBEFFF]/70 via-white to-white">
+        <div className="max-w-[1580px] mx-auto space-y-6">
+          <h1 className="landing-h1 landing-h2-dark">
+            Predictable Pricing Built for Modern HR Teams
+          </h1>
+          <p className="landing-body landing-body-dark max-w-2xl mx-auto">
+            Automate leave tracking, approvals, and compliance with transparent
+            pricing that scales as your organization grows.
+          </p>
         <Badge className="bg-white text-[#0f172a] px-5 py-2 rounded-full shadow">
           14-day free trial • No credit card required
         </Badge>
@@ -167,10 +167,10 @@ const faqData = [
                 </div>
               )}
 
-              <CardHeader className="text-center space-y-4 pt-10">
-                <CardTitle className="text-2xl font-semibold text-[#0f172a]">
-                  {plan.name}
-                </CardTitle>
+                <CardHeader className="text-center space-y-4 pt-10">
+                  <CardTitle className="landing-h3 landing-h2-dark">
+                    {plan.name}
+                  </CardTitle>
             
                 <div>
                   <span className="text-4xl font-bold text-[#0f172a]">
@@ -181,7 +181,7 @@ const faqData = [
                   </span>
                 </div>
             
-                <p className="text-sm text-[#0f172a]/70 px-4">
+                <p className="landing-body landing-body-dark px-4">
                   {plan.description}
                 </p>
               </CardHeader>
@@ -191,7 +191,7 @@ const faqData = [
                   {plan.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-3 text-[#0f172a]/75 text-sm"
+                    className="flex items-start gap-3 landing-card-text"
                     >
                       <CheckCircle className="h-5 w-5 text-[#4DA3FF] mt-0.5" />
                       <span>{feature}</span>
@@ -224,10 +224,10 @@ const faqData = [
     <section className="py-24 px-4 bg-[#F8FBFF]">
       <div className="max-w-[1580px] mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#0f172a]">
+          <h2 className="landing-h2 landing-h2-dark">
             Enterprise-Grade Standards, Included
           </h2>
-          <p className="text-[#0f172a]/70 mt-2">
+          <p className="landing-body landing-body-dark mt-2">
             Security, reliability, and compliance—built into every plan.
           </p>
         </div>
@@ -242,10 +242,10 @@ const faqData = [
               "Compliance-Ready Architecture",
               "Continuous Feature Updates",
             ].map((feature, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 text-[#0f172a]/75"
-              >
+                <div
+                  key={index}
+                  className="flex items-center gap-3 landing-card-text"
+                >
                 <CheckCircle className="h-5 w-5 text-[#4DA3FF]" />
                 <span>{feature}</span>
               </div>
@@ -257,16 +257,16 @@ const faqData = [
           
     {/* ------------------ PRICING HIGHLIGHTS ------------------ */}
     <section className="py-20 px-4 bg-white">
-      <div className="max-w-[1580px] mx-auto grid md:grid-cols-3 gap-6">
+          <div className="max-w-[1580px] mx-auto grid md:grid-cols-3 gap-6">
         {pricingHighlights.map((highlight) => (
           <div
             key={highlight.title}
             className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all"
           >
-            <h3 className="text-lg font-semibold text-[#0f172a]">
+            <h3 className="landing-h3 landing-h2-dark">
               {highlight.title}
             </h3>
-            <p className="text-sm text-[#0f172a]/70 mt-2">
+            <p className="landing-body landing-body-dark mt-2">
               {highlight.detail}
             </p>
           </div>
@@ -279,14 +279,14 @@ const faqData = [
       <div className="max-w-[1100px] mx-auto space-y-16">
 
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.4em] text-[#0f172a]/60 mb-3">
+          <div className="text-center max-w-3xl mx-auto">
+          <p className="landing-subheading mb-3">
             FAQs
           </p>
-          <h2 className="text-4xl font-semibold text-[#222875] mb-4">
+          <h2 className="landing-h2 landing-h2-dark mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-[#0f172a]/70">
+          <p className="landing-body landing-body-dark">
             Everything you need to know about how our Leave Management System works.
           </p>
         </div>
@@ -305,7 +305,7 @@ const faqData = [
             >
               <summary className="
                 flex cursor-pointer items-center justify-between
-                list-none text-lg font-medium text-[#0f172a]
+                list-none text-3xl text-[#222785]
               ">
                 {faq.question}
                 <span className="
@@ -316,8 +316,8 @@ const faqData = [
                   +
                 </span>
               </summary>
-          
-              <p className="mt-4 text-[#0f172a]/70 leading-relaxed">
+         
+              <p className="landing-body landing-body-dark mt-4 leading-relaxed">
                 {faq.answer}
               </p>
             </details>
@@ -353,8 +353,8 @@ const faqData = [
         threshold={0.25}
       >
         <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
-          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+          <h2 className="landing-h2 landing-h2-dark">Tackle HR complexity with clarity</h2>
+          <p className="landing-body landing-body-dark">
             Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
           </p>
           <div className="flex flex-wrap justify-center gap-4">

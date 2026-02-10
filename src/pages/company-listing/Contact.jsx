@@ -92,10 +92,10 @@ const Contact = () => {
         </div>
 
         <div className="relative max-w-[1580px] mx-auto text-center space-y-6">
-          <h1 className="text-4xl md:text-5xl font-semibold text-[#222875]">
+          <h1 className="landing-h1 landing-h2-dark">
             Get in Touch
           </h1>
-          <p className="text-lg md:text-xl text-[#0f172a]/70 max-w-2xl mx-auto">
+          <p className="landing-body landing-body-dark max-w-2xl mx-auto">
             Have questions about our Leave Management System?  
             Our team is here to help you find the right solution for your organization.
           </p>
@@ -112,7 +112,7 @@ const Contact = () => {
               border border-[#222875]/10
               shadow-[0_20px_50px_rgba(0,0,0,0.08)]
             ">
-              <h2 className="text-2xl font-semibold text-[#0f172a] mb-6">
+              <h2 className="landing-h2 landing-h2-dark mb-6">
                 Send us a message
               </h2>
 
@@ -184,10 +184,10 @@ const Contact = () => {
             {/* Contact Info */}
             <div className="space-y-10">
               <div>
-                <h2 className="text-2xl font-semibold text-[#0f172a] mb-4">
+                <h2 className="landing-h2 landing-h2-dark mb-4">
                   Contact Information
                 </h2>
-                <p className="text-[#0f172a]/70 max-w-md">
+                <p className="landing-body landing-body-dark max-w-md">
                   Reach out through any of the options below. Our team is ready to support you.
                 </p>
               </div>
@@ -211,11 +211,11 @@ const Contact = () => {
                     </div>
                 
                     <div>
-                      <h3 className="font-semibold text-[#0f172a] mb-1">
+                      <h3 className="landing-h3 landing-h2-dark mb-1">
                         {info.title}
                       </h3>
                       {info.details.map((detail, idx) => (
-                        <p key={idx} className="text-sm text-[#0f172a]/70">
+                        <p key={idx} className="landing-body landing-body-dark text-sm">
                           {detail}
                         </p>
                       ))}
@@ -233,13 +233,13 @@ const Contact = () => {
 
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs uppercase tracking-[0.4em] text-[#0f172a]/60 mb-3">
+            <p className="landing-subheading mb-3">
               FAQs
             </p>
-            <h2 className="text-4xl font-semibold text-[#222875] mb-4">
+            <h2 className="landing-h2 landing-h2-dark mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-[#0f172a]/70">
+            <p className="landing-body landing-body-dark">
               Everything you need to know about how our Leave Management System works.
             </p>
           </div>
@@ -258,7 +258,7 @@ const Contact = () => {
               >
                 <summary className="
                   flex cursor-pointer items-center justify-between
-                  list-none text-lg font-medium text-[#0f172a]
+                  list-none text-3xl text-[#222785]
                 ">
                   {faq.question}
                   <span className="
@@ -269,8 +269,8 @@ const Contact = () => {
                     +
                   </span>
                 </summary>
-            
-                <p className="mt-4 text-[#0f172a]/70 leading-relaxed">
+           
+                <p className="landing-body landing-body-dark mt-4 leading-relaxed">
                   {faq.answer}
                 </p>
               </details>
@@ -279,7 +279,7 @@ const Contact = () => {
           
           {/* CTA */}
           <div className="text-center pt-10">
-            <p className="text-[#0f172a]/70 mb-4">
+            <p className="landing-body landing-body-dark mb-4">
               Still have questions?
             </p>
             <a
