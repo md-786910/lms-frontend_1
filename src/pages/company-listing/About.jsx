@@ -179,7 +179,7 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
           </div>
         </div>
       </ScrollRevealSection>
-      <div className="mb-20 bg-gradient-to-bl from-[#F5FBFF] via-[#CBEFFF] to-[#EAF7FF] curved-section shell-sky section-animate">
+      <div className="bg-gradient-to-bl from-[#F5FBFF] to-[#EAF7FF] curved-section shell-sky section-animate">
         <ScrollRevealSection className="px-4 py-20" delay={260} threshold={0.3}>
           <div className="mx-auto max-w-[1580px]">
             <div className="flex flex-col gap-4 text-center">
@@ -203,8 +203,7 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
             </div>
           </div>
         </ScrollRevealSection>
-      </div>
-      <ScrollRevealSection className="px-4 pb-24" delay={320} threshold={0.3}>
+        <ScrollRevealSection className="px-4 pb-24" delay={320} threshold={0.3}>
         <div className="mx-auto max-w-[1580px] space-y-10">
           <div className="flex flex-col gap-2 text-center">
             <p className="text-md font-bold uppercase tracking-[0.4em] text-[#131313]">Our values</p>
@@ -227,7 +226,6 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
           </div>
         </div>
       </ScrollRevealSection>
-      
       <ScrollRevealSection
         className="py-20 px-4 text-center"
         delay={440}
@@ -252,7 +250,7 @@ Built to reduce manual work, prevent conflicts, and give managers complete visib
           </div>
         </div>
       </ScrollRevealSection>
-
+      </div>
       <LandingFooter />
     </div>
   );
