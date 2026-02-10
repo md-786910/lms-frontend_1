@@ -233,7 +233,7 @@ const Contact = () => {
 
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
-            <p className="landing-subheading mb-3">
+            <p className="text-[#131313] font-bold mb-3">
               FAQs
             </p>
             <h2 className="landing-h2 landing-h2-dark mb-4">

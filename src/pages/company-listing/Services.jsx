@@ -181,7 +181,7 @@ const servicePillars = [
                 </div>
             
                 {/* Title */}
-                <h3 className="landing-h3 landing-h2-dark mb-3">
+                <h3 className="landing-h3 text-[#222785] mb-3">
                   {service.title}
                 </h3>
             
@@ -242,7 +242,7 @@ const servicePillars = [
                   <service.icon className="h-7 w-7 text-[#222785]" />
                 </div>
             
-                <h3 className="landing-h3 landing-h2-dark mb-2">
+                <h3 className="landing-h3 text-[#222785] mb-2">
                   {service.title}
                 </h3>
             
@@ -282,7 +282,7 @@ const servicePillars = [
                   transition-all
                 "
               >
-                <h3 className="landing-h3 landing-h2-dark mb-3">
+                <h3 className="landing-h3 text-[#222785] mb-3">
                   {pillar.title}
                 </h3>
                 <p className="landing-card-text text-sm leading-relaxed">
@@ -300,7 +300,7 @@ const servicePillars = [
             shadow-[0_20px_50px_rgba(0,0,0,0.08)]
           ">
             <div className="space-y-2">
-              <p className="landing-subheading">Book a session</p>
+              <p className="text-[#131313] font-bold">Book a session</p>
               <h3 className="landing-h2 landing-h2-dark">
                 Let’s audit your HR workflow and share a tailored roadmap
               </h3>

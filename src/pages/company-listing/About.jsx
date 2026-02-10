@@ -117,7 +117,7 @@ const About = () => {
 
       <ScrollRevealSection className="px-4 py-20" delay={120} threshold={0.25}>
         <div className="mx-auto max-w-[1580px] space-y-10 text-center">
-          <p className="landing-subheading">About the platform</p>
+          <p className="text-[#131313] font-bold">About the platform</p>
           <div className="space-y-4">
             <h2 className="landing-h2 landing-h2-dark">Designed for the pace of modern work</h2>
             <p className="landing-body landing-body-dark">
@@ -152,7 +152,7 @@ const About = () => {
       <ScrollRevealSection className="px-4 pb-20" delay={200} threshold={0.3}>
         <div className="mx-auto max-w-[1580px]">
           <div className="flex flex-col gap-2 text-center">
-            <p className="landing-subheading">Core LMS Features</p>
+            <p className="text-[#131313] font-bold">Core LMS Features</p>
             <h2 className="landing-h2 landing-h2-dark">Everything your people team needs to move fast</h2>
             <p className="landing-body landing-body-dark">
               We blended modern UX, automation, and analytics so every workflow feels premium and effortless.
@@ -167,7 +167,7 @@ const About = () => {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#222875] shadow-lg shadow-[#222875]/40">
                   <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-5 landing-h3 landing-h2-dark">{feature.title}</h3>
+                <h3 className="mt-5 landing-h3 text-[#222785]">{feature.title}</h3>
                 <p className="landing-body landing-body-dark mt-3">{feature.description}</p>
                 <div className="mt-4 flex items-center text-sm text-[#222785] font-medium group-hover:text-[#1b26be] cursor-pointer transition-colors duration-300">
                   More about {feature.title}
@@ -182,7 +182,7 @@ const About = () => {
         <ScrollRevealSection className="px-4 py-20" delay={260} threshold={0.3}>
           <div className="mx-auto max-w-[1580px]">
             <div className="flex flex-col gap-4 text-center">
-              <p className="landing-subheading">Why choose us</p>
+              <p className="text-[#131313] font-bold">Why choose us</p>
               <h2 className="landing-h2 landing-h2-dark">A partner that keeps learning clear and consistent</h2>
               <p className="landing-body landing-body-dark">
                 Every release is guided by learner feedback, accessibility best practices, and measurable business results.
@@ -205,7 +205,7 @@ const About = () => {
         <ScrollRevealSection className="px-4 pb-24" delay={320} threshold={0.3}>
         <div className="mx-auto max-w-[1580px] space-y-10">
           <div className="flex flex-col gap-2 text-center">
-            <p className="landing-subheading">Our values</p>
+            <p className="text-[#131313] font-bold">Our values</p>
             <h2 className="landing-h2 landing-h2-dark">Values that power every release</h2>
             <p className="landing-body landing-body-dark">We pair high standards with empathy to move people, not just processes.</p>
           </div>
@@ -218,7 +218,7 @@ const About = () => {
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#5c9db9]">
                   <value.icon className="h-7 w-7" />
                 </div>
-                <h3 className="mt-4 landing-h3 landing-h2-dark">{value.title}</h3>
+                <h3 className="mt-4 landing-h3 text-[#222785]">{value.title}</h3>
                 <p className="landing-body landing-body-dark mt-2">{value.description}</p>
               </div>
             ))}

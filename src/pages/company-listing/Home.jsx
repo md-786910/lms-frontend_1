@@ -299,7 +299,7 @@ const Home = () => {
         threshold={0.2}
       >
         <div className="space-y-6 text-center mb-20">
-          <p className="landing-subheading">Why choose us</p>
+          <p className="text-[#131313] font-bold">Why choose us</p>
           <h2 className="landing-h2 landing-h2-dark">Everything your People Team needs</h2>
           <p className="landing-body landing-body-dark">
             Automate repetitive work, create beautiful employee journeys, and keep everyone safe with auditable, policy-driven workflows.
@@ -388,7 +388,7 @@ const Home = () => {
         threshold={0.25}
       >
         <div className="max-w-6xl mx-auto text-center space-y-6">
-          <p className="landing-subheading">How it works</p>
+          <p className="text-[#131313] font-bold">How it works</p>
           <h2 className="landing-h2 landing-h2-dark">Go live in three simple steps</h2>
           <p className="landing-body landing-body-dark">
             We give you a partner, a detailed rollout plan, and the confidence to launch with the same tools we build every day.
@@ -400,7 +400,7 @@ const Home = () => {
               <div className={`flex h-12 w-12 items-center justify-center rounded-2xl text-primary ${item.iconBg}`}>
                 <item.icon className={`h-6 w-6 ${item.iconColor}`}/>
               </div>
-              <h3 className="landing-h3 landing-h2-dark">{item.title}</h3>
+              <h3 className="landing-h3 text-[#222785]">{item.title}</h3>
               <p className="landing-card-text">{item.description}</p>
             </div>
           ))}

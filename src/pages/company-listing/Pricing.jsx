@@ -141,7 +141,7 @@ const faqData = [
             Automate leave tracking, approvals, and compliance with transparent
             pricing that scales as your organization grows.
           </p>
-        <Badge className="bg-white text-[#0f172a] px-5 py-2 rounded-full shadow">
+        <Badge className="bg-white text-[#0f172a] px-5 py-2 rounded-full shadow text-md">
           14-day free trial • No credit card required
         </Badge>
       </div>
@@ -263,7 +263,7 @@ const faqData = [
             key={highlight.title}
             className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all"
           >
-            <h3 className="landing-h3 landing-h2-dark">
+            <h3 className="landing-h3 text-[#222785]">
               {highlight.title}
             </h3>
             <p className="landing-body landing-body-dark mt-2">
@@ -280,7 +280,7 @@ const faqData = [
 
         {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
-          <p className="landing-subheading mb-3">
+          <p className="text-[#131313] font-bold mb-3">
             FAQs
           </p>
           <h2 className="landing-h2 landing-h2-dark mb-4">
