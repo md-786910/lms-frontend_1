@@ -85,12 +85,12 @@ const About = () => {
             Learning, reimagined
           </div>
           <div className="mt-10 flex flex-col items-center gap-6 text-center">
-            <h1 className="text-7xl font-semibold leading-tight text-white md:text-5xl lg:text-8xl mb-3" > 
-              A forward-facing LMS that keeps learning human.
+            <h1 className="text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl mb-3" > 
+              A smarter Leave Management System that respects people, time, and productivity
             </h1>
             <p className="text-xl text-[#CBEFFF] md:text-2xl">
-              A next-generation LMS that fuses storytelling, automation, and data intelligence—empowering teams to launch skills faster, track progress smarter, and evolve learning without limits.
-From onboarding to advanced certifications, every learning journey is structured, measurable, and human-centric. Powerful insights turn engagement into action, while flexible workflows ensure learning adapts as your organization grows.
+              A next-generation Leave Management System that combines automation, transparency, and data intelligence—helping teams manage leave faster, approve requests smarter, and maintain productivity without disruption.
+Built to reduce manual work, prevent conflicts, and give managers complete visibility into availability and trends.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-5">
               <Link to="/company/get-started">
