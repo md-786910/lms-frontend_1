@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
+import ScrollRevealSection from "@/components/landing/ScrollRevealSection";
 
 const Pricing = () => {
   const plans = [
@@ -99,172 +100,277 @@ const pricingHighlights = [
   },
 ];
 
+const faqData = [
+  {
+    question: "How does the Leave Management System work?",
+    answer:
+      "Employees can easily apply for leave, managers can review and approve requests in real time, and HR teams get complete visibility into balances, policies, and leave trends—all from a single platform."
+  },
+  {
+    question: "Can I customize leave policies for different teams?",
+    answer:
+      "Yes. You can create flexible leave policies based on roles, departments, locations, or employment types, ensuring accurate tracking and compliance."
+  },
+  {
+    question: "Does the system support multiple leave types?",
+    answer:
+      "Absolutely. The platform supports paid leave, sick leave, casual leave, comp-off, holidays, and custom leave types tailored to your organization."
+  },
+  {
+    question: "Is employee leave data secure?",
+    answer:
+      "Yes. We follow industry-standard security practices to protect employee data, ensuring privacy, reliability, and compliance."
+  },
+  {
+    question: "Can managers see team availability in real time?",
+    answer:
+      "Managers get a real-time view of team availability, helping them plan workloads and avoid scheduling conflicts."
+  }
+];
+
+
   return (
     <div className="landing-shell min-h-screen">
-      {/* Hero Section */}
-      <section className="landing-hero py-20 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-40 bg-black"></div>
-        <div className="max-w-4xl mx-auto relative z-10 space-y-6">
-          <h1 className="text-4xl font-bold text-[#0f172a]">
-            Simple, Transparent Pricing
-          </h1>
-          <p className="text-xl text-[#0f172a]/70">
-            Choose the plan that fits your organization's needs. No hidden fees,
-            no surprises.
-          </p>
-          <Badge className="mb-4 bg-white text-[#0f172a] hover:bg-white/90">
-            14-day free trial • No credit card required
-          </Badge>
-        </div>
-      </section>
+    {/* ------------------ HERO SECTION ------------------ */}
+    <section className="relative py-24 px-4 text-center overflow-hidden bg-gradient-to-br from-[#CBEFFF]/70 via-white to-white">
+      <div className="max-w-[1580px] mx-auto space-y-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#0f172a]">
+          Predictable Pricing Built for Modern HR Teams
+        </h1>
+        <p className="text-lg md:text-xl text-[#0f172a]/70 max-w-2xl mx-auto">
+          Automate leave tracking, approvals, and compliance with transparent
+          pricing that scales as your organization grows.
+        </p>
+        <Badge className="bg-white text-[#0f172a] px-5 py-2 rounded-full shadow">
+          14-day free trial • No credit card required
+        </Badge>
+      </div>
+    </section>
 
-      {/* Pricing Plans */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {plans.map((plan, index) => (
-              <Card
+    {/* ------------------ PRICING PLANS ------------------ */}
+    <section className="py-24 px-4 bg-white">
+      <div className="max-w-[1580px] mx-auto">
+        <div className="grid md:grid-cols-3 gap-8">
+          {plans.map((plan, index) => (
+            <Card
+              key={index}
+              className={`relative rounded-2xl bg-white/80 backdrop-blur-xl shadow-lg 
+              transition-all duration-300 hover:shadow-2xl hover:-translate-y-1
+              ${plan.popular ? "ring-2 ring-[#4DA3FF] scale-[1.03]" : ""}`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-[#4DA3FF] text-white px-4 py-1 rounded-full shadow-md flex items-center gap-1">
+                    <Star className="h-3 w-3" />
+                    Best for Growing Teams
+                  </Badge>
+                </div>
+              )}
+
+              <CardHeader className="text-center space-y-4 pt-10">
+                <CardTitle className="text-2xl font-semibold text-[#0f172a]">
+                  {plan.name}
+                </CardTitle>
+            
+                <div>
+                  <span className="text-4xl font-bold text-[#0f172a]">
+                    {plan.price}
+                  </span>
+                  <span className="text-[#0f172a]/60 ml-1">
+                    {plan.period}
+                  </span>
+                </div>
+            
+                <p className="text-sm text-[#0f172a]/70 px-4">
+                  {plan.description}
+                </p>
+              </CardHeader>
+            
+              <CardContent className="pt-2">
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-3 text-[#0f172a]/75 text-sm"
+                    >
+                      <CheckCircle className="h-5 w-5 text-[#4DA3FF] mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Link to="/company/get-started" className="block">
+                  <Button
+                    className={`w-full rounded-xl text-sm font-medium transition-all
+                    ${
+                      plan.popular
+                        ? "bg-[#4DA3FF] text-white hover:bg-[#358DEB]"
+                        : "bg-[#0f172a] text-white hover:bg-[#0f172a]/90"
+                    }`}
+                  >
+                    {plan.name === "Enterprise"
+                      ? "Talk to Sales"
+                      : "Start Free – 14 Days"}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+        
+    {/* ------------------ ALL PLANS INCLUDE ------------------ */}
+    <section className="py-24 px-4 bg-[#F8FBFF]">
+      <div className="max-w-[1580px] mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#0f172a]">
+            Enterprise-Grade Standards, Included
+          </h2>
+          <p className="text-[#0f172a]/70 mt-2">
+            Security, reliability, and compliance—built into every plan.
+          </p>
+        </div>
+        
+        <div className="bg-white rounded-2xl p-10 shadow-lg">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              "Role-Based Access Control",
+              "Audit-Ready Leave Records",
+              "Secure Cloud Backup",
+              "Mobile-Friendly HR Dashboard",
+              "Compliance-Ready Architecture",
+              "Continuous Feature Updates",
+            ].map((feature, index) => (
+              <div
                 key={index}
-                className={`landing-panel relative transition-all duration-300 border-0 ${
-                  plan.popular ? "ring-2 ring-[#CDE7FF] scale-105" : ""
-                }`}
+                className="flex items-center gap-3 text-[#0f172a]/75"
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-white text-[#0f172a] px-4 py-1">
-                      <Star className="w-3 h-3 mr-1" />
-                      Most Popular
-                    </Badge>
-                  </div>
-                )}
-                <CardHeader className="text-center space-y-4">
-                  <CardTitle className="text-2xl text-[#0f172a]">
-                    {plan.name}
-                  </CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-[#0f172a]">
-                      {plan.price}
-                    </span>
-                    <span className="text-[#0f172a]/70 ml-2">
-                      {plan.period}
-                    </span>
-                  </div>
-                  <p className="text-[#0f172a]/70 mt-2">{plan.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center gap-3 text-[#0f172a]/70"
-                      >
-                        <CheckCircle className="h-5 w-5 text-[#0f172a]" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to="/company/get-started" className="block">
-                    <Button className="w-full bg-[#EAF7FF] text-[#0f172a]">
-                      {plan.name === "Enterprise"
-                        ? "Contact Sales"
-                        : "Start Free Trial"}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                <CheckCircle className="h-5 w-5 text-[#4DA3FF]" />
+                <span>{feature}</span>
+              </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+          
+    {/* ------------------ PRICING HIGHLIGHTS ------------------ */}
+    <section className="py-20 px-4 bg-white">
+      <div className="max-w-[1580px] mx-auto grid md:grid-cols-3 gap-6">
+        {pricingHighlights.map((highlight) => (
+          <div
+            key={highlight.title}
+            className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all"
+          >
+            <h3 className="text-lg font-semibold text-[#0f172a]">
+              {highlight.title}
+            </h3>
+            <p className="text-sm text-[#0f172a]/70 mt-2">
+              {highlight.detail}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
 
-      {/* Features Comparison */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#0f172a]">
-              All Plans Include
-            </h2>
-          </div>
-          <div className="landing-panel p-8 rounded-xl border-0">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                "SSL Security",
-                "Data Backup",
-                "Mobile Access",
-                "Email Support",
-                "Regular Updates",
-                "GDPR Compliance",
-              ].map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 justify-center text-[#0f172a]/70"
-                >
-                  <CheckCircle className="h-5 w-5 text-[#0f172a]" />
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+    {/* FAQ Section */}
+    <section className="relative py-28 px-4">
+      <div className="max-w-[1100px] mx-auto space-y-16">
+
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.4em] text-[#0f172a]/60 mb-3">
+            FAQs
+          </p>
+          <h2 className="text-4xl font-semibold text-[#222875] mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg text-[#0f172a]/70">
+            Everything you need to know about how our Leave Management System works.
+          </p>
         </div>
-      </section>
 
-      {/* Highlights */}
-      <section className="landing-section py-16 px-4">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-          {pricingHighlights.map((highlight) => (
-            <div key={highlight.title} className="landing-panel p-6 rounded-2xl border-white/20 space-y-3">
-              <h3 className="text-xl font-semibold text-[#0f172a]">{highlight.title}</h3>
-              <p className="text-[#0f172a]/70 text-sm">{highlight.detail}</p>
-            </div>
+        {/* FAQ Items */}
+        <div className="space-y-4">
+          {faqData.map((faq, index) => (
+            <details
+              key={index}
+              className="
+                group bg-white rounded-2xl p-6
+                border border-[#222875]/10
+                shadow-[0_10px_30px_rgba(0,0,0,0.05)]
+                transition-all
+              "
+            >
+              <summary className="
+                flex cursor-pointer items-center justify-between
+                list-none text-lg font-medium text-[#0f172a]
+              ">
+                {faq.question}
+                <span className="
+                  ml-4 flex h-8 w-8 items-center justify-center
+                  rounded-full bg-[#CBEFFF]
+                  group-open:rotate-45 transition-transform
+                ">
+                  +
+                </span>
+              </summary>
+          
+              <p className="mt-4 text-[#0f172a]/70 leading-relaxed">
+                {faq.answer}
+              </p>
+            </details>
           ))}
         </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-4xl mx-auto space-y-10">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-[#0f172a] mb-2">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-[#0f172a]/70 text-lg">
-              Got questions? We've got answers.
-            </p>
-          </div>
-          <div className="landing-panel p-8 rounded-xl border-0">
-            <div className="grid md:grid-cols-2 gap-8">
-              {faqs.map((faq, index) => (
-                <div key={index}>
-                  <h3 className="font-semibold text-[#0f172a] mb-2">
-                    {faq.question}
-                  </h3>
-                  <p className="text-[#0f172a]/70">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        
+        {/* CTA */}
+        <div className="text-center pt-10">
+          <p className="text-[#0f172a]/70 mb-4">
+            Still have questions?
+          </p>
+          <a
+            href="/company/contact"
+            className="
+              inline-flex items-center justify-center
+              px-8 py-4 rounded-xl
+              bg-[#222875] text-white
+              hover:bg-[#1b1f6b] transition
+            "
+          >
+            Talk to our team
+          </a>
         </div>
-      </section>
+        
+      </div>
+    </section>
+
 
       {/* CTA Section */}
-      <section className="landing-section py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="landing-panel p-12 rounded-xl border-0 text-center">
-            <h2 className="text-3xl font-bold text-[#0f172a] mb-6">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-[#0f172a]/70 mb-8">
-              Join thousands of companies already streamlining their HR with our
-              platform.
-            </p>
+      <ScrollRevealSection
+        className="py-20 px-4 text-center"
+        delay={440}
+        threshold={0.25}
+      >
+        <div className="max-w-4xl mx-auto space-y-6">
+          <h2 className="text-3xl font-bold text-[#222875]">Tackle HR complexity with clarity</h2>
+          <p className="text-[#131313] text-lg leading-tight tracking-[0.1em]">
+            Our flexible platform adapts to your policies, payroll, and processes. Ready to lead with confidence?
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
             <Link to="/company/get-started">
-              <Button size="lg" className="px-8 bg-[#EAF7FF] text-[#0f172a]">
-                Start Your Free Trial
+              <Button size="lg" className="bg-primary text-white">
+                Launch a pilot
+              </Button>
+            </Link>
+            <Link to="/company/contact">
+              <Button size="lg" variant="outline" className="border border-primary text-primary hover:bg-primary hover:text-[#CBEFFF]">
+                Talk with sales
               </Button>
             </Link>
           </div>
         </div>
-      </section>
+      </ScrollRevealSection>
       <LandingFooter />
     </div>
   );
