@@ -160,13 +160,8 @@ const servicePillars = [
               <div
                 key={index}
                 className="
-                  group relative bg-white rounded-2xl p-8
-                  border border-[#222785]/10
-                  shadow-[0_10px_30px_rgba(0,0,0,0.05)]
-                  transition-all duration-300
-                  hover:-translate-y-2
-                  hover:shadow-[0_20px_40px_rgba(34,39,133,0.15)]
-                  hover:border-[#222785]/30
+                  interactive-card border border-[#222785]/10 bg-white
+                  transition-all duration-300 hover:border-[#222785]/30
                 "
               >
                 {/* Icon */}
@@ -225,11 +220,8 @@ const servicePillars = [
               <div
                 key={index}
                 className="
-                  group bg-[#CBEFFF]/40 rounded-2xl p-8 text-center
-                  border border-[#222785]/10
-                  transition-all duration-300
-                  hover:-translate-y-2
-                  hover:shadow-[0_20px_40px_rgba(34,39,133,0.12)]
+                  interactive-card border border-[#222785]/10 bg-[#CBEFFF]/40 rounded-2xl
+                  text-center transition-all duration-300
                 "
               >
                 <div className="
@@ -275,9 +267,7 @@ const servicePillars = [
               <div
                 key={pillar.title}
                 className="
-                  bg-white rounded-2xl p-8
-                  border border-[#222785]/10
-                  shadow-[0_10px_30px_rgba(0,0,0,0.05)]
+                  interactive-card border border-[#222785]/10 bg-white
                   hover:shadow-[0_20px_40px_rgba(34,39,133,0.12)]
                   transition-all
                 "

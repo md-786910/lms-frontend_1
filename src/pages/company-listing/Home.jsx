@@ -255,15 +255,15 @@ const Home = () => {
               <p className="landing-body pb-2">
                 Manage employee leave effortlessly with a centralized system that automates requests, approvals, and tracking in real time. Eliminate manual processes, reduce errors, and stay compliant with company policies while giving employees and managers full visibility and control over leave data—all in one secure, easy-to-use platform.
               </p>
-              <div className="flex flex-wrap gap-4 pb-5">
+              <div className="flex flex-wrap gap-4 pb-5 justify-center">
                 <Link to="/company/get-started">
-                  <Button size="lg" className="bg-white hover:text-[#CBEFFF] text-primary py-8 text-lg">
-                    <Zap className="mr-2 h-5 w-5 text-primary" />
+                  <Button size="lg" className="btn-glow px-8 py-5 font-semibold text-[#222785]">
+                    <Zap className="mr-2 h-5 w-5 text-[#222875]" />
                     Start free for 30 days
                   </Button>
                 </Link>
                 <Link to="/company/contact">
-                  <Button size="lg" variant="outline" className="bg-[#FFFFFFF1A] text-white border-white/50 py-8 text-lg hvoer:text-[#222875]">
+                  <Button size="lg" variant="outline" className="border border-white/40 text-[#131313] px-8 py-5 hover:border-white/60">
                     Schedule a demo
                   </Button>
                 </Link>
@@ -311,7 +311,7 @@ const Home = () => {
               delay={120}
               threshold={0.2}
             >
-              <Card key={index} className="border-0 bg-gradient-card w-[390px] h-auto bg-gradient-card p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
+              <Card key={index} className="interactive-card w-[390px] h-auto bg-gradient-card p-6">
                 <CardHeader className="pb-2">
                   {/* Icon Wrapper */}
                   <div
