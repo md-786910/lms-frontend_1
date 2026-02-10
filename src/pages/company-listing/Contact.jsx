@@ -107,11 +107,7 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2 gap-14">
 
             {/* Contact Form */}
-            <div className="
-              bg-white rounded-3xl p-10
-              border border-[#222875]/10
-              shadow-[0_20px_50px_rgba(0,0,0,0.08)]
-            ">
+            <div className="interactive-card bg-white rounded-3xl p-10 border border-[#222875]/10 shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
               <h2 className="landing-h2 landing-h2-dark mb-6">
                 Send us a message
               </h2>
@@ -197,7 +193,7 @@ const Contact = () => {
                   <div
                     key={index}
                     className="
-                      flex gap-5 p-6 bg-[#CBEFFF]/40 rounded-2xl
+                      interactive-card flex gap-5 p-6 bg-[#CBEFFF]/40 rounded-2xl
                       border border-[#222875]/10
                       hover:shadow-[0_12px_30px_rgba(34,39,133,0.15)]
                       transition
@@ -211,7 +207,7 @@ const Contact = () => {
                     </div>
                 
                     <div>
-                      <h3 className="landing-h3 landing-h2-dark mb-1">
+                      <h3 className="landing-h3 text-[#222785] mb-1">
                         {info.title}
                       </h3>
                       {info.details.map((detail, idx) => (

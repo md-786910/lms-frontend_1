@@ -154,7 +154,7 @@ const faqData = [
           {plans.map((plan, index) => (
             <Card
               key={index}
-              className={`relative rounded-2xl bg-white/80 backdrop-blur-xl shadow-lg 
+              className={`interactive-card relative rounded-2xl bg-white/80 backdrop-blur-xl shadow-lg 
               transition-all duration-300 hover:shadow-2xl hover:-translate-y-1
               ${plan.popular ? "ring-2 ring-[#4DA3FF] scale-[1.03]" : ""}`}
             >

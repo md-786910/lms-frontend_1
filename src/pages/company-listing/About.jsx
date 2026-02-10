@@ -126,7 +126,7 @@ const About = () => {
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-3xl border border-white/15 bg-white/5 p-6 text-left backdrop-blur">
-              <h3 className="landing-h3 landing-h2-dark">Mission & Vision</h3>
+              <h3 className="landing-h3 text-[#222785]">Mission & Vision</h3>
               <p className="landing-body landing-body-dark mt-4">
                 Mission: Give every learner the tools to master their craft while empowering people teams with the data and workflows they need to lead confidently.
               </p>
@@ -134,8 +134,8 @@ const About = () => {
                 Vision: A world where learning is simple, inspiring, and measurable across every stage of the employee journey.
               </p>
             </div>
-            <div className="rounded-3xl border border-[#CBEFFF]/30 bg-[#CBEFFF]/10 p-6 text-left shadow-2xl">
-              <h3 className="landing-h3 landing-h2-dark">How we stay ahead</h3>
+            <div className="rounded-3xl border border-[#CBEFFF]/30 bg-[#CBEFFF]/10 p-6 text-left shadow-xl">
+              <h3 className="landing-h3 text-[#222785]">How we stay ahead</h3>
               <ul className="mt-4 space-y-3">
                 {reasons.map((reason) => (
                   <li key={reason} className="flex items-start gap-3 text-lg">
@@ -162,9 +162,9 @@ const About = () => {
             {coreFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="group rounded-[32px] border border-white/10 bg-white/5 p-6 transition duration-500 hover:-translate-y-1 hover:border-white/40"
+                className="interactive-card bg-white/5 border-white/10"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#222875] shadow-lg shadow-[#222875]/40">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#222875] shadow-md shadow-[#222875]/40">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 landing-h3 text-[#222785]">{feature.title}</h3>
@@ -213,7 +213,7 @@ const About = () => {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="group rounded-[28px] border border-[#222785]/30 bg-white/5 p-6 transition duration-300 hover:-translate-y-1"
+                className="interactive-card bg-white/5 border-[#222785]/30"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#CBEFFF] text-[#5c9db9]">
                   <value.icon className="h-7 w-7" />
