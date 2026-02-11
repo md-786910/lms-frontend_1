@@ -16,6 +16,13 @@ import { Building2, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { authAPI } from "../api/authapi/authAPI";
 
+const highlightPills = [
+  "Live insights",
+  "Human-centered security",
+  "Curated notifications",
+  "24/7 support",
+];
+
 const Login = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
@@ -92,17 +99,19 @@ const Login = () => {
   };
 
   return (
-    <div className="landing-shell min-h-screen bg-[#eef2ff] text-[#0f172a]">
-      <div className="relative mx-auto flex min-h-screen w-full max-w-[1500px] items-center justify-center overflow-hidden px-4 py-12 md:px-8 lg:px-10">
+    <div className="landing-shell min-h-screen bg-[#CBEFFF] text-[#2D5356]">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-full items-center justify-center overflow-hidden px-4 py-10 md:px-8 lg:px-10">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-28 -right-24 h-80 w-80 rounded-[220px] bg-[#CBEFFF]/40 blur-[140px]" />
-            <div className="absolute bottom-[-60px] left-6 h-[520px] w-[520px] rounded-[260px] bg-white/70 blur-[180px]" />
+            <div className="absolute -top-24 -right-20 h-80 w-80 rounded-[220px] bg-[#222875]/30 blur-[120px]" />
+            <div className="absolute bottom-[-80px] left-8 h-[480px] w-[480px] rounded-[260px] bg-white/70 blur-[160px]" />
+            <div className="absolute top-6 left-10 h-28 w-28 rounded-full border border-white/80 blur-sm" />
+            <div className="absolute bottom-32 right-20 h-32 w-32 rounded-full border border-[#2D5356]/40 bg-transparent" />
           </div>
-        <div className="relative z-10 w-full">
+        <div className="relative z-10 max-w-[1580px] m-auto w-full ">
           <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
             <div className="space-y-6 md:space-y-8">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="floating-badge border-slate-300 text-[#1f2b56] bg-white/80">
+                <span className="floating-badge border-[#2D5356]/40 text-[#2D5356] bg-white/80">
                   Secure Portal
                 </span>
                 <Button
@@ -110,9 +119,10 @@ const Login = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => navigate("/company")}
-                  className="text-[#CBEFFF] bg-[#222875] rounded-full border border-slate-200 px-4 py-4 text-xs font-semibold tracking-[0.35em] shadow-sm shadow-slate-300/40 transition hover:border-[#CBEFFF]"
+                  className="text-[#222875] bg-white/90 rounded-full border border-[#222875] px-4 py-1 text-[10px] uppercase tracking-[0.35em] font-semibold shadow-sm transition hover:border-[#2D5356]"
                 >
-                  <ArrowLeft className="h-4 w-4 " /> Back to site
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to site
                 </Button>
               </div>
               <div className="flex items-center gap-4">
@@ -136,15 +146,11 @@ const Login = () => {
                 power the public marketing site—now behind a secure,
                 industry-grade portal.
               </p>
-              <div className="grid gap-4 md:grid-cols-3">
-                {[
-                  "Live Insights",
-                  "Curated Notifications",
-                  "End-to-end security",
-                ].map((item) => (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {highlightPills.map((item) => (
                   <div
                     key={item}
-                    className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.35em] text-[#5f7be7] shadow-[0_10px_30px_rgba(15,23,42,0.08)]"
+                    className="rounded-2xl border border-[#222875]/30 bg-white/90 px-5 py-4 text-sm font-semibold tracking-wide text-[#222875] shadow-[0_20px_50px_rgba(34,40,117,0.15)]"
                   >
                     {item}
                   </div>
@@ -152,7 +158,7 @@ const Login = () => {
               </div>
             </div>
             <div className="flex justify-center lg:justify-end">
-              <Card className="relative z-10 max-w-lg overflow-hidden rounded-[32px] border border-white/60 bg-white/95 shadow-[0_35px_80px_rgba(15,23,42,0.16)] backdrop-blur">
+              <Card className="relative z-10 max-w-lg overflow-hidden rounded-[36px] border border-white/70 bg-white/95 shadow-[0_45px_90px_rgba(34,40,117,0.18)]">
                 <div className="pointer-events-none absolute inset-0 scale-[1.05] rounded-[32px] bg-white/80 opacity-80" />
                 <div className="relative z-10">
                   <CardHeader className="space-y-1 pb-2">
@@ -169,7 +175,7 @@ const Login = () => {
                       <div className="space-y-2">
                         <Label
                           htmlFor="email"
-                          className="text-sm font-semibold text-[#0f172a]"
+                          className="text-sm font-semibold text-[#2D5356]"
                         >
                           Email
                         </Label>
@@ -193,7 +199,7 @@ const Login = () => {
                       <div className="space-y-2">
                         <Label
                           htmlFor="password"
-                          className="text-sm font-semibold text-[#0f172a]"
+                          className="text-sm font-semibold text-[#2D5356]"
                         >
                           Password
                         </Label>
@@ -240,7 +246,7 @@ const Login = () => {
                       <div className="space-y-4">
                         <Button
                           type="submit"
-                          className="w-full rounded-2xl bg-[#5f7be7] text-white font-semibold h-14"
+                          className="w-full rounded-2xl bg-[#222875] px-6 py-4 text-lg font-semibold text-white shadow-[0_15px_40px_rgba(34,40,117,0.35)] transition hover:bg-[#202898]"
                           disabled={isSubmitting}
                         >
                           {isSubmitting ? "Signing in..." : "Sign in"}
