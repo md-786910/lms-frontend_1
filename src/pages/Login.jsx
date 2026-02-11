@@ -246,8 +246,8 @@ const Login = () => {
                       <div className="space-y-4">
                         <Button
                           type="submit"
-                          className="w-full rounded-2xl bg-[#222875] px-6 py-4 text-lg font-semibold text-white shadow-[0_15px_40px_rgba(34,40,117,0.35)] transition hover:bg-[#202898]"
-                          disabled={isSubmitting}
+                          className="w-full rounded-2xl bg-[#222875] px-6 py-4 text-lg font-semibold text-white shadow-[0_15px_40px_rgba(34,40,117,0.35)] transition hover:bg-[#151e94]"
+                          // disabled={isSubmitting}
                         >
                           {isSubmitting ? "Signing in..." : "Sign in"}
                         </Button>
