@@ -31,6 +31,7 @@ import { authAPI } from "../../api/authapi/authAPI";
 import dayjs from "dayjs";
 import NoDataFound from "../../common/NoDataFound";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
+import { formatLeaveDays } from "../../utility/utility";
 
 const EmployeeDashboard = () => {
   const { updateDashboard } = useSocketContext();
@@ -52,9 +53,9 @@ const EmployeeDashboard = () => {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
   const [greeting, setGreeting] = useState("");
-  const statToneMap = {
-    amber: {
-      accent: "bg-amber-500",
+const statToneMap = {
+  amber: {
+    accent: "bg-amber-500",
       chip: "bg-amber-50 text-amber-700",
       dot: "bg-amber-500",
       iconBg: "bg-amber-100 text-amber-700",
@@ -81,9 +82,15 @@ const EmployeeDashboard = () => {
       accent: "bg-slate-500",
       chip: "bg-slate-100 text-slate-700",
       dot: "bg-slate-500",
-      iconBg: "bg-slate-100 text-slate-700",
-    },
-  };
+    iconBg: "bg-slate-100 text-slate-700",
+  },
+  rose: {
+    accent: "bg-rose-500",
+    chip: "bg-rose-50 text-rose-700",
+    dot: "bg-rose-500",
+    iconBg: "bg-rose-100 text-rose-700",
+  },
+};
   const myLeaveData = [
     {
       id: 1,
@@ -168,6 +175,9 @@ const EmployeeDashboard = () => {
         }
 
         const dashboard = dashboardRes.data?.data || {};
+        const leaveBalanceValue = dashboard.leave_balance ?? 0;
+        const leaveBalanceText = formatLeaveDays(leaveBalanceValue);
+        const leaveBalanceTone = leaveBalanceValue < 0 ? "rose" : "blue";
         const profile = profileRes.data?.data || {};
         const leaves = leaveRes.data?.data || {};
 
@@ -181,10 +191,10 @@ const EmployeeDashboard = () => {
           },
           {
             title: "Leave Balance",
-            value: `${dashboard.leave_balance || 0} days`,
+            value: leaveBalanceText,
             subtitle: "Available this year",
             icon: CalendarIcon,
-            tone: "blue",
+            tone: leaveBalanceTone,
           },
           {
             title: "Current Salary",
@@ -286,6 +296,10 @@ const EmployeeDashboard = () => {
       title: activity.title,
     };
   });
+  const dashboardLeaveBalance = dashboardData?.leave_balance ?? 0;
+  const formattedDashboardBalance = formatLeaveDays(dashboardLeaveBalance);
+  const dashboardBalanceClass =
+    dashboardLeaveBalance < 0 ? "text-rose-200" : "text-emerald-200";
   return (
     <>
       <div className="space-y-8">
@@ -481,8 +495,8 @@ const EmployeeDashboard = () => {
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
                     Leave Balance
                   </p>
-                  <p className="mt-2 text-lg font-semibold">
-                    {dashboardData?.leave_balance || 0} days
+                  <p className={`mt-2 text-lg font-semibold ${dashboardBalanceClass}`}>
+                    {formattedDashboardBalance}
                   </p>
                 </div>
               </div>
