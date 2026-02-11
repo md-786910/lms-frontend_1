@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { employeeLeaveApi } from "../api/employee/leaveApi";
 import { useFormValidation } from "../hooks/useFormValidation";
+import { formatLeaveDays } from "../utility/utility";
 
 const LEAVE = [
   {
@@ -82,6 +83,16 @@ const LeaveRequestModal = ({
   const [dayErrors, setDayErrors] = useState([]);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
+  const availableBalance = leaveCalculate?.leave_remaing ?? 0;
+  const formattedAvailableBalance = formatLeaveDays(availableBalance);
+  const remainingAfterRequest = availableBalance - totalLeaveCount;
+  const formattedRemainingAfterRequest = formatLeaveDays(remainingAfterRequest);
+  const negativeBalanceDrift =
+    remainingAfterRequest < 0 ? Math.abs(remainingAfterRequest) : 0;
+  const availableBalanceClass =
+    availableBalance < 0 ? "text-rose-600" : "text-slate-900";
+  const remainingAfterClass =
+    remainingAfterRequest < 0 ? "text-rose-600" : "text-emerald-700";
 
   const initialValues = {
     leave_type: "",
@@ -630,7 +641,9 @@ const LeaveRequestModal = ({
                       </div>
                       <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
                         <p className="text-xs uppercase tracking-wide text-slate-500">Available Balance</p>
-                        <p className="mt-1 text-base font-semibold text-sky-700">{leaveCalculate?.leave_remaing || 0} days</p>
+                        <p className={`mt-1 text-base font-semibold ${availableBalanceClass}`}>
+                          {formattedAvailableBalance}
+                        </p>
                       </div>
                       <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
                         <p className="text-xs uppercase tracking-wide text-slate-500">Working Days Selected</p>
@@ -643,24 +656,17 @@ const LeaveRequestModal = ({
                         </div>
                       )}
                       {!["pending", "approved"].includes(leaveRequestViewMode?.status) && (
-                        <div className="col-span-2 rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                          <p className="text-xs uppercase tracking-wide text-slate-500">Remaining after request</p>
-                          <p
-                            className={cn(
-                              "mt-1 text-base font-semibold",
-                              leaveCalculate?.leave_remaing - totalLeaveCount < 0
-                                ? "text-red-600"
-                                : "text-emerald-700"
-                            )}
-                          >
-                            {(!readOnly && leaveCalculate?.leave_remaing - totalLeaveCount) || 0} days
-                            {leaveCalculate?.leave_remaing - totalLeaveCount < 0 && (
-                              <span className="ml-2 text-xs font-normal text-red-600">
-                                Insufficient balance
-                              </span>
-                            )}
-                          </p>
-                        </div>
+                      <div className="col-span-2 rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
+                        <p className="text-xs uppercase tracking-wide text-slate-500">Remaining after request</p>
+                        <p className={cn("mt-1 text-base font-semibold", remainingAfterClass)}>
+                          {formattedRemainingAfterRequest}
+                          {remainingAfterRequest < 0 && (
+                            <span className="ml-2 text-xs font-normal text-rose-600">
+                              Drops {formatLeaveDays(negativeBalanceDrift)} below zero
+                            </span>
+                          )}
+                        </p>
+                      </div>
                       )}
                     </div>
 
@@ -703,11 +709,10 @@ const LeaveRequestModal = ({
                   Cancel
                 </Button>
                 {!readOnly && (
-                  <Button
-                    type="submit"
-                    className="bg-[#273C7D] hover:bg-[#1F2F63] text-white px-4 py-2 rounded-xl transition-all duration-200 ease-in-out hover:shadow-lg  shadow-[#273C7D]/30"
-                    disabled={leaveCalculate?.leave_remaing - totalLeaveCount < 0}
-                  >
+                <Button
+                  type="submit"
+                  className="bg-[#273C7D] hover:bg-[#1F2F63] text-white px-4 py-2 rounded-xl transition-all duration-200 ease-in-out hover:shadow-lg  shadow-[#273C7D]/30"
+                >
                     <CalendarPlus className="h-4 w-4" />
                     Submit Request
                   </Button>

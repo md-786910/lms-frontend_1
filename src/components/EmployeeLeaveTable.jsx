@@ -115,12 +115,12 @@ const EmployeeLeaveTable = () => {
   const columnTotals = {};
   columnsToShow.forEach((month) => {
     columnTotals[month] = summaryData.reduce(
-      (sum, emp) => sum + (emp[month] || 0),
+      (sum, emp) => sum + (emp[month] ?? 0),
       0
     );
   });
   const grandTotal = summaryData.reduce(
-    (sum, emp) => sum + (emp.total || 0),
+    (sum, emp) => sum + (emp.total ?? 0),
     0
   );
 
@@ -237,37 +237,47 @@ const EmployeeLeaveTable = () => {
               <TableBody>
                 {summaryData.length > 0 ? (
                   <>
-                    {summaryData.map((employee, index) => (
-                      <TableRow
-                        key={employee.employee_id || index}
-                        className="hover:bg-slate-50"
-                      >
-                        <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10">
-                          {employee.name}
-                        </TableCell>
-                        {columnsToShow.map((month) => (
-                          <TableCell
-                            key={month}
-                            className={`text-center ${
-                              employee[month] > 0
-                                ? "text-orange-600 font-medium"
-                                : "text-slate-400"
-                            }`}
-                          >
-                            {employee[month] || 0}
-                          </TableCell>
-                        ))}
-                        <TableCell
-                          className={`text-center font-semibold bg-blue-50 ${
-                            employee.total > 0
-                              ? "text-blue-700"
-                              : "text-slate-400"
-                          }`}
+                    {summaryData.map((employee, index) => {
+                      const totalValue = employee.total ?? 0;
+                      const totalClass =
+                        totalValue > 0
+                          ? "text-blue-700"
+                          : totalValue < 0
+                          ? "text-rose-600"
+                          : "text-slate-400";
+                      return (
+                        <TableRow
+                          key={employee.employee_id || index}
+                          className="hover:bg-slate-50"
                         >
-                          {employee.total || 0}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10">
+                            {employee.name}
+                          </TableCell>
+                          {columnsToShow.map((month) => {
+                            const monthValue = employee[month] ?? 0;
+                            const monthClass =
+                              monthValue > 0
+                                ? "text-orange-600 font-medium"
+                                : monthValue < 0
+                                ? "text-rose-600 font-medium"
+                                : "text-slate-400";
+                            return (
+                              <TableCell
+                                key={month}
+                                className={`text-center ${monthClass}`}
+                              >
+                                {monthValue}
+                              </TableCell>
+                            );
+                          })}
+                          <TableCell
+                            className={`text-center font-semibold bg-blue-50 ${totalClass}`}
+                          >
+                            {totalValue}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                     {/* Totals Row */}
                     {/* <TableRow className="bg-slate-100 font-semibold border-t-2">
                       <TableCell className="sticky left-0 bg-slate-100 z-10 text-slate-800">
@@ -455,19 +465,33 @@ const EmployeeLeaveTable = () => {
                           </TableCell>
                           {MONTH_KEYS.map((month) => {
                             const total = summaryData.reduce(
-                              (sum, emp) => sum + (emp[month] || 0),
+                              (sum, emp) => sum + (emp[month] ?? 0),
                               0
                             );
+                            const totalClass =
+                              total > 0
+                                ? "text-slate-900"
+                                : total < 0
+                                ? "text-rose-600"
+                                : "text-slate-500";
                             return (
                               <TableCell
                                 key={month}
-                                className="text-center text-slate-700"
+                                className={`text-center ${totalClass}`}
                               >
                                 {total}
                               </TableCell>
                             );
                           })}
-                          <TableCell className="text-center text-blue-700 bg-blue-100">
+                          <TableCell
+                            className={`text-center bg-blue-100 ${
+                              grandTotal > 0
+                                ? "text-blue-700"
+                                : grandTotal < 0
+                                ? "text-rose-600"
+                                : "text-slate-500"
+                            }`}
+                          >
                             {grandTotal}
                           </TableCell>
                         </TableRow>

@@ -15,6 +15,7 @@ import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
 import ConfirmFn from "../../utility/confirmFn";
 import NoDataFound from "../../common/NoDataFound";
+import { formatLeaveDays } from "../../utility/utility";
 import { useSocketContext } from "../../contexts/SocketContext";
 
 const LEAVE_STATUS = {
@@ -30,6 +31,14 @@ const EmployeeLeave = () => {
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [readOnly, setReadOnly] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
+  const totalRemaining = leaveDash?.total_remaining ?? 0;
+  const totalRemainingLabel = formatLeaveDays(totalRemaining);
+  const totalRemainingBadgeClass =
+    totalRemaining < 0
+      ? "bg-rose-50 text-rose-600 border border-rose-100"
+      : "bg-emerald-50 text-emerald-700 border border-emerald-100";
+  const totalRemainingValueClass =
+    totalRemaining < 0 ? "text-rose-500" : "text-slate-900";
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -95,12 +104,14 @@ const EmployeeLeave = () => {
             <p className="max-w-2xl text-sm text-slate-200">
               Track balances, submit requests, and keep approvals flowing with a clear, human-friendly layout.
             </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-200">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-700">
               <span className="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
                 {leaveRequest?.length || 0} active request{leaveRequest?.length !== 1 ? "s" : ""}
               </span>
-              <span className="rounded-full bg-white/10 px-3 py-1 ring-1 ring-white/15">
-                {leaveDash?.total_remaining || 0} days remaining
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${totalRemainingBadgeClass}`}
+              >
+                {totalRemainingLabel} remaining
               </span>
             </div>
           </div>
@@ -135,46 +146,71 @@ const EmployeeLeave = () => {
           </span>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {leaveDash?.leaves?.map((leave, index) => (
-            <div
-              key={index}
-              className="group rounded-2xl border border-slate-100 bg-slate-50/80 p-5 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className="mb-4 flex items-start justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-slate-500">Leave Type</p>
-                  <h4 className="text-lg font-semibold text-slate-900">{leave.leave_type}</h4>
+          {leaveDash?.leaves?.map((leave, index) => {
+            const remainingBalance = leave.leave_remaing ?? 0;
+            const remainingBalanceColor =
+              remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
+            const totalLeaves = leave.leave_count ?? 0;
+            const progressPercent =
+              totalLeaves > 0
+                ? Math.min(
+                    Math.max((remainingBalance / totalLeaves) * 100, 0),
+                    100
+                  )
+                : 0;
+            const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+            const formattedTotal = leave.leave_count ?? 0;
+            return (
+              <div
+                key={index}
+                className="group rounded-2xl border border-slate-100 bg-slate-50/80 p-5 shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <div className="mb-4 flex items-start justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                      Leave Type
+                    </p>
+                    <h4 className="text-lg font-semibold text-slate-900">
+                      {leave.leave_type}
+                    </h4>
+                  </div>
+                  <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
+                    Annual
+                  </span>
                 </div>
-                <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
-                  Annual
-                </span>
+                <div className="space-y-3 text-sm text-slate-600">
+                  <div className="flex justify-between">
+                    <span>Total</span>
+                    <span className="font-semibold text-slate-900">
+                      {formattedTotal} days
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Used</span>
+                    <span className="font-semibold text-amber-600">
+                      {leave.leave_used || 0} days
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Remaining</span>
+                    <span className={`font-semibold ${remainingBalanceColor}`}>
+                      {formattedRemainingBalance}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-4 border-t border-slate-200 pt-4">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                    <div
+                      className="h-2 rounded-full bg-emerald-500 transition-all"
+                      style={{
+                        width: `${progressPercent}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-3 text-sm text-slate-600">
-                <div className="flex justify-between">
-                  <span>Total</span>
-                  <span className="font-semibold text-slate-900">{leave.leave_count || 0} days</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Used</span>
-                  <span className="font-semibold text-amber-600">{leave.leave_used || 0} days</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Remaining</span>
-                  <span className="font-semibold text-emerald-600">{leave.leave_remaing || 0} days</span>
-                </div>
-              </div>
-              <div className="mt-4 border-t border-slate-200 pt-4">
-                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    className="h-2 rounded-full bg-emerald-500 transition-all"
-                    style={{
-                      width: `${((leave.leave_remaing || 0) / leave.leave_count) * 100}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -219,9 +255,8 @@ const EmployeeLeave = () => {
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-wide text-slate-500">Remaining</p>
-                  <p className="text-3xl font-semibold text-slate-900">
-                    {leaveDash?.total_remaining || 0}
-                    <span className="text-sm font-medium text-slate-400"> days</span>
+                  <p className={`text-3xl font-semibold ${totalRemainingValueClass}`}>
+                    {totalRemainingLabel}
                   </p>
                   <p className="text-xs text-slate-500">Available balance</p>
                 </div>

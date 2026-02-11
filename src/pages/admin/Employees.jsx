@@ -41,7 +41,7 @@ import ConfirmationModal from "@/components/ui/ConfirmationModal";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
 import { Label } from "@/components/ui/label";
-import { capitalizeFirstLetter } from "../../utility/utility";
+import { capitalizeFirstLetter, formatLeaveDays } from "../../utility/utility";
 import axiosInstance from "../../api/axiosInstance";
 const Employees = ({
   filterByStatus = [],
@@ -409,6 +409,12 @@ const Employees = ({
             },
             { total: 0, used: 0, remaining: 0 }
           );
+          const remainingBalance = leaveSummary.remaining ?? 0;
+          const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+          const remainingBadgeClass =
+            remainingBalance < 0
+              ? "bg-rose-50 text-rose-700 border border-rose-100"
+              : "bg-emerald-50 text-emerald-700 border border-emerald-100";
           return (
             <Card
               key={employee.id}
@@ -636,8 +642,8 @@ const Employees = ({
                           Leave balance
                         </span>
                         <div className="flex flex-wrap gap-3 text-xs font-semibold">
-                          <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-100">
-                            Remaining: {leaveSummary.remaining}
+                          <Badge className={remainingBadgeClass}>
+                            Remaining: {formattedRemainingBalance}
                           </Badge>
                           <Badge className="bg-amber-50 text-amber-700 border border-amber-100">
                             Used: {leaveSummary.used}
