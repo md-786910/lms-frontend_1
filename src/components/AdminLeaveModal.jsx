@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,6 +58,25 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const sortedEmployees = useMemo(() => {
+    const list = [...employees];
+    const getFullName = (employee) =>
+      `${employee?.first_name ?? ""} ${employee?.last_name ?? ""}`.trim();
+    return list.sort((a, b) => {
+      const nameA = getFullName(a).toLowerCase();
+      const nameB = getFullName(b).toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+  }, [employees]);
+
+  const sortedLeaveTypes = useMemo(() => {
+    const list = [...leaveTypes];
+    return list.sort((a, b) => {
+      const nameA = (a?.leave_type ?? "").toLowerCase();
+      const nameB = (b?.leave_type ?? "").toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+  }, [leaveTypes]);
 
   const initialValues = {
     employee_id: "",
@@ -310,7 +329,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                       <SelectValue placeholder="Choose an employee..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {employees.map((emp) => (
+                      {sortedEmployees.map((emp) => (
                         <SelectItem
                           key={emp.id}
                           value={emp.id.toString()}
@@ -361,7 +380,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         <SelectValue placeholder="Select leave type..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {leaveTypes?.map((type) => (
+                        {sortedLeaveTypes?.map((type) => (
                           <SelectItem
                             key={type?.leave_id}
                             value={type?.leave_id.toString()}
