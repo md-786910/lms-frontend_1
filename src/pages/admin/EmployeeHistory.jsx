@@ -16,6 +16,7 @@ import {
 import NoDataFound from "../../common/NoDataFound";
 import { employeeAPI } from "../../api/employeeApi";
 import { leaveApi } from "../../api/leave/leave";
+import { formatLeaveDays } from "../../utility/utility";
 
 const statusStyles = {
   approved: "bg-emerald-50 text-emerald-700 border border-emerald-100",
@@ -70,7 +71,26 @@ const EmployeeHistory = () => {
           leaveApi.getLeaveRequest("", { employee_id: employeeId }),
         ]);
 
-        setEmployee(employeeResp?.data ?? null);
+        let employeeData = employeeResp?.data ?? null;
+
+        // Fallback: some employee-by-id responses don't include leave balances.
+        // Pull the same enriched object the list view uses (includes employee_leaves)
+        // so totals stay consistent across pages.
+        if (employeeData && !(employeeData.employee_leaves?.length > 0)) {
+          try {
+            const listResp = await employeeAPI.getAll();
+            const fromList = listResp?.data?.find(
+              (emp) => String(emp.id) === String(employeeId)
+            );
+            if (fromList?.employee_leaves?.length) {
+              employeeData = { ...fromList, ...employeeData };
+            }
+          } catch (listErr) {
+            console.warn("Fallback fetch for leave balances failed", listErr);
+          }
+        }
+
+        setEmployee(employeeData);
         setLeaveRecords(leaveResp?.data?.data ?? []);
       } catch (err) {
         console.error(err);
@@ -96,6 +116,38 @@ const EmployeeHistory = () => {
     });
     return Array.from(types);
   }, [leaveRecords]);
+
+  const leaveSummary = useMemo(() => {
+    // Base calculation mirrors the employee card
+    const aggregated = (employee?.employee_leaves ?? []).reduce(
+      (acc, leave) => {
+        acc.total += Number(leave?.leave_count) || 0;
+        acc.used += Number(leave?.leave_used) || 0;
+        acc.remaining += Number(leave?.leave_remaing) || 0;
+        return acc;
+      },
+      { total: 0, used: 0, remaining: 0 }
+    );
+
+    // Live adjustment from the current leave records so the summary reacts
+    // immediately to approve/reject/edit/delete flows.
+    const approvedUsed = leaveRecords.reduce((acc, leave) => {
+      const isApproved = (leave?.status ?? "").toLowerCase() === "approved";
+      return isApproved ? acc + (Number(leave?.total_days) || 0) : acc;
+    }, 0);
+
+    const dynamicUsed = approvedUsed || aggregated.used;
+    const baselineRemaining =
+      aggregated.remaining ?? aggregated.total - aggregated.used;
+    const dynamicRemaining =
+      baselineRemaining - (dynamicUsed - aggregated.used);
+
+    return {
+      total: aggregated.total,
+      used: dynamicUsed,
+      remaining: dynamicRemaining,
+    };
+  }, [employee, leaveRecords]);
 
   const filteredLeaves = useMemo(() => {
     let results = leaveRecords;
@@ -182,6 +234,13 @@ const EmployeeHistory = () => {
     ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim()
     : "Employee";
   const employeeStatusLabel = employee?.is_active ? "Active" : "Inactive";
+  const formattedRemainingBalance = formatLeaveDays(
+    leaveSummary.remaining ?? 0
+  );
+  const remainingBadgeClass =
+    (leaveSummary.remaining ?? 0) < 0
+      ? "border border-rose-100 bg-rose-50 text-rose-700"
+      : "border border-emerald-100 bg-emerald-50 text-emerald-700";
 
   return (
     <div className="space-y-6">
@@ -221,23 +280,78 @@ const EmployeeHistory = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              <Button
-                size="sm"
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={() => navigate("/admin/employees")}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Employees
-              </Button>
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-end justify-end gap-2 text-sm text-slate-500">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  onClick={() => navigate("/admin/employees")}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Employees
+                </Button>
+              </div>
+              {employee && (
+                <div className="flex flex-wrap items-center justify-between gap-3 text-sm px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="text-slate-700 font-semibold">
+                    Leave balance
+                  </span>
+                  <div className="flex flex-wrap gap-3 text-xs font-semibold">
+                    <Badge className={remainingBadgeClass}>
+                      Remaining: {formattedRemainingBalance}
+                    </Badge>
+                    <Badge className="bg-amber-50 text-amber-700 border border-amber-100">
+                      Used: {leaveSummary.used}
+                    </Badge>
+                    <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
+                      Total: {leaveSummary.total}
+                    </Badge>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+          {/* {employee && (
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                Leave summary
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                    Total Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold text-slate-900">
+                    {leaveSummary?.total ?? 0}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-amber-700">
+                    Used Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold text-amber-800">
+                    {leaveSummary?.used ?? 0}
+                  </p>
+                </div>
+                <div
+                  className={`rounded-2xl px-4 py-3 ${remainingBadgeClass}`}
+                >
+                  <p className="text-[11px] uppercase tracking-[0.18em]">
+                    Remaining Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold">
+                    {formattedRemainingBalance}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {error && (
             <div className="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {error}
             </div>
-          )}
+          )} */}
         </CardContent>
       </Card>
 
