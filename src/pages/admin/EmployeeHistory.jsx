@@ -16,6 +16,7 @@ import {
 import NoDataFound from "../../common/NoDataFound";
 import { employeeAPI } from "../../api/employeeApi";
 import { leaveApi } from "../../api/leave/leave";
+import { formatLeaveDays } from "../../utility/utility";
 
 const statusStyles = {
   approved: "bg-emerald-50 text-emerald-700 border border-emerald-100",
@@ -96,6 +97,35 @@ const EmployeeHistory = () => {
     });
     return Array.from(types);
   }, [leaveRecords]);
+
+  const leaveSummary = useMemo(() => {
+    const aggregated = (employee?.employee_leaves ?? []).reduce(
+      (acc, leave) => {
+        acc.total += Number(leave?.leave_count) || 0;
+        acc.used += Number(leave?.leave_used) || 0;
+        acc.remaining += Number(leave?.leave_remaing) || 0;
+        return acc;
+      },
+      { total: 0, used: 0, remaining: 0 }
+    );
+
+    const hasServerData =
+      aggregated.total !== 0 || aggregated.used !== 0 || aggregated.remaining !== 0;
+
+    if (hasServerData) return aggregated;
+
+    // Fallback keeps the summary responsive if leave records update locally
+    const approvedDays = leaveRecords.reduce((acc, leave) => {
+      const isApproved = (leave?.status ?? "").toLowerCase() === "approved";
+      return isApproved ? acc + (Number(leave?.total_days) || 0) : acc;
+    }, 0);
+
+    return {
+      total: aggregated.total || approvedDays,
+      used: aggregated.used || approvedDays,
+      remaining: (aggregated.total || 0) - approvedDays,
+    };
+  }, [employee, leaveRecords]);
 
   const filteredLeaves = useMemo(() => {
     let results = leaveRecords;
@@ -182,6 +212,13 @@ const EmployeeHistory = () => {
     ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim()
     : "Employee";
   const employeeStatusLabel = employee?.is_active ? "Active" : "Inactive";
+  const formattedRemainingBalance = formatLeaveDays(
+    leaveSummary.remaining ?? 0
+  );
+  const remainingBadgeClass =
+    (leaveSummary.remaining ?? 0) < 0
+      ? "border border-rose-100 bg-rose-50 text-rose-700"
+      : "border border-emerald-100 bg-emerald-50 text-emerald-700";
 
   return (
     <div className="space-y-6">
@@ -233,6 +270,41 @@ const EmployeeHistory = () => {
               </Button>
             </div>
           </div>
+          {employee && (
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                Leave summary
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                    Total Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold text-slate-900">
+                    {leaveSummary?.total ?? 0}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-amber-700">
+                    Used Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold text-amber-800">
+                    {leaveSummary?.used ?? 0}
+                  </p>
+                </div>
+                <div
+                  className={`rounded-2xl px-4 py-3 ${remainingBadgeClass}`}
+                >
+                  <p className="text-[11px] uppercase tracking-[0.18em]">
+                    Remaining Leave
+                  </p>
+                  <p className="mt-1 text-xl font-semibold">
+                    {formattedRemainingBalance}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {error && (
             <div className="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {error}
