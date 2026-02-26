@@ -53,6 +53,7 @@ const EmployeeHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
 
   useEffect(() => {
     if (!employeeId) {
@@ -149,6 +150,52 @@ const EmployeeHistory = () => {
     };
   }, [employee, leaveRecords]);
 
+  const monthOptions = useMemo(() => {
+    // Collect all relevant dates we care about (start/end/applied/updated)
+    const dateCandidates = leaveRecords.flatMap((leave) => [
+      leave?.start_date,
+      leave?.end_date,
+      leave?.createdAt,
+      leave?.updatedAt,
+    ]);
+
+    const validDates = dateCandidates
+      .map((d) => dayjs(d))
+      .filter((d) => d.isValid());
+
+    // Fallback to current month when no records
+    if (!validDates.length) {
+      return [dayjs().format("YYYY-MM")];
+    }
+
+    const minMonth = dayjs(
+      Math.min(...validDates.map((d) => d.startOf("month").valueOf()))
+    );
+    const maxMonth = dayjs(
+      Math.max(...validDates.map((d) => d.startOf("month").valueOf()))
+    );
+
+    const rangeMonths = [];
+    let cursor = maxMonth.startOf("month"); // start from latest
+    const end = minMonth.startOf("month");
+
+    // Walk backwards to include every month in the range (no gaps)
+    while (cursor.isAfter(end) || cursor.isSame(end)) {
+      rangeMonths.push(cursor.format("YYYY-MM"));
+      cursor = cursor.subtract(1, "month");
+    }
+
+    // Always include the last 12 calendar months so users can pre-filter
+    const lastTwelve = Array.from({ length: 12 }, (_, idx) =>
+      dayjs().startOf("month").subtract(idx, "month").format("YYYY-MM")
+    );
+
+    // Merge & de-duplicate, keeping latest-first order
+    const merged = Array.from(new Set([...rangeMonths, ...lastTwelve]));
+
+    return merged;
+  }, [leaveRecords]);
+
   const filteredLeaves = useMemo(() => {
     let results = leaveRecords;
 
@@ -166,6 +213,18 @@ const EmployeeHistory = () => {
           (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
           normalizedTypeFilter
       );
+    }
+
+    if (monthFilter !== "all") {
+      results = results.filter((leave) => {
+        const dateMatches = [leave?.start_date, leave?.end_date, leave?.createdAt, leave?.updatedAt].some(
+          (dateValue) =>
+            dateValue &&
+            dayjs(dateValue).isValid() &&
+            dayjs(dateValue).format("YYYY-MM") === monthFilter
+        );
+        return dateMatches;
+      });
     }
 
     const normalizedSearch = searchTerm?.trim().toLowerCase();
@@ -198,7 +257,7 @@ const EmployeeHistory = () => {
     }
 
     return results;
-  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter]);
+  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter, monthFilter]);
 
   const sortedLeaves = useMemo(() => {
     return [...filteredLeaves].sort((a, b) => {
@@ -389,7 +448,7 @@ const EmployeeHistory = () => {
             </p>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-4">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <Input
@@ -399,6 +458,23 @@ const EmployeeHistory = () => {
                 className="pl-10 h-11"
               />
             </div>
+
+            <Select
+              value={monthFilter}
+              onValueChange={(value) => setMonthFilter(value)}
+            >
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="Month" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All months</SelectItem>
+                {monthOptions.map((month) => (
+                  <SelectItem key={month} value={month}>
+                    {dayjs(month).format("MMM YYYY")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <Select
               value={statusFilter}
