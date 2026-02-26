@@ -119,7 +119,7 @@ const Login = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => navigate("/company")}
-                  className="text-[#222875] bg-white/90 rounded-full border border-[#222875] px-4 py-1 text-[10px] uppercase tracking-[0.35em] font-semibold shadow-sm transition hover:border-[#2D5356]"
+                  className="text-[#222875] bg-white/90 rounded-full border border-[#222875] px-4 py-1 text-[10px] capitalize tracking-[0.35em] font-semibold shadow-sm transition hover:border-[#2D5356]"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Back to site
@@ -130,7 +130,7 @@ const Login = () => {
                   <Building2 className="h-6 w-6 text-[#5f7be7]" />
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.5em] text-[#111743]">
+                  <p className="text-xs capitalize tracking-[0.5em] text-[#111743]">
                     Leanport HR
                   </p>
                   <p className="text-sm text-slate-500">
@@ -254,7 +254,7 @@ const Login = () => {
                         <div className="text-center">
                           <button
                             type="button"
-                            className="text-sm font-semibold uppercase tracking-[0.35em] text-[#222875] hover:text-[#1b1b68]"
+                            className="text-sm font-semibold capitalize tracking-[0.35em] text-[#222875] hover:text-[#1b1b68]"
                             onClick={() => navigate("/forgot-password")}
                           >
                             Forgot password?

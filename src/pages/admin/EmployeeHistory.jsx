@@ -252,7 +252,7 @@ const EmployeeHistory = () => {
                 {getInitials(employee)}
               </div>
               <div className="space-y-1">
-                <p className="text-[15px] uppercase tracking-[0.15em] text-slate-500">
+                <p className="text-[15px] capitalize tracking-[0.15em] text-slate-500">
                   Employee history
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
@@ -314,12 +314,12 @@ const EmployeeHistory = () => {
           </div>
           {/* {employee && (
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-xs font-semibold capitalize tracking-[0.2em] text-slate-500">
                 Leave summary
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                  <p className="text-[11px] capitalize tracking-[0.18em] text-slate-500">
                     Total Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold text-slate-900">
@@ -327,7 +327,7 @@ const EmployeeHistory = () => {
                   </p>
                 </div>
                 <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-amber-700">
+                  <p className="text-[11px] capitalize tracking-[0.18em] text-amber-700">
                     Used Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold text-amber-800">
@@ -337,7 +337,7 @@ const EmployeeHistory = () => {
                 <div
                   className={`rounded-2xl px-4 py-3 ${remainingBadgeClass}`}
                 >
-                  <p className="text-[11px] uppercase tracking-[0.18em]">
+                  <p className="text-[11px] capitalize tracking-[0.18em]">
                     Remaining Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -369,7 +369,7 @@ const EmployeeHistory = () => {
               key={item.label}
               className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3"
             >
-              <p className="text-lg uppercase tracking-[0.15em] text-slate-400">
+              <p className="text-lg capitalize tracking-[0.15em] text-slate-400">
                 {item.label}
               </p>
               <p className="text-2xl font-semibold text-slate-900">
@@ -489,7 +489,7 @@ const EmployeeHistory = () => {
                               statusStyles.other
                             }
                           >
-                            {leave?.status?.charAt(0).toUpperCase() + leave?.status?.slice(1)}
+                            {leave?.status?.charAt(0).tocapitalize() + leave?.status?.slice(1)}
                           </Badge>
                         </div>
                         <p className="text-xs text-slate-500">
@@ -509,7 +509,7 @@ const EmployeeHistory = () => {
                   >
                     {/* Leave Type */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Leave type
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -519,7 +519,7 @@ const EmployeeHistory = () => {
                   
                     {/* Duration */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Duration
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -530,7 +530,7 @@ const EmployeeHistory = () => {
                   
                     {/* Days */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Days
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -541,7 +541,7 @@ const EmployeeHistory = () => {
                   
                     {/* Applied */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Applied
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -552,7 +552,7 @@ const EmployeeHistory = () => {
                     {/* Approved */}
                     {leave.status === "approved" && (
                       <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                        <p className="text-xs uppercase tracking-[0.25em] text-emerald-600">
+                        <p className="text-xs capitalize tracking-[0.25em] text-emerald-600">
                           Approved
                         </p>
                         <p className="mt-1 font-semibold text-slate-900">
@@ -564,7 +564,7 @@ const EmployeeHistory = () => {
                   
                   {/* ===== Reason ===== */}
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-400">
+                    <p className="text-xs capitalize tracking-[0.25em] text-slate-400">
                       Reason
                     </p>
                     <p className="mt-2 text-sm text-slate-900">

@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Edit3, Trash2 } from "lucide-react";
+import { Plus, Edit3, Trash2, BookA } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import NoDataFound from "../../common/NoDataFound";
 import ConfirmFn from "../../utility/confirmFn";
@@ -115,7 +115,7 @@ function Designations({ value }) {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Badge className="h-5 w-5" />
+            <BookA className="h-5 w-5" />
             <span>Designation Management</span>
           </CardTitle>
         </CardHeader>

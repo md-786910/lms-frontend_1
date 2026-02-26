@@ -116,7 +116,7 @@ const Salary = () => {
       {/* Header */}
       <div className="rounded-2xl border border-slate-200 bg-white/80 shadow-sm backdrop-blur-sm p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Payroll</p>
+          <p className="text-xs capitalize tracking-[0.2em] text-slate-500">Payroll</p>
           <h1 className="text-3xl font-semibold text-slate-900">
             Salary &amp; Payroll
           </h1>

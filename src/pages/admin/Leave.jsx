@@ -159,9 +159,6 @@ const Leave = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 bg-white border border-slate-200 rounded-xl px-5 py-4 shadow-sm">
         <div className="space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 font-semibold">
-            Leave workspace
-          </p>
           <div className="flex flex-wrap flex-col items-baseline gap-2">
             <h1 className="text-2xl font-semibold text-slate-900">
               Leave Management
@@ -174,14 +171,14 @@ const Leave = () => {
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
-            className="border-slate-200 text-slate-800 hover:bg-slate-50"
+            className="border-slate-200 text-slate-800 hover:bg-slate-50 capitalize"
             onClick={() => setShowLeavePolicyModal(true)}
           >
             <Filter className="h-4 w-4 mr-2" />
             Leave policy
           </Button>
           <Button
-            className="bg-slate-900 text-white hover:bg-slate-800 shadow-sm"
+            className="bg-slate-900 text-white hover:bg-slate-800 shadow-sm capitalize"
             onClick={() => setShowCreateLeaveModal(true)}
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -226,19 +223,29 @@ const Leave = () => {
                             : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
                         }`}
                       >
-                        {/* Leave Type */}
+                        {/* Applied */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                          <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
-                            Leave type
+                          <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
+                            Applied
                           </p>
                           <p className="font-semibold text-slate-900">
-                            {request.leave_type?.leave_type}
+                            {dayjs(request?.createdAt).format("D MMM YYYY")}
                           </p>
                         </div>
-                      
+
+                        {/* Days */}
+                        <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
+                          <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
+                            Days
+                          </p>
+                          <p className="font-semibold text-slate-900">
+                            {request?.total_days} days
+                          </p>
+                        </div>
+
                         {/* Duration */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                          <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
+                          <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
                             Duration
                           </p>
                           <p className="font-semibold text-slate-900">
@@ -246,31 +253,21 @@ const Leave = () => {
                             {dayjs(request?.end_date).format("D MMM YYYY")}
                           </p>
                         </div>
-                      
-                        {/* Days */}
+
+                        {/* Leave Type */}
                         <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                          <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
-                            Days
+                          <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
+                            Leave type
                           </p>
                           <p className="font-semibold text-slate-900">
-                            {request?.total_days} days
+                            {request.leave_type?.leave_type}
                           </p>
                         </div>
-                      
-                        {/* Applied */}
-                        <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                          <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
-                            Applied
-                          </p>
-                          <p className="font-semibold text-slate-900">
-                            {dayjs(request?.createdAt).format("D MMM YYYY")}
-                          </p>
-                        </div>
-                      
+                        
                         {/* Approved (only when status is approved) */}
                         {request?.status === "approved" && (
                           <div className="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                            <p className="text-xs uppercase tracking-[0.08em] text-emerald-600 font-semibold">
+                            <p className="text-xs capitalize tracking-[0.08em] text-emerald-600 font-semibold">
                               Approved
                             </p>
                             <p className="font-semibold text-slate-900">
@@ -280,7 +277,7 @@ const Leave = () => {
                         )}
                       </div>
                       <div className="p-3 rounded-lg border border-slate-200 bg-white">
-                        <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
+                        <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
                           Reason
                         </p>
                         <p className="text-sm text-slate-800 mt-1">
@@ -356,38 +353,6 @@ const Leave = () => {
                         </div>
                       )}
 
-                      <Tooltip delayDuration={100}>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-slate-600 px-2">
-                            <Eye className="h-4 w-4 mr-2" />
-                            View dates
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          side="left"
-                          align="center"
-                          className="text-xs"
-                        >
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead>Date</TableHead>
-                                <TableHead>ID</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody className="max-h-36 w-full overflow-y-auto block">
-                              {JSON.parse(request?.leave_on)?.map((log) => (
-                                <TableRow key={log.date} className="grid grid-cols-2">
-                                  <TableCell className="font-medium">
-                                    {dayjs(log?.date).format("D MMM YYYY")}
-                                  </TableCell>
-                                  <TableCell>{log?.id || "-"}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TooltipContent>
-                      </Tooltip>
                     </div>
                   </div>
                 </CardContent>
@@ -399,11 +364,11 @@ const Leave = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-4 sticky top-20 self-start z-40">
+        <div className="space-y-4 sticky top-20 self-start">
           <Card className="border-slate-200 shadow-sm rounded-xl">
             <CardContent className="p-5 space-y-4">
-              <p className="text-sm font-semibold text-slate-800">Overview</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-3">
+              <p className="text-sm font-semibold text-slate-800 capitalize">Overview</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-3 ">
                 {[
                   {
                     label: "Pending requests",
@@ -437,7 +402,7 @@ const Leave = () => {
                       className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-3 bg-white"
                     >
                       <div>
-                        <p className="text-xs uppercase tracking-[0.08em] text-slate-500 font-semibold">
+                        <p className="text-xs capitalize tracking-[0.08em] text-slate-500 font-semibold">
                           {item.label}
                         </p>
                         <p className="text-xl font-semibold text-slate-900">
@@ -464,7 +429,7 @@ const Leave = () => {
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-slate-800">Filters</p>
                 <p className="text-xs text-slate-500">
-                  {filteredRequestCount} request
+                  {filteredRequestCount} Request
                   {filteredRequestCount !== 1 ? "s" : ""}
                 </p>
               </div>
@@ -489,7 +454,7 @@ const Leave = () => {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All status</SelectItem>
+                    <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="approved">Approved</SelectItem>
                     <SelectItem value="rejected">Rejected</SelectItem>
@@ -506,7 +471,7 @@ const Leave = () => {
                     <SelectValue placeholder="Leave type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={0}>All types</SelectItem>
+                    <SelectItem value={0}>All Types</SelectItem>
                     {leavePolicy?.map((policy) => (
                       <SelectItem key={policy.id} value={policy.id}>
                         {policy?.type}

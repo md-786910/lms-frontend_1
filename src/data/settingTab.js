@@ -1,11 +1,11 @@
 import {
   Building2,
   CalendarClock,
-  Coins,
+  IndianRupee,
   FolderTree,
   Hash,
-  IdCard,
-  LayoutGrid,
+  BookA,
+  UsersRound,
 } from "lucide-react";
 
 const settingTabs = [
@@ -21,7 +21,7 @@ const settingTabs = [
     name: "Currency",
     link: "/admin/settings/currency",
     description: "Default currency, symbols",
-    icon: Coins,
+    icon: IndianRupee,
   },
   {
     id: "prefix",
@@ -35,14 +35,14 @@ const settingTabs = [
     name: "Departments",
     link: "/admin/settings/departments",
     description: "Organizational structure and teams",
-    icon: LayoutGrid,
+    icon: UsersRound,
   },
   {
     id: "designations",
     name: "Designations",
     link: "/admin/settings/designations",
     description: "Role taxonomy and title governance",
-    icon: IdCard,
+    icon: BookA,
   },
   {
     id: "leave",

@@ -246,7 +246,7 @@ const Home = () => {
           <div className="absolute inset-0 bg-black/30"></div>
           <div className="relative max-w-[1580px] mx-auto grid gap-10 lg:grid-cols-2 z-10">
             <div className="space-y-6">
-              <div className="rounded-full bg-[#FFFFFF1A] px-4 py-2 text-xs uppercase tracking-[0.4em] text-[#CBEFFF] inline">
+              <div className="rounded-full bg-[#FFFFFF1A] px-4 py-2 text-xs capitalize tracking-[0.4em] text-[#CBEFFF] inline">
                 Human-first HRMS
               </div>
               <h1 className="landing-h1 pb-2">
@@ -286,7 +286,7 @@ const Home = () => {
               <p>Optimised for hybrid teams and global payroll.</p>
             </div>
             <div className="rounded-2xl bg-white/10 p-5 text-sm">
-              <p className="text-xs uppercase tracking-[0.3em] text-white/60">Live support</p>
+              <p className="text-xs capitalize tracking-[0.3em] text-white/60">Live support</p>
               <p className="text-lg font-semibold mt-2">Response in under 2 minutes.</p>
             </div>
           </div>

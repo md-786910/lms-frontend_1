@@ -57,7 +57,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 text-[#1f2b56]">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center rounded-full bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-[0.5em] text-[#222875] shadow-sm shadow-[#222875]/20">
+          <div className="inline-flex items-center justify-center rounded-full bg-white/80 px-4 py-1 text-xs font-semibold capitalize tracking-[0.5em] text-[#222875] shadow-sm shadow-[#222875]/20">
             Leanport HR
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-[#222875] to-[#2D5356] bg-clip-text text-transparent">
@@ -121,7 +121,7 @@ const ForgotPassword = () => {
               <div className="text-center">
                 <Button
                   variant="link"
-                  className="text-xs font-semibold uppercase tracking-[0.5em] text-[#222875]"
+                  className="text-xs font-semibold capitalize tracking-[0.5em] text-[#222875]"
                   onClick={() => navigate("/login")}
                 >
                   Back to Login
@@ -130,7 +130,7 @@ const ForgotPassword = () => {
             </form>
           </CardContent>
 
-          <div className="border-t border-white/40 px-6 pb-6 pt-4 text-center text-xs uppercase tracking-[0.4em] text-[#2D5356]">
+          <div className="border-t border-white/40 px-6 pb-6 pt-4 text-center text-xs capitalize tracking-[0.4em] text-[#2D5356]">
             <span>Secure Portal • SOC 2 • 24/7 Support</span>
           </div>
         </Card>

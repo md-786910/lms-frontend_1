@@ -239,7 +239,7 @@ const EmployeeLayout = () => {
                 <Menu className="h-5 w-5" />
               </Button>
               <div>
-                <p className="text-[11px] uppercase tracking-[0.25em] text-slate-500">
+                <p className="text-[11px] capitalize tracking-[0.25em] text-slate-500">
                   Employee area
                 </p>
                 <h1 className="text-lg font-semibold leading-tight text-slate-900">

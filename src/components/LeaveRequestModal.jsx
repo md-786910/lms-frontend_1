@@ -352,7 +352,7 @@ const LeaveRequestModal = ({
                   <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                     <div className="flex items-center gap-2 text-slate-800">
                       <User className="h-4 w-4 text-sky-600" />
-                      <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                      <span className="text-sm font-semibold capitalize tracking-wide text-slate-500">
                         Leave Details
                       </span>
                     </div>
@@ -503,7 +503,7 @@ const LeaveRequestModal = ({
                     <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                       <div className="flex items-center gap-2 text-slate-800">
                         <Clock className="h-4 w-4 text-sky-600" />
-                        <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                        <span className="text-sm font-semibold capitalize tracking-wide text-slate-500">
                           Day-by-day duration
                         </span>
                       </div>
@@ -566,7 +566,7 @@ const LeaveRequestModal = ({
                 <div className="rounded-2xl border border-slate-100 bg-white/80 shadow-sm backdrop-blur">
                   <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 text-slate-800">
                     <FileText className="h-4 w-4 text-sky-600" />
-                    <span className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                    <span className="text-sm font-semibold capitalize tracking-wide text-slate-500">
                       Context & coverage
                     </span>
                   </div>
@@ -636,28 +636,28 @@ const LeaveRequestModal = ({
                   <div className="space-y-4 px-5 py-5">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                        <p className="text-xs uppercase tracking-wide text-slate-500">Leave Type</p>
+                        <p className="text-xs capitalize tracking-wide text-slate-500">Leave Type</p>
                         <p className="mt-1 text-base font-semibold text-slate-900">{leaveCalculate?.leave_type || "-"}</p>
                       </div>
                       <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                        <p className="text-xs uppercase tracking-wide text-slate-500">Available Balance</p>
+                        <p className="text-xs capitalize tracking-wide text-slate-500">Available Balance</p>
                         <p className={`mt-1 text-base font-semibold ${availableBalanceClass}`}>
                           {formattedAvailableBalance}
                         </p>
                       </div>
                       <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                        <p className="text-xs uppercase tracking-wide text-slate-500">Working Days Selected</p>
+                        <p className="text-xs capitalize tracking-wide text-slate-500">Working Days Selected</p>
                         <p className="mt-1 text-base font-semibold text-slate-900">{dayCount || 0}</p>
                       </div>
                       {!["approved"].includes(leaveRequestViewMode?.status) && (
                         <div className="rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                          <p className="text-xs uppercase tracking-wide text-slate-500">Leave Count</p>
+                          <p className="text-xs capitalize tracking-wide text-slate-500">Leave Count</p>
                           <p className="mt-1 text-base font-semibold text-indigo-700">{totalLeaveCount || 0}</p>
                         </div>
                       )}
                       {!["pending", "approved"].includes(leaveRequestViewMode?.status) && (
                       <div className="col-span-2 rounded-xl border border-slate-100 bg-white px-3 py-3 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.55)]">
-                        <p className="text-xs uppercase tracking-wide text-slate-500">Remaining after request</p>
+                        <p className="text-xs capitalize tracking-wide text-slate-500">Remaining after request</p>
                         <p className={cn("mt-1 text-base font-semibold", remainingAfterClass)}>
                           {formattedRemainingAfterRequest}
                           {remainingAfterRequest < 0 && (

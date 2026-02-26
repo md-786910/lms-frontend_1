@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import "react-quill/dist/quill.snow.css";
 import {
-  Calendar,
+  CalendarClock,
   Settings as SettingsIcon,
   Plus,
   Edit3,
@@ -91,7 +91,7 @@ function Leave({ value }) {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5" />
+            <CalendarClock className="h-5 w-5" />
             <span>Leave Policy Management</span>
           </CardTitle>
         </CardHeader>
