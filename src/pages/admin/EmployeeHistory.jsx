@@ -355,42 +355,35 @@ const EmployeeHistory = () => {
   return (
     <div className="space-y-6 pb-10">
       {/* Header Card */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
-        <div className="h-24 bg-gradient-to-r from-slate-900 to-slate-800" />
-        <CardContent className="relative -mt-12 p-6 pt-0">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="flex items-end gap-6">
-              <div className="flex h-32 w-32 items-center justify-center rounded-3xl bg-white border-4 border-white shadow-xl text-slate-900 font-bold text-4xl overflow-hidden">
-                {employee?.profile ? (
-                  <img src={employee.profile} className="h-full w-full object-cover" />
-                ) : getInitials(employee)}
-              </div>
-              <div className="pb-2 space-y-1">
+      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+          <CardContent className="p-5 md:p-7">
+            <div className="grid grid-cols-12 items-center gap-4">
+              <div className="col-span-12 md:col-span-8 space-y-2">
                 <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold text-slate-900">{employeeName}</h1>
-                  <Badge className={employee?.is_active ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
+                  <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{employeeName}</h1>
+                  <Badge className={employee?.is_active ? "bg-emerald-100 font-montserrat text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
                     {employee?.is_active ? "Active" : "Inactive"}
                   </Badge>
                 </div>
-                <p className="text-slate-500 font-medium">
+                <p className="text-[#FFFFFF] font-medium text-xl font-montserrat">
                   {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
                 </p>
-                <p className="text-xs text-slate-400 font-mono tracking-wider">{employee?.employee_no}</p>
+                <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
+              </div>
+              <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
+                <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  <span>Back to Employees</span> 
+                </div>
               </div>
             </div>
-            <div className="pb-2">
-              <Button variant="outline" onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200">
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Employees
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
       {/* Main Tabs */}
       <Card className="borderborder-emerald-50 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/50 pb-7">
             <TabsList className="flex flex-wrap gap-3 bg-transparent p-0">
               {[
                 { id: "basic", label: "Basic Info", icon: User },
@@ -404,9 +397,9 @@ const EmployeeHistory = () => {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
+                  className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-montserrat data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-emerald-100 text-[#222785] group-data-[state=active]:border-transparent group-data-[state=active]:bg-white group-data-[state=active]:text-slate-900">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] group-data-[state=active]:border-transparent group-data-[state=active]:bg-[#e2e8f0] group-data-[state=active]:text-[#047857]">
                     <tab.icon className="h-4 w-4" />
                   </span>
                   {tab.label}
@@ -415,7 +408,7 @@ const EmployeeHistory = () => {
             </TabsList>
           </div>
 
-          <div className="p-6">
+          <div className="p-4">
             <TabsContent value="basic" className="mt-0">
               <BasicInfoForm ref={basicInfoRef} initialValues={basicInfo} onChange={setBasicInfo} departments={departments} designations={designations} />
             </TabsContent>
