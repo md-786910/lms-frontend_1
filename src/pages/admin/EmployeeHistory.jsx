@@ -464,7 +464,7 @@ const EmployeeHistory = () => {
               </div>
 
               <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
+                <div className="relative flex-1 border-none outline-none">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input placeholder="Search leaves..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 h-11" />
                 </div>
@@ -491,7 +491,7 @@ const EmployeeHistory = () => {
               ) : (
                 <div className="space-y-4">
                   {filteredLeaves.map((leave) => (
-                    <div key={leave.id} className="p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <div key={leave.id} className="p-5 rounded-2xl border border-emerald-50 bg-white shadow-sm transition-shadow">
                       <div className="flex flex-col lg:flex-row justify-between gap-4">
                         <div className="flex items-center gap-4">
                           <div className={`h-12 w-12 rounded-xl flex items-center justify-center text-lg ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
