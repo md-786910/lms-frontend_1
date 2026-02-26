@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CloudCog, Save } from "lucide-react";
+import { CloudCog, Save, IndianRupee } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -85,6 +85,7 @@ function Currency() {
     <Card className="border-0 shadow-md">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
+          <IndianRupee className="h-5 w-5" />
           <span>Currency Settings</span>
         </CardTitle>
       </CardHeader>

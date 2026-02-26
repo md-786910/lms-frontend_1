@@ -80,7 +80,7 @@ const ResetPassword = () => {
               <div className="relative overflow-hidden lg:col-span-2 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 text-white p-8">
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,#ffffff,transparent_35%),radial-gradient(circle_at_80%_0%,#a5b4fc,transparent_30%)]" />
                 <div className="relative space-y-6">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase ring-1 ring-white/25">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide capitalize ring-1 ring-white/25">
                     <span className="h-2 w-2 rounded-full bg-emerald-300" />
                     Secure reset
                   </div>
@@ -115,7 +115,7 @@ const ResetPassword = () => {
               <div className="lg:col-span-3 p-8 lg:p-10 space-y-6 bg-white rounded-b-2xl lg:rounded-r-2xl lg:rounded-bl-none">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-indigo-600">Step 2 of 3</p>
+                    <p className="text-xs font-semibold capitalize tracking-[0.08em] text-indigo-600">Step 2 of 3</p>
                     <div>
                       <h2 className="text-2xl font-semibold text-slate-900">Set a new password</h2>
                       <p className="text-sm text-slate-500">Choose a unique passphrase to secure your employee account.</p>

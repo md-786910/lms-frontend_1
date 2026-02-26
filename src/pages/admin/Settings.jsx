@@ -23,35 +23,6 @@ const Settings = ({ children }) => {
                 Changes apply instantly across admin experiences.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.35em]">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                Admin only
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1">
-                <Sparkles className="h-3.5 w-3.5" />
-                Live updates
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 min-w-[240px]">
-            <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 shadow-inner backdrop-blur">
-              <p className="text-[11px] uppercase tracking-[0.35em] text-slate-200">
-                Sections
-              </p>
-              <p className="text-2xl font-semibold leading-tight">
-                {settingTabs.length}
-              </p>
-              <p className="text-xs text-slate-200/80">Configuration areas</p>
-            </div>
-            <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 shadow-inner backdrop-blur">
-              <p className="text-[11px] uppercase tracking-[0.35em] text-slate-200">
-                Status
-              </p>
-              <p className="text-2xl font-semibold leading-tight">Active</p>
-              <p className="text-xs text-slate-200/80">Settings synced</p>
-            </div>
           </div>
         </div>
       </div>
@@ -68,9 +39,6 @@ const Settings = ({ children }) => {
                 Pick a section below. Your current selection stays highlighted while you work through the form.
               </p>
             </div>
-            <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-              System settings
-            </span>
           </div>
 
           <div className="p-2 sm:p-6">

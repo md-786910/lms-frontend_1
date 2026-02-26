@@ -235,7 +235,7 @@ const Profile = ({ readOnly = false }) => {
   return (
     <div className="space-y-8 pb-10">
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.45em] text-slate-400">
+        <p className="text-xs font-semibold capitalize tracking-[0.45em] text-slate-400">
           Team Member Profile
         </p>
         <div>
@@ -271,11 +271,11 @@ const Profile = ({ readOnly = false }) => {
                   )}
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.5em] text-slate-400 dark:text-slate-500">
+                  <p className="text-[11px] capitalize tracking-[0.5em] text-slate-400 dark:text-slate-500">
                     Profile snapshot
                   </p>
                   <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">{fullName}</h2>
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">
+                  <p className="text-xs font-semibold capitalize tracking-[0.35em] text-slate-500 dark:text-slate-400">
                     {designationTitle}
                   </p>
                 </div>
@@ -321,7 +321,7 @@ const Profile = ({ readOnly = false }) => {
           <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400 dark:text-slate-500">
+                <p className="text-[11px] capitalize tracking-[0.45em] text-slate-400 dark:text-slate-500">
                   Contact info
                 </p>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Stay connected</h3>
@@ -338,7 +338,7 @@ const Profile = ({ readOnly = false }) => {
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{item.label}</p>
+                    <p className="text-[10px] capitalize tracking-[0.4em] text-slate-400">{item.label}</p>
                     <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.value}</p>
                   </div>
                 </div>
@@ -354,7 +354,7 @@ const Profile = ({ readOnly = false }) => {
                 <User className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400">Profile sections</p>
+                <p className="text-[11px] capitalize tracking-[0.45em] text-slate-400">Profile sections</p>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Personal details</h3>
               </div>
             </div>
@@ -394,7 +394,7 @@ const Profile = ({ readOnly = false }) => {
                 <Briefcase className="h-5 w-5" />
               </div>
             <div>
-              <p className="text-[11px] uppercase tracking-[0.45em] text-slate-400">Work information</p>
+              <p className="text-[11px] capitalize tracking-[0.45em] text-slate-400">Work information</p>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Employment snapshot</h3>
             </div>
           </div>
@@ -410,7 +410,7 @@ const Profile = ({ readOnly = false }) => {
                   {stat.icon}
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">{stat.label}</p>
+                  <p className="text-[10px] capitalize tracking-[0.4em] text-slate-400">{stat.label}</p>
                   <p className="text-lg font-semibold text-slate-900 dark:text-white">{stat.value}</p>
                 </div>
               </div>

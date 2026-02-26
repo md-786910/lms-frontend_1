@@ -173,6 +173,7 @@ const App = () => {
                       path="templates"
                       element={<Templates value="comp" />}
                     />
+                    <Route path="reset-password" element={<div />} />
                   </Route>
                   <Route index element={<Navigate to="dashboard" replace />} />
                 </Route>

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import "react-quill/dist/quill.snow.css";
-import { Settings as SettingsIcon, Save } from "lucide-react";
+import { Settings as SettingsIcon, Save, Hash } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
 function Prefix({ value }) {
@@ -89,7 +89,7 @@ function Prefix({ value }) {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <SettingsIcon className="h-5 w-5" />
+            <Hash className="h-5 w-5" />
             <span>Prefix Settings</span>
           </CardTitle>
         </CardHeader>

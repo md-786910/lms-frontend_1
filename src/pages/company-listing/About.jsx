@@ -81,7 +81,7 @@ const About = () => {
           <div className="absolute bottom-0 right-6 h-40 w-40 rounded-[140px] bg-white/5 blur-3xl" />
         </div>
         <div className="relative z-10 mx-auto max-w-[1580px] gap-8">
-          <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.5em] text-[#CBEFFF]">
+          <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs capitalize tracking-[0.5em] text-[#CBEFFF]">
             Leave Management System
           </div>
           <div className="mt-10 flex flex-col items-center gap-6 text-center">
@@ -107,7 +107,7 @@ const About = () => {
               {stats.map((stat) => (
                 <div key={stat.label} className="rounded-2xl border border-white/20 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:bg-white/10">
                   <p className="text-3xl font-bold text-white">{stat.value}</p>
-                  <p className="text-xs uppercase tracking-[0.4em] text-[#CBEFFF]">{stat.label}</p>
+                  <p className="text-xs capitalize tracking-[0.4em] text-[#CBEFFF]">{stat.label}</p>
                 </div>
               ))}
             </div>

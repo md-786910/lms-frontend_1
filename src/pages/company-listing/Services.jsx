@@ -94,7 +94,7 @@ const servicePillars = [
         <div className="max-w-[1580px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
           {/* LEFT: CONTENT (LARGE) */}
           <div className="lg:col-span-8 space-y-6">
-            <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.5em] text-[#CBEFFF]">
+            <div className="inline rounded-full border border-white/30 px-4 py-2 text-xs capitalize tracking-[0.5em] text-[#CBEFFF]">
               Service Management
             </div>
             <h1 className="landing-h1">

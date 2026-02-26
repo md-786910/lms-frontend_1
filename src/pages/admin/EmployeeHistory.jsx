@@ -53,6 +53,7 @@ const EmployeeHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
 
   useEffect(() => {
     if (!employeeId) {
@@ -149,6 +150,52 @@ const EmployeeHistory = () => {
     };
   }, [employee, leaveRecords]);
 
+  const monthOptions = useMemo(() => {
+    // Collect all relevant dates we care about (start/end/applied/updated)
+    const dateCandidates = leaveRecords.flatMap((leave) => [
+      leave?.start_date,
+      leave?.end_date,
+      leave?.createdAt,
+      leave?.updatedAt,
+    ]);
+
+    const validDates = dateCandidates
+      .map((d) => dayjs(d))
+      .filter((d) => d.isValid());
+
+    // Fallback to current month when no records
+    if (!validDates.length) {
+      return [dayjs().format("YYYY-MM")];
+    }
+
+    const minMonth = dayjs(
+      Math.min(...validDates.map((d) => d.startOf("month").valueOf()))
+    );
+    const maxMonth = dayjs(
+      Math.max(...validDates.map((d) => d.startOf("month").valueOf()))
+    );
+
+    const rangeMonths = [];
+    let cursor = maxMonth.startOf("month"); // start from latest
+    const end = minMonth.startOf("month");
+
+    // Walk backwards to include every month in the range (no gaps)
+    while (cursor.isAfter(end) || cursor.isSame(end)) {
+      rangeMonths.push(cursor.format("YYYY-MM"));
+      cursor = cursor.subtract(1, "month");
+    }
+
+    // Always include the last 12 calendar months so users can pre-filter
+    const lastTwelve = Array.from({ length: 12 }, (_, idx) =>
+      dayjs().startOf("month").subtract(idx, "month").format("YYYY-MM")
+    );
+
+    // Merge & de-duplicate, keeping latest-first order
+    const merged = Array.from(new Set([...rangeMonths, ...lastTwelve]));
+
+    return merged;
+  }, [leaveRecords]);
+
   const filteredLeaves = useMemo(() => {
     let results = leaveRecords;
 
@@ -166,6 +213,18 @@ const EmployeeHistory = () => {
           (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
           normalizedTypeFilter
       );
+    }
+
+    if (monthFilter !== "all") {
+      results = results.filter((leave) => {
+        const dateMatches = [leave?.start_date, leave?.end_date, leave?.createdAt, leave?.updatedAt].some(
+          (dateValue) =>
+            dateValue &&
+            dayjs(dateValue).isValid() &&
+            dayjs(dateValue).format("YYYY-MM") === monthFilter
+        );
+        return dateMatches;
+      });
     }
 
     const normalizedSearch = searchTerm?.trim().toLowerCase();
@@ -198,7 +257,7 @@ const EmployeeHistory = () => {
     }
 
     return results;
-  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter]);
+  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter, monthFilter]);
 
   const sortedLeaves = useMemo(() => {
     return [...filteredLeaves].sort((a, b) => {
@@ -252,7 +311,7 @@ const EmployeeHistory = () => {
                 {getInitials(employee)}
               </div>
               <div className="space-y-1">
-                <p className="text-[15px] uppercase tracking-[0.15em] text-slate-500">
+                <p className="text-[15px] capitalize tracking-[0.15em] text-slate-500">
                   Employee history
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
@@ -314,12 +373,12 @@ const EmployeeHistory = () => {
           </div>
           {/* {employee && (
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-xs font-semibold capitalize tracking-[0.2em] text-slate-500">
                 Leave summary
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                  <p className="text-[11px] capitalize tracking-[0.18em] text-slate-500">
                     Total Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold text-slate-900">
@@ -327,7 +386,7 @@ const EmployeeHistory = () => {
                   </p>
                 </div>
                 <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-amber-700">
+                  <p className="text-[11px] capitalize tracking-[0.18em] text-amber-700">
                     Used Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold text-amber-800">
@@ -337,7 +396,7 @@ const EmployeeHistory = () => {
                 <div
                   className={`rounded-2xl px-4 py-3 ${remainingBadgeClass}`}
                 >
-                  <p className="text-[11px] uppercase tracking-[0.18em]">
+                  <p className="text-[11px] capitalize tracking-[0.18em]">
                     Remaining Leave
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -369,7 +428,7 @@ const EmployeeHistory = () => {
               key={item.label}
               className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3"
             >
-              <p className="text-lg uppercase tracking-[0.15em] text-slate-400">
+              <p className="text-lg capitalize tracking-[0.15em] text-slate-400">
                 {item.label}
               </p>
               <p className="text-2xl font-semibold text-slate-900">
@@ -389,7 +448,7 @@ const EmployeeHistory = () => {
             </p>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-4">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <Input
@@ -399,6 +458,23 @@ const EmployeeHistory = () => {
                 className="pl-10 h-11"
               />
             </div>
+
+            <Select
+              value={monthFilter}
+              onValueChange={(value) => setMonthFilter(value)}
+            >
+              <SelectTrigger className="w-full h-11">
+                <SelectValue placeholder="Month" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All months</SelectItem>
+                {monthOptions.map((month) => (
+                  <SelectItem key={month} value={month}>
+                    {dayjs(month).format("MMM YYYY")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <Select
               value={statusFilter}
@@ -509,7 +585,7 @@ const EmployeeHistory = () => {
                   >
                     {/* Leave Type */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Leave type
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -519,7 +595,7 @@ const EmployeeHistory = () => {
                   
                     {/* Duration */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Duration
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -530,7 +606,7 @@ const EmployeeHistory = () => {
                   
                     {/* Days */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Days
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -541,7 +617,7 @@ const EmployeeHistory = () => {
                   
                     {/* Applied */}
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
                         Applied
                       </p>
                       <p className="mt-1 font-semibold text-slate-900">
@@ -552,7 +628,7 @@ const EmployeeHistory = () => {
                     {/* Approved */}
                     {leave.status === "approved" && (
                       <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                        <p className="text-xs uppercase tracking-[0.25em] text-emerald-600">
+                        <p className="text-xs capitalize tracking-[0.25em] text-emerald-600">
                           Approved
                         </p>
                         <p className="mt-1 font-semibold text-slate-900">
@@ -564,7 +640,7 @@ const EmployeeHistory = () => {
                   
                   {/* ===== Reason ===== */}
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-400">
+                    <p className="text-xs capitalize tracking-[0.25em] text-slate-400">
                       Reason
                     </p>
                     <p className="mt-2 text-sm text-slate-900">

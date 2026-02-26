@@ -9,6 +9,7 @@ import {
   Plus,
   Edit3,
   Trash2,
+  FolderTree
 } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import confirmFn from "../../utility/confirmFn";
@@ -99,7 +100,7 @@ function Documents({ value }) {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Users className="h-5 w-5" />
+            <FolderTree className="h-5 w-5" />
             <span>Document Management</span>
           </CardTitle>
         </CardHeader>

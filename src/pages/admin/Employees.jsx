@@ -273,7 +273,7 @@ const Employees = ({
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3 max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-sm">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 People Operations
               </span>
@@ -314,7 +314,7 @@ const Employees = ({
                 className="border border-white/10 bg-white/10 text-white shadow-lg rounded-md backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
               >
                 <CardContent className="p-4 space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-200">
+                  <p className="text-[11px] font-semibold capitalize tracking-[0.18em] text-slate-200">
                     {stat.label}
                   </p>
                   <p className="text-3xl font-bold leading-tight text-white">
@@ -442,7 +442,7 @@ const Employees = ({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl uppercase">
+                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize">
                           {avatarLoadingId === employee.id ? (
                             <Loader2 className="animate-spin" />
                           ) : (

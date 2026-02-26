@@ -94,7 +94,7 @@ const EmployeeLeave = () => {
       <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-[#111827] px-6 py-7 shadow-xl text-white">
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-white/15">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold capitalize tracking-wider text-blue-100 ring-1 ring-white/15">
               <Calendar className="h-4 w-4" />
               Leave workspace
             </p>
@@ -167,7 +167,7 @@ const EmployeeLeave = () => {
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                    <p className="text-xs capitalize tracking-wide text-slate-500">
                       Leave Type
                     </p>
                     <h4 className="text-lg font-semibold text-slate-900">
@@ -224,7 +224,7 @@ const EmployeeLeave = () => {
                   <CheckCircle className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">Total Approved</p>
+                  <p className="text-xs capitalize tracking-wide text-slate-500">Total Approved</p>
                   <p className="text-3xl font-semibold text-slate-900">
                     {leaveDash?.total_approved || 0}
                     <span className="text-sm font-medium text-slate-400"> days</span>
@@ -239,7 +239,7 @@ const EmployeeLeave = () => {
                   <Clock className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">Pending</p>
+                  <p className="text-xs capitalize tracking-wide text-slate-500">Pending</p>
                   <p className="text-3xl font-semibold text-slate-900">
                     {leaveDash?.total_pending || 0}
                     <span className="text-sm font-medium text-slate-400"> days</span>
@@ -254,7 +254,7 @@ const EmployeeLeave = () => {
                   <CalendarDays className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">Remaining</p>
+                  <p className="text-xs capitalize tracking-wide text-slate-500">Remaining</p>
                   <p className={`text-3xl font-semibold ${totalRemainingValueClass}`}>
                     {totalRemainingLabel}
                   </p>
@@ -286,7 +286,7 @@ const EmployeeLeave = () => {
               className="my-3 flex flex-col gap-6 rounded-2xl border border-slate-100 bg-slate-50/60 p-6 shadow-[0_6px_20px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-lg lg:flex-row lg:items-center lg:justify-between"
             >
               <div className="flex flex-col gap-3">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 ring-1 ring-slate-200">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold capitalize tracking-wider text-slate-700 ring-1 ring-slate-200">
                   <span>{request.type}</span>
                   <Badge
                     className={`${getStatusColor(
@@ -300,7 +300,7 @@ const EmployeeLeave = () => {
                   </Badge>
                 </div>
                 <div className="mt-1">
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-[11px] font-semibold capitalize tracking-wide text-slate-500">
                     Duration
                   </p>
                   <p className="text-base font-semibold text-slate-900">
@@ -323,12 +323,12 @@ const EmployeeLeave = () => {
                 </div>
               </div>
               <div className="flex-1 rounded-xl bg-white p-4 ring-1 ring-slate-100 lg:px-6">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Reason</p>
+                <p className="text-[11px] font-semibold capitalize tracking-wide text-slate-500">Reason</p>
                 <p className="mt-1 text-sm font-medium text-slate-700">{request.reason}</p>
               </div>
               <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-[11px] font-semibold capitalize tracking-wide text-slate-500">
                     Applied Date
                   </p>
                   <p className="text-sm font-semibold text-slate-900">

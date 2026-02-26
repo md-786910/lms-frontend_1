@@ -172,7 +172,7 @@ const Salary = () => {
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_12%_18%,rgba(59,130,246,0.25),transparent_22%),radial-gradient(circle_at_82%_8%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_60%_88%,rgba(99,102,241,0.18),transparent_22%)]" />
         <div className="relative p-6 md:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-3 max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-100 shadow-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               Payroll Center
             </span>

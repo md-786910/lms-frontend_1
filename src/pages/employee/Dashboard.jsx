@@ -432,7 +432,7 @@ const statToneMap = {
           <CardContent className="p-6 md:p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
-                <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
+                <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit capitalize tracking-wide">
                   Active Employee
                 </Badge>
                 <div className="space-y-2">
@@ -468,7 +468,7 @@ const statToneMap = {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px]">
                 <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-xs capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Employee ID
                   </p>
                   <p className="mt-2 text-lg font-semibold">
@@ -476,7 +476,7 @@ const statToneMap = {
                   </p>
                 </div>
                 <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-xs capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Department
                   </p>
                   <p className="mt-2 text-lg font-semibold">
@@ -484,7 +484,7 @@ const statToneMap = {
                   </p>
                 </div>
                 <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-xs capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Position
                   </p>
                   <p className="mt-2 text-lg font-semibold">
@@ -492,7 +492,7 @@ const statToneMap = {
                   </p>
                 </div>
                 <div className="rounded-2xl bg-white/10 border border-white/10 p-3 shadow-sm">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-xs capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Leave Balance
                   </p>
                   <p className={`mt-2 text-lg font-semibold ${dashboardBalanceClass}`}>
@@ -516,7 +516,7 @@ const statToneMap = {
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
-                      <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${palette.chip}`}>
+                      <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize tracking-wide ${palette.chip}`}>
                         <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
                         {stat.subtitle}
                       </span>
@@ -582,7 +582,7 @@ const statToneMap = {
               <div className="lg:col-span-3 p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    <p className="text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-500">
                       Today
                     </p>
                     <h4 className="text-lg font-semibold text-slate-900">
@@ -684,7 +684,7 @@ const statToneMap = {
                         <p className="text-xs text-slate-500">
                           {activity.title}
                         </p>
-                        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                        <p className="text-[11px] font-semibold capitalize tracking-wide text-slate-400">
                           {dayjs(activity.createdAt).fromNow()}
                         </p>
                       </div>
@@ -722,10 +722,10 @@ const statToneMap = {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Name
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600 text-right">
+                      <th className="py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600 text-right">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -786,10 +786,10 @@ const statToneMap = {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="text-left py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="text-left py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Name
                       </th>
-                      <th className="text-right py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="text-right py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Total Leave (Days)
                       </th>
                     </tr>

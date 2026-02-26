@@ -309,7 +309,7 @@ const AdminDashboard = () => {
                             {getTitle()}
                           </p>
                           <span
-                            className={`inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${palette.badge} border border-transparent`}
+                            className={`inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold capitalize tracking-wide ${palette.badge} border border-transparent`}
                           >
                             New
                           </span>
@@ -350,9 +350,10 @@ const AdminDashboard = () => {
           <CardContent className="p-5 md:p-7">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               <div className="space-y-4 max-w-2xl">
-                <Badge className="bg-white/10 text-white border border-white/20 font-semibold rounded-full px-3 py-1 shadow-sm w-fit uppercase tracking-wide">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   Admin Workspace
-                </Badge>
+                </span>
                 <div className="space-y-2">
                   <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
                     Welcome back, Admin!
@@ -388,7 +389,7 @@ const AdminDashboard = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:min-w-[340px] w-auto">
                 <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-[11px] capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Total employees
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -396,7 +397,7 @@ const AdminDashboard = () => {
                   </p>
                 </div>
                 <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-[11px] capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     On leave today
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -404,7 +405,7 @@ const AdminDashboard = () => {
                   </p>
                 </div>
                 <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-[11px] capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Active employees
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -412,7 +413,7 @@ const AdminDashboard = () => {
                   </p>
                 </div>
                 <div className="rounded-md bg-white/10 border border-white/15 px-4 py-2 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-200 font-semibold">
+                  <p className="text-[11px] capitalize tracking-[0.2em] text-slate-200 font-semibold">
                     Pending leave
                   </p>
                   <p className="mt-1 text-xl font-semibold">
@@ -439,7 +440,7 @@ const AdminDashboard = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
                       <span
-                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide ${palette.chip}`}
+                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize tracking-wide ${palette.chip}`}
                       >
                         <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
                         Live metric
@@ -465,21 +466,22 @@ const AdminDashboard = () => {
 
         <Card className="border border-slate-200 shadow-sm">
           <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-2xl md:flex-row md:items-center md:justify-between">
-            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
-              <CalendarIcon className="h-5 w-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize">
+              <CalendarIcon className="h-5 w-5 text-primary " />
               Pending leave requests
             </CardTitle>
             <Button
               size="sm"
               variant="outline"
               onClick={() => navigate("/admin/leave")}
+              className="capitalize"
             >
               View all
             </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             {pendingLeaveRequests.length === 0 ? (
-              <div className="py-8 text-center text-sm text-slate-500">
+              <div className="py-8 text-center text-sm text-slate-500 ">
                 No pending leave requests at the moment.
               </div>
             ) : (
@@ -490,7 +492,7 @@ const AdminDashboard = () => {
                     className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-sm font-semibold uppercase text-white">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-sm font-semibold capitalize text-white">
                         {request.employee?.first_name?.[0]}
                         {request.employee?.last_name?.[0]}
                       </div>
@@ -515,7 +517,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2 text-right">
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-700">
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-amber-700">
                         Pending
                       </span>
                       <p className="text-[11px] text-slate-500">
@@ -581,9 +583,6 @@ const AdminDashboard = () => {
                 <div className="p-6 space-y-4 bg-slate-50">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                        Selected Date
-                      </p>
                       <h4 className="text-lg font-semibold text-slate-900">
                         {selectedDate
                           ? format(selectedDate, "EEEE, dd MMMM")
@@ -698,10 +697,10 @@ const AdminDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600 text-right">
+                      <th className="py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600 text-right">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -791,10 +790,10 @@ const AdminDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="text-left py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="text-left py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="text-right py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      <th className="text-right py-3 px-4 text-xs font-semibold capitalize tracking-wide text-slate-600">
                         Total Leave (Days)
                       </th>
                     </tr>
