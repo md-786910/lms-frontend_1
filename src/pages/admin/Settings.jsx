@@ -24,19 +24,6 @@ const Settings = ({ children }) => {
               </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 gap-3 min-w-[240px]">
-            <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 shadow-inner backdrop-blur">
-              <p className="text-2xl font-semibold leading-tight">
-                {settingTabs.length}
-              </p>
-              <p className="text-xs text-slate-200/80">Configuration areas</p>
-            </div>
-            <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 shadow-inner backdrop-blur">
-              <p className="text-2xl font-semibold leading-tight">Active</p>
-              <p className="text-xs text-slate-200/80">Settings synced</p>
-            </div>
-          </div>
         </div>
       </div>
 

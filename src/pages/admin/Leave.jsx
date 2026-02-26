@@ -322,7 +322,7 @@ const Leave = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="text-red-600 border-red-200 hover:bg-red-50"
+                            className="text-gray-600 border-red-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
                             onClick={async () => {
                               ConfirmFn({
                                 onDelete: async () => {

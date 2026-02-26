@@ -489,7 +489,7 @@ const EmployeeHistory = () => {
                               statusStyles.other
                             }
                           >
-                            {leave?.status?.charAt(0).tocapitalize() + leave?.status?.slice(1)}
+                            {leave?.status?.charAt(0).toUpperCase() + leave?.status?.slice(1)}
                           </Badge>
                         </div>
                         <p className="text-xs text-slate-500">
