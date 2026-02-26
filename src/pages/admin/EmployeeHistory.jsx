@@ -388,7 +388,7 @@ const EmployeeHistory = () => {
       </Card>
 
       {/* Main Tabs */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
+      <Card className="borderborder-emerald-50 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
             <TabsList className="flex flex-wrap gap-3 bg-transparent p-0">
@@ -406,7 +406,7 @@ const EmployeeHistory = () => {
                   value={tab.id}
                   className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-500 group-data-[state=active]:border-transparent group-data-[state=active]:bg-white group-data-[state=active]:text-slate-900">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-emerald-100 text-[#222785] group-data-[state=active]:border-transparent group-data-[state=active]:bg-white group-data-[state=active]:text-slate-900">
                     <tab.icon className="h-4 w-4" />
                   </span>
                   {tab.label}
@@ -466,17 +466,26 @@ const EmployeeHistory = () => {
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1 border-none outline-none">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                  <Input placeholder="Search leaves..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 h-11" />
+                  <Input
+                    placeholder="Search leaves..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100"
+                  />
                 </div>
                 <Select value={monthFilter} onValueChange={setMonthFilter}>
-                  <SelectTrigger className="w-40 h-11"><SelectValue placeholder="Month" /></SelectTrigger>
+                  <SelectTrigger className="w-40 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Months</SelectItem>
                     {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
                   </SelectContent>
                 </Select>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-40 h-11"><SelectValue placeholder="Status" /></SelectTrigger>
+                  <SelectTrigger className="w-40 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="approved">Approved</SelectItem>
