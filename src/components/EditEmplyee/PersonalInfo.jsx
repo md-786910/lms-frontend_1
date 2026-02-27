@@ -57,7 +57,7 @@ const PersonalInfoForm = forwardRef(
       <div className="space-y-4 p-4 border rounded-md shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="emergency_contact_person">
+            <Label htmlFor="emergency_contact_person" className="font-montserrat text-base">
               Emergency Contact Name
             </Label>
             <Input
@@ -76,7 +76,7 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div>
-            <Label htmlFor="emergency_contact_number">
+            <Label htmlFor="emergency_contact_number" className="font-montserrat text-base">
               Emergency Contact Phone
             </Label>
             <Input
@@ -95,7 +95,7 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div>
-            <Label htmlFor="emergency_contact_relationship">Relationship</Label>
+            <Label htmlFor="emergency_contact_relationship" className="font-montserrat text-base">Relationship</Label>
             <Input
               id="emergency_contact_relationship"
               name="emergency_contact_relationship"
@@ -112,13 +112,13 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div>
-            <Label htmlFor="blood_group">Blood Group *</Label>
+            <Label htmlFor="blood_group" className="font-montserrat text-base">Blood Group *</Label>
             <Select
               value={values.blood_group}
               onValueChange={(value) => setFieldValue("blood_group", value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select blood group" />
+                <SelectValue placeholder="Select blood group"  className="font-montserrat text-base"/>
               </SelectTrigger>
               <SelectContent>
                 {BLOOD_GROUPS.map((group) => (
@@ -137,7 +137,7 @@ const PersonalInfoForm = forwardRef(
         {/* Additional Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="epf_no">EPF Number</Label>
+            <Label htmlFor="epf_no" className="font-montserrat text-base">EPF Number</Label>
             <Input
               id="epf_no"
               name="epf_no"
@@ -151,7 +151,7 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div>
-            <Label htmlFor="pan_no">PAN Number</Label>
+            <Label htmlFor="pan_no" className="font-montserrat text-base">PAN Number</Label>
             <Input
               id="pan_no"
               name="pan_no"
@@ -166,7 +166,7 @@ const PersonalInfoForm = forwardRef(
         </div>
 
         <div>
-          <Label htmlFor="medical_conditions">Medical Conditions</Label>
+          <Label htmlFor="medical_conditions" className="font-montserrat text-base">Medical Conditions</Label>
           <Textarea
             id="medical_conditions"
             name="medical_conditions"
@@ -177,7 +177,7 @@ const PersonalInfoForm = forwardRef(
         </div>
 
         <div>
-          <Label htmlFor="hobbies">Hobbies & Interests</Label>
+          <Label htmlFor="hobbies" className="font-montserrat text-base">Hobbies & Interests</Label>
           <Textarea
             id="hobbies"
             name="hobbies"

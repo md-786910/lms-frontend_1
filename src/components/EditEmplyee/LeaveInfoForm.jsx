@@ -89,7 +89,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                   <div className="text-sm font-semibold text-slate-700">
                     {leave_type}
                   </div>
-                  <div className="text-xs text-slate-500 flex flex-wrap gap-3 mt-1">
+                  <div className="text-xs text-slate-500 flex flex-wrap gap-3 mt-1 font-montserrat">
                     <span>
                       Total Annual leave: <strong>{leave_count}</strong> days
                     </span>
@@ -112,7 +112,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
             <div className="flex items-center gap-6">
               {["available", "booked"].map((field) => (
                 <div key={field} className="text-center">
-                  <div className="text-xs text-slate-500 font-medium capitalize mb-1">
+                  <div className="text-xs text-slate-500 font-medium capitalize mb-1 font-montserrat">
                     {field}
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-full shadow-sm border">
@@ -138,7 +138,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                       +
                     </button> */}
                   </div>
-                  <div className="text-[12px] text-slate-400 mt-1">days</div>
+                  <div className="text-[12px] text-slate-400 mt-1 font-montserrat">days</div>
                 </div>
               ))}
             </div>

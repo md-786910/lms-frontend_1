@@ -36,9 +36,9 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
 
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-sm">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-montserrat">
         <div>
-          <Label htmlFor="street">Street Address *</Label>
+          <Label htmlFor="street" className="font-montserrat">Street Address *</Label>
           <Input
             id="street"
             name="street"
@@ -52,7 +52,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="city">City *</Label>
+          <Label htmlFor="city" className="font-montserrat">City *</Label>
           <Input
             id="city"
             name="city"
@@ -66,7 +66,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="state">State *</Label>
+          <Label htmlFor="state" className="font-montserrat">State *</Label>
           <Input
             id="state"
             name="state"
@@ -80,7 +80,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="zip_code">ZIP Code *</Label>
+          <Label htmlFor="zip_code" className="font-montserrat">ZIP Code *</Label>
           <Input
             id="zip_code"
             name="zip_code"
@@ -94,7 +94,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             ))}
         </div>
         <div>
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor="country" className="font-montserrat">Country</Label>
           <Input
             id="country"
             name="country"
@@ -110,7 +110,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
       </div>
 
       <div>
-        <Label htmlFor="permanent_address">Permanent Address</Label>
+        <Label htmlFor="permanent_address" className="font-montserrat">Permanent Address</Label>
         <Textarea
           id="permanent_address"
           name="permanent_address"

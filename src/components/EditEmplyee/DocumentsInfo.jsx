@@ -94,7 +94,7 @@ const DocumentsForm = ({
         <div className="space-y-1">
           <Label
             htmlFor="docType"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-gray-700 font-montserrat"
           >
             Document Type *
           </Label>
@@ -102,7 +102,7 @@ const DocumentsForm = ({
             value={selectedType}
             onValueChange={(value) => setSelectedType(value)}
           >
-            <SelectTrigger className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm">
+            <SelectTrigger className="w-full border-gray-300 font-montserrat focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm">
               <SelectValue placeholder="Select document type" />
             </SelectTrigger>
             <SelectContent>
@@ -119,7 +119,7 @@ const DocumentsForm = ({
         <div className="space-y-1">
           <Label
             htmlFor="docFile"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-gray-700 font-montserrat"
           >
             Upload File{" "}
             <span className="text-xs text-gray-500">(PDF, JPG, PNG)</span> *
@@ -138,7 +138,7 @@ const DocumentsForm = ({
           <Button
             type="button"
             onClick={handleAddDocument}
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
           >
             + Add Document
           </Button>
@@ -148,7 +148,7 @@ const DocumentsForm = ({
       {/* Unsaved Files */}
       {Array.isArray(documents) && documents.some((doc) => doc.isPending) && (
         <div className="space-y-4 mt-10">
-          <h3 className="text-lg font-semibold text-yellow-700 border-b pb-1">
+          <h3 className="text-lg font-semibold text-yellow-700 border-b pb-1 font-montserrat">
             Unsaved Files
           </h3>
           {documents
@@ -167,7 +167,7 @@ const DocumentsForm = ({
                   <div className="space-y-2">
                     <div className="text-sm font-medium text-yellow-900 flex items-center gap-2">
                       {index + 1}. {docType}
-                      <span className="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded">
+                      <span className="bg-yellow-200 font-montserrat text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded">
                         Pending
                       </span>
                     </div>
@@ -192,7 +192,7 @@ const DocumentsForm = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="mt-4 md:mt-0 border-red-500 text-red-600 hover:bg-red-50"
+                    className="mt-4 md:mt-0 border-red-500 text-red-600 hover:bg-red-50 font-montserrat"
                     onClick={() => handleDeleteDocument(doc)}
                   >
                     Remove
@@ -206,7 +206,7 @@ const DocumentsForm = ({
       {/* Uploaded Documents */}
       {Array.isArray(documents) && documents.some((doc) => !doc.isPending) && (
         <div className="space-y-4 mt-10">
-          <h3 className="text-lg font-semibold text-gray-700 border-b pb-1">
+          <h3 className="text-lg font-semibold text-gray-700 border-b pb-1 font-montserrat">
             Uploaded Documents
           </h3>
           {documents

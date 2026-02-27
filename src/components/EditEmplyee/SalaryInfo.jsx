@@ -126,15 +126,15 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
     <div className="space-y-6">
       {/* === Salary Summary === */}
       <div className="bg-gray-50 rounded-lg border p-5 shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Salary Summary</h3>
+        <h3 className="text-lg font-semibold font-montserrat mb-4">Salary Summary</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-base font-medium">
-          <div>
+          <div className="font-montserrat">
             Gross Earnings:{" "}
             <span className="text-gray-800">
               ₹{values.salary_with_allowance || 0}
             </span>
           </div>
-          <div>
+          <div className="font-montserrat">
             Total Deductions:{" "}
             <span className="text-gray-800">
               ₹{values.total_deduction_allowance || 0}
@@ -142,20 +142,20 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
           </div>
           <div
             className={
-              values.payable_salary < 0 ? "text-red-600" : "text-green-600"
+              values.payable_salary < 0 ? "text-red-600 font-montserrat" : "text-green-600 font-montserrat"
             }
           >
             Net Payable: ₹{values.payable_salary || 0}
           </div>
         </div>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-1 font-montserrat">
           Amount in words: ({numberToWords(values?.payable_salary || 0)})
         </p>
       </div>
 
       {/* === Earnings Section === */}
       <div className="rounded-lg border p-5 bg-white shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Earnings</h3>
+        <h3 className="text-lg font-semibold mb-4 font-montserrat">Earnings</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             ["base_salary", "Base Salary *"],
@@ -164,7 +164,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
             ["hra", "HRA"],
           ].map(([field, label]) => (
             <div key={field}>
-              <Label htmlFor={field}>{label}</Label>
+              <Label htmlFor={field} className="font-montserrat text-base">{label}</Label>
               <Input
                 id={field}
                 name={field}
@@ -172,6 +172,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                 value={values[field]}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                className="font-montserrat"
               />
               {touched[field] && errors[field] && (
                 <p className="text-red-500 text-sm">{errors[field]}</p>
@@ -183,10 +184,10 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
 
       {/* === Deductions Section === */}
       <div className="rounded-lg border p-5 bg-white shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Deductions</h3>
+        <h3 className="text-lg font-semibold mb-4 font-montserrat">Deductions</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="is_epf_applicable">Is EPF Applicable?</Label>
+            <Label htmlFor="is_epf_applicable" className="font-montserrat text-base">Is EPF Applicable?</Label>
             <Select
               value={values.is_epf_applicable ? "true" : "false"}
               onValueChange={(value) =>
@@ -194,7 +195,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select EPF applicability" />
+                <SelectValue placeholder="Select EPF applicability" className="font-montserrat text-base"/>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="true">Yes</SelectItem>
@@ -214,7 +215,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                 ["epf_admin", "EPF Admin"],
               ].map(([field, label]) => (
                 <div key={field}>
-                  <Label htmlFor={field}>{label}</Label>
+                  <Label htmlFor={field} className="font-montserrat text-base">{label}</Label>
                   <Input
                     id={field}
                     name={field}
@@ -222,6 +223,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                     value={values[field]}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    className="font-montserrat"
                   />
                   {touched[field] && errors[field] && (
                     <p className="text-red-500 text-sm">{errors[field]}</p>
@@ -235,7 +237,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
 
       {/* === Summary Section === */}
       <div className="rounded-lg border p-5 bg-gray-50 shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Summary</h3>
+        <h3 className="text-lg font-semibold mb-4 font-montserrat">Summary</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             ["total_allowance", "Total Allowance"],
@@ -244,8 +246,8 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
             ["payable_salary", "Payable Salary"],
           ].map(([field, label]) => (
             <div key={field}>
-              <Label>{label}</Label>
-              <Input value={values[field]} readOnly />
+              <Label className="font-montserrat text-base">{label}</Label>
+              <Input value={values[field]} readOnly className="font-montserrat" />
             </div>
           ))}
         </div>
@@ -253,7 +255,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
 
       {/* === Payment Details === */}
       <div className="rounded-lg border p-5 bg-white shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Payment Details</h3>
+        <h3 className="text-lg font-semibold mb-4 font-montserrat">Payment Details</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             ["bank_account_number", "Bank Account Number"],
@@ -262,7 +264,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
             ["upi_number", "UPI Number"],
           ].map(([field, label]) => (
             <div key={field}>
-              <Label htmlFor={field}>{label}</Label>
+              <Label htmlFor={field} className="font-montserrat text-base">{label}</Label>
               <Input
                 id={field}
                 name={field}
@@ -270,6 +272,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                 value={values[field]}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                className="font-montserrat"
               />
               {touched[field] && errors[field] && (
                 <p className="text-red-500 text-sm">{errors[field]}</p>

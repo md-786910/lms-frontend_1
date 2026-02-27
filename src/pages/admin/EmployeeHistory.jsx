@@ -371,7 +371,7 @@ const EmployeeHistory = () => {
                 <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
               </div>
               <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-                <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition">
+                <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   <span>Back to Employees</span> 
                 </div>
@@ -523,9 +523,9 @@ const EmployeeHistory = () => {
 
           {/* Action Bar (Sticky at bottom if needed, but here simple) */}
           {activeTab !== "history" && (
-            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3">
-              <Button variant="outline" onClick={() => setHit(Math.random())} disabled={saveLoading}>Reset Changes</Button>
-              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px]">
+            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-montserrat">
+              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
+              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat">
                 {saveLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Save Changes
               </Button>
