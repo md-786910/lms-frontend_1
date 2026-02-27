@@ -381,7 +381,7 @@ const EmployeeHistory = () => {
         </Card>
 
       {/* Main Tabs */}
-      <Card className="borderborder-emerald-50 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
+      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/50 pb-7">
             <TabsList className="flex flex-wrap gap-3 bg-transparent p-0">
@@ -429,95 +429,112 @@ const EmployeeHistory = () => {
               <SalaryForm ref={salaryRef} salaryInfo={salaryInfo} setSalaryInfo={setSalaryInfo} />
             </TabsContent>
 
-            <TabsContent value="leave_balance" className="mt-0">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-slate-900">Annual Leave Balances</h3>
-                <div className="flex gap-2">
-                  <Badge variant="outline" className="bg-emerald-50 text-emerald-700">Remaining: {formatLeaveDays(leaveSummary.remaining)}</Badge>
-                  <Badge variant="outline" className="bg-amber-50 text-amber-700">Used: {leaveSummary.used}</Badge>
+            <TabsContent value="leave_balance" className="mt-0 space-y-6">
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-slate-900">Annual Leave Balances</h3>
+                  <div className="flex gap-3">
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-sm font-semibold">
+                      Remaining: {formatLeaveDays(leaveSummary.remaining)}
+                    </Badge>
+                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-sm font-semibold">
+                      Used: {leaveSummary.used}
+                    </Badge>
+                  </div>
                 </div>
+                <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />
               </div>
-              <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />
             </TabsContent>
 
             <TabsContent value="history" className="mt-0 space-y-6">
               {/* Leave History Content */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { label: "Total Requests", value: leaveRecords.length, color: "bg-slate-50" },
-                  { label: "Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700" },
-                  { label: "Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700" },
-                  { label: "Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700" },
-                ].map((stat) => (
-                  <div key={stat.label} className={`p-4 rounded-2xl border border-slate-100 ${stat.color}`}>
-                    <p className="text-xs font-semibold uppercase tracking-wider opacity-70">{stat.label}</p>
-                    <p className="text-2xl font-bold mt-1">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1 border-none outline-none">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                  <Input
-                    placeholder="Search leaves..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100"
-                  />
-                </div>
-                <Select value={monthFilter} onValueChange={setMonthFilter}>
-                  <SelectTrigger className="w-40 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100">
-                    <SelectValue placeholder="Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Months</SelectItem>
-                    {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-40 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-emerald-100">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {filteredLeaves.length === 0 ? (
-                <NoDataFound title="No leave records found" />
-              ) : (
-                <div className="space-y-4">
-                  {filteredLeaves.map((leave) => (
-                    <div key={leave.id} className="p-5 rounded-2xl border border-emerald-50 bg-white shadow-sm transition-shadow">
-                      <div className="flex flex-col lg:flex-row justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                          <div className={`h-12 w-12 rounded-xl flex items-center justify-center text-lg ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
-                            {leave.leave_type?.leave_type?.[0] || "L"}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-slate-900">{leave.leave_type?.leave_type}</span>
-                              <Badge className={statusStyles[leave.status?.toLowerCase()] || statusStyles.other}>
-                                {leave.status}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-slate-500">{dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")} ({leave.total_days} days)</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end justify-center text-right">
-                          <p className="text-xs text-slate-400 font-medium">Applied on {dayjs(leave.createdAt).format("D MMM YYYY")}</p>
-                          {leave.reason && <p className="text-sm text-slate-600 mt-1 max-w-md truncate italic">"{leave.reason}"</p>}
-                        </div>
-                      </div>
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  {[
+                    { label: "Total Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
+                    { label: "Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                    { label: "Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
+                    { label: "Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
+                  ].map((stat) => (
+                    <div key={stat.label} className={`p-5 rounded-xl border ${stat.color} transition-all duration-200 hover:shadow-md`}>
+                      <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
+                      <p className="text-3xl font-extrabold">{stat.value}</p>
                     </div>
                   ))}
                 </div>
-              )}
+
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Input
+                      placeholder="Search leaves..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                    />
+                  </div>
+                  <Select value={monthFilter} onValueChange={setMonthFilter}>
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Months</SelectItem>
+                      {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {filteredLeaves.length === 0 ? (
+                  <NoDataFound title="No leave records found" />
+                ) : (
+                  <div className="space-y-4">
+                    {filteredLeaves.map((leave) => (
+                      <div key={leave.id} className="p-6 rounded-xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-200 group">
+                        <div className="flex flex-col lg:flex-row justify-between gap-4">
+                          <div className="flex items-center gap-5">
+                            <div className={`h-14 w-14 rounded-xl flex items-center justify-center text-xl font-bold shadow-inner ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
+                              {leave.leave_type?.leave_type?.[0] || "L"}
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-lg text-slate-900 group-hover:text-black transition-colors">{leave.leave_type?.leave_type}</span>
+                                <Badge className={`font-semibold px-2 py-0.5 rounded-md ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
+                                  {leave.status}
+                                </Badge>
+                              </div>
+                              <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                {dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")} 
+                                <span className="text-slate-900 font-bold ml-1">({leave.total_days} days)</span>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-start lg:items-end justify-center text-left lg:text-right border-t lg:border-t-0 pt-4 lg:pt-0">
+                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Applied on {dayjs(leave.createdAt).format("D MMM YYYY")}</p>
+                            {leave.reason && (
+                              <div className="flex items-start gap-2 bg-slate-50 p-2 rounded-lg max-w-md">
+                                <FileText className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm text-slate-600 line-clamp-2 italic">{leave.reason}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </TabsContent>
           </div>
 

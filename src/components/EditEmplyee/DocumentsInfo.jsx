@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Trash2, FileText, UploadCloud } from "lucide-react";
 import { employeeAPI } from "../../api/employeeApi";
 import NoDataFound from "../../common/NoDataFound";
 import axiosInstance from "../../api/axiosInstance";
@@ -87,14 +87,14 @@ const DocumentsForm = ({
   const isImage = (fileName) => /\.(jpg|jpeg|png)$/i.test(fileName);
   const isPdf = (fileName) => /\.pdf$/i.test(fileName);
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 font-montserrat">
       {/* Upload Form */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-md bg-white border shadow-sm">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
         {/* Document Type */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <Label
             htmlFor="docType"
-            className="text-sm font-medium text-gray-700 font-montserrat"
+            className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider"
           >
             Document Type *
           </Label>
@@ -102,10 +102,10 @@ const DocumentsForm = ({
             value={selectedType}
             onValueChange={(value) => setSelectedType(value)}
           >
-            <SelectTrigger className="w-full border-gray-300 font-montserrat focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm">
-              <SelectValue placeholder="Select document type" />
+            <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-montserrat rounded-md shadow-sm">
+              <SelectValue placeholder="Select type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="font-montserrat">
               {documentType.map((doc) => (
                 <SelectItem key={doc.id} value={doc.id}>
                   {doc.type}
@@ -116,19 +116,18 @@ const DocumentsForm = ({
         </div>
 
         {/* File Upload */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <Label
             htmlFor="docFile"
-            className="text-sm font-medium text-gray-700 font-montserrat"
+            className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider"
           >
-            Upload File{" "}
-            <span className="text-xs text-gray-500">(PDF, JPG, PNG)</span> *
+            File <span className="text-[10px] text-slate-400 font-normal">(PDF, JPG, PNG)</span> *
           </Label>
           <Input
             id="docFile"
             type="file"
             accept=".pdf,.jpg,.jpeg,.png"
-            className="w-full text-sm text-gray-600"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat cursor-pointer file:font-bold file:text-slate-700 file:bg-slate-50 file:border-0 file:mr-4 file:h-full"
             onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
           />
         </div>
@@ -138,131 +137,141 @@ const DocumentsForm = ({
           <Button
             type="button"
             onClick={handleAddDocument}
-            className="w-full border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
+            className="w-full h-11 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-lg transition-all font-montserrat font-bold uppercase tracking-wider"
           >
-            + Add Document
+            <UploadCloud className="w-4 h-4 mr-2" />
+            Add Document
           </Button>
         </div>
       </div>
 
       {/* Unsaved Files */}
       {Array.isArray(documents) && documents.some((doc) => doc.isPending) && (
-        <div className="space-y-4 mt-10">
-          <h3 className="text-lg font-semibold text-yellow-700 border-b pb-1 font-montserrat">
-            Unsaved Files
-          </h3>
-          {documents
-            .filter((doc) => doc.isPending)
-            .reverse()
-            .map((doc, index) => {
-              const docType =
-                documentTypes.find((d) => d.value === doc.type)?.label ||
-                "Unknown Document";
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-amber-100 pb-2">
+            <h3 className="text-lg font-bold text-amber-700 font-montserrat uppercase tracking-wider">
+              Unsaved Files
+            </h3>
+            <Badge className="bg-amber-100 text-amber-700 border-amber-200 font-bold">New</Badge>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {documents
+              .filter((doc) => doc.isPending)
+              .reverse()
+              .map((doc, index) => {
+                const docType =
+                  documentTypes.find((d) => d.value === doc.type)?.label ||
+                  "Unknown Document";
 
-              return (
-                <div
-                  key={doc.id || index}
-                  className="border rounded-md shadow-md p-4 flex flex-col md:flex-row items-start md:items-center justify-between bg-yellow-50 hover:bg-yellow-100 transition"
-                >
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium text-yellow-900 flex items-center gap-2">
-                      {index + 1}. {docType}
-                      <span className="bg-yellow-200 font-montserrat text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded">
-                        Pending
-                      </span>
+                return (
+                  <div
+                    key={doc.id || index}
+                    className="border border-amber-100 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between bg-amber-50/30 hover:bg-amber-50 transition-all duration-200"
+                  >
+                    <div className="flex items-center gap-4 w-full md:w-auto">
+                      <div className="h-12 w-12 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
+                        <FileText className="w-6 h-6" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                          {docType}
+                        </div>
+                        <div className="text-xs text-slate-500 max-w-[200px] truncate">
+                          {doc.file.name}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      {doc.previewUrl ? (
-                        /\.(jpg|jpeg|png)$/i.test(doc.file.name) ? (
-                          <img
-                            src={doc.previewUrl}
-                            alt={doc.file.name}
-                            className="h-24 w-auto object-contain border rounded"
-                          />
-                        ) : (
-                          <span className="text-sm">{doc.file.name}</span>
-                        )
-                      ) : (
-                        <span className="text-sm text-red-500">
-                          No preview available
-                        </span>
+                    <div className="flex items-center gap-6 mt-4 md:mt-0 w-full md:w-auto justify-between md:justify-end">
+                      {doc.previewUrl && /\.(jpg|jpeg|png)$/i.test(doc.file.name) && (
+                        <div className="h-14 w-20 border rounded-lg overflow-hidden bg-white shadow-sm">
+                          <img src={doc.previewUrl} alt="preview" className="h-full w-full object-cover" />
+                        </div>
                       )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-rose-200 text-rose-600 hover:bg-rose-50 font-bold rounded-lg h-10 px-4"
+                        onClick={() => handleDeleteDocument(doc)}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Remove
+                      </Button>
                     </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-4 md:mt-0 border-red-500 text-red-600 hover:bg-red-50 font-montserrat"
-                    onClick={() => handleDeleteDocument(doc)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
       )}
 
       {/* Uploaded Documents */}
       {Array.isArray(documents) && documents.some((doc) => !doc.isPending) && (
-        <div className="space-y-4 mt-10">
-          <h3 className="text-lg font-semibold text-gray-700 border-b pb-1 font-montserrat">
-            Uploaded Documents
-          </h3>
-          {documents
-            .filter((doc) => !doc.isPending)
-            .reverse()
-            .map((doc, index) => {
-              const docType =
-                doc.document_category?.type ||
-                documentTypes.find((d) => d.value === doc.type)?.label ||
-                "Unknown Document";
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+            <h3 className="text-lg font-bold text-slate-700 font-montserrat uppercase tracking-wider">
+              Uploaded Documents
+            </h3>
+            <Badge variant="outline" className="text-slate-400 border-slate-200 font-bold">{documents.filter(d => !d.isPending).length}</Badge>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {documents
+              .filter((doc) => !doc.isPending)
+              .reverse()
+              .map((doc, index) => {
+                const docType =
+                  doc.document_category?.type ||
+                  documentTypes.find((d) => d.value === doc.type)?.label ||
+                  "Unknown Document";
 
-              const filePath = doc.file?.file_path || doc.previewUrl || null;
-              const fileName =
-                doc.file?.file_name || doc.file?.name || "unknown";
+                const filePath = doc.file?.file_path || doc.previewUrl || null;
+                const fileName =
+                  doc.file?.file_name || doc.file?.name || "unknown";
 
-              return (
-                <div
-                  key={doc.id || index}
-                  className="flex items-center justify-between border rounded-md p-4 shadow-sm bg-white hover:bg-gray-50 transition"
-                >
-                  {/* File Info */}
-                  <div className="text-sm font-medium text-gray-800 truncate">
-                    {index + 1}. {docType} - {fileName}
-                  </div>
+                return (
+                  <div
+                    key={doc.id || index}
+                    className="flex items-center justify-between border border-slate-100 rounded-xl p-5 bg-white hover:shadow-md transition-all duration-200 group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                        <FileText className="w-6 h-6" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-sm font-bold text-slate-900 uppercase tracking-tight">
+                          {docType}
+                        </div>
+                        <div className="text-xs text-slate-400 font-medium truncate max-w-[250px]">
+                          {fileName}
+                        </div>
+                      </div>
+                    </div>
 
-                  {/* Action Icons */}
-                  <div className="flex items-center gap-3">
-                    {/* View */}
-                    {filePath && (
-                      <a
-                        href={filePath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 transition"
-                        title="View Document"
+                    <div className="flex items-center gap-2">
+                      {filePath && (
+                        <Button asChild variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-full">
+                          <a href={filePath} target="_blank" rel="noopener noreferrer" title="View Document">
+                            <Eye className="w-5 h-5" />
+                          </a>
+                        </Button>
+                      )}
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-10 w-10 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full"
+                        onClick={() => handleDeleteDocument(doc)}
+                        title="Delete Document"
                       >
-                        <Eye className="w-5 h-5" />
-                      </a>
-                    )}
-
-                    {/* Delete */}
-                    <button
-                      onClick={() => handleDeleteDocument(doc)}
-                      title="Delete Document"
-                      className="text-red-600 hover:text-red-800 transition"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                        <Trash2 className="w-5 h-5" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
       )}
 
-      {documents.length === 0 && <NoDataFound />}
+      {documents.length === 0 && <div className="p-12"><NoDataFound /></div>}
     </div>
   );
 };
