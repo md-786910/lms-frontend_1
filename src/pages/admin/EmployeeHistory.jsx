@@ -356,29 +356,29 @@ const EmployeeHistory = () => {
     <div className="space-y-6 pb-10">
       {/* Header Card */}
       <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
-          <CardContent className="p-5 md:p-7">
-            <div className="grid grid-cols-12 items-center gap-4">
-              <div className="col-span-12 md:col-span-8 space-y-2">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{employeeName}</h1>
-                  <Badge className={employee?.is_active ? "bg-emerald-100 font-montserrat text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
-                    {employee?.is_active ? "Active" : "Inactive"}
-                  </Badge>
-                </div>
-                <p className="text-[#FFFFFF] font-medium text-xl font-montserrat">
-                  {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
-                </p>
-                <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
+        <CardContent className="p-5 md:p-7">
+          <div className="grid grid-cols-12 items-center gap-4">
+            <div className="col-span-12 md:col-span-8 space-y-2">
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{employeeName}</h1>
+                <Badge className={employee?.is_active ? "bg-emerald-100 font-montserrat text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
+                  {employee?.is_active ? "Active" : "Inactive"}
+                </Badge>
               </div>
-              <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-                <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  <span>Back to Employees</span> 
-                </div>
+              <p className="text-[#FFFFFF] font-medium text-xl font-montserrat">
+                {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
+              </p>
+              <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
+            </div>
+            <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
+              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                <span>Back to Employees</span> 
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Main Tabs */}
       <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">

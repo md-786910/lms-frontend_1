@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Eye, Trash2, FileText, UploadCloud } from "lucide-react";
+import { Eye, Trash2, FileText, UploadCloud, Badge } from "lucide-react";
 import { employeeAPI } from "../../api/employeeApi";
 import NoDataFound from "../../common/NoDataFound";
 import axiosInstance from "../../api/axiosInstance";

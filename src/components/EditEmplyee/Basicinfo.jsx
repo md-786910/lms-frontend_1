@@ -129,7 +129,7 @@ const BasicInfoForm = forwardRef(
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
           {/* First Name */}
           <div className="space-y-2">
-            <Label htmlFor="first_name" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">First Name *</Label>
+            <Label htmlFor="first_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">First Name *</Label>
             <Input
               id="first_name"
               name="first_name"
@@ -143,7 +143,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Last Name */}
           <div className="space-y-2">
-            <Label htmlFor="last_name" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Last Name</Label>
+            <Label htmlFor="last_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Last Name</Label>
             <Input
               id="last_name"
               name="last_name"
@@ -157,7 +157,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Email *</Label>
+            <Label htmlFor="email" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Email *</Label>
             <Input
               id="email"
               name="email"
@@ -172,7 +172,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Phone Number */}
           <div className="space-y-2">
-            <Label htmlFor="phone_number" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Phone *</Label>
+            <Label htmlFor="phone_number" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Phone *</Label>
             <Input
               id="phone_number"
               name="phone_number"
@@ -186,7 +186,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Gender */}
           <div className="space-y-2">
-            <Label htmlFor="gender" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Gender *</Label>
+            <Label htmlFor="gender" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Gender *</Label>
             <Select
               value={values.gender || ""}
               onValueChange={(val) =>
@@ -212,7 +212,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Marital Status */}
           <div className="space-y-2">
-            <Label htmlFor="martial_status" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Marital Status *</Label>
+            <Label htmlFor="martial_status" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Marital Status *</Label>
             <Select
               value={values.martial_status || ""}
               onValueChange={(val) =>
@@ -258,7 +258,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Department */}
           <div className="space-y-2">
-            <Label htmlFor="department_id" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Department *</Label>
+            <Label htmlFor="department_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Department *</Label>
             <Select
               value={String(values.department_id || "")}
               onValueChange={(val) =>
@@ -281,7 +281,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Designation */}
           <div className="space-y-2">
-            <Label htmlFor="designation_id" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Designation *</Label>
+            <Label htmlFor="designation_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Designation *</Label>
             <Select
               value={String(values.designation_id || "")}
               onValueChange={(val) =>
@@ -307,7 +307,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Nationality */}
           <div className="space-y-2 w-full">
-            <Label htmlFor="nationality" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Nationality *</Label>
+            <Label htmlFor="nationality" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Nationality *</Label>
             <Input
               id="nationality"
               name="nationality"

@@ -101,20 +101,23 @@ function Departments({ value }) {
     <>
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Users className="h-5 w-5" />
+          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+              <Users className="h-5 w-5" />
+            </span>
             <span>Department Management</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Add New Department */}
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-medium text-slate-800 mb-4">
+            <h3 className="font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-4">
               Add New Department
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Input
+                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                   placeholder="Department Name"
                   name="name"
                   value={newDepartment?.name ?? ""}
@@ -126,6 +129,7 @@ function Departments({ value }) {
               </div>
               <div>
                 <Input
+                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                   placeholder="Description"
                   name="description"
                   value={newDepartment?.description ?? ""}
@@ -139,7 +143,7 @@ function Departments({ value }) {
             <Button
               onClick={addDepartment}
               disabled={loader}
-              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20"
+              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
             >
               <Plus className="h-4 w-4 mr-2" />
               {loader ? "saving data..." : "Save Department Details"}
@@ -151,11 +155,11 @@ function Departments({ value }) {
             {listDepartment?.map((dept) => (
               <div
                 key={dept.id}
-                className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
+                className="flex items-center justify-between p-4 font-montserrat border border-slate-200 rounded-lg"
               >
                 <div>
-                  <h4 className="font-medium text-slate-800">{dept.name}</h4>
-                  <p className="text-sm text-slate-500">{dept.description}</p>
+                  <h4 className="font-medium text-slate-800 font-montserrat">{dept.name}</h4>
+                  <p className="text-sm text-slate-500 font-montserrat">{dept.description}</p>
                 </div>
                 <div className="flex space-x-2">
                   <Button

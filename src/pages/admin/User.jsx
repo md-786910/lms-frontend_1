@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { authAPI } from "../../api/authapi/authAPI";
 import axiosInstance from "../../api/axiosInstance";
 import { useFormValidation } from "../../hooks/useFormValidation";
+
 const User = () => {
   const { toast } = useToast();
   const [listUser, setListUser] = useState([]);
@@ -110,19 +111,37 @@ const User = () => {
 
   return (
     <div className="space-y-6 mb-7">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">User Management</h1>
-          <p className="text-slate-600">Manage users to your HR system</p>
-        </div>
-      </div>
+      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+        <CardContent className="p-5 md:p-7">
+          <div className="grid grid-cols-12 items-center gap-4">
+            <div className="col-span-12 md:col-span-8 space-y-2">
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                  User Management
+                </h1>
+              </div>
+              <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+                Manage users to your HR system
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      <div className="p-4 bg-slate-50 rounded-lg">
-        <h3 className="font-medium text-slate-800 mb-4">Add New User</h3>
+      <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
+        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">
+          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+            <Users className="h-5 w-5" />
+          </span>
+          <span>
+            User Management
+          </span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label>First name *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">First name *</Label>
             <Input
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               placeholder="first name"
               name="first name"
               value={user.first_name}
@@ -133,8 +152,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label>Last name</Label>
+            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Last name</Label>
             <Input
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               placeholder="first name"
               name="last name"
               value={user.last_name}
@@ -145,8 +165,9 @@ const User = () => {
             )}
           </div>{" "}
           <div>
-            <Label>Phone number</Label>
+            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Phone number</Label>
             <Input
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               placeholder="first name"
               name="phone number"
               value={user.phone_number}
@@ -159,8 +180,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label>Email *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Email *</Label>
             <Input
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               placeholder="Email"
               name="email"
               value={user.email}
@@ -171,8 +193,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label>Password *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Password *</Label>
             <Input
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               placeholder="password"
               name="password"
               value={user.password}
@@ -184,10 +207,10 @@ const User = () => {
           </div>{" "}
         </div>
         <Button
-          className="mt-4 bg-primary text-white hover:bg-primary/90 shadow-sm"
+          className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-Montserrat"
           onClick={() => handleSubmit()}
         >
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4" />
           {loader ? "saving data..." : "Add User"}
         </Button>
       </div>
@@ -197,35 +220,35 @@ const User = () => {
         {listUser?.map((dept) => (
           <div
             key={dept.id}
-            className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
+            className="flex items-center justify-between p-4 border border-slate-200 bg-[#FFFFFF] rounded-lg"
           >
             <div>
-              <h4 className="font-medium text-slate-800">
+              <h4 className="font-medium text-slate-800 font-montserrat">
                 {dept.first_name + " " + dept.last_name + ""}
               </h4>
-              <p className="text-sm text-slate-500">{dept.email}</p>
+              <p className="text-sm font-medium text-slate-800 font-montserrat">{dept.email}</p>
             </div>
             <div className="flex space-x-2 items-center">
               <div className="flex items-center">
-                <Label>password</Label>
+                <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mr-1">password</Label>
                 <Input
+                  className="h-8 border border-slate-200 mx-2 focus:border-slate-900 transition-all font-montserrat"
                   placeholder="password"
                   type={`${viewPassword ? "text" : "password"}`}
                   name="password"
                   value={dept.password_without_hash}
-                  className="h-6 w-32 mx-2"
                 />
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-blue-600"
+                  className="text-slate-600"
                   onClick={() => {
                     setViewPassword(!viewPassword);
                   }}
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-              </div>{" "}
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
