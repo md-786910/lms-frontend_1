@@ -541,11 +541,13 @@ const Leave = () => {
         open={showLeavePolicyModal}
         onOpenChange={(open) => setShowLeavePolicyModal(open)}
       >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border-none shadow-2xl">
-          <DialogHeader className="px-6 pt-6">
-            <DialogTitle className="text-2xl font-bold text-slate-900">Company Leave Policy</DialogTitle>
-            <p className="text-slate-500 font-medium">Current annual leave allocations for all types</p>
-          </DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-md border-none shadow-xl p-0">
+          <div className="bg-slate-900 px-6 py-4">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold font-montserrat text-white">Company Leave Policy</DialogTitle>
+              <p className="text-slate-300 font-medium font-montserrat">Current annual leave allocations for all types</p>
+            </DialogHeader>
+          </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {leavePolicy &&
@@ -553,13 +555,13 @@ const Leave = () => {
                 leavePolicy?.map((section, idx) => (
                   <Card key={idx} className="border-slate-100 shadow-sm rounded-2xl bg-slate-50/50">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-base font-bold text-indigo-600">{section?.type}</CardTitle>
+                      <CardTitle className="text-base font-semibold text-slate-900 font-montserrat">{section?.type}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">Annual Allowance</span>
-                        <div className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
-                          {section?.annual_days} <span className="text-sm font-medium text-slate-400 uppercase">Days</span>
+                        <span className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-700">Annual Allowance</span>
+                        <div className="bg-white border border-slate-200 font-montserrat rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
+                          {section?.annual_days} <span className="text-sm font-medium font-montserrat text-slate-600 capitalize">Days</span>
                         </div>
                       </div>
                     </CardContent>
@@ -567,8 +569,8 @@ const Leave = () => {
                 ))}
             </div>
           </div>
-          <div className="px-6 pb-6 flex justify-end">
-            <Button onClick={() => setShowLeavePolicyModal(false)} className="bg-slate-900 text-white hover:bg-slate-800 rounded-xl px-8">
+          <div className="px-4 pb-4 flex justify-end">
+            <Button onClick={() => setShowLeavePolicyModal(false)} className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl px-6 shadow-slate-900/20 font-Montserrat">
               Close
             </Button>
           </div>
