@@ -114,20 +114,23 @@ function Designations({ value }) {
     <>
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <BookA className="h-5 w-5" />
+          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+              <BookA className="h-5 w-5" />
+            </span>
             <span>Designation Management</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Add New Designation */}
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-medium text-slate-800 mb-4">
+            <h3 className="font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-4">
               Add New Designation
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Input
+                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                   placeholder="Designation Name"
                   value={newDesignation.title}
                   onChange={(e) =>
@@ -156,7 +159,7 @@ function Designations({ value }) {
                   value={newDesignation.department_id?.toString()}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Department" />
+                    <SelectValue placeholder="Select Department" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
                   </SelectTrigger>
                   <SelectContent>
                     {departmentsList?.map((dept) => (
@@ -176,9 +179,9 @@ function Designations({ value }) {
             <Button
               onClick={addDesignation}
               disabled={loader}
-              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20"
+              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
             >
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4" />
               {loader ? "saving data...." : "Save Designation Details"}
             </Button>
           </div>
@@ -189,10 +192,10 @@ function Designations({ value }) {
               className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
             >
               <div>
-                <h4 className="font-medium text-slate-800">
+                <h4 className="font-medium text-slate-800 font-montserrat">
                   {designation.title}
                 </h4>
-                <div className="flex space-x-4 text-sm text-slate-500 mt-1">
+                <div className="text-sm text-slate-500 font-montserrat mt-1">
                   <span>{designation.department_name}</span>
                 </div>
               </div>

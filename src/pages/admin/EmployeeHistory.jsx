@@ -1,7 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { ArrowLeft, Loader2, Search } from "lucide-react";
+import {
+  ArrowLeft,
+  Loader2,
+  Search,
+  User,
+  MapPin,
+  FileText,
+  Heart,
+  IndianRupee,
+  Calendar,
+  History,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,10 +24,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoDataFound from "../../common/NoDataFound";
 import { employeeAPI } from "../../api/employeeApi";
-import { leaveApi } from "../../api/leave/leave";
+import { leaveApi as leaveHistoryApi } from "../../api/leave/leave";
+import { leaveApi as employeeLeaveApi } from "../../api/employeeLeave/employeeLeave";
 import { formatLeaveDays } from "../../utility/utility";
+import { useToast } from "@/hooks/use-toast";
+
+// Sub-forms from Edit Employee
+import BasicInfoForm from "../../components/EditEmplyee/Basicinfo";
+import AddressForm from "../../components/EditEmplyee/AddressInfo";
+import DocumentsForm from "../../components/EditEmplyee/DocumentsInfo";
+import PersonalInfoForm from "../../components/EditEmplyee/PersonalInfo";
+import SalaryForm from "../../components/EditEmplyee/SalaryInfo";
+import LeaveInfoForm from "../../components/EditEmplyee/LeaveInfoForm";
+
+// Utilities
+import { getTabPayload, validateTabForm } from "../../utility/employeeUpdate";
+import { formatPersonalInfo } from "../../utility/destructure/personalInfo";
+import { formatBasicInfo } from "../../utility/destructure/basicInfo";
+import { formatAddressInfo } from "../../utility/destructure/addressInfo";
+import { formatSalaryInfo } from "../../utility/destructure/formatSalaryInfo";
+import { buildDocumentUploadPayload } from "../../utility/document";
+import { mapLeaveFormToDeltaPayload } from "../../utility/leaveMapper";
+import { generalAPI } from "../../api/generalApi";
+import axiosInstance from "../../api/axiosInstance";
 
 const statusStyles = {
   approved: "bg-emerald-50 text-emerald-700 border border-emerald-100",
@@ -46,10 +79,39 @@ const getInitials = (employee) => {
 const EmployeeHistory = () => {
   const { employeeId } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [activeTab, setActiveTab] = useState("basic");
   const [employee, setEmployee] = useState(null);
   const [leaveRecords, setLeaveRecords] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [saveLoading, setSaveLoading] = useState(false);
   const [error, setError] = useState("");
+  
+  // Tab-specific data
+  const [departments, setDepartments] = useState([]);
+  const [designations, setDesignations] = useState([]);
+  const [documentType, setDocumentType] = useState([]);
+  const [hit, setHit] = useState(Math.random());
+  
+  // Form states
+  const [basicInfo, setBasicInfo] = useState({});
+  const [addressInfo, setAddressInfo] = useState({});
+  const [documents, setDocuments] = useState([]);
+  const [newDocs, setNewDocs] = useState([]);
+  const [personalInfo, setPersonalInfo] = useState({});
+  const [salaryInfo, setSalaryInfo] = useState({});
+  const [leaveInfo, setLeaveInfo] = useState([]);
+
+  // Refs for validation
+  const basicInfoRef = useRef();
+  const addressInfoRef = useRef();
+  const documentsRef = useRef();
+  const personalRef = useRef();
+  const salaryRef = useRef();
+  const leaveRef = useRef();
+
+  // Filters for Leave History
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
@@ -62,64 +124,160 @@ const EmployeeHistory = () => {
       return;
     }
 
-    const fetchHistory = async () => {
+    const fetchInitialData = async () => {
       setLoading(true);
-      setError("");
-
       try {
         const [employeeResp, leaveResp] = await Promise.all([
           employeeAPI.getById(employeeId),
-          leaveApi.getLeaveRequest("", { employee_id: employeeId }),
+          leaveHistoryApi.getLeaveRequest("", { employee_id: employeeId }),
         ]);
-
-        let employeeData = employeeResp?.data ?? null;
-
-        // Fallback: some employee-by-id responses don't include leave balances.
-        // Pull the same enriched object the list view uses (includes employee_leaves)
-        // so totals stay consistent across pages.
-        if (employeeData && !(employeeData.employee_leaves?.length > 0)) {
-          try {
-            const listResp = await employeeAPI.getAll();
-            const fromList = listResp?.data?.find(
-              (emp) => String(emp.id) === String(employeeId)
-            );
-            if (fromList?.employee_leaves?.length) {
-              employeeData = { ...fromList, ...employeeData };
-            }
-          } catch (listErr) {
-            console.warn("Fallback fetch for leave balances failed", listErr);
-          }
-        }
-
-        setEmployee(employeeData);
+        setEmployee(employeeResp?.data ?? null);
         setLeaveRecords(leaveResp?.data?.data ?? []);
       } catch (err) {
         console.error(err);
-        setError(
-          err?.response?.data?.message ||
-            "We couldn't load the employee leave history. Please try again."
-        );
+        setError("Failed to load employee data.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHistory();
+    fetchInitialData();
   }, [employeeId]);
 
+  useEffect(() => {
+    const fetchTabData = async () => {
+      if (!employeeId) return;
+      try {
+        if (activeTab === "basic") {
+          const [basicRes, deptData, desigData] = await Promise.all([
+            employeeAPI.getBasicInfo(employeeId),
+            generalAPI.getDepartments(),
+            generalAPI.getDesignations(),
+          ]);
+          setBasicInfo(formatBasicInfo(basicRes.data));
+          setDepartments(deptData.data || []);
+          setDesignations(desigData.data || []);
+        } else if (activeTab === "address") {
+          const res = await employeeAPI.getAddressInfo(employeeId);
+          setAddressInfo(formatAddressInfo(res.data));
+        } else if (activeTab === "documents") {
+          const res = await employeeAPI.getDocumentsInfo(employeeId);
+          setDocuments(res.data);
+          const resp1 = await axiosInstance.get(`/setting/document-category`);
+          if (resp1.status === 200) {
+            setDocumentType(Array.isArray(resp1.data?.data) ? resp1.data.data : []);
+          }
+        } else if (activeTab === "personal") {
+          const res = await employeeAPI.getPersonalInfo(employeeId);
+          setPersonalInfo(formatPersonalInfo(res.data));
+        } else if (activeTab === "salary") {
+          const res = await employeeAPI.getSalaryInfo(employeeId);
+          setSalaryInfo(formatSalaryInfo(res.data));
+        } else if (activeTab === "leave_balance") {
+          const res = await employeeLeaveApi.getAllLeave(employeeId);
+          setLeaveInfo(res.data);
+        }
+      } catch (error) {
+        console.error(`Error loading ${activeTab} data:`, error);
+      }
+    };
+
+    fetchTabData();
+  }, [activeTab, employeeId, hit]);
+
+  const handleSave = async () => {
+    setSaveLoading(true);
+    const isValid = await validateTabForm(activeTab === "leave_balance" ? "leave" : activeTab, {
+      basicInfoRef,
+      addressInfoRef,
+      documentsRef,
+      personalRef,
+      salaryRef,
+      leaveRef,
+    });
+
+    if (!isValid && !["documents", "leave_balance"].includes(activeTab)) {
+      setSaveLoading(false);
+      toast({
+        title: "Please fill all required fields.",
+        variant: "destructive",
+        duration: 800,
+      });
+      return;
+    }
+
+    const payload = getTabPayload({
+      activeTab: activeTab === "leave_balance" ? "leave" : activeTab,
+      employeeId,
+      basicInfo,
+      addressInfo,
+      documents,
+      personalInfo,
+      salaryInfo,
+    });
+
+    try {
+      switch (activeTab) {
+        case "basic":
+          await employeeAPI.updateBasicInfo(employeeId, payload);
+          break;
+        case "address":
+          await employeeAPI.updateAddressInfo(employeeId, payload);
+          break;
+        case "documents":
+          if (newDocs?.length === 0) {
+            toast({
+              title: "Please add document",
+              variant: "destructive",
+              duration: 800,
+            });
+            setSaveLoading(false);
+            return;
+          }
+          const documentPayload = await buildDocumentUploadPayload(newDocs);
+          await employeeAPI.updateDocumentsInfo(employeeId, documentPayload);
+          setNewDocs([]);
+          break;
+        case "personal":
+          await employeeAPI.updatePersonalInfo(employeeId, payload);
+          break;
+        case "salary":
+          await employeeAPI.updateSalaryInfo(employeeId, payload);
+          break;
+        case "leave_balance":
+          const leavePayload = mapLeaveFormToDeltaPayload(leaveInfo);
+          await employeeLeaveApi.updateLeave(employeeId, leavePayload);
+          break;
+        default:
+          break;
+      }
+      toast({
+        title: "Update Successful",
+        description: `${activeTab.replace("_", " ")} information has been updated.`,
+      });
+      setHit(Math.random());
+    } catch (error) {
+      toast({
+        title: "Error updating employee",
+        description: error?.response?.data?.message || "Something went wrong.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
+  // Leave History logic
   const leaveTypeOptions = useMemo(() => {
     const types = new Set();
     leaveRecords.forEach((leave) => {
       const typeLabel = leave?.leave_type?.leave_type;
-      if (typeLabel) {
-        types.add(typeLabel);
-      }
+      if (typeLabel) types.add(typeLabel);
     });
     return Array.from(types);
   }, [leaveRecords]);
 
   const leaveSummary = useMemo(() => {
-    // Base calculation mirrors the employee card
     const aggregated = (employee?.employee_leaves ?? []).reduce(
       (acc, leave) => {
         acc.total += Number(leave?.leave_count) || 0;
@@ -129,530 +287,269 @@ const EmployeeHistory = () => {
       },
       { total: 0, used: 0, remaining: 0 }
     );
-
-    // Live adjustment from the current leave records so the summary reacts
-    // immediately to approve/reject/edit/delete flows.
-    const approvedUsed = leaveRecords.reduce((acc, leave) => {
-      const isApproved = (leave?.status ?? "").toLowerCase() === "approved";
-      return isApproved ? acc + (Number(leave?.total_days) || 0) : acc;
-    }, 0);
-
-    const dynamicUsed = approvedUsed || aggregated.used;
-    const baselineRemaining =
-      aggregated.remaining ?? aggregated.total - aggregated.used;
-    const dynamicRemaining =
-      baselineRemaining - (dynamicUsed - aggregated.used);
-
-    return {
-      total: aggregated.total,
-      used: dynamicUsed,
-      remaining: dynamicRemaining,
-    };
-  }, [employee, leaveRecords]);
+    return aggregated;
+  }, [employee]);
 
   const monthOptions = useMemo(() => {
-    // Collect all relevant dates we care about (start/end/applied/updated)
     const dateCandidates = leaveRecords.flatMap((leave) => [
       leave?.start_date,
       leave?.end_date,
       leave?.createdAt,
-      leave?.updatedAt,
     ]);
-
-    const validDates = dateCandidates
-      .map((d) => dayjs(d))
-      .filter((d) => d.isValid());
-
-    // Fallback to current month when no records
-    if (!validDates.length) {
-      return [dayjs().format("YYYY-MM")];
-    }
-
-    const minMonth = dayjs(
-      Math.min(...validDates.map((d) => d.startOf("month").valueOf()))
-    );
-    const maxMonth = dayjs(
-      Math.max(...validDates.map((d) => d.startOf("month").valueOf()))
-    );
-
+    const validDates = dateCandidates.map((d) => dayjs(d)).filter((d) => d.isValid());
+    if (!validDates.length) return [dayjs().format("YYYY-MM")];
+    const minMonth = dayjs(Math.min(...validDates.map((d) => d.startOf("month").valueOf())));
+    const maxMonth = dayjs(Math.max(...validDates.map((d) => d.startOf("month").valueOf())));
     const rangeMonths = [];
-    let cursor = maxMonth.startOf("month"); // start from latest
+    let cursor = maxMonth.startOf("month");
     const end = minMonth.startOf("month");
-
-    // Walk backwards to include every month in the range (no gaps)
     while (cursor.isAfter(end) || cursor.isSame(end)) {
       rangeMonths.push(cursor.format("YYYY-MM"));
       cursor = cursor.subtract(1, "month");
     }
-
-    // Always include the last 12 calendar months so users can pre-filter
-    const lastTwelve = Array.from({ length: 12 }, (_, idx) =>
-      dayjs().startOf("month").subtract(idx, "month").format("YYYY-MM")
-    );
-
-    // Merge & de-duplicate, keeping latest-first order
-    const merged = Array.from(new Set([...rangeMonths, ...lastTwelve]));
-
-    return merged;
+    return rangeMonths;
   }, [leaveRecords]);
 
   const filteredLeaves = useMemo(() => {
     let results = leaveRecords;
-
-    const normalizedStatus = statusFilter?.toLowerCase() ?? "all";
-    if (normalizedStatus !== "all") {
-      results = results.filter(
-        (leave) => (leave?.status ?? "").toLowerCase() === normalizedStatus
-      );
+    if (statusFilter !== "all") {
+      results = results.filter((leave) => (leave?.status ?? "").toLowerCase() === statusFilter.toLowerCase());
     }
-
-    const normalizedTypeFilter = leaveTypeFilter?.toLowerCase() ?? "all";
-    if (normalizedTypeFilter !== "all") {
-      results = results.filter(
-        (leave) =>
-          (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
-          normalizedTypeFilter
-      );
+    if (leaveTypeFilter !== "all") {
+      results = results.filter((leave) => (leave?.leave_type?.leave_type ?? "").toLowerCase() === leaveTypeFilter.toLowerCase());
     }
-
     if (monthFilter !== "all") {
       results = results.filter((leave) => {
-        const dateMatches = [leave?.start_date, leave?.end_date, leave?.createdAt, leave?.updatedAt].some(
-          (dateValue) =>
-            dateValue &&
-            dayjs(dateValue).isValid() &&
-            dayjs(dateValue).format("YYYY-MM") === monthFilter
+        return [leave?.start_date, leave?.end_date, leave?.createdAt].some(
+          (d) => d && dayjs(d).isValid() && dayjs(d).format("YYYY-MM") === monthFilter
         );
-        return dateMatches;
       });
     }
-
-    const normalizedSearch = searchTerm?.trim().toLowerCase();
-    if (normalizedSearch) {
+    if (searchTerm.trim()) {
+      const s = searchTerm.toLowerCase();
       results = results.filter((leave) => {
-        const employeeName = `${leave.employee?.first_name ?? ""} ${
-          leave.employee?.last_name ?? ""
-        }`.toLowerCase();
-        const leaveType = leave.leave_type?.leave_type?.toLowerCase() ?? "";
-        const employeeNo = leave.employee?.employee_no?.toLowerCase() ?? "";
-        const reason = leave.reason?.toLowerCase() ?? "";
-        const dateValues = [
-          leave.start_date,
-          leave.end_date,
-          leave.createdAt,
-        ]
-          .map((value) =>
-            value ? dayjs(value).format("D MMM YYYY").toLowerCase() : ""
-          )
-          .join(" ");
-
         return (
-          employeeName.includes(normalizedSearch) ||
-          leaveType.includes(normalizedSearch) ||
-          employeeNo.includes(normalizedSearch) ||
-          reason.includes(normalizedSearch) ||
-          dateValues.includes(normalizedSearch)
+          leave.leave_type?.leave_type?.toLowerCase().includes(s) ||
+          leave.reason?.toLowerCase().includes(s)
         );
       });
     }
+    return results.sort((a, b) => new Date(b.start_date || b.createdAt) - new Date(a.start_date || a.createdAt));
+  }, [leaveRecords, statusFilter, leaveTypeFilter, monthFilter, searchTerm]);
 
-    return results;
-  }, [leaveRecords, leaveTypeFilter, searchTerm, statusFilter, monthFilter]);
-
-  const sortedLeaves = useMemo(() => {
-    return [...filteredLeaves].sort((a, b) => {
-      const dateA = new Date(a.start_date || a.createdAt || Date.now());
-      const dateB = new Date(b.start_date || b.createdAt || Date.now());
-      return dateB - dateA;
-    });
-  }, [filteredLeaves]);
-
-  const summary = useMemo(() => {
-    const counts = {
-      approved: 0,
-      pending: 0,
-      rejected: 0,
-    };
-    let otherCount = 0;
+  const historySummary = useMemo(() => {
+    const counts = { approved: 0, pending: 0, rejected: 0 };
     let totalDays = 0;
-
     leaveRecords.forEach((leave) => {
-      const status = (leave?.status || "other").toLowerCase();
-      if (counts.hasOwnProperty(status)) {
-        counts[status] += 1;
-      } else {
-        otherCount += 1;
-      }
+      const status = (leave?.status || "").toLowerCase();
+      if (counts.hasOwnProperty(status)) counts[status]++;
       totalDays += Number(leave?.total_days || 0);
     });
-
-    return { counts, other: otherCount, totalDays };
+    return { counts, totalDays };
   }, [leaveRecords]);
 
-  const employeeName = employee
-    ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim()
-    : "Employee";
-  const employeeStatusLabel = employee?.is_active ? "Active" : "Inactive";
-  const formattedRemainingBalance = formatLeaveDays(
-    leaveSummary.remaining ?? 0
-  );
-  const remainingBadgeClass =
-    (leaveSummary.remaining ?? 0) < 0
-      ? "border border-rose-100 bg-rose-50 text-rose-700"
-      : "border border-emerald-100 bg-emerald-50 text-emerald-700";
+  if (loading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+
+  const employeeName = employee ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim() : "Employee";
 
   return (
-    <div className="space-y-6">
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardContent className="space-y-4 p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-800 text-white font-semibold text-2xl">
-                {getInitials(employee)}
+    <div className="space-y-6 pb-10">
+      {/* Header Card */}
+      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+        <CardContent className="p-5 md:p-7">
+          <div className="grid grid-cols-12 items-center gap-4">
+            <div className="col-span-12 md:col-span-8 space-y-2">
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{employeeName}</h1>
+                <Badge className={employee?.is_active ? "bg-emerald-100 font-montserrat text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
+                  {employee?.is_active ? "Active" : "Inactive"}
+                </Badge>
               </div>
-              <div className="space-y-1">
-                <p className="text-[15px] capitalize tracking-[0.15em] text-slate-500">
-                  Employee history
-                </p>
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-2xl font-semibold text-slate-900">
-                    {employeeName}
-                  </h1>
-                  {employee && (
-                    <Badge
-                      className={
-                        employee.is_active
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
-                          : "bg-rose-50 text-rose-700 border border-rose-100"
-                      }
-                    >
-                      {employeeStatusLabel}
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-sm text-slate-500">
-                  {employee?.designation?.title || "Role not set"} -{" "}
-                  {employee?.department?.name || "Department"}
-                </p>
-                <p className="text-xs text-slate-400">
-                  {employee?.employee_no || "-"}
-                </p>
+              <p className="text-[#FFFFFF] font-medium text-xl font-montserrat">
+                {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
+              </p>
+              <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
+            </div>
+            <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
+              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                <span>Back to Employees</span> 
               </div>
             </div>
-            <div className="space-y-6">
-              <div className="flex flex-wrap items-end justify-end gap-2 text-sm text-slate-500">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="flex items-center gap-2"
-                  onClick={() => navigate("/admin/employees")}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Tabs */}
+      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/50 pb-7">
+            <TabsList className="flex flex-wrap gap-3 bg-transparent p-0">
+              {[
+                { id: "basic", label: "Basic Info", icon: User },
+                { id: "address", label: "Address", icon: MapPin },
+                { id: "documents", label: "Documents", icon: FileText },
+                { id: "personal", label: "Personal", icon: Heart },
+                { id: "salary", label: "Salary", icon: IndianRupee },
+                { id: "leave_balance", label: "Leave Balance", icon: Calendar },
+                { id: "history", label: "Leave History", icon: History },
+              ].map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-montserrat data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
                 >
-                  <ArrowLeft className="h-4 w-4" />
-                  Employees
-                </Button>
-              </div>
-              {employee && (
-                <div className="flex flex-wrap items-center justify-between gap-3 text-sm px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-slate-700 font-semibold">
-                    Leave balance
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] group-data-[state=active]:border-transparent group-data-[state=active]:bg-[#e2e8f0] group-data-[state=active]:text-[#047857]">
+                    <tab.icon className="h-4 w-4" />
                   </span>
-                  <div className="flex flex-wrap gap-3 text-xs font-semibold">
-                    <Badge className={remainingBadgeClass}>
-                      Remaining: {formattedRemainingBalance}
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+
+          <div className="p-4">
+            <TabsContent value="basic" className="mt-0">
+              <BasicInfoForm ref={basicInfoRef} initialValues={basicInfo} onChange={setBasicInfo} departments={departments} designations={designations} />
+            </TabsContent>
+
+            <TabsContent value="address" className="mt-0">
+              <AddressForm ref={addressInfoRef} addressInfo={addressInfo} setAddressInfo={setAddressInfo} />
+            </TabsContent>
+
+            <TabsContent value="documents" className="mt-0">
+              <DocumentsForm ref={documentsRef} documents={documents} employeeId={employeeId} setDocuments={setDocuments} documentType={documentType} setNewDocs={setNewDocs} />
+            </TabsContent>
+
+            <TabsContent value="personal" className="mt-0">
+              <PersonalInfoForm ref={personalRef} personalInfo={personalInfo} setPersonalInfo={setPersonalInfo} />
+            </TabsContent>
+
+            <TabsContent value="salary" className="mt-0">
+              <SalaryForm ref={salaryRef} salaryInfo={salaryInfo} setSalaryInfo={setSalaryInfo} />
+            </TabsContent>
+
+            <TabsContent value="leave_balance" className="mt-0 space-y-6">
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-slate-900">Annual Leave Balances</h3>
+                  <div className="flex gap-3">
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-sm font-semibold">
+                      Remaining: {formatLeaveDays(leaveSummary.remaining)}
                     </Badge>
-                    <Badge className="bg-amber-50 text-amber-700 border border-amber-100">
+                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-sm font-semibold">
                       Used: {leaveSummary.used}
                     </Badge>
-                    <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
-                      Total: {leaveSummary.total}
-                    </Badge>
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
-          {/* {employee && (
-            <div className="space-y-3">
-              <p className="text-xs font-semibold capitalize tracking-[0.2em] text-slate-500">
-                Leave summary
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                  <p className="text-[11px] capitalize tracking-[0.18em] text-slate-500">
-                    Total Leave
-                  </p>
-                  <p className="mt-1 text-xl font-semibold text-slate-900">
-                    {leaveSummary?.total ?? 0}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
-                  <p className="text-[11px] capitalize tracking-[0.18em] text-amber-700">
-                    Used Leave
-                  </p>
-                  <p className="mt-1 text-xl font-semibold text-amber-800">
-                    {leaveSummary?.used ?? 0}
-                  </p>
-                </div>
-                <div
-                  className={`rounded-2xl px-4 py-3 ${remainingBadgeClass}`}
-                >
-                  <p className="text-[11px] capitalize tracking-[0.18em]">
-                    Remaining Leave
-                  </p>
-                  <p className="mt-1 text-xl font-semibold">
-                    {formattedRemainingBalance}
-                  </p>
-                </div>
+                <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />
               </div>
+            </TabsContent>
+
+            <TabsContent value="history" className="mt-0 space-y-6">
+              {/* Leave History Content */}
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  {[
+                    { label: "Total Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
+                    { label: "Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                    { label: "Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
+                    { label: "Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
+                  ].map((stat) => (
+                    <div key={stat.label} className={`p-5 rounded-xl border ${stat.color} transition-all duration-200 hover:shadow-md`}>
+                      <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
+                      <p className="text-3xl font-extrabold">{stat.value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Input
+                      placeholder="Search leaves..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                    />
+                  </div>
+                  <Select value={monthFilter} onValueChange={setMonthFilter}>
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Months</SelectItem>
+                      {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {filteredLeaves.length === 0 ? (
+                  <NoDataFound title="No leave records found" />
+                ) : (
+                  <div className="space-y-4">
+                    {filteredLeaves.map((leave) => (
+                      <div key={leave.id} className="p-6 rounded-xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-200 group">
+                        <div className="flex flex-col lg:flex-row justify-between gap-4">
+                          <div className="flex items-center gap-5">
+                            <div className={`h-14 w-14 rounded-xl flex items-center justify-center text-xl font-bold shadow-inner ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
+                              {leave.leave_type?.leave_type?.[0] || "L"}
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-3">
+                                <span className="font-bold text-lg text-slate-900 group-hover:text-black transition-colors">{leave.leave_type?.leave_type}</span>
+                                <Badge className={`font-semibold px-2 py-0.5 rounded-md ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
+                                  {leave.status}
+                                </Badge>
+                              </div>
+                              <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                {dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")} 
+                                <span className="text-slate-900 font-bold ml-1">({leave.total_days} days)</span>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-start lg:items-end justify-center text-left lg:text-right border-t lg:border-t-0 pt-4 lg:pt-0">
+                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Applied on {dayjs(leave.createdAt).format("D MMM YYYY")}</p>
+                            {leave.reason && (
+                              <div className="flex items-start gap-2 bg-slate-50 p-2 rounded-lg max-w-md">
+                                <FileText className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm text-slate-600 line-clamp-2 italic">{leave.reason}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          </div>
+
+          {/* Action Bar (Sticky at bottom if needed, but here simple) */}
+          {activeTab !== "history" && (
+            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-montserrat">
+              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
+              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat">
+                {saveLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                Save Changes
+              </Button>
             </div>
           )}
-          {error && (
-            <div className="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              {error}
-            </div>
-          )} */}
-        </CardContent>
+        </Tabs>
       </Card>
-
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 px-6 py-5">
-          {[
-            { label: "Total entries", value: leaveRecords.length },
-            { label: "Approved", value: summary.counts.approved },
-            { label: "Pending", value: summary.counts.pending },
-            { label: "Rejected", value: summary.counts.rejected },
-            { label: "Other", value: summary.other },
-            { label: "Total days", value: summary.totalDays },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3"
-            >
-              <p className="text-lg capitalize tracking-[0.15em] text-slate-400">
-                {item.label}
-              </p>
-              <p className="text-2xl font-semibold text-slate-900">
-                {item.value ?? 0}
-              </p>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardContent className="space-y-4 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-slate-800">Filters</p>
-            <p className="text-xs text-slate-500">
-              Showing {filteredLeaves.length} of {leaveRecords.length} entries
-            </p>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-4">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-slate-400" />
-              <Input
-                placeholder="Search by type, reason, or date..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-11"
-              />
-            </div>
-
-            <Select
-              value={monthFilter}
-              onValueChange={(value) => setMonthFilter(value)}
-            >
-              <SelectTrigger className="w-full h-11">
-                <SelectValue placeholder="Month" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All months</SelectItem>
-                {monthOptions.map((month) => (
-                  <SelectItem key={month} value={month}>
-                    {dayjs(month).format("MMM YYYY")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={statusFilter}
-              onValueChange={(value) => setStatusFilter(value)}
-            >
-              <SelectTrigger className="w-full h-11">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All statuses</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={leaveTypeFilter}
-              onValueChange={(value) => setLeaveTypeFilter(value)}
-            >
-              <SelectTrigger className="w-full h-11">
-                <SelectValue placeholder="Leave type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All types</SelectItem>
-                {leaveTypeOptions.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-slate-500" />
-        </div>
-      ) : leaveRecords?.length === 0 ? (
-        <NoDataFound
-          title="No leave history yet"
-          description="This employee has not taken any leaves that are recorded in the system."
-        />
-      ) : filteredLeaves.length === 0 ? (
-        <NoDataFound
-          title="No matching leaves"
-          description="Try relaxing the search or filters to see more results."
-        />
-      ) : (
-        <div className="space-y-4">
-          {sortedLeaves.map((leave) => {
-            const leaveTypeLabel =
-              leave.leave_type?.leave_type || "Leave request";
-            const startDate = leave.start_date
-              ? dayjs(leave.start_date).format("D MMM YYYY")
-            : "-";
-            const endDate = leave.end_date
-              ? dayjs(leave.end_date).format("D MMM YYYY")
-            : "-";
-            const appliedOn = leave.createdAt
-              ? dayjs(leave.createdAt).format("D MMM YYYY")
-            : "-";
-            const leaveDays = parseLeaveDays(leave);
-
-            const dayCount =
-              Number(leave.total_days) || Number(leave?.total_days) || 0;
-
-            return (
-              <Card
-                key={leave.id}
-                className="rounded-2xl border border-slate-200 bg-white shadow-sm"
-              >
-                <CardContent className="space-y-5 p-5">
-                  {/* ===== Header ===== */}
-                  <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    {/* Left */}
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
-                        {getInitials(employee)}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            className={
-                              statusStyles[leave.status?.toLowerCase()] ||
-                              statusStyles.other
-                            }
-                          >
-                            {leave?.status?.charAt(0).toUpperCase() + leave?.status?.slice(1)}
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-slate-500">
-                          {leave.employee?.employee_code}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                    
-                  {/* ===== Info Row (ONE ROW) ===== */}
-                  <div
-                    className={`grid gap-3 text-sm ${
-                      leave.status === "approved"
-                        ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
-                        : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-                    }`}
-                  >
-                    {/* Leave Type */}
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
-                        Leave type
-                      </p>
-                      <p className="mt-1 font-semibold text-slate-900">
-                        {leave.leave_type?.leave_type}
-                      </p>
-                    </div>
-                  
-                    {/* Duration */}
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
-                        Duration
-                      </p>
-                      <p className="mt-1 font-semibold text-slate-900">
-                        {dayjs(leave.start_date).format("D MMM YYYY")} –{" "}
-                        {dayjs(leave.end_date).format("D MMM YYYY")}
-                      </p>
-                    </div>
-                  
-                    {/* Days */}
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
-                        Days
-                      </p>
-                      <p className="mt-1 font-semibold text-slate-900">
-                        {leave.total_days} day
-                        {leave.total_days > 1 ? "s" : ""}
-                      </p>
-                    </div>
-                  
-                    {/* Applied */}
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs capitalize tracking-[0.25em] text-slate-500">
-                        Applied
-                      </p>
-                      <p className="mt-1 font-semibold text-slate-900">
-                        {dayjs(leave.createdAt).format("D MMM YYYY")}
-                      </p>
-                    </div>
-                  
-                    {/* Approved */}
-                    {leave.status === "approved" && (
-                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                        <p className="text-xs capitalize tracking-[0.25em] text-emerald-600">
-                          Approved
-                        </p>
-                        <p className="mt-1 font-semibold text-slate-900">
-                          {dayjs(leave.updatedAt).format("D MMM YYYY")}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* ===== Reason ===== */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs capitalize tracking-[0.25em] text-slate-400">
-                      Reason
-                    </p>
-                    <p className="mt-2 text-sm text-slate-900">
-                      {leave.reason || "No reason provided."}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { cn } from "@/lib/utils"; // If you're using Tailwind + classNames utility
+import { cn } from "@/lib/utils"; 
 import NoDataFound from "../../common/NoDataFound";
 
 const leaveTypes = [
@@ -58,10 +58,8 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
         leave.id === id
           ? {
               ...leave,
-              // addon:field === "available" ? Number(leave.addon || 0) + delta : 0,
               addon: field === "available" ? 0 : 0,
               subst: field === "booked" ? 0 : 0,
-              // subst: field === "booked" ? Number(leave.subst || 0) - delta : 0,
             }
           : { ...leave, addon: 0, subst: 0 }
       )
@@ -69,76 +67,48 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
   };
 
   return (
-    <div className="space-y-4 mt-6">
+    <div className="space-y-4 font-montserrat">
       {leaveInfo?.map((leave, index) => {
         const { leave_count, leave_remaing, leave_used, leave_type, id } =
           leave;
-        const { gb, key, icon, bg, iconColor } = leaveTypes[index];
+        const config = leaveTypes.find(t => t.label.toLowerCase().includes(leave_type.toLowerCase())) || leaveTypes[index % leaveTypes.length];
+        const { icon, bg, iconColor } = config;
 
         return (
           <div
-            key={key}
-            className="flex items-center justify-between p-4 bg-slate-50 rounded-md border"
+            key={id || index}
+            className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 group"
           >
-            <div className="flex flex-col space-y-1">
-              <div className="flex items-center space-x-4">
-                <div className={cn("p-3 rounded-md text-xl", bg, iconColor)}>
-                  {icon}
+            <div className="flex items-center gap-5">
+              <div className={cn("h-14 w-14 rounded-xl flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform duration-200", bg, iconColor)}>
+                {icon}
+              </div>
+              <div className="space-y-1">
+                <div className="text-lg font-bold text-slate-800">
+                  {leave_type}
                 </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-700">
-                    {leave_type}
-                  </div>
-                  <div className="text-xs text-slate-500 flex flex-wrap gap-3 mt-1">
-                    <span>
-                      Total Annual leave: <strong>{leave_count}</strong> days
-                    </span>
-                    {/* <span>
-                      Available: <strong>{leave_remaing}</strong> days
-                    </span>
-                    <span>
-                      Booked: <strong>{leave_used}</strong> days
-                    </span>
-
-                    <span>
-                      Addon: <strong>{leave?.addon || 0}</strong> days
-                    </span> */}
-                  </div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  Total Annual leave: <span className="text-slate-900 font-extrabold">{leave_count} days</span>
                 </div>
               </div>
             </div>
 
             {/* Leave Controls */}
-            <div className="flex items-center gap-6">
-              {["available", "booked"].map((field) => (
-                <div key={field} className="text-center">
-                  <div className="text-xs text-slate-500 font-medium capitalize mb-1">
-                    {field}
+            <div className="flex items-center gap-8">
+              {[
+                { label: "Available", value: leave?.leave_remaing, color: "text-emerald-600" },
+                { label: "Booked", value: leave?.leave_used, color: "text-amber-600" }
+              ].map((field) => (
+                <div key={field.label} className="text-center group/stat">
+                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">
+                    {field.label}
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-full shadow-sm border">
-                    {/* <button
-                      className="text-slate-600 hover:text-black font-bold"
-                      onClick={() => {
-                        updateValue(id, field, -1);
-                      }}
-                    >
-                      –
-                    </button> */}
-                    <span className="w-6 text-center font-semibold">
-                      {(field === "available"
-                        ? leave?.leave_remaing
-                        : leave?.leave_used) || 0}
+                  <div className="flex items-center justify-center h-10 w-20 bg-slate-50 rounded-lg border border-slate-100 shadow-inner group-hover/stat:bg-white group-hover/stat:border-slate-200 transition-all">
+                    <span className={cn("text-lg font-black", field.color)}>
+                      {field.value || 0}
                     </span>
-                    {/* <button
-                      className="text-slate-600 hover:text-black font-bold"
-                      onClick={() => {
-                        updateValue(id, field, 1);
-                      }}
-                    >
-                      +
-                    </button> */}
                   </div>
-                  <div className="text-[12px] text-slate-400 mt-1">days</div>
+                  <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">days</div>
                 </div>
               ))}
             </div>
@@ -146,7 +116,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
         );
       })}
 
-      {leaveInfo?.length === 0 && <NoDataFound />}
+      {leaveInfo?.length === 0 && <div className="p-8"><NoDataFound /></div>}
     </div>
   );
 });

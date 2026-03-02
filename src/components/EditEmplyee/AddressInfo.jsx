@@ -34,95 +34,88 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
     validateForm: () => validateForm(),
   }));
 
+  const renderError = (field) =>
+    touched[field] && errors[field] ? (
+      <p className="text-red-500 text-sm mt-1">{errors[field]}</p>
+    ) : null;
+
   return (
-    <div className="space-y-4 p-4 border rounded-md shadow-sm">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="street">Street Address *</Label>
+    <div className="font-montserrat text-slate-900">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
+        <div className="space-y-2">
+          <Label htmlFor="street" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Street Address *</Label>
           <Input
             id="street"
             name="street"
             value={values.street}
             onChange={handleChange}
             onBlur={handleBlur}
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
           />
-          {touched.street ||
-            (errors?.street && (
-              <p className="text-red-500 text-sm">{errors.street}</p>
-            ))}
+          {renderError("street")}
         </div>
-        <div>
-          <Label htmlFor="city">City *</Label>
+        <div className="space-y-2">
+          <Label htmlFor="city" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">City *</Label>
           <Input
             id="city"
             name="city"
             value={values.city}
             onChange={handleChange}
             onBlur={handleBlur}
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
           />
-          {touched.city ||
-            (errors.city && (
-              <p className="text-red-500 text-sm">{errors.city}</p>
-            ))}
+          {renderError("city")}
         </div>
-        <div>
-          <Label htmlFor="state">State *</Label>
+        <div className="space-y-2">
+          <Label htmlFor="state" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">State *</Label>
           <Input
             id="state"
             name="state"
             value={values.state}
             onChange={handleChange}
             onBlur={handleBlur}
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
           />
-          {touched.state ||
-            (errors.state && (
-              <p className="text-red-500 text-sm">{errors.state}</p>
-            ))}
+          {renderError("state")}
         </div>
-        <div>
-          <Label htmlFor="zip_code">ZIP Code *</Label>
+        <div className="space-y-2">
+          <Label htmlFor="zip_code" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">ZIP Code *</Label>
           <Input
             id="zip_code"
             name="zip_code"
             value={values.zip_code}
             onChange={handleChange}
             onBlur={handleBlur}
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
           />
-          {touched.zip_code ||
-            (errors.zip_code && (
-              <p className="text-red-500 text-sm">{errors.zip_code}</p>
-            ))}
+          {renderError("zip_code")}
         </div>
-        <div>
-          <Label htmlFor="country">Country</Label>
+        <div className="space-y-2">
+          <Label htmlFor="country" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Country</Label>
           <Input
             id="country"
             name="country"
             value={values.country}
             onChange={handleChange}
             onBlur={handleBlur}
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
           />
-          {touched.country ||
-            (errors.country && (
-              <p className="text-red-500 text-sm">{errors.country}</p>
-            ))}
+          {renderError("country")}
         </div>
-      </div>
-
-      <div>
-        <Label htmlFor="permanent_address">Permanent Address</Label>
-        <Textarea
-          id="permanent_address"
-          name="permanent_address"
-          value={values.permanent_address}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          rows={3}
-        />
-        {touched.permanent_address ||
-          (errors.permanent_address && (
-            <p className="text-red-500 text-sm">{errors.permanent_address}</p>
-          ))}
+        
+        <div className="col-span-full space-y-2">
+          <Label htmlFor="permanent_address" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Permanent Address</Label>
+          <Textarea
+            id="permanent_address"
+            name="permanent_address"
+            value={values.permanent_address}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            rows={3}
+            className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat min-h-[100px]"
+          />
+          {renderError("permanent_address")}
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import {
   Hash,
   BookA,
   UsersRound,
+  KeySquare,
 } from "lucide-react";
 
 const settingTabs = [
@@ -63,7 +64,7 @@ const settingTabs = [
     name: "Reset Password",
     link: "/admin/settings/reset-password",
     description: "Change your account password",
-    icon: Building2,
+    icon: KeySquare,
   },
   // Templates are kept out for now but ready for reactivation
   // {

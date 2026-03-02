@@ -7,8 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { forwardRef, useImperativeHandle, useEffect } from "react";
+import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
 import { useFormValidation } from "../../hooks/useFormValidation";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "lucide-react";
+import { format, parseISO, isValid } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const validationSchema = {
   first_name: [{ type: "required", message: "First name is required" }],
@@ -32,6 +38,54 @@ const validationSchema = {
   nationality: [{ type: "required", message: "Nationality is required" }],
 };
 
+const DatePickerField = ({ name, label, value, required, onChange, onBlur, error }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Parse date safely
+  const dateValue = value ? (typeof value === 'string' ? parseISO(value) : new Date(value)) : null;
+  const displayValue = dateValue && isValid(dateValue) ? format(dateValue, "PPP") : "Pick a date";
+
+  return (
+    <div className="flex flex-col space-y-2">
+      <Label htmlFor={name} className="text-[#131313] font-montserrat">
+        {label} {required && "*"}
+      </Label>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant={"outline"}
+            className={cn(
+              "w-full justify-start text-left font-normal border-gray-200 h-10 px-3",
+              !dateValue && "text-muted-foreground"
+            )}
+            onClick={() => setIsOpen(true)}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {displayValue}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0 z-[100]" align="start" sideOffset={4}>
+          <Calendar
+            mode="single"
+            selected={dateValue && isValid(dateValue) ? dateValue : undefined}
+            onSelect={(date) => {
+              if (date) {
+                onChange(name, date);
+                setIsOpen(false);
+                onBlur(name);
+              }
+            }}
+            initialFocus
+            className="font-montserrat"
+          />
+        </PopoverContent>
+      </Popover>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+    </div>
+  );
+};
+
 const BasicInfoForm = forwardRef(
   ({ initialValues, onChange, departments, designations }, ref) => {
     const { values, errors, touched, handleChange, handleBlur, validateForm } =
@@ -41,14 +95,6 @@ const BasicInfoForm = forwardRef(
         enableReinitialize: true,
       });
 
-    const formattedDateJoining = values?.date_of_joining
-      ? new Date(values.date_of_joining).toISOString().split("T")[0]
-      : "";
-
-    const formattedDateBirth = values?.date_of_birth
-      ? new Date(values.date_of_birth).toISOString().split("T")[0]
-      : "";
-
     useEffect(() => {
       onChange(values);
     }, [values, onChange]);
@@ -57,9 +103,21 @@ const BasicInfoForm = forwardRef(
       validateForm: () => validateForm(),
     }));
 
+    const handleDateChange = (name, date) => {
+      if (date) {
+        handleChange({
+          target: { name, value: format(date, "yyyy-MM-dd") },
+        });
+      }
+    };
+
+    const triggerBlur = (name) => {
+      handleBlur({ target: { name } });
+    };
+
     const renderError = (field) =>
       touched[field] && errors[field] ? (
-        <p className="text-red-500 text-sm">{errors[field]}</p>
+        <p className="text-red-500 text-sm mt-1">{errors[field]}</p>
       ) : null;
 
     if (!values) {
@@ -67,91 +125,80 @@ const BasicInfoForm = forwardRef(
     }
 
     return (
-      <>
-        <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md shadow-sm">
+      <div className="font-montserrat text-slate-900">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
           {/* First Name */}
-          <div style={{ paddingTop: "20px" }}>
-            <Label htmlFor="first_name">First Name *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="first_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">First Name *</Label>
             <Input
               id="first_name"
               name="first_name"
-              value={values.first_name}
+              value={values.first_name || ""}
               onChange={handleChange}
               onBlur={handleBlur}
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
             />
-            {touched.first_name && errors.first_name && (
-              <p className="text-red-500 text-sm">{errors.first_name}</p>
-            )}
+            {renderError("first_name")}
           </div>
 
           {/* Last Name */}
-          <div>
-            <Label htmlFor="last_name">Last Name</Label>
+          <div className="space-y-2">
+            <Label htmlFor="last_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Last Name</Label>
             <Input
               id="last_name"
               name="last_name"
-              value={values.last_name}
+              value={values.last_name || ""}
               onChange={handleChange}
               onBlur={handleBlur}
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
             />
-            {touched.last_name && errors.last_name && (
-              <p className="text-red-500 text-sm">{errors.last_name}</p>
-            )}
+            {renderError("last_name")}
           </div>
 
           {/* Email */}
-          <div>
-            <Label htmlFor="email">Email *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Email *</Label>
             <Input
               id="email"
               name="email"
-              value={values.email}
+              type="email"
+              value={values.email || ""}
               onChange={handleChange}
               onBlur={handleBlur}
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
             />
-            {touched.email && errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
-            )}
+            {renderError("email")}
           </div>
 
           {/* Phone Number */}
-          <div>
-            <Label htmlFor="phone_number">Phone *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="phone_number" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Phone *</Label>
             <Input
               id="phone_number"
               name="phone_number"
-              value={values.phone_number}
+              value={values.phone_number || ""}
               onChange={handleChange}
               onBlur={handleBlur}
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
             />
-            {touched.phone_number && errors.phone_number && (
-              <p className="text-red-500 text-sm">{errors.phone_number}</p>
-            )}
+            {renderError("phone_number")}
           </div>
 
           {/* Gender */}
-          <div>
-            <Label htmlFor="gender">Gender *</Label>
-            {/* <Input
-              id="gender"
-              name="gender"
-              value={values.gender}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            /> */}
+          <div className="space-y-2">
+            <Label htmlFor="gender" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Gender *</Label>
             <Select
-              value={values.gender}
+              value={values.gender || ""}
               onValueChange={(val) =>
                 handleChange({
                   target: { name: "gender", value: val },
                 })
               }
-              onBlur={() => handleBlur({ target: { name: "gender" } })}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
+              <SelectTrigger onBlur={() => triggerBlur("gender")} className="h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
+                <SelectValue placeholder="Select gender" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="font-montserrat">
                 <SelectItem value="male">Male</SelectItem>
                 <SelectItem value="female">Female</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
@@ -164,21 +211,20 @@ const BasicInfoForm = forwardRef(
           </div>
 
           {/* Marital Status */}
-          <div>
-            <Label htmlFor="martial_status">Marital Status *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="martial_status" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Marital Status *</Label>
             <Select
-              value={values.martial_status}
+              value={values.martial_status || ""}
               onValueChange={(val) =>
                 handleChange({
                   target: { name: "martial_status", value: val },
                 })
               }
-              onBlur={() => handleBlur({ target: { name: "martial_status" } })}
             >
-              <SelectTrigger>
+              <SelectTrigger onBlur={() => triggerBlur("martial_status")} className="h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="font-montserrat">
                 <SelectItem value="single">Single</SelectItem>
                 <SelectItem value="married">Married</SelectItem>
                 <SelectItem value="divorced">Divorced</SelectItem>
@@ -188,66 +234,41 @@ const BasicInfoForm = forwardRef(
             {renderError("martial_status")}
           </div>
 
-          {/* <div>
-            <Label htmlFor="martial_status">Marital Status</Label>
-            <Input
-              id="martial_status"
-              name="martial_status"
-              value={values.martial_status}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {touched.martial_status && errors.martial_status && (
-              <p className="text-red-500 text-sm">{errors.martial_status}</p>
-            )}
-          </div> */}
-
           {/* Date of Joining */}
-          <div>
-            <Label htmlFor="date_of_joining">Date of Joining</Label>
-            <Input
-              id="date_of_joining"
-              name="date_of_joining"
-              type="date"
-              value={formattedDateJoining}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {touched.date_of_joining && errors.date_of_joining && (
-              <p className="text-red-500 text-sm">{errors.date_of_joining}</p>
-            )}
-          </div>
+          <DatePickerField
+            name="date_of_joining"
+            label="Date of Joining"
+            value={values.date_of_joining}
+            required
+            onChange={handleDateChange}
+            onBlur={triggerBlur}
+            error={touched.date_of_joining && errors.date_of_joining ? errors.date_of_joining : null}
+          />
 
           {/* Date of Birth */}
-          <div>
-            <Label htmlFor="date_of_birth">Date of Birth *</Label>
-            <Input
-              id="date_of_birth"
-              name="date_of_birth"
-              type="date"
-              value={formattedDateBirth}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {touched.date_of_birth && errors.date_of_birth && (
-              <p className="text-red-500 text-sm">{errors.date_of_birth}</p>
-            )}
-          </div>
+          <DatePickerField
+            name="date_of_birth"
+            label="Date of Birth"
+            value={values.date_of_birth}
+            required
+            onChange={handleDateChange}
+            onBlur={triggerBlur}
+            error={touched.date_of_birth && errors.date_of_birth ? errors.date_of_birth : null}
+          />
 
           {/* Department */}
-          <div>
-            <Label htmlFor="department_id">Department *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="department_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Department *</Label>
             <Select
-              value={values.department_id}
+              value={String(values.department_id || "")}
               onValueChange={(val) =>
                 handleChange({ target: { name: "department_id", value: val } })
               }
-              onBlur={() => handleBlur({ target: { name: "department_id" } })}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger onBlur={() => triggerBlur("department_id")} className="w-full h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select department" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="font-montserrat">
                 {departments.map((dept) => (
                   <SelectItem key={dept.id} value={String(dept.id)}>
                     {dept.name}
@@ -255,25 +276,22 @@ const BasicInfoForm = forwardRef(
                 ))}
               </SelectContent>
             </Select>
-            {touched.department_id && errors.department_id && (
-              <p className="text-red-500 text-sm">{errors.department_id}</p>
-            )}
+            {renderError("department_id")}
           </div>
 
           {/* Designation */}
-          <div>
-            <Label htmlFor="designation_id">Designation *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="designation_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Designation *</Label>
             <Select
-              value={values.designation_id}
+              value={String(values.designation_id || "")}
               onValueChange={(val) =>
                 handleChange({ target: { name: "designation_id", value: val } })
               }
-              onBlur={() => handleBlur({ target: { name: "designation_id" } })}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger onBlur={() => triggerBlur("designation_id")} className="w-full h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select designation" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="font-montserrat">
                 {designations.map((designation) => (
                   <SelectItem
                     key={designation.id}
@@ -284,28 +302,26 @@ const BasicInfoForm = forwardRef(
                 ))}
               </SelectContent>
             </Select>
-            {touched.designation_id && errors.designation_id && (
-              <p className="text-red-500 text-sm">{errors.designation_id}</p>
-            )}
+            {renderError("designation_id")}
           </div>
 
           {/* Nationality */}
-          <div>
-            <Label htmlFor="nationality">Nationality *</Label>
+          <div className="space-y-2 w-full">
+            <Label htmlFor="nationality" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Nationality *</Label>
             <Input
               id="nationality"
               name="nationality"
-              value={values.nationality}
+              value={values.nationality || ""}
               onChange={handleChange}
               onBlur={handleBlur}
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
             />
-            {touched.nationality && errors.nationality && (
-              <p className="text-red-500 text-sm">{errors.nationality}</p>
-            )}
+            {renderError("nationality")}
           </div>
         </div>
-      </>
+      </div>
     );
+
   }
 );
 

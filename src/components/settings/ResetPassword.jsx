@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Lock, Save, Eye, EyeOff } from "lucide-react";
+import { KeySquare, Save, Eye, EyeOff } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
@@ -89,24 +89,26 @@ function ResetPassword() {
         <>
             <Card className="border-0 shadow-md">
                 <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                        <Lock className="h-5 w-5" />
+                    <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+                        <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+                            <KeySquare className="h-5 w-5" />
+                        </span>
                         <span>Reset Password</span>
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="password">New Password</Label>
+                            <Label htmlFor="password"  className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">New Password</Label>
                             <div className="relative">
                                 <Input
+                                    className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                                     id="password"
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={passwordData.password}
                                     onChange={handleChange}
                                     placeholder="Enter new password"
-                                    className="pr-10"
                                 />
                                 <button
                                     type="button"
@@ -126,16 +128,16 @@ function ResetPassword() {
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="confirm_password">Confirm Password</Label>
+                            <Label htmlFor="confirm_password" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Confirm Password</Label>
                             <div className="relative">
                                 <Input
+                                    className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                                     id="confirm_password"
                                     type={showConfirmPassword ? "text" : "password"}
                                     name="confirm_password"
                                     value={passwordData.confirm_password}
                                     onChange={handleChange}
                                     placeholder="Confirm new password"
-                                    className="pr-10"
                                 />
                                 <button
                                     type="button"
@@ -158,7 +160,7 @@ function ResetPassword() {
                     <Button
                         onClick={handleSave}
                         disabled={loader}
-                        className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20"
+                        className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat"
                     >
                         <Save className="h-4 w-4 mr-2" />
                         {loader ? "Saving..." : "Save New Password"}

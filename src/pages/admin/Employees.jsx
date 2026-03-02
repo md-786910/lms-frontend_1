@@ -34,7 +34,6 @@ import {
   Pencil,
 } from "lucide-react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
-import EditEmployeeForm from "@/components/EditEmployeeForm";
 import { employeeAPI } from "../../api/employeeApi";
 import { useToast } from "@/hooks/use-toast";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
@@ -55,8 +54,6 @@ const Employees = ({
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
@@ -64,7 +61,6 @@ const Employees = ({
   const [resendTarget, setResendTarget] = useState(null);
   const [resendingInvite, setResendingInvite] = useState(false);
   const [employeeActiveStatus, setEmployeActiveStatus] = useState(false);
-  const [activeTabEdit, setActiveTabEdit] = useState("basic");
   const [avatarLoadingId, setAvatarLoadingId] = useState(null);
   const navigate = useNavigate();
 
@@ -132,8 +128,7 @@ const Employees = ({
   // };
 
   const handleEditEmployee = (employee) => {
-    setSelectedEmployee(employee);
-    setShowEditForm(true);
+    navigate(`/admin/employees/${employee.id}/history`);
   };
 
   const totalEmployees = employees.length;
@@ -676,39 +671,6 @@ const Employees = ({
             onClose={() => setShowAddForm(false)}
             onSuccess={() => handleAddSuccess()}
           />
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Employee Dialog */}
-      <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-        <DialogContent className="max-w-6xl max-h-[100vh]">
-          <DialogHeader>
-            <DialogTitle>
-              <CardTitle className="flex items-center space-x-2">
-                <User className="h-5 w-5 text-blue-600" />
-                {/* keep first letter caps */}
-                <span>
-                  Edit Employee :{" "}
-                  <span className="text-blue-600">
-                    (
-                    {selectedEmployee?.first_name +
-                      " " +
-                      selectedEmployee?.last_name}
-                    ) &nbsp; - &nbsp;
-                    {capitalizeFirstLetter(activeTabEdit)}
-                  </span>
-                </span>
-              </CardTitle>
-            </DialogTitle>
-          </DialogHeader>
-          {selectedEmployee && (
-            <EditEmployeeForm
-              employeeId={selectedEmployee?.id}
-              onClose={handleEditClose}
-              onSuccess={handleEditSuccess}
-              handleTabActive={(props) => setActiveTabEdit(props)}
-            />
-          )}
         </DialogContent>
       </Dialog>
 
