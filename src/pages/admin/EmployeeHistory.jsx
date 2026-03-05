@@ -278,7 +278,11 @@ const EmployeeHistory = () => {
   }, [leaveRecords]);
 
   const leaveSummary = useMemo(() => {
-    const aggregated = (employee?.employee_leaves ?? []).reduce(
+    const source = (activeTab === "leave_balance" && leaveInfo && leaveInfo.length > 0)
+      ? leaveInfo
+      : (employee?.employee_leaves ?? []);
+
+    const aggregated = source.reduce(
       (acc, leave) => {
         acc.total += Number(leave?.leave_count) || 0;
         acc.used += Number(leave?.leave_used) || 0;
@@ -288,7 +292,7 @@ const EmployeeHistory = () => {
       { total: 0, used: 0, remaining: 0 }
     );
     return aggregated;
-  }, [employee]);
+  }, [employee, leaveInfo, activeTab]);
 
   const monthOptions = useMemo(() => {
     const dateCandidates = leaveRecords.flatMap((leave) => [
@@ -435,10 +439,10 @@ const EmployeeHistory = () => {
                   <h3 className="text-xl font-bold text-slate-900">Annual Leave Balances</h3>
                   <div className="flex gap-3">
                     <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-sm font-semibold">
-                      Remaining: {formatLeaveDays(leaveSummary.remaining)}
+                      Remaining Leave: {formatLeaveDays(leaveSummary.remaining)}
                     </Badge>
                     <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-sm font-semibold">
-                      Used: {leaveSummary.used}
+                      Used Leave: {formatLeaveDays(leaveSummary.used)}
                     </Badge>
                   </div>
                 </div>
