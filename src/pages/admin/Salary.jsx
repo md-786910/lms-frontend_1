@@ -510,129 +510,119 @@ const Salary = () => {
 
       {/* View Employee Salary Modal */}
       {showViewModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md font-[Montserrat]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm font-montserrat">
           {/* Modal */}
-          <div className="relative w-full max-w-2xl rounded-md bg-white/90 backdrop-blur-md shadow-md">
-            <div className="bg-slate-900 text-white">
-              <div className="p-3 md:p-4">
-                <div className="grid grid-cols-12 items-center gap-2">
-                    <div className="col-span-12 md:col-span-8 space-y-1">
-                      <div className="flex items-center gap-1">
-                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md mr-2">
-                          <AlarmClockMinus className="h-4 w-4" />
-                        </span>
-                        <div className="space-y-0.5">
-                          <h2 className="text-lg font-semibold font-montserrat text-[#FFFFFF] tracking-tight">
-                            {selectedEmployee?.employee?.first_name}
-                          </h2>
-                          <p className="text-[#FFFFFF] font-montserrat text-sm">
-                            {selectedEmployee?.employee?.designation?.title || "Employee"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowViewModal(false)}
-                      className="rounded-md hover:bg-slate-100 bg-[#e2e8f0] text-slate-700 transition-colors"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+          <div className="relative w-full max-w-lg rounded-xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            {/* Header with Banner Background */}
+            <div className="bg-slate-900 text-white p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                    <AlarmClockMinus className="h-5 w-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold tracking-tight">
+                      {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
+                    </h2>
+                    <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">
+                      {selectedEmployee?.employee?.designation?.title || "Employee Details"}
+                    </p>
                   </div>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowViewModal(false)}
+                  className="rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-all h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
             </div>
 
             {selectedEmployee && (
-              <div className="space-y-6 p-7">
-              
-                {/* Employee Info */}
-                <div className="grid grid-cols-2 gap-6">
-            
-                  <div className="p-4 rounded-xl bg-slate-50 border">
-                    <p className="text-xs text-slate-500">Employee ID</p>
-                    <p className="font-semibold text-slate-800 mt-1">
-                      {selectedEmployee.employee?.employee_no ||
-                        `EMP-${selectedEmployee?.employee?.id}`}
+              <div className="p-5 space-y-5">
+                {/* Employee Quick Info */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Employee ID</p>
+                    <p className="text-sm font-semibold text-slate-800">
+                      {selectedEmployee.employee?.employee_no || `EMP-${selectedEmployee?.employee?.id}`}
                     </p>
                   </div>
-                      
-                  <div className="p-4 rounded-xl bg-slate-50 border">
-                    <p className="text-xs text-slate-500">Position</p>
-                    <p className="font-semibold text-slate-800 mt-1">
-                      {selectedEmployee.employee?.designation?.title || "N/A"}
-                    </p>
+                  <div className="px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Status</p>
+                    <Badge variant="outline" className={`mt-0.5 text-[10px] h-5 ${getStatusColor(selectedEmployee.status)}`}>
+                      {selectedEmployee.status}
+                    </Badge>
                   </div>
-                      
                 </div>
-                      
-                {/* Salary Cards */}
-                <div className="grid grid-cols-2 gap-4">
-                      
-                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
-                    <p className="text-xs text-slate-500">Base Salary</p>
-                    <p className="text-lg font-semibold text-emerald-600 mt-1">
-                      ₹{selectedEmployee.base_salary.toLocaleString()}
-                    </p>
+
+                {/* Salary Breakdown */}
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1">Earnings & Deductions</h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Base</p>
+                      <p className="text-sm font-bold text-slate-900 mt-0.5">₹{selectedEmployee.base_salary.toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm text-emerald-600">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Bonus</p>
+                      <p className="text-sm font-bold mt-0.5">₹{selectedEmployee.bonus.toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm text-rose-600">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Deduction</p>
+                      <p className="text-sm font-bold mt-0.5">₹{selectedEmployee.deduction.toLocaleString()}</p>
+                    </div>
                   </div>
-                      
-                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
-                    <p className="text-xs text-slate-500">Bonus</p>
-                    <p className="text-lg font-semibold text-blue-600 mt-1">
-                      ₹{selectedEmployee.bonus.toLocaleString()}
-                    </p>
-                  </div>
-                      
-                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
-                    <p className="text-xs text-slate-500">Deductions</p>
-                    <p className="text-lg font-semibold text-red-500 mt-1">
-                      ₹{selectedEmployee.deduction.toLocaleString()}
-                    </p>
-                  </div>
-                      
-                  {/* Net Salary Highlight */}
-                  <div className="p-5 rounded-2xl text-white bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg">
-                    <p className="text-xs opacity-80">Net Salary</p>
-                    <p className="text-2xl font-bold mt-1">
-                      ₹{selectedEmployee.net_salary.toLocaleString()}
-                    </p>
-                  </div>
-                      
                 </div>
-                      
-                {/* Generate Button */}
-                <div className="pt-2">
-                  <button
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition"
+
+                {/* Net Salary Highlight */}
+                <div className="relative overflow-hidden p-4 rounded-xl bg-slate-900 text-white shadow-lg group">
+                  <div className="relative z-10 flex justify-between items-end">
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Net Monthly Salary</p>
+                      <p className="text-3xl font-black mt-1 tracking-tighter">
+                        ₹{selectedEmployee.net_salary.toLocaleString()}
+                      </p>
+                    </div>
+                    <DollarSign className="h-12 w-12 text-white/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-1">
+                  <Button
+                    variant="outline"
+                    className="flex-1 font-bold text-xs py-5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 transition-all"
+                    onClick={() => setShowViewModal(false)}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    className="flex-[2] bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-5 rounded-lg shadow-md hover:shadow-lg transition-all"
+                    disabled={loading}
                     onClick={async () => {
                       try {
                         setLoading(true);
                         const resp = await salaryAPI.generateSalary({
                           employee_id: selectedEmployee?.employee?.id,
                         });
-                      
                         if (resp.status === 200) {
-                          toast({
-                            title: "Payslip Generated",
-                            description: "Payslip generated successfully.",
-                          });
-                        
+                          toast({ title: "Success", description: "Payslip generated successfully." });
                           callSalaryHistory();
                           getDashboard();
                         }
                       } catch (error) {
-                        console.log(error);
+                        console.error(error);
                       } finally {
                         setLoading(false);
                       }
                     }}
                   >
                     {loading ? "Generating..." : "Generate Payslip"}
-                  </button>
+                  </Button>
                 </div>
-                  
               </div>
             )}
           </div>
