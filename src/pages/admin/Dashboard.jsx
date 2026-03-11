@@ -915,8 +915,10 @@ const AdminDashboard = () => {
               </h3>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Are you sure you want to download the latest leave report? This
-              will generate a fresh CSV of all leave records.
+              Are you sure you want to download the leave report for{" "}
+              {dayjs().subtract(1, "month").format("MMMM YYYY")}? This will
+              generate a fresh CSV of all leave records from the last completed
+              month.
             </p>
             <div className="flex justify-end gap-2 pt-1">
               <Button
