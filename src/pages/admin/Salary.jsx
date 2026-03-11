@@ -29,6 +29,8 @@ import {
   CircleAlert,
   FilePlus,
   DownloadIcon,
+  AlarmClockMinus,
+  X
 } from "lucide-react";
 import {
   Tooltip,
@@ -168,41 +170,31 @@ const Salary = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
-        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_12%_18%,rgba(59,130,246,0.25),transparent_22%),radial-gradient(circle_at_82%_8%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_60%_88%,rgba(99,102,241,0.18),transparent_22%)]" />
-        <div className="relative p-6 md:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-3 max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Payroll Center
-            </span>
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-semibold leading-tight text-white">
-                Salary Management
-              </h1>
-              <p className="text-sm md:text-base text-slate-200 max-w-2xl">
-                Manage employee salaries, payouts, and monthly payroll flows with a clear snapshot of totals.
-              </p>
+        <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+          <CardContent className="p-5 md:p-7">
+            <div className="grid grid-cols-12 items-center gap-4 relative">
+              <div className="col-span-12 md:col-span-8 space-y-2">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                    Salary Management
+                  </h1>
+                </div>
+                <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+                  Manage employee salaries, payouts, and monthly payroll flows with a clear snapshot of totals.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
+                <Button
+                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                  onClick={handleExportReport}
+                >
+                  <Download className="h-4 w-4 text-slate-500" />
+                  Export Report
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button
-              variant="secondary"
-              className="bg-white text-slate-900 hover:bg-slate-100 border border-white/60 shadow-lg rounded-xl px-4"
-              onClick={handleExportReport}
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
-            {/* <Button
-              className="bg-primary text-white hover:bg-primary/90"
-              onClick={handleProcessPayroll}
-            >
-              Process Payroll
-            </Button> */}
-          </div>
-        </div>
-      </div>
+          </CardContent>
+        </Card>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -210,15 +202,15 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-medium">
+                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
                     Total Payroll
                   </p>
-                  <p className="text-2xl font-bold text-slate-900">
+                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
                     ₹{dashboard?.total_netpay?.toLocaleString()}
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-blue-100 text-blue-700">
-                  <DollarSign className="h-6 w-6" />
+                  <DollarSign className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
@@ -228,15 +220,15 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-medium">
+                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
                     Paid Amount
                   </p>
-                  <p className="text-2xl font-bold text-slate-900">
+                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
                     ₹{dashboard?.paid_amount?.toLocaleString()}
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
-                  <TrendingUp className="h-6 w-6" />
+                  <TrendingUp className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
@@ -246,15 +238,15 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-medium">
+                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
                     Pending Amount
                   </p>
-                  <p className="text-2xl font-bold text-slate-900">
+                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
                     ₹{dashboard?.pending_amount?.toLocaleString()}
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
-                  <Calendar className="h-6 w-6" />
+                  <Calendar className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
@@ -264,13 +256,13 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-medium">Employees</p>
-                  <p className="text-2xl font-bold text-slate-900">
+                  <p className="text-slate-600 text-sm font-semibold font-montserrat">Employees</p>
+                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
                     {dashboard?.employee_count}
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700">
-                  <Users className="h-6 w-6" />
+                  <Users className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
@@ -287,24 +279,24 @@ const Salary = () => {
                 placeholder="Search by employee name or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter by Status" />
+              <SelectTrigger className="w-40 h-11 border-slate-200 rounded-xl font-medium">
+                <SelectValue placeholder="Filter by Status" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="paid">Paid</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
               </SelectContent>
             </Select>
             <Select value={monthFilter} onValueChange={setMonthFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter by Month" />
+              <SelectTrigger className="w-40 h-11 border-slate-200 rounded-xl font-medium">
+                <SelectValue placeholder="Filter by Month" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
                 <SelectItem value={"current"}>Current Month</SelectItem>
                 <SelectItem value={1}>January</SelectItem>
                 <SelectItem value={2}>February</SelectItem>
@@ -323,7 +315,7 @@ const Salary = () => {
 
             <div className="relative ">
               <Button
-                className="bg-primary text-white hover:bg-primary/90 shadow-sm"
+                className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white font-montserrat mb-1 h-11 rounded-xl"
                 onClick={async () => {
                   const resp = await salaryAPI.importCurrentSalaryManually();
                   if (resp.status == 200) {
@@ -351,40 +343,42 @@ const Salary = () => {
       </Card>
 
       {/* Salary Table */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardHeader>
-          <CardTitle>
+      <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
+        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5 border-b border-gray-100 pb-3">
+          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+            <AlarmClockMinus className="h-5 w-5" />
+          </span>
+          <span>
             Salary Details
-            {loading ? "Loading..." : ""}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </span>
+        </div>
+        <div className="rounded-lg border border-slate-200">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Employee
                   </th>
-                  <th className="text-left py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Position
                   </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Base Salary
                   </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Bonus
                   </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Deductions
                   </th>
-                  <th className="text-right py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Net Salary
                   </th>
-                  <th className="text-center py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Status
                   </th>
-                  <th className="text-center py-3 px-4 font-medium text-slate-700">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
                     Actions
                   </th>
                 </tr>
@@ -403,38 +397,38 @@ const Salary = () => {
                       key={salary.id}
                       className="border-b border-slate-100 hover:bg-slate-50"
                     >
-                      <td className="py-4 px-4">
+                      <td className="py-4 px-4 text-start text-slate-600 font-montserrat">
                         <div>
-                          <p className="font-medium text-slate-800">
+                          <p className="font-medium text-slate-800 font-montserrat">
                             {first_name + " " + last_name}
                           </p>
-                          <p className="text-sm text-slate-500">
+                          <p className="text-xs text-slate-500 font-montserrat">
                             {employee_no || `EMP-${salary?.employee?.id}`}
                           </p>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-slate-600">
+                      <td className="py-4 px-4 text-start text-slate-600 font-montserrat">
                         {salary.employee?.designation?.title || "N/A"}
                       </td>
-                      <td className="py-4 px-4 text-right text-slate-800">
+                      <td className="py-4 px-4 text-start text-slate-800 font-montserrat">
                         ₹{salary.base_salary.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-right text-green-600">
+                      <td className="py-4 px-4 text-start text-green-600 font-montserrat">
                         ₹{salary.bonus.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-right text-red-600">
+                      <td className="py-4 px-4 text-start text-red-600 font-montserrat">
                         ₹{salary.deduction.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-right font-semibold text-slate-800">
+                      <td className="py-4 px-4 text-start font-semibold text-slate-800 font-montserrat">
                         ₹{salary.net_salary.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-center">
+                      <td className="py-4 px-4 text-start font-montserrat">
                         <Badge className={getStatusColor(salary.status)}>
                           {salary.status}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4">
-                        <div className="flex justify-space-between space-x-2">
+                      <td className="py-4 px-4 text-start font-montserrat">
+                        <div className="">
                           <Button
                             variant="ghost"
                             size="sm"
@@ -511,103 +505,139 @@ const Salary = () => {
             </table>
             {salaryDatas?.length === 0 && <NoDataFound />}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* View Employee Salary Modal */}
-      <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              Salary Details - {selectedEmployee?.employee?.first_name}
-            </DialogTitle>
-          </DialogHeader>
-          {selectedEmployee && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-slate-500">Employee ID</p>
-                  <p className="font-medium">
-                    {selectedEmployee.employee?.employee_no ||
-                      `EMP-${selectedEmployee?.employee?.id}`}
-                  </p>
+      {showViewModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md font-[Montserrat]">
+          {/* Modal */}
+          <div className="relative w-full max-w-2xl rounded-md bg-white/90 backdrop-blur-md shadow-md">
+            <div className="bg-slate-900 text-white">
+              <div className="p-3 md:p-4">
+                <div className="grid grid-cols-12 items-center gap-2">
+                    <div className="col-span-12 md:col-span-8 space-y-1">
+                      <div className="flex items-center gap-1">
+                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md mr-2">
+                          <AlarmClockMinus className="h-4 w-4" />
+                        </span>
+                        <div className="space-y-0.5">
+                          <h2 className="text-lg font-semibold font-montserrat text-[#FFFFFF] tracking-tight">
+                            {selectedEmployee?.employee?.first_name}
+                          </h2>
+                          <p className="text-[#FFFFFF] font-montserrat text-sm">
+                            {selectedEmployee?.employee?.designation?.title || "Employee"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowViewModal(false)}
+                      className="rounded-md hover:bg-slate-100 bg-[#e2e8f0] text-slate-700 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-slate-500">Position</p>
-                  <p className="font-medium">
-                    {selectedEmployee.employee?.designation?.title || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-500">Base Salary</p>
-                  <p className="font-medium text-green-600">
-                    ₹{selectedEmployee.base_salary.toLocaleString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-500">Bonus</p>
-                  <p className="font-medium text-blue-600">
-                    ₹{selectedEmployee.bonus.toLocaleString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-500">Deductions</p>
-                  <p className="font-medium text-red-600">
-                    ₹{selectedEmployee.deduction.toLocaleString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-500">Net Salary</p>
-                  <p className="font-medium text-slate-800">
-                    ₹{selectedEmployee.net_salary.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <Button
-                  className="flex-1"
-                  onClick={async () => {
-                    try {
-                      setLoading(true);
-                      const resp = await salaryAPI.generateSalary({
-                        employee_id: selectedEmployee?.employee?.id,
-                      });
-                      if (resp.status == 200) {
-                        toast({
-                          title: "Payslip Generated",
-                          description:
-                            "Payslip has been generated successfully.",
-                        });
-
-                        callSalaryHistory();
-                        getDashboard();
-                      }
-                    } catch (error) {
-                      console.log(error);
-                    } finally {
-                      setLoading(false);
-                    }
-                  }}
-                >
-                  {loading ? "Loading..." : "Generate Payslip"}
-                </Button>
-                {/* <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() =>
-                    toast({
-                      title: "Email Sent",
-                      description: "Payslip has been sent via email.",
-                    })
-                  }
-                >
-                  Send via Email
-                </Button> */}
               </div>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
+
+            {selectedEmployee && (
+              <div className="space-y-6 p-7">
+              
+                {/* Employee Info */}
+                <div className="grid grid-cols-2 gap-6">
+            
+                  <div className="p-4 rounded-xl bg-slate-50 border">
+                    <p className="text-xs text-slate-500">Employee ID</p>
+                    <p className="font-semibold text-slate-800 mt-1">
+                      {selectedEmployee.employee?.employee_no ||
+                        `EMP-${selectedEmployee?.employee?.id}`}
+                    </p>
+                  </div>
+                      
+                  <div className="p-4 rounded-xl bg-slate-50 border">
+                    <p className="text-xs text-slate-500">Position</p>
+                    <p className="font-semibold text-slate-800 mt-1">
+                      {selectedEmployee.employee?.designation?.title || "N/A"}
+                    </p>
+                  </div>
+                      
+                </div>
+                      
+                {/* Salary Cards */}
+                <div className="grid grid-cols-2 gap-4">
+                      
+                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
+                    <p className="text-xs text-slate-500">Base Salary</p>
+                    <p className="text-lg font-semibold text-emerald-600 mt-1">
+                      ₹{selectedEmployee.base_salary.toLocaleString()}
+                    </p>
+                  </div>
+                      
+                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
+                    <p className="text-xs text-slate-500">Bonus</p>
+                    <p className="text-lg font-semibold text-blue-600 mt-1">
+                      ₹{selectedEmployee.bonus.toLocaleString()}
+                    </p>
+                  </div>
+                      
+                  <div className="p-5 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
+                    <p className="text-xs text-slate-500">Deductions</p>
+                    <p className="text-lg font-semibold text-red-500 mt-1">
+                      ₹{selectedEmployee.deduction.toLocaleString()}
+                    </p>
+                  </div>
+                      
+                  {/* Net Salary Highlight */}
+                  <div className="p-5 rounded-2xl text-white bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg">
+                    <p className="text-xs opacity-80">Net Salary</p>
+                    <p className="text-2xl font-bold mt-1">
+                      ₹{selectedEmployee.net_salary.toLocaleString()}
+                    </p>
+                  </div>
+                      
+                </div>
+                      
+                {/* Generate Button */}
+                <div className="pt-2">
+                  <button
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition"
+                    onClick={async () => {
+                      try {
+                        setLoading(true);
+                        const resp = await salaryAPI.generateSalary({
+                          employee_id: selectedEmployee?.employee?.id,
+                        });
+                      
+                        if (resp.status === 200) {
+                          toast({
+                            title: "Payslip Generated",
+                            description: "Payslip generated successfully.",
+                          });
+                        
+                          callSalaryHistory();
+                          getDashboard();
+                        }
+                      } catch (error) {
+                        console.log(error);
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                  >
+                    {loading ? "Generating..." : "Generate Payslip"}
+                  </button>
+                </div>
+                  
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Edit Employee Salary Modal */}
       {/* <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
