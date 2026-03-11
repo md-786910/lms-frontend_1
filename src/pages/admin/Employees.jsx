@@ -32,6 +32,10 @@ import {
   UserRoundX,
   Loader2,
   Pencil,
+  Users,
+  UserCheck,
+  UserMinus,
+  Briefcase,
 } from "lucide-react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
 import { employeeAPI } from "../../api/employeeApi";
@@ -262,10 +266,9 @@ const Employees = ({
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
+      {/* <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_15%_20%,rgba(94,234,212,0.18),transparent_25%),radial-gradient(circle_at_82%_0%,rgba(59,130,246,0.22),transparent_23%),radial-gradient(circle_at_58%_85%,rgba(99,102,241,0.16),transparent_22%)]" />
         <div className="relative p-4 md:p-6 space-y-6">
-          {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3 max-w-3xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
@@ -291,8 +294,6 @@ const Employees = ({
               </Button>
             )}
           </div>
-
-          {/* Snapshot */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
@@ -332,7 +333,6 @@ const Employees = ({
           </div>
         </div>
       </div>
-      {/* Search and Filters */}
       <Card className="border border-slate-200 shadow-sm rounded-md">
         <CardContent className="p-6 space-y-5">
           <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -387,6 +387,103 @@ const Employees = ({
                   setEmployeActiveStatus(!val);
                 }}
               />
+            </div>
+          </div>
+        </CardContent>
+      </Card> */}
+      {/* Header Banner */}
+      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white overflow-hidden">
+        <CardContent className="p-5 md:p-7 relative">
+          <div className="grid grid-cols-12 items-center gap-4 relative z-10">
+            <div className="col-span-12 md:col-span-8 space-y-2">
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight">
+                  {customTitle}
+                </h1>
+              </div>
+              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl">
+                {customSubtitle}
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-4 flex md:justify-end">
+              {showAddButton && (
+                <Button
+                  onClick={() => setShowAddForm(true)}
+                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-5 text-sm font-semibold text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300 h-11"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Employee
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Snapshot Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: "Total employees", value: totalEmployees, icon: Users, color: "blue" },
+          { label: "Active Staff", value: activeEmployees, icon: UserCheck, color: "emerald" },
+          { label: "Suspended", value: suspendedEmployees, icon: UserMinus, color: "amber" },
+          { label: "Departments", value: uniqueDepartments, icon: Briefcase, color: "indigo" },
+        ].map((stat) => (
+          <Card key={stat.label} className="border border-slate-200 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">
+                    {stat.label}
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {stat.value}
+                  </p>
+                </div>
+                <div className={`p-3 rounded-2xl bg-${stat.color}-100 text-${stat.color}-700`}>
+                  <stat.icon className="h-5 w-5" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Filters & Search */}
+      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+        <CardContent className="p-6">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input
+                placeholder="Search by name, email, or department..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 h-11 border border-slate-200 focus:border-slate-900 transition-all rounded-xl"
+              />
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+                <SelectTrigger className="w-full sm:w-64 h-11 border-slate-200 rounded-xl font-medium">
+                  <SelectValue placeholder="All Departments" />
+                </SelectTrigger>
+                <SelectContent className="font-montserrat">
+                  {departments.map((dept) => (
+                    <SelectItem key={dept} value={dept}>
+                      {dept === "all" ? "All Departments" : dept}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3 px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 h-11">
+                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
+                  {employeeActiveStatus ? "Suspended" : "Active Only"}
+                </span>
+                <Switch
+                  title="Toggle suspended employees"
+                  defaultChecked={true}
+                  onCheckedChange={(val) => setEmployeActiveStatus(!val)}
+                />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -658,78 +755,43 @@ const Employees = ({
       </div>
       {filteredEmployees.length === 0 && <NoDataFound />}
 
-      {/* Add Employee Dialog */}
+      {/* Dialogs & Modals */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[100vh]">
-          <DialogHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <User className="h-5 w-5 text-blue-600" />
-              <span>Add New Employee</span>
-            </CardTitle>
-          </DialogHeader>
-          <AddEmployeeForm
-            onClose={() => setShowAddForm(false)}
-            onSuccess={() => handleAddSuccess()}
-          />
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl font-montserrat">
+          <div className="bg-slate-900 text-white p-6 sticky top-0 z-10">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-xl font-semibold font-montserrat">
+                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                  <User className="h-5 w-5" />
+                </span>
+                <span>Add New Employee</span>
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="p-6">
+            <AddEmployeeForm onClose={() => setShowAddForm(false)} onSuccess={() => handleAddSuccess()} />
+          </div>
         </DialogContent>
       </Dialog>
-
-      {/* Confirmation Modal */}
-      <ConfirmationModal
-        open={showConfirmDelete}
-        onClose={() => setShowConfirmDelete(false)}
-        onConfirm={() => handleDeleteEmployee()}
-        employee={employeeToDelete}
-      />
+      <ConfirmationModal open={showConfirmDelete} onClose={() => setShowConfirmDelete(false)} onConfirm={() => handleDeleteEmployee()} employee={employeeToDelete} />
       {showResendConfirm && resendTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
-          <div
-            className="absolute inset-0 bg-black/40 transition-opacity duration-200"
-            onClick={() => {
-              setShowResendConfirm(false);
-              setResendTarget(null);
-            }}
-          />
-          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
-            <div className="flex items-center gap-3">
-              <Mail className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold text-slate-900">
-                Confirm resend invite
-              </h3>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-montserrat animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden border border-slate-200">
+            <div className="bg-slate-900 p-4 flex items-center gap-3">
+              <Mail className="h-5 w-5 text-emerald-400" />
+              <h3 className="text-md font-bold text-white">Resend Invite</h3>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Are you sure you want to resend the invitation to{" "}
-              <span className="font-semibold text-slate-900">
-                {resendTarget?.email ||
-                  `${resendTarget?.first_name || ""} ${
-                    resendTarget?.last_name || ""
-                  }`.trim()}
-              </span>
-              ? This will trigger the onboarding invite again.
-            </p>
-            <div className="flex justify-end gap-2 pt-1">
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setShowResendConfirm(false);
-                  setResendTarget(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleResendInvite}
-                disabled={resendingInvite}
-              >
-                {resendingInvite ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  "Confirm send invite"
-                )}
-              </Button>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Send a new onboarding invitation to <span className="font-bold text-slate-900">{resendTarget.email}</span>?
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" className="h-9 rounded-lg font-bold text-xs" onClick={() => { setShowResendConfirm(false); setResendTarget(null); }}>CANCEL</Button>
+                <Button className="h-9 rounded-lg bg-slate-900 hover:bg-slate-800 font-bold text-xs px-4" onClick={handleResendInvite} disabled={resendingInvite}>
+                  {resendingInvite ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
+                  CONFIRM SEND
+                </Button>
+              </div>
             </div>
           </div>
         </div>

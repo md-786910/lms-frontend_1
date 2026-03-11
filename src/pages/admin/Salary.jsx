@@ -30,7 +30,8 @@ import {
   FilePlus,
   DownloadIcon,
   AlarmClockMinus,
-  X
+  X,
+  IndianRupee,
 } from "lucide-react";
 import {
   Tooltip,
@@ -513,32 +514,37 @@ const Salary = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm font-montserrat">
           {/* Modal */}
           <div className="relative w-full max-w-lg rounded-xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            {/* Header with Banner Background */}
-            <div className="bg-slate-900 text-white p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-slate-800 p-2 rounded-lg border border-slate-700">
-                    <AlarmClockMinus className="h-5 w-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold tracking-tight">
-                      {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
-                    </h2>
-                    <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">
-                      {selectedEmployee?.employee?.designation?.title || "Employee Details"}
-                    </p>
+            <Card className="bg-slate-900 text-white">
+              <CardContent className="p-4 md:p-6">
+                <div className="grid grid-cols-12 items-center gap-4">
+                    <div className="col-span-12 md:col-span-8 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                          <AlarmClockMinus className="h-5 w-5" />
+                        </span>
+                        <div className="space-y-0.5">
+                          <h2 className="text-2xl font-semibold font-montserrat text-[#FFFFFF] tracking-tight">
+                            {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
+                          </h2>
+                          <p className="text-[#FFFFFF] font-montserrat font-medium">
+                            {selectedEmployee?.employee?.designation?.title || "Employee Details"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowViewModal(false)}
+                      className="rounded-md hover:bg-slate-100 bg-[#e2e8f0] text-slate-700 transition-colors"
+                    >
+                      <X className="h-5 w-5" />
+                    </Button>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowViewModal(false)}
-                  className="rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-all h-8 w-8"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {selectedEmployee && (
               <div className="p-5 space-y-5">
@@ -586,7 +592,7 @@ const Salary = () => {
                         ₹{selectedEmployee.net_salary.toLocaleString()}
                       </p>
                     </div>
-                    <DollarSign className="h-12 w-12 text-white/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500" />
+                    <IndianRupee className="h-12 w-12 text-white/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500" />
                   </div>
                 </div>
 
