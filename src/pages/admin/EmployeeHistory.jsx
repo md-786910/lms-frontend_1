@@ -115,6 +115,7 @@ const EmployeeHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("all");
 
   useEffect(() => {
@@ -294,36 +295,29 @@ const EmployeeHistory = () => {
     return aggregated;
   }, [employee, leaveInfo, activeTab]);
 
-  const monthOptions = useMemo(() => {
-  const dateCandidates = leaveRecords.flatMap((leave) => [
-    leave?.start_date,
-    leave?.end_date,
-  ]);
+  const yearOptions = useMemo(() => {
+    const years = new Set();
+    leaveRecords.forEach((leave) => {
+      if (leave?.start_date) years.add(dayjs(leave.start_date).format("YYYY"));
+      if (leave?.end_date) years.add(dayjs(leave.end_date).format("YYYY"));
+    });
+    return Array.from(years).sort((a, b) => b - a);
+  }, [leaveRecords]);
 
-  const validDates = dateCandidates
-    .map((d) => dayjs(d))
-    .filter((d) => d.isValid());
-
-  if (!validDates.length) return [dayjs().format("YYYY-MM")];
-
-  const minMonth = dayjs(
-    Math.min(...validDates.map((d) => d.startOf("month").valueOf()))
-  );
-  const maxMonth = dayjs(
-    Math.max(...validDates.map((d) => d.startOf("month").valueOf()))
-  );
-
-  const rangeMonths = [];
-  let cursor = maxMonth.startOf("month");
-  const end = minMonth.startOf("month");
-
-  while (cursor.isAfter(end) || cursor.isSame(end)) {
-    rangeMonths.push(cursor.format("YYYY-MM"));
-    cursor = cursor.subtract(1, "month");
-  }
-
-  return rangeMonths;
-}, [leaveRecords]);
+  const monthOptions = [
+    { value: "0", label: "January" },
+    { value: "1", label: "February" },
+    { value: "2", label: "March" },
+    { value: "3", label: "April" },
+    { value: "4", label: "May" },
+    { value: "5", label: "June" },
+    { value: "6", label: "July" },
+    { value: "7", label: "August" },
+    { value: "8", label: "September" },
+    { value: "9", label: "October" },
+    { value: "10", label: "November" },
+    { value: "11", label: "December" },
+  ];
 
 const filteredLeaves = useMemo(() => {
   let results = leaveRecords;
@@ -343,13 +337,24 @@ const filteredLeaves = useMemo(() => {
     );
   }
 
+  if (yearFilter !== "all") {
+    results = results.filter((leave) => {
+      return [leave?.start_date, leave?.end_date].some(
+        (d) =>
+          d &&
+          dayjs(d).isValid() &&
+          dayjs(d).format("YYYY") === yearFilter
+      );
+    });
+  }
+
   if (monthFilter !== "all") {
     results = results.filter((leave) => {
       return [leave?.start_date, leave?.end_date].some(
         (d) =>
           d &&
           dayjs(d).isValid() &&
-          dayjs(d).format("YYYY-MM") === monthFilter
+          dayjs(d).month().toString() === monthFilter
       );
     });
   }
@@ -368,7 +373,7 @@ const filteredLeaves = useMemo(() => {
   return results.sort(
     (a, b) => new Date(b.start_date) - new Date(a.start_date)
   );
-}, [leaveRecords, statusFilter, leaveTypeFilter, monthFilter, searchTerm]);
+}, [leaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
 
   const historySummary = useMemo(() => {
     const counts = { approved: 0, pending: 0, rejected: 0 };
@@ -506,13 +511,30 @@ const filteredLeaves = useMemo(() => {
                       className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                     />
                   </div>
+                  <Select value={yearFilter} onValueChange={setYearFilter}>
+                    <SelectTrigger className="w-full md:w-32 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Years</SelectItem>
+                      {yearOptions.map((y) => (
+                        <SelectItem key={y} value={y}>
+                          {y}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Select value={monthFilter} onValueChange={setMonthFilter}>
                     <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
                     <SelectContent className="font-montserrat">
                       <SelectItem value="all">All Months</SelectItem>
-                      {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
+                      {monthOptions.map((m) => (
+                        <SelectItem key={m.value} value={m.value}>
+                          {m.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
