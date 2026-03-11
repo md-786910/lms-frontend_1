@@ -115,6 +115,7 @@ const EmployeeHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [leaveTypeFilter, setLeaveTypeFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("all");
 
   useEffect(() => {
@@ -294,52 +295,85 @@ const EmployeeHistory = () => {
     return aggregated;
   }, [employee, leaveInfo, activeTab]);
 
-  const monthOptions = useMemo(() => {
-    const dateCandidates = leaveRecords.flatMap((leave) => [
-      leave?.start_date,
-      leave?.end_date,
-      leave?.createdAt,
-    ]);
-    const validDates = dateCandidates.map((d) => dayjs(d)).filter((d) => d.isValid());
-    if (!validDates.length) return [dayjs().format("YYYY-MM")];
-    const minMonth = dayjs(Math.min(...validDates.map((d) => d.startOf("month").valueOf())));
-    const maxMonth = dayjs(Math.max(...validDates.map((d) => d.startOf("month").valueOf())));
-    const rangeMonths = [];
-    let cursor = maxMonth.startOf("month");
-    const end = minMonth.startOf("month");
-    while (cursor.isAfter(end) || cursor.isSame(end)) {
-      rangeMonths.push(cursor.format("YYYY-MM"));
-      cursor = cursor.subtract(1, "month");
-    }
-    return rangeMonths;
+  const yearOptions = useMemo(() => {
+    const years = new Set();
+    leaveRecords.forEach((leave) => {
+      if (leave?.start_date) years.add(dayjs(leave.start_date).format("YYYY"));
+      if (leave?.end_date) years.add(dayjs(leave.end_date).format("YYYY"));
+    });
+    return Array.from(years).sort((a, b) => b - a);
   }, [leaveRecords]);
 
-  const filteredLeaves = useMemo(() => {
-    let results = leaveRecords;
-    if (statusFilter !== "all") {
-      results = results.filter((leave) => (leave?.status ?? "").toLowerCase() === statusFilter.toLowerCase());
-    }
-    if (leaveTypeFilter !== "all") {
-      results = results.filter((leave) => (leave?.leave_type?.leave_type ?? "").toLowerCase() === leaveTypeFilter.toLowerCase());
-    }
-    if (monthFilter !== "all") {
-      results = results.filter((leave) => {
-        return [leave?.start_date, leave?.end_date, leave?.createdAt].some(
-          (d) => d && dayjs(d).isValid() && dayjs(d).format("YYYY-MM") === monthFilter
-        );
-      });
-    }
-    if (searchTerm.trim()) {
-      const s = searchTerm.toLowerCase();
-      results = results.filter((leave) => {
-        return (
-          leave.leave_type?.leave_type?.toLowerCase().includes(s) ||
-          leave.reason?.toLowerCase().includes(s)
-        );
-      });
-    }
-    return results.sort((a, b) => new Date(b.start_date || b.createdAt) - new Date(a.start_date || a.createdAt));
-  }, [leaveRecords, statusFilter, leaveTypeFilter, monthFilter, searchTerm]);
+  const monthOptions = [
+    { value: "0", label: "January" },
+    { value: "1", label: "February" },
+    { value: "2", label: "March" },
+    { value: "3", label: "April" },
+    { value: "4", label: "May" },
+    { value: "5", label: "June" },
+    { value: "6", label: "July" },
+    { value: "7", label: "August" },
+    { value: "8", label: "September" },
+    { value: "9", label: "October" },
+    { value: "10", label: "November" },
+    { value: "11", label: "December" },
+  ];
+
+const filteredLeaves = useMemo(() => {
+  let results = leaveRecords;
+
+  if (statusFilter !== "all") {
+    results = results.filter(
+      (leave) =>
+        (leave?.status ?? "").toLowerCase() === statusFilter.toLowerCase()
+    );
+  }
+
+  if (leaveTypeFilter !== "all") {
+    results = results.filter(
+      (leave) =>
+        (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
+        leaveTypeFilter.toLowerCase()
+    );
+  }
+
+  if (yearFilter !== "all") {
+    results = results.filter((leave) => {
+      return [leave?.start_date, leave?.end_date].some(
+        (d) =>
+          d &&
+          dayjs(d).isValid() &&
+          dayjs(d).format("YYYY") === yearFilter
+      );
+    });
+  }
+
+  if (monthFilter !== "all") {
+    results = results.filter((leave) => {
+      return [leave?.start_date, leave?.end_date].some(
+        (d) =>
+          d &&
+          dayjs(d).isValid() &&
+          dayjs(d).month().toString() === monthFilter
+      );
+    });
+  }
+
+  if (searchTerm.trim()) {
+    const s = searchTerm.toLowerCase();
+
+    results = results.filter((leave) => {
+      return (
+        leave.leave_type?.leave_type?.toLowerCase().includes(s) ||
+        leave.reason?.toLowerCase().includes(s)
+      );
+    });
+  }
+
+  return results.sort(
+    (a, b) => new Date(b.start_date) - new Date(a.start_date)
+  );
+}, [leaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
 
   const historySummary = useMemo(() => {
     const counts = { approved: 0, pending: 0, rejected: 0 };
@@ -477,13 +511,30 @@ const EmployeeHistory = () => {
                       className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
                     />
                   </div>
+                  <Select value={yearFilter} onValueChange={setYearFilter}>
+                    <SelectTrigger className="w-full md:w-32 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent className="font-montserrat">
+                      <SelectItem value="all">All Years</SelectItem>
+                      {yearOptions.map((y) => (
+                        <SelectItem key={y} value={y}>
+                          {y}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Select value={monthFilter} onValueChange={setMonthFilter}>
                     <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
                     <SelectContent className="font-montserrat">
                       <SelectItem value="all">All Months</SelectItem>
-                      {monthOptions.map(m => <SelectItem key={m} value={m}>{dayjs(m).format("MMM YYYY")}</SelectItem>)}
+                      {monthOptions.map((m) => (
+                        <SelectItem key={m.value} value={m.value}>
+                          {m.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -543,11 +594,11 @@ const EmployeeHistory = () => {
           </div>
 
           {/* Action Bar (Sticky at bottom if needed, but here simple) */}
-          {activeTab !== "history" && (
+          {activeTab !== "history" && activeTab !== "leave_balance" && (
             <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-montserrat">
               <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
               <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat">
-                {saveLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                {saveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 Save Changes
               </Button>
             </div>

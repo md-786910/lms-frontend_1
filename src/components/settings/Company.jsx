@@ -250,7 +250,7 @@ function Company({ value }) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="taxId" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Tax ID</Label>
+              <Label htmlFor="taxId" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">CIN Number</Label>
               <Input
                 id="taxId"
                 name="tax_no"

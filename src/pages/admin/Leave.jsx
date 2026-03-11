@@ -419,21 +419,24 @@ const Leave = () => {
                   return (
                     <div
                       key={item.label}
-                      className="group flex items-center justify-between px-4 py-2 rounded-xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50/50 transition-all duration-300"
+                      className="flex items-center justify-between px-4 py-2 rounded-xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50/50 transition-all duration-300"
                     >
-                      <div className="space-y-0.5">
-                        <p className="text-[10px] font-bold font-montserrat capitalize tracking-wider text-slate-400">
+                      {/* Left: Icon + Label */}
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`h-8 w-8 rounded-xl border flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${tone[item.tone]}`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
                           {item.label}
                         </p>
-                        <p className="text-xl font-bold font-montserrat capitalize tracking-wider text-slate-900">
-                          {item.value ?? 0}
-                        </p>
                       </div>
-                      <div
-                        className={`h-10 w-10 rounded-xl border flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${tone[item.tone]}`}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </div>
+                                      
+                      {/* Right: Value */}
+                      <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
+                        {item.value ?? 0}
+                      </p>
                     </div>
                   );
                 })}

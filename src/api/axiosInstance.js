@@ -42,7 +42,10 @@ axiosInstance.interceptors.response.use(
     if (status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      // window.location.href = "/login";
+      toast.error("Session expired. Please login again.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
     }
 
     if (status === 403) {
