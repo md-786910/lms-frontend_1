@@ -129,7 +129,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">First Name *</Label>
+              <Label htmlFor="firstName">First Name <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Input
                 id="firstName"
                 name="firstName"
@@ -155,7 +155,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
           {/* Contact Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email">Email Address <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Input
                 id="email"
                 name="email"
@@ -167,7 +167,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
               {renderError("email")}
             </div>
             <div>
-              <Label htmlFor="phone">Phone Number *</Label>
+              <Label htmlFor="phone">Phone Number <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Input
                 id="phone"
                 name="phone"
@@ -182,7 +182,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
           {/* Personal Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="gender">Gender *</Label>
+              <Label htmlFor="gender">Gender <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Select
                 value={values.gender}
                 onValueChange={(val) =>
@@ -205,7 +205,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
               {renderError("gender")}
             </div>
             <div>
-              <Label htmlFor="maritalStatus">Marital Status *</Label>
+              <Label htmlFor="maritalStatus">Marital Status <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Select
                 value={values.maritalStatus}
                 onValueChange={(val) =>
@@ -232,7 +232,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
           {/* Work Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="department">Department *</Label>
+              <Label htmlFor="department">Department <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Select
                 value={values.department}
                 onValueChange={(val) =>
@@ -257,7 +257,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
               {renderError("department")}
             </div>
             <div>
-              <Label htmlFor="designation">Designation *</Label>
+              <Label htmlFor="designation">Designation <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Select
                 value={values.designation}
                 onValueChange={(val) =>
@@ -288,7 +288,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
           {/* Dates + Optional ID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2 flex flex-col">
-              <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+              <Label htmlFor="dateOfBirth">Date of Birth <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Popover open={dateOfBirthOpen} onOpenChange={setDateOfBirthOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -326,7 +326,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
               {renderError("dateOfBirth")}
             </div>
             <div className="space-y-2 flex flex-col">
-              <Label htmlFor="dateOfJoining">Date of Joining *</Label>
+              <Label htmlFor="dateOfJoining">Date of Joining <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
               <Popover
                 open={dateOfJoiningOpen}
                 onOpenChange={setDateOfJoiningOpen}

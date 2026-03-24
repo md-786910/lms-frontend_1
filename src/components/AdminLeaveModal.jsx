@@ -409,7 +409,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Start Date</Label>
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Start Date <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
                       <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
@@ -445,7 +445,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">End Date</Label>
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">End Date <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
                       <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
@@ -572,7 +572,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Reason for Leave</Label>
+                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Reason for Leave <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
                     <Textarea
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
