@@ -10,12 +10,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { employeeAPI } from "../api/employeeApi";
 import { generalAPI } from "../api/generalApi";
-import { User, Mail } from "lucide-react";
+import { User, Mail, CalendarIcon } from "lucide-react";
 import { employeePayload } from "../utility/employeePayload";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 const validationSchema = {
   firstName: [{ type: "required", message: "First name is required" }],
   lastName: [{ type: "optional", message: "Last name is required" }],
@@ -69,8 +77,18 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
     employeeId: "",
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormValidation(initialValues, validationSchema);
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = useFormValidation(initialValues, validationSchema);
+
+  const [dateOfBirthOpen, setDateOfBirthOpen] = useState(false);
+  const [dateOfJoiningOpen, setDateOfJoiningOpen] = useState(false);
 
   const onSubmit = async (formData) => {
     const empId =
@@ -269,28 +287,85 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
 
           {/* Dates + Optional ID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <div className="space-y-2 flex flex-col">
               <Label htmlFor="dateOfBirth">Date of Birth *</Label>
-              <Input
-                id="dateOfBirth"
-                name="dateOfBirth"
-                type="date"
-                value={values.dateOfBirth}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+              <Popover open={dateOfBirthOpen} onOpenChange={setDateOfBirthOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "h-10 w-full justify-start text-left font-normal",
+                      !values.dateOfBirth && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {values.dateOfBirth ? (
+                      format(new Date(values.dateOfBirth), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={
+                      values.dateOfBirth ? new Date(values.dateOfBirth) : null
+                    }
+                    onSelect={(date) => {
+                      setFieldValue(
+                        "dateOfBirth",
+                        date ? format(date, "yyyy-MM-dd") : ""
+                      );
+                      setDateOfBirthOpen(false);
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               {renderError("dateOfBirth")}
             </div>
-            <div>
+            <div className="space-y-2 flex flex-col">
               <Label htmlFor="dateOfJoining">Date of Joining *</Label>
-              <Input
-                id="dateOfJoining"
-                name="dateOfJoining"
-                type="date"
-                value={values.dateOfJoining}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
+              <Popover
+                open={dateOfJoiningOpen}
+                onOpenChange={setDateOfJoiningOpen}
+              >
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "h-10 w-full justify-start text-left font-normal",
+                      !values.dateOfJoining && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {values.dateOfJoining ? (
+                      format(new Date(values.dateOfJoining), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={
+                      values.dateOfJoining
+                        ? new Date(values.dateOfJoining)
+                        : null
+                    }
+                    onSelect={(date) => {
+                      setFieldValue(
+                        "dateOfJoining",
+                        date ? format(date, "yyyy-MM-dd") : ""
+                      );
+                      setDateOfJoiningOpen(false);
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               {renderError("dateOfJoining")}
             </div>
           </div>

@@ -59,7 +59,6 @@ const DatePickerField = ({ name, label, value, required, onChange, onBlur, error
               "w-full justify-start text-left font-normal border-gray-200 h-10 px-3",
               !dateValue && "text-muted-foreground"
             )}
-            onClick={() => setIsOpen(true)}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {displayValue}

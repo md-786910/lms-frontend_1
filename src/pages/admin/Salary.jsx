@@ -658,9 +658,30 @@ const Salary = () => {
                   <label className="text-sm font-medium">Deductions</label>
                   <Input defaultValue={selectedEmployee.deduction} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex flex-col">
                   <label className="text-sm font-medium">Effective Date</label>
-                  <Input type="date" />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !effectiveDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {effectiveDate ? format(effectiveDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={effectiveDate}
+                        onSelect={setEffectiveDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
               <div className="flex space-x-2">
