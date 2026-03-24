@@ -180,7 +180,7 @@ const Leave = () => {
   const filteredRequestCount = filteredLeaveRequest?.length ?? 0;
 
   return (
-    <div className="space-y-6 pb-10 h-[calc(100vh-100px)] flex flex-col">
+    <div className="h-[calc(100vh-110px)] overflow-hidden flex flex-col space-y-6 pb-4">
       {/* Header */}
       <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
         <CardContent className="p-5 md:p-7">
@@ -447,7 +447,7 @@ const Leave = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6 overflow-y-auto scroll-slim pr-1">
+        <div className="space-y-6">
           {/* Filters Card */}
           <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
             <CardHeader className="border-b border-slate-100">

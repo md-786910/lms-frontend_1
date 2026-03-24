@@ -302,7 +302,7 @@ const AddEmployeeForm = ({ onClose, onSuccess }) => {
             </Button>
             <Button
               type="submit"
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-Montserrat"
             >
               <Mail className="h-4 w-4 mr-2" />
               Create & Send Invitation
