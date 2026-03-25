@@ -38,7 +38,7 @@ AlertDialogContent.displayName = "AlertDialogContent";
 const AlertDialogHeader = ({ className, ...props }) => (
   <div
     className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
+      "flex flex-col space-y-2 text-center",
       className
     )}
     {...props}
@@ -69,7 +69,7 @@ AlertDialogTitle.displayName = "AlertDialogTitle";
 const AlertDialogDescription = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-sm text-muted-foreground text-center", className)}
     {...props}
   />
 ));

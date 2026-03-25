@@ -877,19 +877,19 @@ const AdminDashboard = () => {
             onClick={() => setShowDownloadConfirm(false)}
           />
           <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col items-center gap-3 text-center">
               <AlertCircle className="h-5 w-5 text-amber-500" />
               <h3 className="text-lg font-semibold text-slate-900">
                 Confirm download
               </h3>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed text-center">
               Are you sure you want to download the leave report for{" "}
               {dayjs().subtract(1, "month").format("MMMM YYYY")}? This will
               generate a fresh CSV of all leave records from the last completed
               month.
             </p>
-            <div className="flex justify-end gap-2 pt-1">
+            <div className="flex justify-center gap-2 pt-1">
               <Button
                 variant="ghost"
                 onClick={() => setShowDownloadConfirm(false)}
