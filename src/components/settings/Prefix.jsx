@@ -89,7 +89,7 @@ function Prefix({ value }) {
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
-            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
               <Hash className="h-5 w-5" />
             </span>
             <span>Prefix Settings</span>

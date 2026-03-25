@@ -923,17 +923,17 @@ const AdminDashboard = () => {
             onClick={() => setShowEmailConfirm(false)}
           />
           <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col items-center gap-3 text-center">
               <Mail className="h-5 w-5 text-primary" />
               <h3 className="text-lg font-semibold text-slate-900">
                 Confirm email
               </h3>
             </div>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed text-center">
               Are you sure you want to send the latest leave report via email?
               This will trigger the notification workflow immediately.
             </p>
-            <div className="flex justify-end gap-2 pt-1">
+            <div className="flex justify-center gap-2 pt-1">
               <Button
                 variant="ghost"
                 onClick={() => setShowEmailConfirm(false)}
