@@ -346,7 +346,7 @@ const Salary = () => {
       {/* Salary Table */}
       <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
         <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5 border-b border-gray-100 pb-3">
-          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
             <AlarmClockMinus className="h-5 w-5" />
           </span>
           <span>
@@ -658,9 +658,30 @@ const Salary = () => {
                   <label className="text-sm font-medium">Deductions</label>
                   <Input defaultValue={selectedEmployee.deduction} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex flex-col">
                   <label className="text-sm font-medium">Effective Date</label>
-                  <Input type="date" />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !effectiveDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {effectiveDate ? format(effectiveDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={effectiveDate}
+                        onSelect={setEffectiveDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
               <div className="flex space-x-2">

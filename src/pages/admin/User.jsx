@@ -130,7 +130,7 @@ const User = () => {
 
       <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
         <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">
-          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-full">
+          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
             <Users className="h-5 w-5" />
           </span>
           <span>

@@ -31,6 +31,8 @@ import {
   FileText,
   CalendarDays,
   MoreVertical,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { leaveApi } from "../../api/leave/leave";
 import { leaveAPI } from "../../api/settingsApi/leaveApi";
@@ -108,6 +110,10 @@ const Leave = () => {
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [leavePolicy, setLeavePolicy] = useState([]);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   const fetchLeaveData = async (query = "", overrides) => {
     const activeFilter = overrides ?? statusFilter;
     try {
@@ -141,28 +147,42 @@ const Leave = () => {
   }, [statusFilter, updateDashboard]);
 
   const filteredLeaveRequest = useMemo(() => {
-    if (!searchTerm) return leaveRequest;
-    const normalized = searchTerm.toLowerCase();
-    return leaveRequest.filter((request) => {
-      const employeeName = `${request.employee?.first_name || ""} ${
-        request.employee?.last_name || ""
-      }`.toLowerCase();
-      const leaveType = request.leave_type?.leave_type?.toLowerCase() || "";
-      const employeeNo = request.employee?.employee_no?.toLowerCase() || "";
-      return (
-        employeeName.includes(normalized) ||
-        leaveType.includes(normalized) ||
-        employeeNo.includes(normalized)
-      );
-    });
+    let result = leaveRequest;
+    if (searchTerm) {
+      const normalized = searchTerm.toLowerCase();
+      result = result.filter((request) => {
+        const employeeName = `${request.employee?.first_name || ""} ${
+          request.employee?.last_name || ""
+        }`.toLowerCase();
+        const leaveType = request.leave_type?.leave_type?.toLowerCase() || "";
+        const employeeNo = request.employee?.employee_no?.toLowerCase() || "";
+        return (
+          employeeName.includes(normalized) ||
+          leaveType.includes(normalized) ||
+          employeeNo.includes(normalized)
+        );
+      });
+    }
+    return result;
   }, [leaveRequest, searchTerm]);
+
+  const totalPages = Math.ceil(filteredLeaveRequest.length / itemsPerPage);
+  
+  const paginatedRequests = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredLeaveRequest.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredLeaveRequest, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
 
   const filteredRequestCount = filteredLeaveRequest?.length ?? 0;
 
   return (
-    <div className="space-y-6 pb-10">
+    <div className="h-[calc(100vh-110px)] overflow-hidden flex flex-col space-y-6 pb-4">
       {/* Header */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
+      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
         <CardContent className="p-5 md:p-7">
           <div className="grid grid-cols-12 items-center gap-4 relative">
             <div className="col-span-12 md:col-span-8 space-y-2">
@@ -195,12 +215,12 @@ const Leave = () => {
         </CardContent>
       </Card>
 
-      <div className="grid lg:grid-cols-[1fr,520px] gap-6">
+      <div className="grid lg:grid-cols-[1fr,520px] gap-6 flex-1 min-h-0">
         {/* Main Content Area */}
-        <div className="space-y-6">
-          {/* Requests List */}
-          <div className="space-y-4">
-            {filteredLeaveRequest?.map((request) => (
+        <div className="flex flex-col min-h-0 space-y-4">
+          {/* Requests List - Scrollable Area */}
+          <div className="flex-1 overflow-y-auto pr-2 space-y-4 scroll-slim">
+            {paginatedRequests?.map((request) => (
               <Card
                 key={request.id}
                 className="group border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
@@ -366,84 +386,68 @@ const Leave = () => {
                 </div>
               </Card>
             ))}
+            {filteredLeaveRequest?.length === 0 && (
+              <div className="bg-white border border-slate-200 rounded-2xl py-20">
+                <NoDataFound />
+              </div>
+            )}
           </div>
 
-          {filteredLeaveRequest?.length === 0 && (
-            <div className="bg-white border border-slate-200 rounded-2xl py-20">
-              <NoDataFound />
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-slate-500 font-montserrat">
+                  Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
+                  <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredRequestCount)}</span> of{" "}
+                  <span className="text-slate-900">{filteredRequestCount}</span> results
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                <div className="flex items-center gap-1">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <Button
+                      key={i + 1}
+                      variant={currentPage === i + 1 ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`h-9 w-9 p-0 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
+                        currentPage === i + 1 
+                          ? "bg-slate-900 text-white shadow-md scale-105" 
+                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                      }`}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           )}
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Stats Card */}
-          <Card className="border-slate-200 shadow-sm rounded-md overflow-hidden bg-white">
-            <CardHeader className="border-b border-slate-100">
-              <CardTitle className="text-lg font-bold text-slate-700 font-montserrat capitalize tracking-wider flex items-center justify-between">
-                Quick Overview
-                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                   <Eye className="h-4 w-4" />
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5 space-y-4">
-              <div className="grid grid-cols-1 gap-3">
-                {[
-                  {
-                    label: "Pending Requests",
-                    value: leaveDash?.pending_requests,
-                    tone: "amber",
-                    icon: AlertCircle,
-                  },
-                  {
-                    label: "Approved Requests",
-                    value: leaveDash?.approved_requests,
-                    tone: "emerald",
-                    icon: CheckCircle,
-                  },
-                  {
-                    label: "Total Leave Days",
-                    value: leaveDash?.total_leave_days,
-                    tone: "blue",
-                    icon: Calendar,
-                  },
-                  {
-                    label: "Taken This Month",
-                    value: leaveDash?.this_month,
-                    tone: "indigo",
-                    icon: Clock,
-                  },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.label}
-                      className="flex items-center justify-between px-4 py-2 rounded-xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50/50 transition-all duration-300"
-                    >
-                      {/* Left: Icon + Label */}
-                      <div className="flex items-center space-x-3">
-                        <div
-                          className={`h-8 w-8 rounded-xl border flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${tone[item.tone]}`}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
-                          {item.label}
-                        </p>
-                      </div>
-                                      
-                      {/* Right: Value */}
-                      <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
-                        {item.value ?? 0}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Filters Card */}
           <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
             <CardHeader className="border-b border-slate-100">
@@ -517,6 +521,72 @@ const Leave = () => {
                   <ArrowRight className="h-3 w-3" />
                   Showing {filteredRequestCount} results
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Stats Card */}
+          <Card className="border-slate-200 shadow-sm rounded-md overflow-hidden bg-white">
+            <CardHeader className="border-b border-slate-100">
+              <CardTitle className="text-lg font-bold text-slate-700 font-montserrat capitalize tracking-wider flex items-center justify-between">
+                Quick Overview
+                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                   <Eye className="h-4 w-4" />
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-5 space-y-4">
+              <div className="grid grid-cols-1 gap-3">
+                {[
+                  {
+                    label: "Pending Requests",
+                    value: leaveDash?.pending_requests,
+                    tone: "amber",
+                    icon: AlertCircle,
+                  },
+                  {
+                    label: "Approved Requests",
+                    value: leaveDash?.approved_requests,
+                    tone: "emerald",
+                    icon: CheckCircle,
+                  },
+                  {
+                    label: "Total Leave Days",
+                    value: leaveDash?.total_leave_days,
+                    tone: "blue",
+                    icon: Calendar,
+                  },
+                  {
+                    label: "Taken This Month",
+                    value: leaveDash?.this_month,
+                    tone: "indigo",
+                    icon: Clock,
+                  },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.label}
+                      className="flex items-center justify-between px-4 py-2 rounded-xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50/50 transition-all duration-300"
+                    >
+                      {/* Left: Icon + Label */}
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`h-8 w-8 rounded-xl border flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${tone[item.tone]}`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
+                          {item.label}
+                        </p>
+                      </div>
+                                      
+                      {/* Right: Value */}
+                      <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
+                        {item.value ?? 0}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

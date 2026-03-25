@@ -397,11 +397,11 @@ const Employees = ({
           <div className="grid grid-cols-12 items-center gap-4 relative z-10">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight">
+                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-montserrat">
                   {customTitle}
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl">
+              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
                 {customSubtitle}
               </p>
             </div>
@@ -475,7 +475,7 @@ const Employees = ({
                 </SelectContent>
               </Select>
               <div className="flex items-center gap-3 px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 h-11">
-                <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
+                <span className="text-xs font-bold text-slate-700">
                   {employeeActiveStatus ? "Suspended" : "Active Only"}
                 </span>
                 <Switch
@@ -525,7 +525,7 @@ const Employees = ({
                   {/* Avatar & quick status */}
                   <div className="flex md:flex-col items-center gap-3 md:w-32">
                     <div
-                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50"
+                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 font-montserrat"
                     >
                       {employee.profile ? (
                         <img
@@ -534,7 +534,7 @@ const Employees = ({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize">
+                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize font-montserrat">
                           {avatarLoadingId === employee.id ? (
                             <Loader2 className="animate-spin" />
                           ) : (
@@ -579,8 +579,8 @@ const Employees = ({
                       <Badge
                         className={
                           employee.is_active === true
-                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
-                            : "bg-amber-50 text-amber-700 border border-amber-100"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100 font-montserrat"
+                            : "bg-amber-50 text-amber-700 border border-amber-100 font-montserrat"
                         }
                       >
                         {employee.is_active === true ? "Active" : "Not Active"}
@@ -588,7 +588,7 @@ const Employees = ({
                       {employee.department?.name && (
                         <Badge
                           variant="outline"
-                          className="border-slate-200 text-slate-700 bg-white"
+                          className="border-slate-200 text-slate-700 bg-white font-montserrat"
                         >
                           {employee.department?.name}
                         </Badge>
@@ -600,16 +600,16 @@ const Employees = ({
                   <div className="flex-1 space-y-3">
                     <div className="flex flex-wrap items-start gap-3 justify-between">
                       <div>
-                        <CardTitle className="text-lg text-slate-900">
+                        <CardTitle className="text-lg text-slate-900 font-semibold font-montserrat">
                           {employee.first_name} {employee.last_name}
                         </CardTitle>
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-slate-600 font-montserrat font-semibold">
                           {employee.designation?.title || "Role not set"}
                         </p>
                       </div>
                       {!readOnly && (
                         <div className="flex gap-2">
-                          <Button
+                          {/* <Button
                             title="Edit"
                             variant="ghost"
                             size="icon"
@@ -620,13 +620,13 @@ const Employees = ({
                             }}
                           >
                             <Edit3 className="h-4 w-4" />
-                          </Button>
+                          </Button> */}
                           {!employeeActiveStatus ? (
                             <Button
                               title="Suspend"
                               variant="ghost"
                               size="icon"
-                              className="text-rose-600"
+                              className="text-rose-600 font-montserrat"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 setEmployeeToDelete(employee);
@@ -640,7 +640,7 @@ const Employees = ({
                               title="Suspend"
                               variant="outline"
                               size="sm"
-                              className="text-rose-600 border-rose-200"
+                              className="text-rose-600 border-rose-200 font-montserrat"
                               onClick={async (event) => {
                                 event.stopPropagation();
                                 const resp =
@@ -667,7 +667,7 @@ const Employees = ({
                                   setResendTarget(employee);
                                   setShowResendConfirm(true);
                                 }}
-                                className="px-3"
+                                className="px-3 font-montserrat"
                               >
                                 Resend invite
                               </Button>
@@ -678,44 +678,44 @@ const Employees = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                       <div className="flex items-center gap-2 text-slate-700">
-                        <User className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">ID</span>
-                        <span className="text-slate-600">
+                        <User className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">ID</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {employee?.employee_no || employee.id}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
-                        <Mail className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">Email</span>
-                        <span className="text-slate-600 truncate">
+                        <Mail className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">Email</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {employee.email}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
-                        <Phone className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">Phone</span>
-                        <span className="text-slate-600">
+                        <Phone className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">Phone</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {employee.phone_number}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
-                        <MapPin className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">Location</span>
-                        <span className="text-slate-600">
+                        <MapPin className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">Location</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {employee.address?.city}, {employee.address?.zip_code}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
-                        <IndianRupee className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">Payable</span>
-                        <span className="text-slate-600">
+                        <IndianRupee className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">Payable</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {employee.employee_salary?.payable_salary ?? "—"}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
-                        <Calendar className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium">Joined</span>
-                        <span className="text-slate-600">
+                        <Calendar className="h-4 w-4 text-slate-600 font-semibold" />
+                        <span className="font-semibold font-montserrat text-slate-700">Joined</span>
+                        <span className="text-slate-500 font-montserrat font-medium">
                           {new Date(
                             employee.date_of_joining
                           ).toLocaleDateString("en-GB", {
@@ -730,17 +730,17 @@ const Employees = ({
                     {/* Leave Balance */}
                     {!readOnly && (
                       <div className="flex flex-wrap items-center justify-between gap-3 text-sm mt-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
-                        <span className="text-slate-700 font-semibold">
+                        <span className="text-slate-700 font-semibold font-montserrat">
                           Leave balance
                         </span>
-                        <div className="flex flex-wrap gap-3 text-xs font-semibold">
+                        <div className="flex flex-wrap gap-3 text-xs font-semibold font-montserrat">
                           <Badge className={remainingBadgeClass}>
                             Remaining: {formattedRemainingBalance}
                           </Badge>
-                          <Badge className="bg-amber-50 text-amber-700 border border-amber-100">
+                          <Badge className="bg-amber-50 text-amber-700 border border-amber-100 font-montserrat">
                             Used: {leaveSummary.used}
                           </Badge>
-                          <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
+                          <Badge className="bg-slate-100 text-slate-700 border border-slate-200 font-montserrat">
                             Total: {leaveSummary.total}
                           </Badge>
                         </div>

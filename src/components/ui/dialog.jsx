@@ -45,7 +45,7 @@ DialogContent.displayName = "DialogContent"
 const DialogHeader = ({ className, ...props }) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
+      "flex flex-col space-y-1.5 text-center",
       className
     )}
     {...props}
@@ -76,7 +76,7 @@ DialogTitle.displayName = "DialogTitle"
 const DialogDescription = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-sm text-muted-foreground text-center", className)}
     {...props}
   />
 ))

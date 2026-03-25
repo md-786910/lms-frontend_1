@@ -6,18 +6,27 @@ import { Badge } from "@/components/ui/badge";
 import {
   Search,
   Clock,
-  Calendar,
+  Calendar as CalendarIcon,
   TrendingUp,
   AlertTriangle,
   CheckCircle,
   User,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const Timing = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   const timeRecords = [
     {
@@ -222,13 +231,37 @@ const Timing = () => {
               />
             </div>
             <div className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4 text-slate-400" />
-              <Input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-40"
-              />
+              <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-40 justify-start text-left font-normal",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                    {selectedDate ? (
+                      format(new Date(selectedDate), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="single"
+                    selected={new Date(selectedDate)}
+                    onSelect={(date) => {
+                      if (date) {
+                        setSelectedDate(date.toISOString().split("T")[0]);
+                        setDatePickerOpen(false);
+                      }
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <Button variant="outline">Filter by Status</Button>
           </div>

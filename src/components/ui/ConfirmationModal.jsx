@@ -13,8 +13,9 @@ const ConfirmationModal = ({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure you want to Suspend this employee?</DialogTitle>    
+          <DialogTitle className="text-center">Are you sure you want to Suspend this employee?</DialogTitle>    
         </DialogHeader>
+        <div className="text-center mb-4">{message}</div>
         <div className="flex justify-center space-x-4 pt-4">
           <Button variant="outline" onClick={() => onClose(false)}>
             No

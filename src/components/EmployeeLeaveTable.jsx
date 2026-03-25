@@ -128,8 +128,10 @@ const EmployeeLeaveTable = () => {
     <Card className="border border-slate-200 shadow-sm rounded-md">
       <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 ">
-            <Calendar className="h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 font-montserrat text-slate-900 text-lg font-bold">
+            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center font-montserrat rounded-md">
+              <Calendar className="h-5 w-5" />
+            </span>
             <span>Employee Leave Summary - {year}</span>
           </CardTitle>
           {/* <button
@@ -145,7 +147,7 @@ const EmployeeLeaveTable = () => {
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-slate-900" />
-            <span className="text-sm text-slate-900">Filters:</span>
+            <span className="text-sm text-slate-900 font-montserrat font-semibold">Filters:</span>
           </div>
 
           {/* Year Select */}
@@ -153,7 +155,7 @@ const EmployeeLeaveTable = () => {
             value={year.toString()}
             onValueChange={(v) => setYear(parseInt(v))}
           >
-            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md font-montserrat hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -170,7 +172,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Month Select */}
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 font-montserrat rounded-md hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Select Month" />
             </SelectTrigger>
             <SelectContent>
@@ -184,7 +186,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Employee Select */}
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md font-montserrat hover:bg-gray-100 hover:text-gray-500">
               <Users className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Select Employee" />
             </SelectTrigger>
@@ -201,7 +203,7 @@ const EmployeeLeaveTable = () => {
           {/* Reset Button */}
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 hover:text-gray-500"
+            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 font-montserrat hover:text-gray-500"
           >
             Reset
           </button>
@@ -218,18 +220,18 @@ const EmployeeLeaveTable = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10">
+                  <TableHead className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10 font-montserrat">
                     Employee Name
                   </TableHead>
                   {columnsToShow.map((month) => (
                     <TableHead
                       key={month}
-                      className="font-semibold text-slate-700 text-center capitalize min-w-[80px]"
+                      className="font-semibold text-slate-700 text-center capitalize min-w-[80px] font-montserrat"
                     >
                       {month.slice(0, 3).toUpperCase()}
                     </TableHead>
                   ))}
-                  <TableHead className="font-semibold text-slate-700 text-center bg-blue-50">
+                  <TableHead className="font-semibold text-slate-700 text-center bg-blue-50 font-montserrat">
                     Total
                   </TableHead>
                 </TableRow>
@@ -250,7 +252,7 @@ const EmployeeLeaveTable = () => {
                           key={employee.employee_id || index}
                           className="hover:bg-slate-50"
                         >
-                          <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10">
+                          <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10 font-montserrat">
                             {employee.name}
                           </TableCell>
                           {columnsToShow.map((month) => {
@@ -300,7 +302,7 @@ const EmployeeLeaveTable = () => {
                   <TableRow>
                     <TableCell
                       colSpan={columnsToShow.length + 2}
-                      className="text-center py-8 text-slate-500"
+                      className="text-center py-8 text-slate-500 font-montserrat"
                     >
                       No leave data found for the selected filters
                     </TableCell>
