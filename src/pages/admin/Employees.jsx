@@ -397,11 +397,11 @@ const Employees = ({
           <div className="grid grid-cols-12 items-center gap-4 relative z-10">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight">
+                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-montserrat">
                   {customTitle}
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl">
+              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
                 {customSubtitle}
               </p>
             </div>
