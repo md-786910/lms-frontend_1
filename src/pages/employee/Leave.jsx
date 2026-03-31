@@ -147,9 +147,9 @@ const EmployeeLeave = () => {
     setCurrentPage(1);
   }, [statusFilter, monthFilter]);
   return (
-    <div className="h-[calc(100vh-110px)] overflow-y-auto flex flex-col space-y-6 pb-4 scroll-smooth px-6">
+    <div className="h-[calc(100vh-110px)] overflow-y-auto flex flex-col space-y-6 scroll-smooth mb-5">
       {/* Header */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
+      <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white">
         <CardContent className="p-5 md:p-7">
           <div className="grid grid-cols-12 items-center gap-4 relative">
             <div className="col-span-12 md:col-span-8 space-y-2">
@@ -180,88 +180,69 @@ const EmployeeLeave = () => {
       </Card>
 
       {/* Leave Balance - Top Section */}
-      <div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {leaveDash?.leaves?.map((leave, index) => {
-            const remainingBalance = leave.leave_remaing ?? 0;
-            const remainingBalanceColor =
-              remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
-            const totalLeaves = leave.leave_count ?? 0;
-            const progressPercent =
-              totalLeaves > 0
-                ? Math.min(
-                    Math.max((remainingBalance / totalLeaves) * 100, 0),
-                    100
-                  )
-                : 0;
-            const formattedRemainingBalance = formatLeaveDays(remainingBalance);
-            const formattedTotal = leave.leave_count ?? 0;
-            return (
-              <Card key={index} className="border border-slate-200 shadow-sm rounded-xl bg-white">
-                <CardContent className="p-4">
-                  <div className="mb-4 flex items-start justify-between">
-                    <div>
-                      <p className="text-xs capitalize font-bold tracking-wide text-slate-500 font-montserrat">
-                        {leave.leave_type}
-                      </p>
-                      <h4 className="text-xl font-semibold text-slate-900 font-montserrat mt-1">
-                        {formattedTotal} days
-                      </h4>
-                    </div>
-                    <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
-                      Annual
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {leaveDash?.leaves?.map((leave, index) => {
+          const remainingBalance = leave.leave_remaing ?? 0;
+          const remainingBalanceColor =
+            remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
+          const totalLeaves = leave.leave_count ?? 0;
+          const progressPercent =
+            totalLeaves > 0
+              ? Math.min(
+                  Math.max((remainingBalance / totalLeaves) * 100, 0),
+                  100
+                )
+              : 0;
+          const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+          const formattedTotal = leave.leave_count ?? 0;
+          return (
+            <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
+              <CardContent className="p-4">
+                <div className="mb-4 flex items-start justify-between">
+                  <div>
+                    <p className="text-xl  font-semibold tracking-wide text-slate-700 font-montserrat">
+                      {leave.leave_type}
+                    </p>
+                    <h4 className="text-lg font-semibold text-slate-900 font-montserrat mt-1">
+                      {formattedTotal} days
+                    </h4>
+                  </div>
+                  <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
+                    Annual
+                  </span>
+                </div>
+                <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
+                  <div className="flex justify-between">
+                    <span>Used</span>
+                    <span className="font-semibold text-amber-600">
+                      {leave.leave_used || 0}
                     </span>
                   </div>
-                  <div className="space-y-2 text-xs text-slate-600 font-montserrat mb-3">
-                    <div className="flex justify-between">
-                      <span>Used</span>
-                      <span className="font-semibold text-amber-600">
-                        {leave.leave_used || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Remaining</span>
-                      <span className={`font-semibold ${remainingBalanceColor}`}>
-                        {formattedRemainingBalance}
-                      </span>
-                    </div>
+                  <div className="flex justify-between text-sm text-slate-600 font-montserrat">
+                    <span>Remaining</span>
+                    <span className={`font-semibold ${remainingBalanceColor}`}>
+                      {formattedRemainingBalance}
+                    </span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      className="h-2 rounded-full bg-emerald-500 transition-all"
-                      style={{
-                        width: `${progressPercent}%`,
-                      }}
-                    ></div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                </div>
+                <div className="h-1 w-full overflow-hidden rounded-full bg-slate-200">
+                  <div
+                    className="h-1 rounded-full bg-emerald-500 transition-all"
+                    style={{
+                      width: `${progressPercent}%`,
+                    }}
+                  ></div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
-
-      <div className="grid lg:grid-cols-[1fr,380px] gap-6 flex-1 min-h-0">
+      <div className="grid lg:grid-cols-[1fr,555px] gap-6 flex-1 min-h-0">
         {/* Main Content Area */}
         <div className="flex flex-col min-h-0 space-y-4">
           {/* Leave Requests Card */}
-          <Card className="border border-slate-200 shadow-sm rounded-2xl bg-white flex-1 flex flex-col min-h-0">
-            <CardHeader className="border-b border-slate-100 shrink-0">
-              <CardTitle className="text-lg font-bold text-slate-700 font-montserrat capitalize tracking-wider flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
-                    <FileText className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900">My Leave Requests</p>
-                    <p className="text-xs text-slate-500 font-normal">Stay on top of what's pending, approved, or rejected.</p>
-                  </div>
-                </div>
-                <span className="text-xs font-semibold text-slate-600 bg-slate-50 px-3 py-1 rounded-full ring-1 ring-slate-200">
-                  Most recent first
-                </span>
-              </CardTitle>
-            </CardHeader>
+          <Card className="flex-1 flex flex-col min-h-0">
             <CardContent className="px-0 py-0 flex-1 overflow-hidden flex flex-col">
               {/* Requests List - Scrollable Area */}
               <div className="flex-1 overflow-y-auto scroll-slim">
@@ -489,10 +470,10 @@ const EmployeeLeave = () => {
         {/* Sidebar - Filter & Stats */}
         <div className="space-y-4 flex flex-col">
           {/* Filter Card */}
-          <Card className="border border-slate-200 shadow-sm rounded-2xl bg-white h-fit sticky top-20">
+          <Card className="border border-slate-200 shadow-sm rounded-md bg-white h-fit sticky top-20">
             <CardHeader className="pb-4 border-b border-slate-100">
               <CardTitle className="text-base font-bold text-slate-900 font-montserrat flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
                   <Filter className="h-4 w-4" />
                 </div>
                 Filter
