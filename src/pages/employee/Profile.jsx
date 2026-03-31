@@ -19,6 +19,7 @@ import {
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
 import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const employeeProfileTab = [
   {
@@ -234,17 +235,22 @@ const Profile = ({ readOnly = false }) => {
 
   return (
     <div className="space-y-8 pb-10">
-      <div className="space-y-2">
-        <p className="text-xs font-semibold capitalize tracking-[0.45em] text-slate-400">
-          Team Member Profile
-        </p>
-        <div>
-          <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Profile Information</h1>
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-            A contemporary view of your personal and professional details.
-          </p>
-        </div>
-      </div>
+      <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white overflow-hidden">
+        <CardContent className="p-5 md:p-7 relative">
+          <div className="grid grid-cols-12 items-center gap-4 relative z-10">
+            <div className="col-span-12 md:col-span-8 space-y-2">
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-monserrat">
+                  Profile Information
+                </h1>
+              </div>
+              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
+                A contemporary view of your personal and professional details.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <section className="grid gap-6 lg:grid-cols-[320px,1fr]">
         <div className="flex flex-col gap-6">
