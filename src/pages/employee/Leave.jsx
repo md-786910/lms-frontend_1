@@ -242,7 +242,7 @@ const EmployeeLeave = () => {
         {/* Main Content Area */}
         <div className="flex flex-col min-h-0 space-y-4">
           {/* Leave Requests Card */}
-          <Card className="flex-1 flex flex-col min-h-0">
+          <Card className="flex-1 flex flex-col min-h-0  bg-transparent bg-none border-0 shadow-none">
             <CardContent className="px-0 py-0 flex-1 overflow-hidden flex flex-col">
               {/* Requests List - Scrollable Area */}
               <div className="flex-1 overflow-y-auto scroll-slim">
@@ -521,19 +521,6 @@ const EmployeeLeave = () => {
                     })}
                   </SelectContent>
                 </Select>
-              </div>
-
-              {/* Total Count */}
-              <div className="border-t border-slate-100 pt-4">
-                <div className="text-xs font-bold tracking-wide text-slate-500 font-montserrat mb-2">
-                  Total Requests
-                </div>
-                <div className="text-2xl font-bold text-slate-900 font-montserrat">
-                  {filteredLeaveRequests.length}
-                </div>
-                <div className="text-xs text-slate-500 font-montserrat mt-1">
-                  {filteredLeaveRequests.length} {filteredLeaveRequests.length === 1 ? "request" : "requests"} found
-                </div>
               </div>
             </CardContent>
           </Card>

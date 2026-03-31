@@ -114,20 +114,14 @@ const Salary = () => {
   return (
     <div className=" space-y-8">
       {/* Header */}
-      <div className="rounded-2xl border border-slate-200 bg-white/80 shadow-sm backdrop-blur-sm p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+      <div className="rounded-md border border-slate-200 bg-white/80 shadow-sm backdrop-blur-sm p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <p className="text-xs capitalize tracking-[0.2em] text-slate-500">Payroll</p>
           <h1 className="text-3xl font-semibold text-slate-900">
             Salary &amp; Payroll
           </h1>
           <p className="text-slate-600 text-sm">
             Your monthly payout overview, deductions, and downloadable payslips in one place.
           </p>
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Badge className="bg-slate-100 text-slate-700 border border-slate-200">
-              Current Month • {dayjs().format("MMMM YYYY")}
-            </Badge>
-          </div>
         </div>
         <div className="flex flex-wrap gap-3">
           <Button
@@ -138,7 +132,7 @@ const Salary = () => {
             View History
           </Button>
           <Button
-            className="bg-primary text-white hover:bg-primary/90 shadow-md"
+            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-Montserrat"
             onClick={async () => {
               const currentMonth = salaryHistory?.find(
                 (item) => item?.month_in_digit === month_in_digit
@@ -157,26 +151,25 @@ const Salary = () => {
       </div>
 
       {/* Current Salary Overview */}
-      <Card className="relative overflow-hidden border border-slate-800/10 bg-[#111827] text-white shadow-2xl">
+      <Card className="relative overflow-hidden rounded-md border border-slate-800/10 bg-[#111827] text-white shadow-2xl">
         <CardContent className="relative p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-2">
-              <p className="text-sm text-slate-200">Current Monthly Salary</p>
               <div className="flex items-baseline gap-3">
                 <h2 className="text-4xl font-semibold tracking-tight">
                   ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
                 </h2>
-                <Badge className="bg-emerald-100 text-emerald-800 border-0">
+                <Badge className="bg-emerald-100 text-emerald-800 border-0 font-montserrat">
                   Net after deductions
                 </Badge>
               </div>
-              <p className="text-slate-300 text-sm">
+              <p className="text-slate-300 text-sm font-montserrat">
                 Updated for {dayjs().format("MMMM YYYY")}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
               <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs text-slate-200">Gross Salary</p>
+                <p className="text-xs text-slate-200 font-montserrat">Gross Salary</p>
                 <p className="text-lg font-semibold">
                   ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
                 </p>
@@ -204,7 +197,7 @@ const Salary = () => {
       </Card>
 
       {/* YTD Summary */}
-      <Card className="border border-slate-200 shadow-lg">
+      <Card className="border border-slate-200 shadow-lg rounded-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-slate-900">
             <TrendingUp className="h-5 w-5 text-indigo-600" />
@@ -255,7 +248,7 @@ const Salary = () => {
 
       {/* Salary Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border border-slate-200 shadow-lg">
+        <Card className="border border-slate-200 shadow-lg rounded-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-slate-900">
               <Plus className="h-5 w-5 text-emerald-600" />
@@ -290,7 +283,7 @@ const Salary = () => {
           </CardContent>
         </Card>
 
-        <Card className="border border-slate-200 shadow-lg">
+        <Card className="border border-slate-200 shadow-lg rounded-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-slate-900">
               <Minus className="h-5 w-5 text-rose-600" />
@@ -321,7 +314,7 @@ const Salary = () => {
       </div>
 
       {/* Salary History */}
-      <Card className="border border-slate-200 shadow-xl" id="salary-history">
+      <Card className="border border-slate-200 shadow-xl rounded-md" id="salary-history">
         <CardHeader className="flex flex-col gap-2">
           <CardTitle className="text-slate-900">Salary History</CardTitle>
           <p className="text-sm text-slate-600">Download past payslips and review payout status.</p>
