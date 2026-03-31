@@ -179,20 +179,20 @@ const EmployeeLayout = () => {
                   }}
                   className={`group flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left text-sm font-semibold transition-all ${
                     isActive
-                      ? "border-primary/30 bg-primary/10 text-primary shadow-sm"
+                      ? "border-slate-800 bg-primary/10 text-slate-800 shadow-sm"
                       : "border-transparent hover:border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   <span
                     className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                      isActive ? "bg-primary text-white" : "bg-slate-100 text-slate-700"
+                      isActive ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-700"
                     }`}
                   >
                     <Icon className="h-5 w-5" />
                   </span>
                   <span>{item.label}</span>
                   {isActive && (
-                    <span className="ml-auto h-2 w-2 rounded-full bg-primary" />
+                    <span className="ml-auto h-2 w-2 rounded-full bg-slate-900" />
                   )}
                 </button>
               );
@@ -239,9 +239,6 @@ const EmployeeLayout = () => {
                 <Menu className="h-5 w-5" />
               </Button>
               <div>
-                <p className="text-[11px] capitalize tracking-[0.25em] text-slate-500">
-                  Employee area
-                </p>
                 <h1 className="text-lg font-semibold leading-tight text-slate-900">
                   {currentPage}
                 </h1>

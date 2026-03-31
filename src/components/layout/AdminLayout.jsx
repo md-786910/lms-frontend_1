@@ -205,7 +205,7 @@ const AdminLayout = () => {
                   }}
                   className={`group flex w-full items-center gap-3 font-montserrat rounded-xl border px-3 py-2 text-left text-sm font-semibold transition-all ${
                     isActive
-                      ? "border-primary/30 bg-primary/10 text-primary shadow-sm"
+                      ? "border-slate-800 bg-primary/10 text-slate-800 shadow-sm"
                       : "border-transparent hover:border-slate-200 hover:bg-slate-50"
                   }`}
                 >
