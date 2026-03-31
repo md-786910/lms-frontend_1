@@ -16,7 +16,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { empProfileApi } from "../../api/employee/profile";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,6 +33,7 @@ const employeeProfileTab = [
 const Profile = ({ readOnly = false }) => {
   const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(true);
   const [basicInfo, setBasicInfo] = useState(null);
@@ -55,6 +56,22 @@ const Profile = ({ readOnly = false }) => {
     };
     fetchBasicInfo();
   }, []);
+
+  // Handle tab change and navigate
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    navigate(`/employee/profile/${tabId}`);
+  };
+
+  // Sync tab with URL on mount and when location changes
+  useEffect(() => {
+    const segments = location.pathname.split("/").filter(Boolean);
+    const currentSegment = segments[segments.length - 1] || "basic";
+    const isValidTab = employeeProfileTab.some((tab) => tab.id === currentSegment);
+    if (isValidTab) {
+      setActiveTab(currentSegment);
+    }
+  }, [location.pathname]);
 
   const handleAvatarChange = async (event, employeeId) => {
     const file = event.target.files[0];
@@ -212,32 +229,31 @@ const Profile = ({ readOnly = false }) => {
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{fullName}</h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-lg font-montserrat">
+              <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
                 {designationTitle} • {departmentName}
               </p>
-              <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{basicInfo?.employee_no || "Employee ID"}</p>
+              <p className="text-xs text-[#FFFFFF] font-montserrat tracking-wider">{basicInfo?.employee_no || "Employee ID"}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Main Tabs Card */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <Card className="border border-slate-200 shadow-sm rounded-md overflow-hidden bg-white min-h-[600px]">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="grid gap-6 lg:grid-cols-[320px,1fr] p-6">
             {/* Left Sidebar - Profile Section */}
             <div className="flex flex-col gap-6">
               {/* Avatar Card */}
-              <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
-                <div className="pointer-events-none absolute -right-10 top-4 h-40 w-40 rounded-full bg-primary/10 opacity-70 blur-3xl"></div>
+              <div className="relative overflow-hidden rounded-md border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
                 <div className="relative z-10 space-y-6">
                   <div className="flex flex-col items-center gap-3 text-center">
-                    <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
+                    <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
                       {basicInfo?.profile ? (
                         <img
                           src={basicInfo.profile}
                           alt={`${basicInfo.first_name} ${basicInfo.last_name}`}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover font-montserrat"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-3xl font-semibold tracking-tight text-white">
@@ -251,29 +267,26 @@ const Profile = ({ readOnly = false }) => {
                       )}
                     </div>
                     <div>
-                      <p className="text-[11px] capitalize tracking-[0.5em] text-slate-400 dark:text-slate-500">
-                        Profile snapshot
-                      </p>
-                      <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">{fullName}</h2>
-                      <p className="text-xs font-semibold capitalize tracking-[0.35em] text-slate-500 dark:text-slate-400">
+                      <h2 className="text-2xl font-semibold font-montserrat text-slate-900 dark:text-white">{fullName}</h2>
+                      <p className="text-xs font-semibold font-montserrat text-slate-500 dark:text-slate-400">
                         {designationTitle}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                      <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
-                        <CalendarDays className="h-3.5 w-3.5" />
+                      <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 font-montserrat bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
+                        <CalendarDays className="h-3.5 w-3.5 text-[#047857]" />
                         Joined {profileJoinedLabel}
                       </span>
-                      <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
-                        <User className="h-3.5 w-3.5" />
+                      <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 font-montserrat bg-slate-50 px-3 py-1 dark:border-slate-700/40 dark:bg-slate-800/40">
+                        <User className="h-3.5 w-3.5 text-[#047857]" />
                         ID {basicInfo?.employee_no ?? "—"}
                       </span>
                     </div>
                   </div>
 
                   {!readOnly && (
-                    <div className="flex flex-col gap-3 text-sm">
-                      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-center font-semibold text-slate-600 transition hover:border-slate-300 dark:border-slate-700/40 dark:bg-slate-900/40 dark:text-slate-200">
+                    <div className="flex flex-col gap-2 text-sm">
+                      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-center font-semibold text-slate-600 transition hover:border-slate-300 dark:border-slate-700/40 dark:bg-slate-900/40 dark:text-slate-200 hover:bg-slate-500/10 ">
                         <Edit3 className="h-4 w-4" />
                         Update photo
                         <input
@@ -299,28 +312,19 @@ const Profile = ({ readOnly = false }) => {
               </div>
 
               {/* Contact Info Card */}
-              <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <p className="text-[11px] capitalize tracking-[0.45em] text-slate-400 dark:text-slate-500">
-                      Contact info
-                    </p>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Stay connected</h3>
-                  </div>
-                  <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">Always synced</span>
-                </div>
+              <div className="rounded-md border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition font-montserrat dark:border-slate-700/50 dark:bg-slate-900/40">
                 <div className="space-y-3">
                   {contactItems.map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/70 px-4 py-3 dark:border-slate-700/40 dark:bg-slate-900/40"
+                      className="flex items-center gap-3 rounded-2xl border border-slate-100 font-montserrat bg-slate-50/70 px-4 py-3 dark:border-slate-700/40 dark:bg-slate-900/40"
                     >
                       <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${item.accentBg} shadow-sm`}>
                         {item.icon}
                       </div>
                       <div>
-                        <p className="text-[10px] capitalize tracking-[0.4em] text-slate-400">{item.label}</p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.value}</p>
+                        <p className="text-[12px] font-montserrat font-medium text-slate-500">{item.label}</p>
+                        <p className="text-sm font-semibold text-slate-900 font-montserrat dark:text-white">{item.value}</p>
                       </div>
                     </div>
                   ))}
@@ -331,7 +335,7 @@ const Profile = ({ readOnly = false }) => {
             {/* Right Content Area - Tabs and Content */}
             <div className="flex flex-col gap-6">
               {/* Tabs Navigation */}
-              <div className="rounded-[24px] border border-slate-200 bg-white shadow-sm p-4">
+              <div className="rounded-md bg-white shadow-sm p-4">
                 <TabsList className="flex flex-wrap gap-3 bg-transparent p-0 w-full">
                   {employeeProfileTab.map((tab) => (
                     <TabsTrigger
@@ -349,7 +353,7 @@ const Profile = ({ readOnly = false }) => {
               </div>
 
               {/* Tab Content Container */}
-              <div className="min-h-[400px] rounded-[32px] border border-slate-100 bg-slate-50/70 p-6 shadow-sm transition dark:border-slate-700/50 dark:bg-slate-900/40">
+              <div className="min-h-[400px] rounded-md border border-slate-100 bg-slate-50/70 p-6 shadow-sm transition dark:border-slate-700/50 dark:bg-slate-900/40">
                 <TabsContent value="basic" className="mt-0">
                   <Outlet context={{ basicInfo, loading }} />
                 </TabsContent>
@@ -376,19 +380,8 @@ const Profile = ({ readOnly = false }) => {
       </Card>
 
       {/* Work Stats Section */}
-      <section className="rounded-[32px] border border-slate-200 bg-white px-6 py-6 shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
-        <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 dark:border-slate-700/50">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg">
-              <Briefcase className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-[11px] capitalize tracking-[0.45em] text-slate-400">Work information</p>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Employment snapshot</h3>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="rounded-md border border-slate-200 bg-white px-6 py-4 shadow-[0_30px_70px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {workStats.map((stat) => (
             <div
               key={stat.label}
