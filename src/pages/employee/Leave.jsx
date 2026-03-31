@@ -16,7 +16,15 @@ import {
   Hash,
   Eye,
   MoreVertical,
+  Filter,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import dayjs from "dayjs";
 import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
@@ -39,6 +47,8 @@ const EmployeeLeave = () => {
   const [readOnly, setReadOnly] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
   const itemsPerPage = 5;
   
   const totalRemaining = leaveDash?.total_remaining ?? 0;
@@ -95,27 +105,49 @@ const EmployeeLeave = () => {
     }
   };
 
-  // Sort leave requests by most recent first
-  const sortedLeaveRequests = useMemo(() => {
-    return [...(leaveRequest || [])].sort((a, b) => 
+  // Sort and filter leave requests
+  const filteredLeaveRequests = useMemo(() => {
+    let result = [...(leaveRequest || [])];
+    
+    // Apply status filter
+    if (statusFilter !== "all") {
+      result = result.filter(req => req.status === statusFilter);
+    }
+    
+    // Apply month filter
+    if (monthFilter !== "all") {
+      result = result.filter(req => {
+        const startMonth = dayjs(req.start_date).format("YYYY-MM");
+        const endMonth = dayjs(req.end_date).format("YYYY-MM");
+        return startMonth === monthFilter || endMonth === monthFilter || 
+               (dayjs(req.start_date).isBefore(monthFilter) && dayjs(req.end_date).isAfter(monthFilter));
+      });
+    }
+    
+    // Sort by most recent first
+    return result.sort((a, b) => 
       new Date(b.createdAt) - new Date(a.createdAt)
     );
-  }, [leaveRequest]);
+  }, [leaveRequest, statusFilter, monthFilter]);
 
   // Calculate pagination
-  const totalPages = Math.ceil(sortedLeaveRequests.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredLeaveRequests.length / itemsPerPage);
   const paginatedRequests = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return sortedLeaveRequests.slice(startIndex, endIndex);
-  }, [sortedLeaveRequests, currentPage, itemsPerPage]);
+    return filteredLeaveRequests.slice(startIndex, endIndex);
+  }, [filteredLeaveRequests, currentPage, itemsPerPage]);
 
   useEffect(() => {
     fetchLeave();
     getLeaveRequest();
   }, [updateDashboard]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter, monthFilter]);
   return (
-    <div className="h-[calc(100vh-110px)] overflow-hidden flex flex-col space-y-6 pb-4">
+    <div className="h-[calc(100vh-110px)] overflow-y-auto flex flex-col space-y-6 pb-4 scroll-smooth px-6">
       {/* Header */}
       <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
         <CardContent className="p-5 md:p-7">
@@ -147,7 +179,69 @@ const EmployeeLeave = () => {
         </CardContent>
       </Card>
 
-      <div className="grid lg:grid-cols-[1fr,420px] gap-6 flex-1 min-h-0">
+      {/* Leave Balance - Top Section */}
+      <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {leaveDash?.leaves?.map((leave, index) => {
+            const remainingBalance = leave.leave_remaing ?? 0;
+            const remainingBalanceColor =
+              remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
+            const totalLeaves = leave.leave_count ?? 0;
+            const progressPercent =
+              totalLeaves > 0
+                ? Math.min(
+                    Math.max((remainingBalance / totalLeaves) * 100, 0),
+                    100
+                  )
+                : 0;
+            const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+            const formattedTotal = leave.leave_count ?? 0;
+            return (
+              <Card key={index} className="border border-slate-200 shadow-sm rounded-xl bg-white">
+                <CardContent className="p-4">
+                  <div className="mb-4 flex items-start justify-between">
+                    <div>
+                      <p className="text-xs capitalize font-bold tracking-wide text-slate-500 font-montserrat">
+                        {leave.leave_type}
+                      </p>
+                      <h4 className="text-xl font-semibold text-slate-900 font-montserrat mt-1">
+                        {formattedTotal} days
+                      </h4>
+                    </div>
+                    <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
+                      Annual
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-xs text-slate-600 font-montserrat mb-3">
+                    <div className="flex justify-between">
+                      <span>Used</span>
+                      <span className="font-semibold text-amber-600">
+                        {leave.leave_used || 0}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Remaining</span>
+                      <span className={`font-semibold ${remainingBalanceColor}`}>
+                        {formattedRemainingBalance}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                    <div
+                      className="h-2 rounded-full bg-emerald-500 transition-all"
+                      style={{
+                        width: `${progressPercent}%`,
+                      }}
+                    ></div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[1fr,380px] gap-6 flex-1 min-h-0">
         {/* Main Content Area */}
         <div className="flex flex-col min-h-0 space-y-4">
           {/* Leave Requests Card */}
@@ -345,8 +439,8 @@ const EmployeeLeave = () => {
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium text-slate-500 font-montserrat">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
-                  <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, sortedLeaveRequests.length)}</span> of{" "}
-                  <span className="text-slate-900">{sortedLeaveRequests.length}</span> results
+                  <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredLeaveRequests.length)}</span> of{" "}
+                  <span className="text-slate-900">{filteredLeaveRequests.length}</span> results
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -392,77 +486,73 @@ const EmployeeLeave = () => {
           )}
         </div>
 
-        {/* Sidebar - Leave Balance & Stats */}
+        {/* Sidebar - Filter & Stats */}
         <div className="space-y-4 flex flex-col">
-          {/* Leave Balance Card */}
+          {/* Filter Card */}
           <Card className="border border-slate-200 shadow-sm rounded-2xl bg-white h-fit sticky top-20">
             <CardHeader className="pb-4 border-b border-slate-100">
               <CardTitle className="text-base font-bold text-slate-900 font-montserrat flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 ring-1 ring-blue-100">
-                  <CalendarDays className="h-4 w-4" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+                  <Filter className="h-4 w-4" />
                 </div>
-                Leave Balance
+                Filter
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="max-h-[300px] overflow-y-auto scroll-slim">
-                {leaveDash?.leaves?.map((leave, index) => {
-                  const remainingBalance = leave.leave_remaing ?? 0;
-                  const remainingBalanceColor =
-                    remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
-                  const totalLeaves = leave.leave_count ?? 0;
-                  const progressPercent =
-                    totalLeaves > 0
-                      ? Math.min(
-                          Math.max((remainingBalance / totalLeaves) * 100, 0),
-                          100
-                        )
-                      : 0;
-                  const formattedRemainingBalance = formatLeaveDays(remainingBalance);
-                  const formattedTotal = leave.leave_count ?? 0;
-                  return (
-                    <div
-                      key={index}
-                      className="px-4 py-4 border-b border-slate-100 last:border-b-0"
-                    >
-                      <div className="mb-3 flex items-start justify-between">
-                        <div>
-                          <p className="text-xs capitalize font-bold tracking-wide text-slate-500 font-montserrat">
-                            {leave.leave_type}
-                          </p>
-                          <h4 className="text-sm font-semibold text-slate-900 font-montserrat">
-                            {formattedTotal} days
-                          </h4>
-                        </div>
-                        <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
-                          Annual
-                        </span>
-                      </div>
-                      <div className="space-y-2 text-xs text-slate-600 font-montserrat">
-                        <div className="flex justify-between">
-                          <span>Used</span>
-                          <span className="font-semibold text-amber-600">
-                            {leave.leave_used || 0}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Remaining</span>
-                          <span className={`font-semibold ${remainingBalanceColor}`}>
-                            {formattedRemainingBalance}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                        <div
-                          className="h-2 rounded-full bg-emerald-500 transition-all"
-                          style={{
-                            width: `${progressPercent}%`,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
+            <CardContent className="p-4 space-y-4">
+              {/* Status Filter */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold tracking-wide text-slate-500 font-montserrat">
+                  Status
+                </label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-montserrat">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="approved">Approved</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Month Filter */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold tracking-wide text-slate-500 font-montserrat">
+                  Month
+                </label>
+                <Select value={monthFilter} onValueChange={setMonthFilter}>
+                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-montserrat">
+                    <SelectValue placeholder="Filter by month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Months</SelectItem>
+                    {[...Array(12)].map((_, i) => {
+                      const date = dayjs().month(i);
+                      const monthValue = date.format("YYYY-MM");
+                      const monthLabel = date.format("MMMM YYYY");
+                      return (
+                        <SelectItem key={i} value={monthValue}>
+                          {monthLabel}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Total Count */}
+              <div className="border-t border-slate-100 pt-4">
+                <div className="text-xs font-bold tracking-wide text-slate-500 font-montserrat mb-2">
+                  Total Requests
+                </div>
+                <div className="text-2xl font-bold text-slate-900 font-montserrat">
+                  {filteredLeaveRequests.length}
+                </div>
+                <div className="text-xs text-slate-500 font-montserrat mt-1">
+                  {filteredLeaveRequests.length} {filteredLeaveRequests.length === 1 ? "request" : "requests"} found
+                </div>
               </div>
             </CardContent>
           </Card>
