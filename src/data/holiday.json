@@ -111,16 +111,6 @@
           "name": "Eid-ul-Fitr"
         },
         {
-          "date": "2026-04-03",
-          "day": "Friday",
-          "name": "Good Friday"
-        },
-        {
-          "date": "2026-05-01",
-          "day": "Friday",
-          "name": "Labour Day"
-        },
-        {
           "date": "2026-08-15",
           "day": "Saturday",
           "name": "Independence Day"
@@ -153,6 +143,11 @@
           "name": "Maha Shivaratri"
         },
         {
+          "date": "2026-04-03",
+          "day": "Friday",
+          "name": "Good Friday"
+        },
+        {
           "date": "2026-04-06",
           "day": "Monday",
           "name": "Mahavir Jayanti"
@@ -161,6 +156,11 @@
           "date": "2026-04-14",
           "day": "Tuesday",
           "name": "Ambedkar Jayanti"
+        },
+        {
+          "date": "2026-05-01",
+          "day": "Friday",
+          "name": "Labour Day"
         },
         {
           "date": "2026-05-31",
