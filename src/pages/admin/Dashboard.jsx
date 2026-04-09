@@ -513,13 +513,13 @@ const AdminDashboard = () => {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                 <div className="p-6 border-b md:border-b-0 md:border-r border-slate-100">
-                  <div className="rounded-xl border border-slate-200 shadow-sm p-3 bg-slate-50">
+                  <div className="rounded-xl border border-slate-200 shadow-sm bg-slate-50">
                     <Calendar
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
                       required
-                      className="w-full"
+                      className="w-full m-0"
                       classNames={{
                         months: "space-y-4",
                         month: "space-y-4",
@@ -528,7 +528,7 @@ const AdminDashboard = () => {
                           "grid grid-cols-7 text-xs text-slate-500 font-semibold",
                         head_cell: "text-center py-1",
                         row: "grid grid-cols-7 text-center",
-                        cell: "p-2 text-sm relative",
+                        cell: "text-sm relative",
                         day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold",
                         day_selected:
                           "bg-slate-900 text-white shadow-lg shadow-slate-900/15",
