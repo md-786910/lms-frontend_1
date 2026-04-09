@@ -419,33 +419,36 @@ const EmployeeLeave = () => {
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
-              <div className="flex items-center gap-2">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 bg-white px-3 py-3 border border-slate-200 rounded-xl shrink-0">
+              <div className="w-full sm:w-auto text-center sm:text-left">
                 <p className="text-sm font-medium text-slate-500 font-montserrat">
-                  Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
-                  <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredLeaveRequests.length)}</span> of{" "}
+                  Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}
+                  <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredLeaveRequests.length)}</span> of{' '}
                   <span className="text-slate-900">{filteredLeaveRequests.length}</span> results
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
 
-                <div className="flex items-center gap-1">
+              <div className="w-full sm:w-auto flex items-center justify-center sm:justify-end gap-2">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar px-1">
                   {[...Array(totalPages)].map((_, i) => (
                     <Button
                       key={i + 1}
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`h-9 w-9 p-0 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
+                      className={`min-w-[36px] h-9 px-2 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
                         currentPage === i + 1
                           ? "bg-slate-900 text-white shadow-md scale-105"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -456,15 +459,17 @@ const EmployeeLeave = () => {
                   ))}
                 </div>
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="h-9 w-9 p-0 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}

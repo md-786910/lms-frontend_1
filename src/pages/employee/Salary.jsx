@@ -315,84 +315,159 @@ const Salary = () => {
 
       {/* Salary History */}
       <Card className="border border-slate-200 shadow-xl rounded-md" id="salary-history">
-        <CardHeader className="flex flex-col gap-2">
-          <CardTitle className="text-slate-900">Salary History</CardTitle>
-          <p className="text-sm text-slate-600">Download past payslips and review payout status.</p>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto rounded-xl border border-slate-100">
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-slate-700">
-                <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-medium">Month</th>
-                  <th className="text-right py-3 px-4 font-medium">Basic Salary</th>
-                  <th className="text-right py-3 px-4 font-medium">Allowances</th>
-                  <th className="text-right py-3 px-4 font-medium">Bonus</th>
-                  <th className="text-right py-3 px-4 font-medium">Deductions</th>
-                  <th className="text-right py-3 px-4 font-medium">Net Salary</th>
-                  <th className="text-center py-3 px-4 font-medium">Status</th>
-                  <th className="text-center py-3 px-4 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {salaryHistory?.map((record, index) => (
-                  <tr key={index} className="hover:bg-slate-50">
-                    <td className="py-4 px-4 font-medium text-slate-900">
-                      {new Date(
-                        `${record?.year}-${record?.month}` + "-01"
-                      ).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                      })}
-                    </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
-                      ₹{record?.base_salary?.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
-                      ₹{allowancesTotal?.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-4 text-right text-slate-700">
-                      ₹{record?.bonus?.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-4 text-right text-rose-600">
-                      ₹{mandatoryDeductions?.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-4 text-right font-semibold text-slate-900">
-                      ₹{record?.net_salary?.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <Badge className={getStatusColor(record?.status)}>
-                        {record?.status}
-                      </Badge>
-                    </td>
-                    <td className="py-4 px-4">
-                      <div className="flex justify-center">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-indigo-700 hover:text-indigo-800"
-                          onClick={async () => {
-                            if (!record["salary_slip"]) {
-                              toast.error(
-                                "Salary slip is still generated. Please try"
-                              );
-                              return;
-                            }
-                            handleDownloadSalary(record?.month_in_digit);
-                          }}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {salaryHistory?.length === 0 && <NoDataFound />}
+  
+  {/* Header */}
+  <CardHeader className="flex flex-col gap-2">
+    <CardTitle className="text-slate-900 text-lg sm:text-xl">
+      Salary History
+    </CardTitle>
+    <p className="text-sm text-slate-600">
+      Download past payslips and review payout status.
+    </p>
+  </CardHeader>
+
+  <CardContent>
+
+    {/* ================= DESKTOP TABLE ================= */}
+    <div className="hidden lg:block overflow-x-auto rounded-xl border border-slate-100">
+      <table className="w-full text-sm">
+        <thead className="bg-slate-50 text-slate-700">
+          <tr className="border-b border-slate-200">
+            <th className="text-left py-3 px-4">Month</th>
+            <th className="text-right py-3 px-4">Basic</th>
+            <th className="text-right py-3 px-4">Allowances</th>
+            <th className="text-right py-3 px-4">Bonus</th>
+            <th className="text-right py-3 px-4">Deductions</th>
+            <th className="text-right py-3 px-4">Net</th>
+            <th className="text-center py-3 px-4">Status</th>
+            <th className="text-center py-3 px-4">Action</th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y">
+          {salaryHistory?.map((record, index) => (
+            <tr key={index} className="hover:bg-slate-50">
+              <td className="py-4 px-4 font-medium">
+                {new Date(`${record?.year}-${record?.month}-01`).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                })}
+              </td>
+
+              <td className="text-right px-4">₹{record?.base_salary?.toLocaleString()}</td>
+              <td className="text-right px-4">₹{allowancesTotal?.toLocaleString()}</td>
+              <td className="text-right px-4">₹{record?.bonus?.toLocaleString()}</td>
+              <td className="text-right px-4 text-rose-600">₹{mandatoryDeductions?.toLocaleString()}</td>
+              <td className="text-right px-4 font-semibold">₹{record?.net_salary?.toLocaleString()}</td>
+
+              <td className="text-center px-4">
+                <Badge className={getStatusColor(record?.status)}>
+                  {record?.status}
+                </Badge>
+              </td>
+
+              <td className="text-center px-4">
+                <Button size="sm" variant="ghost">
+                  <Download className="h-4 w-4" />
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {salaryHistory?.length === 0 && <NoDataFound />}
+    </div>
+
+    {/* ================= MOBILE / TABLET CARDS ================= */}
+    <div className="lg:hidden space-y-4">
+
+      {salaryHistory?.length > 0 ? (
+        salaryHistory.map((record, index) => (
+          <div
+            key={index}
+            className="border border-slate-200 rounded-xl p-4 shadow-sm bg-white space-y-3"
+          >
+
+            {/* Top Row */}
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="font-semibold text-slate-900">
+                  {new Date(`${record?.year}-${record?.month}-01`).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                  })}
+                </p>
+                <p className="text-xs text-slate-500">Salary Month</p>
+              </div>
+
+              <Badge className={getStatusColor(record?.status)}>
+                {record?.status}
+              </Badge>
+            </div>
+
+            {/* Salary Details */}
+            <div className="grid grid-cols-2 gap-3 text-sm">
+
+              <div>
+                <p className="text-slate-500 text-xs">Basic</p>
+                <p className="font-medium">₹{record?.base_salary?.toLocaleString()}</p>
+              </div>
+
+              <div>
+                <p className="text-slate-500 text-xs">Allowances</p>
+                <p className="font-medium">₹{allowancesTotal?.toLocaleString()}</p>
+              </div>
+
+              <div>
+                <p className="text-slate-500 text-xs">Bonus</p>
+                <p className="font-medium">₹{record?.bonus?.toLocaleString()}</p>
+              </div>
+
+              <div>
+                <p className="text-slate-500 text-xs">Deductions</p>
+                <p className="font-medium text-rose-600">
+                  ₹{mandatoryDeductions?.toLocaleString()}
+                </p>
+              </div>
+
+              <div className="col-span-2">
+                <p className="text-slate-500 text-xs">Net Salary</p>
+                <p className="font-semibold text-lg text-slate-900">
+                  ₹{record?.net_salary?.toLocaleString()}
+                </p>
+              </div>
+
+            </div>
+
+            {/* Action */}
+            <div className="flex justify-end">
+              <Button
+                size="sm"
+                className="w-full sm:w-auto"
+                onClick={async () => {
+                  if (!record["salary_slip"]) {
+                    toast.error("Salary slip is still generated. Please try");
+                    return;
+                  }
+                  handleDownloadSalary(record?.month_in_digit);
+                }}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download Slip
+              </Button>
+            </div>
+
           </div>
-        </CardContent>
-      </Card>
+        ))
+      ) : (
+        <NoDataFound />
+      )}
+
+    </div>
+
+  </CardContent>
+</Card>
     </div>
   );
 };
