@@ -147,24 +147,27 @@ const EmployeeLeave = () => {
     setCurrentPage(1);
   }, [statusFilter, monthFilter]);
   return (
-    <div className="h-[calc(100vh-110px)] overflow-y-auto flex flex-col space-y-6 scroll-smooth mb-5">
+    <div className="min-h-[calc(100vh-110px)] flex flex-col space-y-6 overflow-y-auto scroll-smooth mb-5">
       {/* Header */}
       <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white">
         <CardContent className="p-5 md:p-7">
-          <div className="grid grid-cols-12 items-center gap-4 relative">
+          <div className="grid grid-cols-12 gap-4 items-center">
+            {/* Left Content */}
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                <h1 className="text-2xl sm:text-3xl font-bold font-montserrat text-white">
                   Leave Management
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+              <p className="text-white font-medium text-sm font-montserrat">
                 Track balances, submit requests, and view leave history with ease
               </p>
             </div>
-            <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
+
+            {/* Right Button */}
+            <div className="col-span-12 md:col-span-4 flex md:justify-end">
               <Button
-                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="w-full sm:w-auto rounded-xl shadow-sm border border-slate-200 flex items-center justify-center gap-2 py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-white hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => {
                   setReadOnly(false);
                   setLeaveRequestViewMode({});
@@ -238,7 +241,7 @@ const EmployeeLeave = () => {
           );
         })}
       </div>
-      <div className="grid lg:grid-cols-[1fr,555px] gap-6 flex-1 min-h-0">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr,360px] lg:grid-cols-[1fr,555px] gap-6 flex-1 min-h-0">
         {/* Main Content Area */}
         <div className="flex flex-col min-h-0 space-y-4">
           {/* Leave Requests Card */}
@@ -246,7 +249,7 @@ const EmployeeLeave = () => {
             <CardContent className="px-0 py-0 flex-1 overflow-hidden flex flex-col">
               {/* Requests List - Scrollable Area */}
               <div className="flex-1 overflow-y-auto scroll-slim">
-                <div className="space-y-4 p-4">
+                <div className="space-y-4">
                   {paginatedRequests?.length > 0 ? (
                     paginatedRequests.map((request) => (
                       <Card
@@ -275,7 +278,7 @@ const EmployeeLeave = () => {
                           </div>
 
                           {/* Leave Details Grid */}
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                             <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
                               <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
                                 <Calendar className="h-3 w-3" />
@@ -416,7 +419,7 @@ const EmployeeLeave = () => {
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium text-slate-500 font-montserrat">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
@@ -470,7 +473,7 @@ const EmployeeLeave = () => {
         {/* Sidebar - Filter & Stats */}
         <div className="space-y-4 flex flex-col">
           {/* Filter Card */}
-          <Card className="border border-slate-200 shadow-sm rounded-md bg-white h-fit sticky top-20">
+          <Card className="border border-slate-200 shadow-sm rounded-md bg-white h-fit md:sticky md:top-20">
             <CardHeader className="pb-4 border-b border-slate-100">
               <CardTitle className="text-base font-bold text-slate-900 font-montserrat flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">

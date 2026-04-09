@@ -241,14 +241,14 @@ const Profile = ({ readOnly = false }) => {
       {/* Main Tabs Card */}
       <Card className="border border-slate-200 shadow-sm rounded-md overflow-hidden bg-white min-h-[600px]">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <div className="grid gap-6 lg:grid-cols-[320px,1fr] p-6">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-[320px,1fr] p-4 md:p-6">
             {/* Left Sidebar - Profile Section */}
             <div className="flex flex-col gap-6">
               {/* Avatar Card */}
               <div className="relative overflow-hidden rounded-md border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)] transition dark:border-slate-700/50 dark:bg-slate-900/40">
                 <div className="relative z-10 space-y-6">
                   <div className="flex flex-col items-center gap-3 text-center">
-                    <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
+                    <div className="relative flex h-20 w-20 md:h-24 md:w-24 items-center justify-center overflow-hidden rounded-2xl border border-white bg-slate-900 shadow-2xl">
                       {basicInfo?.profile ? (
                         <img
                           src={basicInfo.profile}
@@ -286,7 +286,7 @@ const Profile = ({ readOnly = false }) => {
 
                   {!readOnly && (
                     <div className="flex flex-col gap-2 text-sm">
-                      <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-center font-semibold text-slate-600 transition hover:border-slate-300 dark:border-slate-700/40 dark:bg-slate-900/40 dark:text-slate-200 hover:bg-slate-500/10 ">
+                      <label className="flex w-full md:w-auto cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-center font-semibold text-slate-600 transition hover:border-slate-300 dark:border-slate-700/40 dark:bg-slate-900/40 dark:text-slate-200 hover:bg-slate-500/10 ">
                         <Edit3 className="h-4 w-4" />
                         Update photo
                         <input
@@ -336,12 +336,12 @@ const Profile = ({ readOnly = false }) => {
             <div className="flex flex-col gap-6">
               {/* Tabs Navigation */}
               <div className="rounded-md bg-white shadow-sm p-4">
-                <TabsList className="flex flex-wrap gap-3 bg-transparent p-0 w-full">
+                <TabsList className="flex gap-3 bg-transparent p-0 w-full overflow-x-auto md:overflow-visible whitespace-nowrap md:whitespace-normal md:flex-wrap -mx-2 px-2">
                   {employeeProfileTab.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-montserrat data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
+                      className="flex-shrink-0 group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-montserrat data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
                     >
                       <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] group-data-[state=active]:border-transparent group-data-[state=active]:bg-[#e2e8f0] group-data-[state=active]:text-[#047857]">
                         <tab.icon className="h-4 w-4" />
@@ -353,7 +353,7 @@ const Profile = ({ readOnly = false }) => {
               </div>
 
               {/* Tab Content Container */}
-              <div className="min-h-[400px] rounded-md border border-slate-100 bg-slate-50/70 p-6 shadow-sm transition dark:border-slate-700/50 dark:bg-slate-900/40">
+              <div className="min-h-[300px] md:min-h-[400px] rounded-md border border-slate-100 bg-slate-50/70 p-4 md:p-6 shadow-sm transition dark:border-slate-700/50 dark:bg-slate-900/40">
                 <TabsContent value="basic" className="mt-0">
                   <Outlet context={{ basicInfo, loading }} />
                 </TabsContent>

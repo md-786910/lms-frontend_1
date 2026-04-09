@@ -351,7 +351,7 @@ const LeaveRequestModal = ({
       </Card>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto px-8 py-6 scroll-slim">
+      <div className="flex-1 overflow-y-auto px-4 md:px-8 py-4 md:py-6 scroll-slim">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-[1fr,350px]">
             <div className="space-y-6">
@@ -500,7 +500,7 @@ const LeaveRequestModal = ({
                     </Badge>
                   </div>
 
-                  <div className="divide-y divide-slate-100 max-h-80 overflow-y-auto scroll-slim">
+                  <div className="divide-y divide-slate-100 max-h-64 md:max-h-80 overflow-y-auto scroll-slim">
                     {leaveDays?.map((day, index) => (
                       <div
                         key={day.date}
@@ -525,7 +525,7 @@ const LeaveRequestModal = ({
                           </div>
                         </div>
 
-                        <div className="w-48">
+                        <div className="w-full md:w-48">
                           <Select
                             value={day?.type?.toString()}
                             onValueChange={(val) => handleLeaveTypeChange(index, val)}
@@ -692,13 +692,13 @@ const LeaveRequestModal = ({
       </div>
 
       {/* Modern Action Footer */}
-      <div className="flex-shrink-0 px-8 py-6 bg-white border-t border-slate-200">
-        <div className="flex items-center justify-end gap-4">
+      <div className="flex-shrink-0 px-4 md:px-8 py-4 md:py-6 bg-white border-t border-slate-200">
+        <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-end gap-4 w-full">
           <Button
             type="button"
             variant="ghost"
             onClick={onClose}
-            className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+            className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300 w-full sm:w-auto"
           >
             <X className="h-4 w-4" />
             Cancel
@@ -707,7 +707,7 @@ const LeaveRequestModal = ({
             <Button
               type="submit"
               onClick={handleSubmit}
-              className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat"
+              className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat w-full sm:w-auto"
             >
               <CheckCircle2 className="h-5 w-5" />
               Submit Request
