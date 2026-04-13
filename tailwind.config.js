@@ -88,7 +88,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        'montserrat': ['Montserrat', 'sans-serif'],
+        'Poppins': ['Poppins', 'sans-serif'],
       },
     },
   },

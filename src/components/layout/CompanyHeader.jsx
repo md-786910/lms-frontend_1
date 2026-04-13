@@ -1,13 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Building, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Building, CircleQuestionMark, LogIn } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { Button } from "../ui/button";
 
 const CompanyHeader = () => {
-  const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const { user } = useAuth();
+
   const navigation = [
     { name: "Home", href: "/company" },
     { name: "About", href: "/company/about" },
@@ -22,87 +24,133 @@ const CompanyHeader = () => {
     }
     return location.pathname === href;
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="max-w-[1580px] mx-auto">
-        <div className="flex justify-between items-center h-16">
+    <>
+      {/* Top Bar */}
+      <div className="h-[56px] bg-[#90D7F5] text-white flex items-center justify-end px-6 py-1 md:px-8 md:py-2">
+        <div className="flex gap-1 md:gap-1">
+          <Link to="#" className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
+            <span className="text-[16px] md:text-[16px] font-Poppins text-[#212529] font-semibold">Support</span>
+            <CircleQuestionMark className="h-5 w-5 text-[#212529] text-[16px] md:text-[16px] font-Poppins font-semibold" />
+          </Link>
+          {/* <button className="text-xs md:text-sm px-3 py-1.5 rounded-md bg-sky-500 hover:bg-sky-400 transition">
+            Login
+          </button> */}
+          <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
+            <span className="text-[16px] md:text-[16px] font-Poppins text-[#212529] font-semibold">LogIn</span>
+            <LogIn className="h-5 w-5 text-[#212529] text-[16px] md:text-[16px] font-Poppins font-semibold" />
+          </Link>
+        </div>
+      </div>
+
+      {/* Header */}
+      <div
+        className={`w-full z-50 transition-all duration-300
+        ${
+          isSticky
+            ? "fixed top-0 left-0 bg-white/70 backdrop-blur-lg shadow-md"
+            : "bg-white"
+        }`}
+      >
+        <div
+          className={`bg-[#FFFFFF] flex items-center justify-between max-w-8xl mx-auto px-6 md:px-8 md:py-2 py-1 transition-all duration-300
+          ${isSticky ? "h-[70px]" : "h-[85px]"}`}
+        >
           {/* Logo */}
           <Link to="/company" className="flex items-center space-x-2">
-            <Building className="h-8 w-8 text-primary" />
+            <Building className="h-5 w-5" />
             <span className="text-xl font-bold">Leanport HR</span>
           </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`px-3 py-2 text-lg font-medium transition-colors hover:text-[#222875] ${
-                  isActive(item.href)
-                    ? "text-primary border-b-2 border-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* CTA Buttons */}
-          {user && (
-            <div className="hidden md:flex items-center space-x-4">
-              <Link
-                to={
-                  user?.role == "employee"
-                    ? "/employee/dashboard"
-                    : "/admin/dashboard"
-                }
-              >
-                <Button>Go to Dashboard</Button>
-              </Link>
-            </div>
-          )}
-
-          {(!user || user == undefined) && (
-            <div className="hidden md:flex items-center space-x-4">
-              <Link to="/login">
-                <Button variant="ghost" className="text-lg">Sign In</Button>
-              </Link>
-              <Link to="/company/get-started">
-                <Button className="bg-[#222875] text-[#CBEFFF] hover:bg-[#172098] text-lg">Get Started</Button>
-              </Link>
-            </div>
-          )}
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
-            <div className="flex flex-col space-y-2">
+          <div className="flex items-center gap-4">
+            {/* Desktop Menu */}
+            <nav className="hidden md:flex items-center gap-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px] ${
                     isActive(item.href)
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      ? "text-[18px] md:text-[18px] font-Poppins text-[#212529] font-semibold border-b-2 border-[#90D7F5]"
+                      : "text-[18px] md:text-[18px] font-Poppins text-[#212529] font-semibold"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+
+            {/* CTA Buttons */}
+            {user && (
+              <div className="hidden md:flex items-center space-x-4">
+                <Link
+                  to={
+                    user?.role == "employee"
+                      ? "/employee/dashboard"
+                      : "/admin/dashboard"
+                  }
+                  className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]"
+                >
+                  <div className="bg-[#222875] text-[#CBEFFF] hover:bg-[#172098] px-6 py-2 rounded-full text-[18px] md:text-[18px] font-Poppins font-semibold">Go to Dashboard</div>
+                </Link>
+              </div>
+            )}
+
+            {(!user || user == undefined) && (
+              <div className="hidden md:flex items-center space-x-4">
+                <Link to="/company/get-started" className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
+                  <div className="bg-[#222875] text-[#CBEFFF] hover:bg-[#172098] px-6 py-2 rounded-full text-[18px] md:text-[18px] font-Poppins font-semibold">Get Started</div>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Hamburger Button */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center gap-1"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span
+              className={`block w-6 h-0.5 bg-slate-800 transition-all duration-300 ${
+                menuOpen ? "rotate-45 translate-y-1.5" : ""
+              }`}
+            />
+            <span
+              className={`block w-6 h-0.5 bg-slate-800 transition-all duration-300 ${
+                menuOpen ? "opacity-0" : ""
+              }`}
+            />
+            <span
+              className={`block w-6 h-0.5 bg-slate-800 transition-all duration-300 ${
+                menuOpen ? "-rotate-45 -translate-y-1.5" : ""
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 bg-white/60 backdrop-blur-md
+          ${menuOpen ? "max-h-auto py-1" : "max-h-0"}`}
+        >
+          <div className="flex flex-col gap-2">
+            {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex items-center space-x-2 px-2 py-1 my-[6px] mr-[24px] ${
+                    isActive(item.href)
+                      ? "text-[18px] md:text-[18px] font-Poppins text-[#212529] font-semibold border-b-2 border-[#90D7F5]"
+                      : "text-[18px] md:text-[18px] font-Poppins text-[#212529] font-semibold"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -117,30 +165,28 @@ const CompanyHeader = () => {
                       ? "/employee/dashboard"
                       : "/admin/dashboard"
                   }
+                  className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]"
                 >
-                  <Button>Go to Dashboard</Button>
+                  <div className="bg-[#222875] text-[#CBEFFF] hover:bg-[#172098] px-6 py-2 rounded-full text-[18px] md:text-[18px] font-Poppins font-semibold">Go to Dashboard</div>
                 </Link>
               ) : (
                 <div className="flex flex-col space-y-2 pt-4 border-t">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      Sign In
-                    </Button>
-                  </Link>
                   <Link
                     to="/company/get-started"
                     onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]"
                   >
-                    <Button className="w-full">Get Started</Button>
+                    <div className="bg-[#222875] text-[#CBEFFF] hover:bg-[#172098] px-6 py-2 rounded-full text-[18px] md:text-[18px] font-Poppins font-semibold">Get Started</div>
                   </Link>
                 </div>
               )}
-            </div>
           </div>
-        )}
+        </div>
       </div>
-    </header>
-  );
-};
 
+      {/* Spacer */}
+      {isSticky && <div className="h-[70px]" />}
+    </>
+  );
+}
 export default CompanyHeader;
