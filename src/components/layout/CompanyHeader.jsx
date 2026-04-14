@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Building, CircleQuestionMark, LogIn } from "lucide-react";
+import { Building, CircleQuestionMark, LogIn, Globe } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Button } from "../ui/button";
 
 const CompanyHeader = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -11,11 +10,11 @@ const CompanyHeader = () => {
   const { user } = useAuth();
 
   const navigation = [
-    { name: "Home", href: "/company" },
-    { name: "About", href: "/company/about" },
+    // { name: "Home", href: "/company" },
+    { name: "Features", href: "/company/features" },
     { name: "Services", href: "/company/services" },
     { name: "Pricing", href: "/company/pricing" },
-    { name: "Contact", href: "/company/contact" },
+    { name: "Why Us", href: "/company/why-us" },
   ];
 
   const isActive = (href) => {
@@ -36,19 +35,21 @@ const CompanyHeader = () => {
 
   return (
     <>
+    <div className="bg-white">
       {/* Top Bar */}
-      <div className="h-[56px] bg-[#90D7F5] text-white flex items-center justify-end px-6 py-1 md:px-8 md:py-2">
+      <div className="h-[56px] bg-[#0f172a] flex items-center justify-end px-6 py-1 md:px-8 md:py-2">
         <div className="flex gap-1 md:gap-1">
           <Link to="#" className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
-            <span className="text-[16px] md:text-[16px] font-Poppins text-[#212529] font-semibold">Support</span>
-            <CircleQuestionMark className="h-5 w-5 text-[#212529] text-[16px] md:text-[16px] font-Poppins font-semibold" />
+            <span className="text-[16px] md:text-[16px] font-Poppins text-white font-semibold">English</span>
+            <Globe className="h-4 w-4 text-white mb-1" />
           </Link>
-          {/* <button className="text-xs md:text-sm px-3 py-1.5 rounded-md bg-sky-500 hover:bg-sky-400 transition">
-            Login
-          </button> */}
+          <Link to="#" className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
+            <span className="text-[16px] md:text-[16px] font-Poppins text-white font-semibold">Support</span>
+            <CircleQuestionMark className="h-4 w-4 text-white mb-1" />
+          </Link>
           <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center space-x-2 px-2 py-1 my-[9.6px] mr-[24px]">
-            <span className="text-[16px] md:text-[16px] font-Poppins text-[#212529] font-semibold">LogIn</span>
-            <LogIn className="h-5 w-5 text-[#212529] text-[16px] md:text-[16px] font-Poppins font-semibold" />
+            <span className="text-[16px] md:text-[16px] font-Poppins text-white font-semibold">LogIn</span>
+            <LogIn className="h-4 w-4 text-white mb-1" />
           </Link>
         </div>
       </div>
@@ -68,8 +69,8 @@ const CompanyHeader = () => {
         >
           {/* Logo */}
           <Link to="/company" className="flex items-center space-x-2">
-            <Building className="h-5 w-5" />
-            <span className="text-xl font-bold">Leanport HR</span>
+            <Building className="h-6 w-6" />
+            <span className="text-2xl font-bold">Leanport HR</span>
           </Link>
           <div className="flex items-center gap-4">
             {/* Desktop Menu */}
@@ -186,6 +187,7 @@ const CompanyHeader = () => {
 
       {/* Spacer */}
       {isSticky && <div className="h-[70px]" />}
+    </div>
     </>
   );
 }

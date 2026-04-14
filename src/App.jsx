@@ -110,10 +110,10 @@ const App = () => {
               {/* Company Website Routes */}
               <Route path="/company" element={<CompanyLayout />}>
                 <Route index element={<CompanyHome />} />
-                <Route path="about" element={<CompanyAbout />} />
+                <Route path="features" element={<CompanyAbout />} />
                 <Route path="services" element={<CompanyServices />} />
                 <Route path="pricing" element={<CompanyPricing />} />
-                <Route path="contact" element={<CompanyContact />} />
+                <Route path="why-us" element={<CompanyContact />} />
                 <Route path="get-started" element={<CompanyGetStarted />} />
               </Route>
 
