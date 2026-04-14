@@ -20,7 +20,6 @@ import { companySizes } from "../../data/companySize";
 import axiosInstance from "../../api/axiosInstance";
 import { companyPayload } from "../../utility/companyPayload";
 import { useAuth } from "../../contexts/AuthContext";
-import LandingFooter from "@/components/landing/LandingFooter";
 
 const GetStarted = () => {
   const { login, user: userData } = useAuth();
@@ -559,7 +558,6 @@ const GetStarted = () => {
           </Card>
         </div>
       </div>
-      <LandingFooter />
     </>
   );
 };
