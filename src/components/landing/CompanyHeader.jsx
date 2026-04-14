@@ -38,7 +38,7 @@ const CompanyHeader = () => {
     <header className="w-full relative z-[100]">
       {/* Top Header Row */}
       <div className="bg-[#0f172a] text-slate-300 py-2.5 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-sm font-medium">
+        <div className="max-w-8xl mx-auto xl:mx-60 flex justify-between items-center text-sm font-medium">
           <div className="hidden lg:block">
             <p className="text-slate-400">
               <span className="text-[#90D7F5] font-semibold mr-2">New:</span> 
@@ -49,12 +49,12 @@ const CompanyHeader = () => {
             <div className="flex items-center space-x-4 sm:space-x-6">
                 <button className="flex items-center space-x-1.5 hover:text-white transition-colors">
                     <Globe className="h-4 w-4" />
-                    <span className="">English</span>
+                    <span className=" xs:inline">English</span>
                     <ChevronDown className="h-3 w-3" />
                 </button>
                 <Link to="#" className="flex items-center space-x-1.5 hover:text-white transition-colors">
                     <CircleQuestionMark className="h-4 w-4" />
-                    <span className="">Support</span>
+                    <span className=" xs:inline">Support</span>
                 </Link>
             </div>
             {!user && (
@@ -76,7 +76,7 @@ const CompanyHeader = () => {
             : "bg-white py-5"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link to="/company" className="flex items-center space-x-2 group shrink-0">
             <div className="p-2 bg-[#222875] rounded-xl group-hover:scale-105 transition-transform">

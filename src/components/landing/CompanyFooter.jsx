@@ -53,7 +53,7 @@ const CompanyFooter = () => {
 
   return (
     <footer className="bg-[#0f172a] text-slate-300 pt-16 md:pt-24 lg:pt-32 pb-8">
-      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+      <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 mb-16">
           {/* Logo and Description */}
           <div className="col-span-2 space-y-6">
