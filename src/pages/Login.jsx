@@ -12,22 +12,29 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Building2, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { 
+  Building2, 
+  Mail, 
+  Lock, 
+  Eye, 
+  EyeOff, 
+  ArrowLeft, 
+  ShieldCheck, 
+  Zap, 
+  CheckCircle2,
+  Clock,
+  ArrowRight
+} from "lucide-react";
 import { useState } from "react";
 import { authAPI } from "../api/authapi/authAPI";
-
-const highlightPills = [
-  "Live insights",
-  "Human-centered security",
-  "Curated notifications",
-  "24/7 support",
-];
 
 const Login = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Redirect if already authenticated
   if (user?.role) {
@@ -43,7 +50,7 @@ const Login = () => {
     );
   }
 
-  //  Validation schema using your custom hook format
+  // Validation schema
   const validationSchema = {
     email: [
       { type: "required", message: "Email is required." },
@@ -80,7 +87,6 @@ const Login = () => {
       const res = await authAPI.login(formValues);
       if (res.status) {
         const { user, token } = res.data;
-        console.log({ user, token });
         setTimeout(() => {
           login(user, token);
           navigate(
@@ -99,174 +105,197 @@ const Login = () => {
   };
 
   return (
-    <div className="landing-shell min-h-screen bg-[#CBEFFF] text-[#2D5356]">
-      <div className="relative mx-auto flex min-h-screen w-full max-w-full items-center justify-center overflow-hidden px-4 py-10 md:px-8 lg:px-10">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-24 -right-20 h-80 w-80 rounded-[220px] bg-[#222875]/30 blur-[120px]" />
-            <div className="absolute bottom-[-80px] left-8 h-[480px] w-[480px] rounded-[260px] bg-white/70 blur-[160px]" />
-            <div className="absolute top-6 left-10 h-28 w-28 rounded-full border border-white/80 blur-sm" />
-            <div className="absolute bottom-32 right-20 h-32 w-32 rounded-full border border-[#2D5356]/40 bg-transparent" />
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-montserrat overflow-hidden">
+      {/* Left Side: Visual/Branding Section */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-[#222875] items-center justify-center p-12 overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#90D7F5]/10 blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-400/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        <div className="relative z-10 max-w-xl">
+          <div className="inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <ShieldCheck className="h-4 w-4 text-[#90D7F5]" />
+            <span className="text-xs font-bold text-white tracking-widest uppercase">Enterprise Grade Security</span>
           </div>
-        <div className="relative z-10 max-w-[1580px] m-auto w-full ">
-          <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-            <div className="space-y-6 md:space-y-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="floating-badge border-[#2D5356]/40 text-[#2D5356] bg-white/80">
-                  Secure Portal
-                </span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate("/company")}
-                  className="text-[#222875] bg-white/90 rounded-full border border-[#222875] px-4 py-1 text-[10px] capitalize tracking-[0.35em] font-semibold shadow-sm transition hover:border-[#2D5356]"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to site
-                </Button>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[26px] bg-white shadow-[0_40px_70px_rgba(15,23,42,0.25)]">
-                  <Building2 className="h-6 w-6 text-[#5f7be7]" />
+
+          <h1 className="text-5xl xl:text-6xl font-extrabold text-white leading-tight mb-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+            The Smartest Way to Manage <span className="text-[#90D7F5]">Your Workforce.</span>
+          </h1>
+          
+          <p className="text-lg text-slate-300 mb-10 leading-relaxed max-w-lg animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+            Streamline leaves, track attendance, and boost productivity with our premium all-in-one HR solution.
+          </p>
+
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
+            {[
+              { icon: Zap, text: "Automated leave approval workflows", color: "text-[#90D7F5]" },
+              { icon: Clock, text: "Real-time attendance & shift tracking", color: "text-[#90D7F5]" },
+              { icon: CheckCircle2, text: "Industry-standard data encryption", color: "text-[#90D7F5]" }
+            ].map((feature, i) => (
+              <div key={i} className="flex items-center space-x-4 group">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 transition-colors group-hover:bg-white/10 group-hover:border-white/20">
+                  <feature.icon className={`h-5 w-5 ${feature.color}`} />
                 </div>
-                <div>
-                  <p className="text-xs capitalize tracking-[0.5em] text-[#111743]">
-                    Leanport HR
-                  </p>
-                  <p className="text-sm text-slate-500">
-                    Leave management for modern teams
-                  </p>
-                </div>
+                <span className="text-slate-200 font-medium">{feature.text}</span>
               </div>
-              <h1 className="landing-h1 max-w-3xl text-[#0f172a]">
-                Sign in to Leanport HR
-              </h1>
-              <p className="landing-body leading-relaxed max-w-2xl text-[#1b2b56]">
-                Access the same workforce, payroll, and compliance controls that
-                power the public marketing site—now behind a secure,
-                industry-grade portal.
-              </p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {highlightPills.map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-[#222875]/30 bg-white/90 px-5 py-4 text-sm font-semibold tracking-wide text-[#222875] shadow-[0_20px_50px_rgba(34,40,117,0.15)]"
-                  >
-                    {item}
+            ))}
+          </div>
+        </div>
+
+        {/* Decorative Quote or Trust Signal */}
+        <div className="absolute bottom-12 left-12 right-12 py-6 border-t border-white/10 animate-in fade-in duration-1000 delay-500">
+          <p className="text-slate-400 text-sm font-medium">Trusted by leading companies worldwide</p>
+          <div className="flex items-center space-x-8 mt-4 opacity-50 grayscale contrast-200">
+            <Building2 className="h-6 w-6 text-white" />
+            <div className="h-4 w-24 bg-white/20 rounded" />
+            <div className="h-4 w-20 bg-white/20 rounded" />
+            <div className="h-4 w-28 bg-white/20 rounded" />
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side: Login Form Section */}
+      <div className="flex-1 flex flex-col justify-center items-center p-6 sm:p-12 lg:p-20 bg-white relative">
+        {/* Mobile Header */}
+        <div className="lg:hidden absolute top-8 left-8 right-8 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <div className="p-2 bg-[#222875] rounded-lg">
+              <Building2 className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-[#222875]">Leanport <span className="text-slate-400">HR</span></span>
+          </div>
+        </div>
+
+        <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-right-4 duration-700">
+          <div className="space-y-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/company")}
+              className="group -ml-2 text-slate-500 hover:text-[#222875] transition-colors"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+              Back to site
+            </Button>
+            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome Back</h2>
+            <p className="text-slate-500 font-medium">Please enter your details to sign in</p>
+          </div>
+
+          {apiError && (
+            <Alert className="bg-rose-50 border-rose-100 text-rose-700 rounded-2xl animate-in zoom-in-95 duration-300">
+              <AlertDescription className="flex items-center font-medium">
+                <span className="mr-2 italic text-lg">!</span>
+                {apiError}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-bold text-slate-700 ml-1">Email Address</Label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#222875] text-slate-400">
+                    <Mail className="h-5 w-5" />
                   </div>
-                ))}
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="you@company.com"
+                    className={`h-14 pl-12 rounded-2xl border-2 border-slate-100 bg-slate-50 transition-all focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-[#222875] text-slate-900 font-medium placeholder:text-slate-400 ${errors.email ? 'border-rose-200' : ''}`}
+                  />
+                </div>
+                {errors.email && <p className="text-xs font-bold text-rose-500 ml-1 mt-1 animate-in fade-in">{errors.email}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center ml-1">
+                  <Label htmlFor="password" className="text-sm font-bold text-slate-700">Password</Label>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/forgot-password")}
+                    className="text-xs font-bold text-[#222875] hover:text-indigo-800 transition-colors"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#222875] text-slate-400">
+                    <Lock className="h-5 w-5" />
+                  </div>
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="••••••••"
+                    className={`h-14 pl-12 pr-12 rounded-2xl border-2 border-slate-100 bg-slate-50 transition-all focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-[#222875] text-slate-900 font-medium placeholder:text-slate-400 ${errors.password ? 'border-rose-200' : ''}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
+                {errors.password && <p className="text-xs font-bold text-rose-500 ml-1 mt-1 animate-in fade-in">{errors.password}</p>}
               </div>
             </div>
-            <div className="flex justify-center lg:justify-end">
-              <Card className="relative z-10 max-w-lg overflow-hidden rounded-[36px] border border-white/70 bg-white/95 shadow-[0_45px_90px_rgba(34,40,117,0.18)]">
-                <div className="pointer-events-none absolute inset-0 scale-[1.05] rounded-[32px] bg-white/80 opacity-80" />
-                <div className="relative z-10">
-                  <CardHeader className="space-y-1 pb-2">
-                    <CardTitle className="landing-h2 landing-h2-dark text-[#0f172a]">
-                      Welcome back
-                    </CardTitle>
-                    <CardDescription className="landing-body landing-body-dark text-[#1f2b56]">
-                      Enter your credentials to unlock your dashboards and
-                      automation workflows.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pb-10 pt-0">
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                      <div className="space-y-2">
-                        <Label
-                          htmlFor="email"
-                          className="text-sm font-semibold text-[#2D5356]"
-                        >
-                          Email
-                        </Label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-[#6b7bd6]" />
-                          <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            className="pl-10 h-14 rounded-2xl border border-[#d5def5] bg-white/90 text-[#0f172a]"
-                            placeholder="you@company.com"
-                          />
-                        </div>
-                        {errors.email && (
-                          <p className="text-sm text-rose-600">{errors.email}</p>
-                        )}
-                      </div>
-                      <div className="space-y-2">
-                        <Label
-                          htmlFor="password"
-                          className="text-sm font-semibold text-[#2D5356]"
-                        >
-                          Password
-                        </Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-[#6b7bd6]" />
-                          <Input
-                            id="password"
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            value={values.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            className="pl-10 pr-10 h-14 rounded-2xl border border-[#d5def5] bg-white/90 text-[#0f172a]"
-                            placeholder="Enter your password"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-5 text-[#6b7bd6] hover:text-[#0f172a]"
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4" />
-                            ) : (
-                              <Eye className="h-4 w-4" />
-                            )}
-                          </button>
-                        </div>
-                        {errors.password && (
-                          <p className="text-sm text-rose-600">
-                            {errors.password}
-                          </p>
-                        )}
-                      </div>
-                      {apiError && (
-                        <Alert
-                          className="border-rose-200 bg-rose-50 text-rose-700"
-                          onClick={() => setApiError("")}
-                        >
-                          <AlertDescription className="text-rose-700">
-                            {apiError}
-                          </AlertDescription>
-                        </Alert>
-                      )}
-                      <div className="space-y-4">
-                        <Button
-                          type="submit"
-                          className="w-full rounded-2xl bg-[#222875] px-6 py-4 text-lg font-semibold text-white shadow-[0_15px_40px_rgba(34,40,117,0.35)] transition hover:bg-[#151e94]"
-                          // disabled={isSubmitting}
-                        >
-                          {isSubmitting ? "Signing in..." : "Sign in"}
-                        </Button>
-                        <div className="text-center">
-                          <button
-                            type="button"
-                            className="text-sm font-semibold capitalize tracking-[0.35em] text-[#222875] hover:text-[#1b1b68]"
-                            onClick={() => navigate("/forgot-password")}
-                          >
-                            Forgot password?
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </CardContent>
-                </div>
-              </Card>
+
+            <div className="flex items-start space-x-3 ml-1">
+              <Checkbox 
+                id="remember" 
+                checked={rememberMe} 
+                onCheckedChange={setRememberMe}
+                className="border-2 border-slate-400 data-[state=checked]:bg-[#222875] data-[state=checked]:border-[#222875] rounded-md transition-all"
+              />
+              <Label htmlFor="remember" className="text-xs font-semibold text-slate-500 leading-tight cursor-pointer select-none">
+                I agree to the <a href="#" className="text-[#222875] hover:underline">Terms of Service</a> and <a href="#" className="text-[#222875] hover:underline">Privacy Policy</a>.
+              </Label>
             </div>
-          </div>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-14 bg-[#222875] hover:bg-[#1a1f5c] text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 transition-all active:scale-[0.98] group relative overflow-hidden"
+            >
+              <span className={`flex items-center justify-center transition-all ${isSubmitting ? 'opacity-0' : 'opacity-100'}`}>
+                Sign in to your account
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </span>
+              {isSubmitting && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-6 w-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                </div>
+              )}
+            </Button>
+          </form>
+
+          {/* <div className="text-center pt-4">
+            <p className="text-slate-500 text-sm font-medium">
+              Don't have an account? 
+              <button 
+                onClick={() => navigate("/company/get-started")}
+                className="ml-2 font-bold text-[#222875] hover:underline"
+              >
+                Create an account
+              </button>
+            </p>
+          </div> */}
+        </div>
+
+        {/* Footer info for desktop */}
+        <div className="hidden lg:block absolute bottom-8 text-slate-400 text-xs font-medium tracking-wider uppercase">
+          © {new Date().getFullYear()} Leanport HR • Built for excellence
         </div>
       </div>
     </div>
