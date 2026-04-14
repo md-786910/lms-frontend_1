@@ -238,8 +238,8 @@ const EmployeeLayout = () => {
               >
                 <Menu className="h-5 w-5" />
               </Button>
-              <div>
-                <h1 className="text-lg font-semibold leading-tight text-slate-900">
+              <div className="min-w-0">
+                <h1 className="text-lg font-semibold leading-tight text-slate-900 truncate max-w-[150px] xs:max-w-[200px] sm:max-w-none">
                   {currentPage}
                 </h1>
               </div>

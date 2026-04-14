@@ -52,20 +52,20 @@ const CompanyFooter = () => {
   ];
 
   return (
-    <footer className="bg-[#0f172a] text-slate-300 pt-32 pb-8">
-      <div className="max-w-8xl px-6 lg:px-8 mx-60">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
+    <footer className="bg-[#0f172a] text-slate-300 pt-16 md:pt-24 lg:pt-32 pb-8">
+      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 mb-16">
           {/* Logo and Description */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="col-span-2 space-y-6">
             <Link to="/company" className="flex items-center space-x-2 text-white">
               <Building className="h-8 w-8 text-[#90D7F5]" />
               <span className="text-2xl font-bold tracking-tight">Leanport HR</span>
             </Link>
-            <p className="text-slate-400 text-lg leading-relaxed max-w-sm">
+            <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-sm">
               Streamline your workforce management with our premium SaaS solution. 
               Designed for modern businesses to manage leaves, attendance, and performance efficiently.
             </p>
-            <div className="flex space-x-5">
+            <div className="flex space-x-4 sm:space-x-5">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -101,24 +101,24 @@ const CompanyFooter = () => {
 
         {/* Contact Info Strip */}
         <div className="border-y border-slate-800 py-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-[#90D7F5]" />
+            <div className="flex items-center space-x-3 break-all">
+                <Mail className="h-5 w-5 text-[#90D7F5] shrink-0" />
                 <span>support@leanporthr.com</span>
             </div>
             <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-[#90D7F5]" />
+                <Phone className="h-5 w-5 text-[#90D7F5] shrink-0" />
                 <span>+1 (555) 000-0000</span>
             </div>
             <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-[#90D7F5]" />
+                <MapPin className="h-5 w-5 text-[#90D7F5] shrink-0" />
                 <span>123 Business Ave, Tech City, TC 45678</span>
             </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-slate-800 text-sm text-slate-500">
+        <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-slate-800 text-sm text-slate-500 space-y-4 md:space-y-0 text-center md:text-left">
           <p>© {currentYear} Leanport HR. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex space-x-6">
             <Link to="#" className="hover:text-white transition-colors">Privacy</Link>
             <Link to="#" className="hover:text-white transition-colors">Terms</Link>
             <Link to="#" className="hover:text-white transition-colors">Cookies</Link>
