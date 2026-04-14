@@ -107,11 +107,11 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-montserrat overflow-hidden">
       {/* Left Side: Visual/Branding Section */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-[#222875] items-center justify-center p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-[#0F172A] items-center justify-center p-12 overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#90D7F5]/10 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-400/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#0F172A]/10 blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#0F172A]/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
 
         <div className="relative z-10 max-w-xl">
@@ -149,9 +149,9 @@ const Login = () => {
           <p className="text-slate-400 text-sm font-medium">Trusted by leading companies worldwide</p>
           <div className="flex items-center space-x-8 mt-4 opacity-50 grayscale contrast-200">
             <Building2 className="h-6 w-6 text-white" />
-            <div className="h-4 w-24 bg-white/20 rounded" />
-            <div className="h-4 w-20 bg-white/20 rounded" />
-            <div className="h-4 w-28 bg-white/20 rounded" />
+            <div className="h-6 w-24 bg-white/20 text-white text-center rounded" >abcdef</div>
+            <div className="h-6 w-20 bg-white/20 text-white text-center rounded" >abcdef</div>
+            <div className="h-6 w-28 bg-white/20 text-white text-center rounded" >abcdef</div>
           </div>
         </div>
       </div>

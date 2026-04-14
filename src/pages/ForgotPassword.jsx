@@ -65,11 +65,11 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-montserrat overflow-hidden">
       {/* Left Side: Visual/Branding Section (Consistent with Login) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-[#222875] items-center justify-center p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-[#0F172A] items-center justify-center p-12 overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#90D7F5]/10 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-400/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#0F172A]/10 blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#0F172A]/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
 
         <div className="relative z-10 max-w-xl">
