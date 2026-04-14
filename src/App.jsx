@@ -25,11 +25,11 @@ import EmployeeLeave from "./pages/employee/Leave";
 import EmployeeTimeLogs from "./pages/employee/TimeLogs";
 import EmployeeSalary from "./pages/employee/Salary";
 
-import CompanyHome from "./pages/company-listing/Home";
-import CompanyAbout from "./pages/company-listing/About";
-import CompanyServices from "./pages/company-listing/Services";
-import CompanyPricing from "./pages/company-listing/Pricing";
-import CompanyContact from "./pages/company-listing/Contact";
+// import CompanyHome from "./pages/company-listing/Home";
+// import CompanyAbout from "./pages/company-listing/About";
+// import CompanyServices from "./pages/company-listing/Services";
+// import CompanyPricing from "./pages/company-listing/Pricing";
+// import CompanyContact from "./pages/company-listing/Contact";
 import CompanyGetStarted from "./pages/company-listing/GetStarted";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -109,11 +109,11 @@ const App = () => {
             <Routes>
               {/* Company Website Routes */}
               <Route path="/company" element={<CompanyLayout />}>
-                <Route index element={<CompanyHome />} />
+                {/* <Route index element={<CompanyHome />} />
                 <Route path="features" element={<CompanyAbout />} />
                 <Route path="services" element={<CompanyServices />} />
                 <Route path="pricing" element={<CompanyPricing />} />
-                <Route path="why-us" element={<CompanyContact />} />
+                <Route path="why-us" element={<CompanyContact />} /> */}
                 <Route path="get-started" element={<CompanyGetStarted />} />
               </Route>
 

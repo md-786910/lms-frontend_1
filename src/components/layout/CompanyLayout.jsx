@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
-import CompanyHeader from "./CompanyHeader";
+import CompanyHeader from "../landing/CompanyHeader";
+import CompanyFooter from "../landing/CompanyFooter";
 
 const CompanyLayout = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <CompanyHeader />
-      <main>
-        {/* <div className="h-[100vh]"></div> */}
+      <main className="flex-grow">
         <Outlet />
       </main>
+      <CompanyFooter />
     </div>
   );
 };
