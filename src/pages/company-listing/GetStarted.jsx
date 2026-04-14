@@ -172,7 +172,7 @@ const GetStarted = () => {
   return (
     <>
       {init && (
-        <div className="fixed min-h-screen z-30 w-full bg-gradient-to-br from-white via-[#eaf7ff] to-white">
+        <div className="fixed min-h-screen z-30 w-full bg-gradient-to-tr from-white via-[#eaf7ff] to-white">
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 text-center">
             <h5 className="text-lg font-medium mb-4">
               Initializing company, please wait...
@@ -181,8 +181,8 @@ const GetStarted = () => {
           </div>
         </div>
       )}
-      <div className="landing-shell min-h-screen py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="py-20 my-10">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">
@@ -237,9 +237,9 @@ const GetStarted = () => {
           </div>
 
           {/* Form */}
-          <Card className="max-w-2xl mx-auto landing-panel border-0 shadow-xl">
+          <Card className="max-w-3xl mx-auto landing-panel border-0 shadow-xl rounded-xl p-4">
             <CardHeader>
-              <CardTitle className="text-[#0f172a]">
+              <CardTitle className="text-[#0f172a] pb-5">
                 Step {currentStep}: {steps[currentStep - 1].title}
               </CardTitle>
             </CardHeader>
@@ -540,7 +540,7 @@ const GetStarted = () => {
                 {currentStep < 3 ? (
                   <Button
                     onClick={handleNext}
-                    className="bg-[#EAF7FF] text-[#0f172a]"
+                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-montserrat"
                   >
                     Next
                   </Button>
@@ -548,7 +548,7 @@ const GetStarted = () => {
                   <Button
                     onClick={() => handleSubmitForm()}
                     disabled={errors.agreeToTerms}
-                    className="bg-[#EAF7FF] text-[#0f172a]"
+                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-montserrat"
                   >
                     Create Account
                   </Button>
