@@ -180,7 +180,7 @@ const Leave = () => {
   const filteredRequestCount = filteredLeaveRequest?.length ?? 0;
 
   return (
-    <div className="h-[calc(100vh-110px)] overflow-hidden flex flex-col space-y-6 pb-4">
+    <div className="min-h-[calc(100vh-110px)] space-y-6 pb-6">
       {/* Header */}
       <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
         <CardContent className="p-5 md:p-7">
@@ -215,11 +215,11 @@ const Leave = () => {
         </CardContent>
       </Card>
 
-      <div className="grid lg:grid-cols-[1fr,520px] gap-6 flex-1 min-h-0">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr),520px]">
         {/* Main Content Area */}
-        <div className="flex flex-col min-h-0 space-y-4">
+        <div className="min-w-0 space-y-4">
           {/* Requests List - Scrollable Area */}
-          <div className="flex-1 overflow-y-auto pr-2 space-y-4 scroll-slim">
+          <div className="space-y-4">
             {paginatedRequests?.map((request) => (
               <Card
                 key={request.id}
@@ -447,7 +447,7 @@ const Leave = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-6 lg:sticky lg:top-4">
           {/* Filters Card */}
           <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
             <CardHeader className="border-b border-slate-100">
