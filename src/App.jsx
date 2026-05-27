@@ -25,12 +25,19 @@ import EmployeeLeave from "./pages/employee/Leave";
 import EmployeeTimeLogs from "./pages/employee/TimeLogs";
 import EmployeeSalary from "./pages/employee/Salary";
 
-// import CompanyHome from "./pages/company-listing/Home";
-// import CompanyAbout from "./pages/company-listing/About";
-// import CompanyServices from "./pages/company-listing/Services";
-// import CompanyPricing from "./pages/company-listing/Pricing";
-// import CompanyContact from "./pages/company-listing/Contact";
 import CompanyGetStarted from "./pages/company-listing/GetStarted";
+import {
+  CompanyAbout,
+  CompanyContact,
+  CompanyCookiePolicy,
+  CompanyFAQ,
+  CompanyFeatures,
+  CompanyPricing,
+  CompanyPrivacyPolicy,
+  CompanyServices,
+  CompanyTermsConditions,
+  CompanyWhyUs,
+} from "./pages/company-listing/MarketingPages";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -59,6 +66,7 @@ import User from "./pages/admin/User";
 import { SocketProvider } from "./contexts/SocketContext";
 import ScrollToTop from "./components/navigation/ScrollToTop";
 import EmployeeResetPassword from "./pages/employee/ResetPassword";
+import LandingPage from "./components/landing/LandingPage";
 
 const App = () => {
   useEffect(() => {
@@ -109,11 +117,17 @@ const App = () => {
             <Routes>
               {/* Company Website Routes */}
               <Route path="/company" element={<CompanyLayout />}>
-                {/* <Route index element={<CompanyHome />} />
-                <Route path="features" element={<CompanyAbout />} />
+                <Route index element={<LandingPage />} />
                 <Route path="services" element={<CompanyServices />} />
                 <Route path="pricing" element={<CompanyPricing />} />
-                <Route path="why-us" element={<CompanyContact />} /> */}
+                <Route path="features" element={<CompanyFeatures />} />
+                <Route path="about" element={<CompanyAbout />} />
+                <Route path="contact" element={<CompanyContact />} />
+                <Route path="faq" element={<CompanyFAQ />} />
+                <Route path="privacy-policy" element={<CompanyPrivacyPolicy />} />
+                <Route path="terms-conditions" element={<CompanyTermsConditions />} />
+                <Route path="cookie-policy" element={<CompanyCookiePolicy />} />
+                <Route path="why-us" element={<CompanyWhyUs />} />
                 <Route path="get-started" element={<CompanyGetStarted />} />
               </Route>
 

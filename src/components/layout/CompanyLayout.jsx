@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import CompanyHeader from "../landing/CompanyHeader";
 import CompanyFooter from "../landing/CompanyFooter";
+import CookieConsent from "../landing/CookieConsent";
 
 const CompanyLayout = () => {
   return (
@@ -10,6 +11,7 @@ const CompanyLayout = () => {
         <Outlet />
       </main>
       <CompanyFooter />
+      <CookieConsent />
     </div>
   );
 };

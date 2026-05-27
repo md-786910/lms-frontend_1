@@ -48,8 +48,8 @@ const CompanyHeader = () => {
         },
         { 
           name: "Attendance Tracking", 
-          description: "Real-time clock-in/out and shift monitoring.",
-          href: "/company/features#attendance",
+          description: "Employee time-log UI for clock-in, clock-out, and monthly summaries.",
+          href: "/company/features#analytics",
           icon: Clock,
           color: "text-emerald-600",
           bg: "bg-emerald-50"
@@ -65,48 +65,26 @@ const CompanyHeader = () => {
         { 
           name: "Policy Compliance", 
           description: "Ensure your company stays within legal bounds.",
-          href: "/company/features#compliance",
+          href: "/company/why-us",
           icon: ShieldCheck,
           color: "text-rose-600",
           bg: "bg-rose-50"
         },
         { 
           name: "Smart Automation", 
-          description: "AI-driven workflows for repetitive HR tasks.",
-          href: "/company/features#automation",
-          icon: Zap,
-          color: "text-purple-600",
-          bg: "bg-purple-50"
-        },
-        { 
-          name: "Performance Analytics", 
-          description: "Detailed insights into workforce productivity.",
-          href: "/company/features#analytics",
-          icon: BarChart3,
-          color: "text-amber-600",
-          bg: "bg-amber-50"
-        },
-        { 
-          name: "Policy Compliance", 
-          description: "Ensure your company stays within legal bounds.",
-          href: "/company/features#compliance",
-          icon: ShieldCheck,
-          color: "text-rose-600",
-          bg: "bg-rose-50"
-        },
-        { 
-          name: "Smart Automation", 
-          description: "AI-driven workflows for repetitive HR tasks.",
-          href: "/company/features#automation",
+          description: "Automated setup, leave balances, notifications, and monthly reports.",
+          href: "/company/services",
           icon: Zap,
           color: "text-purple-600",
           bg: "bg-purple-50"
         },
       ]
     },
+    { name: "About", href: "/company/about" },
     { name: "Services", href: "/company/services" },
     { name: "Pricing", href: "/company/pricing" },
-    { name: "Why Us", href: "/company/why-us" },
+    { name: "FAQ", href: "/company/faq" },
+    { name: "Contact", href: "/company/contact" },
   ];
 
   const isActive = (href) => {
@@ -146,7 +124,7 @@ const CompanyHeader = () => {
                     <span className="xs:inline">English</span>
                     <ChevronDown className="h-3 w-3" />
                 </button>
-                <Link to="#" className="flex items-center space-x-1.5 hover:text-white transition-colors">
+                <Link to="/company/contact" className="flex items-center space-x-1.5 hover:text-white transition-colors">
                     <CircleQuestionMark className="h-4 w-4" />
                     <span className="xs:inline">Support</span>
                 </Link>
