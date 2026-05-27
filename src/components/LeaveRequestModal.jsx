@@ -172,8 +172,8 @@ const LeaveRequestModal = ({
     }
   };
 
-  const calculateLeave = useCallback((id = leaves?.[0]?.id) => {
-    const acc = leaves?.find((l) => l.id == id);
+  const calculateLeave = useCallback((leaveId = leaves?.[0]?.leave_id) => {
+    const acc = leaves?.find((l) => l.leave_id == leaveId);
     setLeaveCalculate(acc);
   }, []);
 
@@ -371,7 +371,7 @@ const LeaveRequestModal = ({
                       Leave Type <span className="text-rose-500 font-montserrat font-medium text-sm">*</span>
                     </Label>
                     <Select
-                      value={parseInt(leaveType)}
+                      value={leaveType ? leaveType.toString() : ""}
                       onValueChange={(val) => {
                         setLeaveType(Number(val));
                         calculateLeave(Number(val));
@@ -385,7 +385,7 @@ const LeaveRequestModal = ({
                         {leaves?.map((type) => (
                           <SelectItem
                             key={type?.id}
-                            value={type?.leave_id}
+                            value={type?.leave_id.toString()}
                             className="py-3 rounded-lg"
                           >
                             <div className="flex items-center gap-2">
