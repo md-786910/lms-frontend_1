@@ -259,10 +259,6 @@ const LeaveRequestModal = ({
     }
   }, [leaveRequestViewMode?.leave_type_id, readOnly]);
 
-  const today = new Date();
-  const disablePast = {
-    before: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-  };
   const disableWeekends = (date) => {
     const day = date.getDay();
     return day === 0 || day === 6;
@@ -435,7 +431,7 @@ const LeaveRequestModal = ({
                             }}
                             initialFocus
                             className="pointer-events-auto"
-                            disabled={[disablePast, disableWeekends]}
+                            disabled={[disableWeekends]}
                           />
                         </PopoverContent>
                       </Popover>
@@ -472,7 +468,7 @@ const LeaveRequestModal = ({
                             }}
                             initialFocus
                             className="pointer-events-auto"
-                            disabled={[disablePast, disableWeekends, disableBeforeStartDate]}
+                            disabled={[disableWeekends, disableBeforeStartDate]}
                             fromDate={startDate}
                           />
                         </PopoverContent>
