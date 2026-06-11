@@ -37,8 +37,10 @@ import {
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { leaveApi } from "../api/leave/leave";
+import { leaveApi as employeeLeaveBalanceApi } from "../api/employeeLeave/employeeLeave";
 import { employeeAPI } from "../api/employeeApi";
 import { useFormValidation } from "../hooks/useFormValidation";
+import { formatLeaveDays, getLeaveBalanceDisplay } from "../utility/utility";
 
 const LEAVE = [
   { id: 1, name: "Full Day", count: 1 },
@@ -123,7 +125,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     fetchData();
   }, []);
 
-  const handleEmployeeChange = (empId) => {
+  const handleEmployeeChange = async (empId) => {
     const emp = employees.find((e) => e.id.toString() === empId);
     setSelectedEmployee(empId);
     setLeaveTypes(emp?.employee_leaves || []);
@@ -132,6 +134,13 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     setStartDate(null);
     setEndDate(null);
     setTotalLeaveCount(0);
+
+    try {
+      const response = await employeeLeaveBalanceApi.getAllLeave(empId);
+      setLeaveTypes(response?.data || emp?.employee_leaves || []);
+    } catch (error) {
+      console.error("Error fetching employee leave balance:", error);
+    }
   };
 
   const validateLeaveSection = () => {
@@ -190,7 +199,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
           title: "Success",
           description: "Leave request created",
         });
-        onSuccess();
+        await Promise.resolve(onSuccess?.());
         onClose();
       }
     } catch (error) {
@@ -646,19 +655,47 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                       {(() => {
                         const policy = leaveTypes.find((t) => t.leave_id === leaveType);
                         if (!policy) return null;
+                        const balanceDisplay = getLeaveBalanceDisplay(
+                          policy.leave_remaing ?? 0
+                        );
+                        const remainingAfterRequest =
+                          Number(policy.leave_remaing || 0) -
+                          Number(totalLeaveCount || 0);
+                        const remainingDisplay =
+                          getLeaveBalanceDisplay(remainingAfterRequest);
                         return (
                           <div className="space-y-4">
                             <div className="flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Total Annual</span>
-                              <span className="font-black text-slate-900 text-md">{policy.leave_count ?? 0}</span>
+                              <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle</span>
+                              <span className="font-black text-slate-900 text-md">
+                                {policy.leave_policy?.cycleStartMonth ?? "-"}-{policy.leave_policy?.cycleEndMonth ?? "-"}
+                              </span>
                             </div>
                             <div className="flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Used to Date</span>
-                              <span className="font-black text-slate-900 text-md">{policy.leave_used ?? 0}</span>
+                              <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">{balanceDisplay.label}</span>
+                              <span className={`font-black text-md ${Number(policy.leave_remaing || 0) < 0 ? "text-rose-600" : "text-slate-900"}`}>
+                                {balanceDisplay.value}
+                              </span>
                             </div>
                             <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-montserrat text-emerald-600 capitalize tracking-wider">Remaining</span>
-                              <span className="font-black text-emerald-600 text-md group-hover:scale-110 transition-transform">{policy.leave_remaing ?? 0}</span>
+                              <span className={`text-xs font-semibold font-montserrat capitalize tracking-wider ${remainingAfterRequest < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                                {remainingAfterRequest < 0
+                                  ? remainingDisplay.label
+                                  : "Remaining After Request"}
+                              </span>
+                              <span className={`font-black text-md group-hover:scale-110 transition-transform ${remainingAfterRequest < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                                {remainingDisplay.value}
+                              </span>
+                            </div>
+                            {remainingAfterRequest < 0 && (
+                              <div className="rounded-xl border border-dashed border-rose-200 bg-rose-50/60 px-3 py-2.5 text-xs text-rose-600 font-semibold flex items-center gap-2">
+                                <AlertCircle className="h-3.5 w-3.5" />
+                                Drops {formatLeaveDays(Math.abs(remainingAfterRequest))} below zero
+                              </div>
+                            )}
+                            <div className="flex items-center justify-between group">
+                              <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Taken In Cycle</span>
+                              <span className="font-black text-slate-900 text-md">{formatLeaveDays(policy.leave_used ?? 0)}</span>
                             </div>
                           </div>
                         );

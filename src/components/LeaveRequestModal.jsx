@@ -37,7 +37,7 @@ import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { employeeLeaveApi } from "../api/employee/leaveApi";
 import { useFormValidation } from "../hooks/useFormValidation";
-import { formatLeaveDays } from "../utility/utility";
+import { formatLeaveDays, getLeaveBalanceDisplay } from "../utility/utility";
 
 const LEAVE = [
   {
@@ -88,9 +88,12 @@ const LeaveRequestModal = ({
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const availableBalance = leaveCalculate?.leave_remaing ?? 0;
-  const formattedAvailableBalance = formatLeaveDays(availableBalance);
+  const availableBalanceDisplay = getLeaveBalanceDisplay(availableBalance);
+  const formattedAvailableBalance = availableBalanceDisplay.value;
   const remainingAfterRequest = availableBalance - totalLeaveCount;
-  const formattedRemainingAfterRequest = formatLeaveDays(remainingAfterRequest);
+  const remainingAfterRequestDisplay =
+    getLeaveBalanceDisplay(remainingAfterRequest);
+  const formattedRemainingAfterRequest = remainingAfterRequestDisplay.value;
   const negativeBalanceDrift =
     remainingAfterRequest < 0 ? Math.abs(remainingAfterRequest) : 0;
   const availableBalanceClass =
@@ -167,7 +170,7 @@ const LeaveRequestModal = ({
         title: "Leave Request Submitted",
         description: "Your leave request has been submitted successfully.",
       });
-      onSuccess();
+      await Promise.resolve(onSuccess?.());
       onClose();
     }
   };
@@ -652,7 +655,7 @@ const LeaveRequestModal = ({
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Available Balance</span>
+                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">{availableBalanceDisplay.label}</span>
                         <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
                       </div>
                       <div className="flex items-center justify-between group">
@@ -660,7 +663,11 @@ const LeaveRequestModal = ({
                         <span className="font-black text-slate-900 text-md">{dayCount || 0}</span>
                       </div>
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-emerald-600 capitalize tracking-wider">Remaining After Request</span>
+                        <span className={`text-xs font-semibold font-montserrat capitalize tracking-wider ${remainingAfterRequest < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                          {remainingAfterRequest < 0
+                            ? remainingAfterRequestDisplay.label
+                            : "Remaining After Request"}
+                        </span>
                         <span className={`font-black text-md group-hover:scale-110 transition-transform ${remainingAfterClass}`}>
                           {formattedRemainingAfterRequest}
                         </span>

@@ -30,7 +30,7 @@ import LeaveRequestModal from "@/components/LeaveRequestModal";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
 import ConfirmFn from "../../utility/confirmFn";
 import NoDataFound from "../../common/NoDataFound";
-import { formatLeaveDays } from "../../utility/utility";
+import { formatLeaveDays, getLeaveBalanceDisplay } from "../../utility/utility";
 import { useSocketContext } from "../../contexts/SocketContext";
 
 const LEAVE_STATUS = {
@@ -52,7 +52,8 @@ const EmployeeLeave = () => {
   const itemsPerPage = 5;
   
   const totalRemaining = leaveDash?.total_remaining ?? 0;
-  const totalRemainingLabel = formatLeaveDays(totalRemaining);
+  const totalRemainingDisplay = getLeaveBalanceDisplay(totalRemaining);
+  const totalRemainingLabel = totalRemainingDisplay.value;
   const totalRemainingBadgeClass =
     totalRemaining < 0
       ? "bg-rose-50 text-rose-600 border border-rose-100"
@@ -86,8 +87,8 @@ const EmployeeLeave = () => {
     }
   };
 
-  const handleRequestSuccess = () => {
-    console.log("Leave request submitted successfully");
+  const handleRequestSuccess = async () => {
+    await Promise.all([fetchLeave(), getLeaveRequest()]);
   };
 
   // handle api
@@ -196,7 +197,8 @@ const EmployeeLeave = () => {
                   100
                 )
               : 0;
-          const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+          const balanceDisplay = getLeaveBalanceDisplay(remainingBalance);
+          const formattedRemainingBalance = balanceDisplay.value;
           const formattedTotal = leave.leave_count ?? 0;
           return (
             <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
@@ -222,7 +224,7 @@ const EmployeeLeave = () => {
                     </span>
                   </div>
                   <div className="flex justify-between text-sm text-slate-600 font-montserrat">
-                    <span>Remaining</span>
+                    <span>{balanceDisplay.label}</span>
                     <span className={`font-semibold ${remainingBalanceColor}`}>
                       {formattedRemainingBalance}
                     </span>
@@ -582,7 +584,7 @@ const EmployeeLeave = () => {
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs capitalize tracking-wide text-slate-500 font-montserrat">
-                    Remaining
+                    {totalRemainingDisplay.label}
                   </p>
                   <p className={`text-2xl font-bold ${totalRemainingValueClass} font-montserrat`}>
                     {totalRemainingLabel}

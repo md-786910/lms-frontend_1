@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { cn } from "@/lib/utils"; 
 import NoDataFound from "../../common/NoDataFound";
+import { formatLeaveDays, getLeaveBalanceDisplay } from "../../utility/utility";
 
 const leaveTypes = [
   {
@@ -71,6 +72,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
       {leaveInfo?.map((leave, index) => {
         const { leave_count, leave_remaing, leave_used, leave_type, id } =
           leave;
+        const balanceDisplay = getLeaveBalanceDisplay(leave_remaing);
         const config = leaveTypes.find(t => t.label.toLowerCase().includes(leave_type.toLowerCase())) || leaveTypes[index % leaveTypes.length];
         const { icon, bg, iconColor } = config;
 
@@ -96,8 +98,16 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
             {/* Leave Controls */}
             <div className="flex items-center gap-8">
               {[
-                { label: "Available", value: leave?.leave_remaing, color: "text-emerald-600" },
-                { label: "Booked", value: leave?.leave_used, color: "text-amber-600" }
+                {
+                  label: balanceDisplay.label,
+                  value: balanceDisplay.value,
+                  color: leave_remaing < 0 ? "text-rose-600" : "text-emerald-600",
+                },
+                {
+                  label: "Taken In Cycle",
+                  value: formatLeaveDays(leave_used),
+                  color: "text-amber-600",
+                }
               ].map((field) => (
                 <div key={field.label} className="text-center group/stat">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">
@@ -105,10 +115,9 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                   </div>
                   <div className="flex items-center justify-center h-10 w-20 bg-slate-50 rounded-lg border border-slate-100 shadow-inner group-hover/stat:bg-white group-hover/stat:border-slate-200 transition-all">
                     <span className={cn("text-lg font-black", field.color)}>
-                      {field.value || 0}
+                      {field.value || "0 days"}
                     </span>
                   </div>
-                  <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">days</div>
                 </div>
               ))}
             </div>
