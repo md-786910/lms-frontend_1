@@ -120,13 +120,12 @@ const LeaveRequestModal = ({
 
   const validateLeaveSection = () => {
     const isMainValid = formValidation(
-      ["leave_type", "start_date", "end_date", "reason", "name"],
+      ["leave_type", "start_date", "end_date", "reason"],
       {
         leave_type: leaveType,
         start_date: startDate,
         end_date: endDate,
         reason: reason,
-        name: name,
       }
     );
 
@@ -172,10 +171,13 @@ const LeaveRequestModal = ({
     }
   };
 
-  const calculateLeave = useCallback((leaveId = leaves?.[0]?.leave_id) => {
-    const acc = leaves?.find((l) => l.leave_id == leaveId);
-    setLeaveCalculate(acc);
-  }, []);
+  const calculateLeave = useCallback(
+    (leaveId = leaves?.[0]?.leave_id) => {
+      const acc = leaves?.find((l) => l.leave_id == leaveId);
+      setLeaveCalculate(acc);
+    },
+    [leaves]
+  );
 
   const handleLeaveTypeChange = (index, selectedId) => {
     const updated = [...leaveDays];
@@ -654,6 +656,16 @@ const LeaveRequestModal = ({
                       <div className="flex items-center justify-between group">
                         <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Available Balance</span>
                         <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
+                      </div>
+                      <div className="flex items-center justify-between group">
+                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Used This Cycle</span>
+                        <span className="font-black text-slate-900 text-md">{formatLeaveDays(leaveCalculate?.used || 0)}</span>
+                      </div>
+                      <div className="flex items-center justify-between group">
+                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Unpaid / Excess</span>
+                        <span className="font-black text-rose-600 text-md">
+                          {formatLeaveDays(Math.max(leaveCalculate?.unpaidLeave || 0, leaveCalculate?.excessLeave || 0))}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between group">
                         <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Working Days Selected</span>

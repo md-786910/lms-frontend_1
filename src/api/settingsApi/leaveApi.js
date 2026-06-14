@@ -7,7 +7,7 @@ export const leaveAPI = {
   },
 
   getleaveById: async (id) => {
-    const response = await axiosInstance.get(`/setting/leave${id}`);
+    const response = await axiosInstance.get(`/setting/leave/${id}`);
     return response.data;
   },
 
@@ -17,12 +17,12 @@ export const leaveAPI = {
   },
 
   updateleave: async (id, leaveTypes) => {
-    const response = await axiosInstance.put(`/setting/leave${id}`, leaveTypes);
+    const response = await axiosInstance.put(`/setting/leave/${id}`, leaveTypes);
     return response.data;
   },
 
   deleteleave: async (id) => {
-    const response = await axiosInstance.delete(`/setting/leave${id}`);
+    const response = await axiosInstance.delete(`/setting/leave/${id}`);
     return response.data;
   },
 };

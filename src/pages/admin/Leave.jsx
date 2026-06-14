@@ -618,7 +618,7 @@ const Leave = () => {
           <div className="bg-slate-900 px-6 py-4">
             <DialogHeader>
               <DialogTitle className="text-2xl font-semibold font-montserrat text-white">Company Leave Policy</DialogTitle>
-              <p className="text-slate-300 font-medium font-montserrat">Current annual leave allocations for all types</p>
+              <p className="text-slate-300 font-medium font-montserrat">Current leave entitlement, accrual, and reset rules</p>
             </DialogHeader>
           </div>
           <div className="p-6">
@@ -632,9 +632,18 @@ const Leave = () => {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-700">Annual Allowance</span>
+                        <span className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-700">Total Entitlement</span>
                         <div className="bg-white border border-slate-200 font-montserrat rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
-                          {section?.annual_days} <span className="text-sm font-medium font-montserrat text-slate-600 capitalize">Days</span>
+                          {section?.totalEntitlement ?? section?.annual_days} <span className="text-sm font-medium font-montserrat text-slate-600 capitalize">Days</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-semibold text-slate-600">
+                          <span>Monthly: {section?.monthlyAccrual ?? 0}</span>
+                          <span>Cycle: {section?.resetCycleMonths ?? 6} mo</span>
+                          <span>Carry: {section?.carryForwardEnabled ? "On" : "Off"}</span>
+                          <span>Salary: {section?.salaryDeductionEnabled ? "On" : "Off"}</span>
+                          <span className={section?.status === "active" ? "text-emerald-600" : "text-slate-400"}>
+                            {section?.status || "active"}
+                          </span>
                         </div>
                       </div>
                     </CardContent>

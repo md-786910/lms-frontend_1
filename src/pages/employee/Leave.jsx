@@ -39,6 +39,17 @@ const LEAVE_STATUS = {
   rejected: "Rejected",
 };
 
+const getBalanceMessage = (balance) => {
+  const numericBalance = Number(balance || 0);
+  if (numericBalance > 0) {
+    return `Available Leave: ${formatLeaveDays(numericBalance)}`;
+  }
+  if (numericBalance < 0) {
+    return `Leave Balance: ${formatLeaveDays(numericBalance)}`;
+  }
+  return "Available Leave: 0 days";
+};
+
 const EmployeeLeave = () => {
   const { updateDashboard } = useSocketContext();
   const [showRequestModal, setShowRequestModal] = useState(false);
@@ -50,7 +61,7 @@ const EmployeeLeave = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [monthFilter, setMonthFilter] = useState("all");
   const itemsPerPage = 5;
-  
+
   const totalRemaining = leaveDash?.total_remaining ?? 0;
   const totalRemainingLabel = formatLeaveDays(totalRemaining);
   const totalRemainingBadgeClass =
@@ -108,24 +119,24 @@ const EmployeeLeave = () => {
   // Sort and filter leave requests
   const filteredLeaveRequests = useMemo(() => {
     let result = [...(leaveRequest || [])];
-    
+
     // Apply status filter
     if (statusFilter !== "all") {
       result = result.filter(req => req.status === statusFilter);
     }
-    
+
     // Apply month filter
     if (monthFilter !== "all") {
       result = result.filter(req => {
         const startMonth = dayjs(req.start_date).format("YYYY-MM");
         const endMonth = dayjs(req.end_date).format("YYYY-MM");
-        return startMonth === monthFilter || endMonth === monthFilter || 
-               (dayjs(req.start_date).isBefore(monthFilter) && dayjs(req.end_date).isAfter(monthFilter));
+        return startMonth === monthFilter || endMonth === monthFilter ||
+          (dayjs(req.start_date).isBefore(monthFilter) && dayjs(req.end_date).isAfter(monthFilter));
       });
     }
-    
+
     // Sort by most recent first
-    return result.sort((a, b) => 
+    return result.sort((a, b) =>
       new Date(b.createdAt) - new Date(a.createdAt)
     );
   }, [leaveRequest, statusFilter, monthFilter]);
@@ -185,19 +196,19 @@ const EmployeeLeave = () => {
       {/* Leave Balance - Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {leaveDash?.leaves?.map((leave, index) => {
-          const remainingBalance = leave.leave_remaing ?? 0;
+          const remainingBalance = leave.available ?? leave.leave_remaing ?? 0;
           const remainingBalanceColor =
             remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
-          const totalLeaves = leave.leave_count ?? 0;
+          const totalLeaves = leave.cycleEntitlement ?? leave.leave_count ?? 0;
           const progressPercent =
             totalLeaves > 0
               ? Math.min(
-                  Math.max((remainingBalance / totalLeaves) * 100, 0),
-                  100
-                )
+                Math.max(((leave.accrued || 0) / totalLeaves) * 100, 0),
+                100
+              )
               : 0;
           const formattedRemainingBalance = formatLeaveDays(remainingBalance);
-          const formattedTotal = leave.leave_count ?? 0;
+          const formattedTotal = leave.totalEntitlement ?? leave.leave_count ?? 0;
           return (
             <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
               <CardContent className="p-4">
@@ -211,20 +222,41 @@ const EmployeeLeave = () => {
                     </h4>
                   </div>
                   <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
-                    Annual
+                    {leave.resetCycleMonths || 6} mo cycle
                   </span>
+                </div>
+                <div className={`mb-3 rounded-md px-3 py-2 text-sm font-bold ${remainingBalance < 0 ? "bg-rose-50 text-rose-600" : "bg-emerald-50 text-emerald-700"}`}>
+                  {getBalanceMessage(remainingBalance)}
                 </div>
                 <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
                   <div className="flex justify-between">
+                    <span>Available</span>
+                    <span className={`font-semibold ${remainingBalanceColor}`}>
+                      {formattedRemainingBalance}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span>Used</span>
                     <span className="font-semibold text-amber-600">
-                      {leave.leave_used || 0}
+                      {formatLeaveDays(leave.used ?? leave.leave_used ?? 0)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-600 font-montserrat">
+                    <span>Carried Forward</span>
+                    <span className="font-semibold text-slate-700">
+                      {formatLeaveDays(leave.carriedForward || 0)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm text-slate-600 font-montserrat">
                     <span>Remaining</span>
                     <span className={`font-semibold ${remainingBalanceColor}`}>
-                      {formattedRemainingBalance}
+                      {formatLeaveDays(leave.remaining ?? remainingBalance)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-600 font-montserrat">
+                    <span>Unpaid / Excess</span>
+                    <span className="font-semibold text-rose-600">
+                      {formatLeaveDays(Math.max(leave.unpaidLeave || 0, leave.excessLeave || 0))}
                     </span>
                   </div>
                 </div>
@@ -256,105 +288,105 @@ const EmployeeLeave = () => {
                         key={request.id}
                         className="group border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                       >
-                      <div className="p-1">
-                        <div className="bg-white rounded-[14px] p-4 space-y-3">
-                          {/* Header with Leave Type and Status */}
-                          <div className="flex items-start justify-between">
-                            <div className="space-y-0.5">
-                              <h3 className="font-semibold font-montserrat text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
-                                {request.leave_type?.leave_type || request.type} Leave Request
-                              </h3>
-                              <p className="text-xs text-slate-500 font-montserrat">
-                                Request ID: #{request.id}
+                        <div className="p-1">
+                          <div className="bg-white rounded-[14px] p-4 space-y-3">
+                            {/* Header with Leave Type and Status */}
+                            <div className="flex items-start justify-between">
+                              <div className="space-y-0.5">
+                                <h3 className="font-semibold font-montserrat text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
+                                  {request.leave_type?.leave_type || request.type} Leave Request
+                                </h3>
+                                <p className="text-xs text-slate-500 font-montserrat">
+                                  Request ID: #{request.id}
+                                </p>
+                              </div>
+                              <Badge
+                                className={`px-3 py-1 rounded-full border text-xs font-bold ${getStatusColor(
+                                  LEAVE_STATUS[request?.status]
+                                )}`}
+                              >
+                                {request?.status?.charAt(0).toUpperCase() + request?.status?.slice(1)}
+                              </Badge>
+                            </div>
+
+                            {/* Leave Details Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                              <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                                <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                                  <Calendar className="h-3 w-3" />
+                                  Applied On
+                                </div>
+                                <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                                  {dayjs(request?.createdAt).format("D MMM YYYY")}
+                                </div>
+                              </div>
+
+                              <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                                <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                                  <Clock className="h-3 w-3" />
+                                  Duration
+                                </div>
+                                <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                                  {request?.total_days} {request?.total_days === 1 ? "Day" : "Days"}
+                                </div>
+                              </div>
+
+                              <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                                <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                                  <CalendarDays className="h-3 w-3" />
+                                  Leave Dates
+                                </div>
+                                <div className="font-semibold text-slate-900 truncate font-montserrat text-sm">
+                                  {dayjs(request?.start_date).format("D MMM")} – {dayjs(request?.end_date).format("D MMM")}
+                                </div>
+                              </div>
+
+                              <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                                <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                                  <FileText className="h-3 w-3" />
+                                  Type
+                                </div>
+                                <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                                  {request.leave_type?.leave_type || request.type}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Reason Section */}
+                            <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-md py-2 px-3">
+                              <div className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                                <MoreVertical className="h-3 w-3 rotate-90" />
+                                Reason for Leave
+                              </div>
+                              <p className="text-slate-700 text-sm font-medium leading-relaxed font-montserrat">
+                                "{request?.reason}"
                               </p>
                             </div>
-                            <Badge
-                              className={`px-3 py-1 rounded-full border text-xs font-bold ${getStatusColor(
-                                LEAVE_STATUS[request?.status]
-                              )}`}
-                            >
-                              {request?.status?.charAt(0).toUpperCase() + request?.status?.slice(1)}
-                            </Badge>
-                          </div>
 
-                          {/* Leave Details Grid */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
-                                <Calendar className="h-3 w-3" />
-                                Applied On
+                            {/* Footer Row: Meta & Actions */}
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
+                              <div className="text-sm w-full sm:w-auto">
+                                {request?.status === "approved" && (
+                                  <div className="flex items-center gap-2 text-emerald-600 font-semibold font-montserrat bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+                                    <CheckCircle className="h-4 w-4" />
+                                    Approved on {dayjs(request?.updatedAt).format("D MMM YYYY")}
+                                  </div>
+                                )}
+                                {request?.status === "pending" && (
+                                  <div className="flex items-center gap-2 text-amber-600 font-semibold font-montserrat bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100 w-full">
+                                    <Clock className="h-4 w-4" />
+                                    <span className="flex-1">Awaiting Review</span>
+                                  </div>
+                                )}
+                                {request?.status === "rejected" && (
+                                  <div className="flex items-center gap-2 text-rose-600 font-semibold font-montserrat bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
+                                    <XCircle className="h-4 w-4" />
+                                    Rejected on {dayjs(request?.updatedAt).format("D MMM YYYY")}
+                                  </div>
+                                )}
                               </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
-                                {dayjs(request?.createdAt).format("D MMM YYYY")}
-                              </div>
-                            </div>
 
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
-                                <Clock className="h-3 w-3" />
-                                Duration
-                              </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
-                                {request?.total_days} {request?.total_days === 1 ? "Day" : "Days"}
-                              </div>
-                            </div>
-
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
-                                <CalendarDays className="h-3 w-3" />
-                                Leave Dates
-                              </div>
-                              <div className="font-semibold text-slate-900 truncate font-montserrat text-sm">
-                                {dayjs(request?.start_date).format("D MMM")} – {dayjs(request?.end_date).format("D MMM")}
-                              </div>
-                            </div>
-
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
-                                <FileText className="h-3 w-3" />
-                                Type
-                              </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
-                                {request.leave_type?.leave_type || request.type}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Reason Section */}
-                          <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-md py-2 px-3">
-                            <div className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
-                              <MoreVertical className="h-3 w-3 rotate-90" />
-                              Reason for Leave
-                            </div>
-                            <p className="text-slate-700 text-sm font-medium leading-relaxed font-montserrat">
-                              "{request?.reason}"
-                            </p>
-                          </div>
-
-                          {/* Footer Row: Meta & Actions */}
-                          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
-                            <div className="text-sm w-full sm:w-auto">
-                              {request?.status === "approved" && (
-                                <div className="flex items-center gap-2 text-emerald-600 font-semibold font-montserrat bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
-                                  <CheckCircle className="h-4 w-4" />
-                                  Approved on {dayjs(request?.updatedAt).format("D MMM YYYY")}
-                                </div>
-                              )}
-                              {request?.status === "pending" && (
-                                <div className="flex items-center gap-2 text-amber-600 font-semibold font-montserrat bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100 w-full">
-                                  <Clock className="h-4 w-4" />
-                                  <span className="flex-1">Awaiting Review</span>
-                                </div>
-                              )}
-                              {request?.status === "rejected" && (
-                                <div className="flex items-center gap-2 text-rose-600 font-semibold font-montserrat bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
-                                  <XCircle className="h-4 w-4" />
-                                  Rejected on {dayjs(request?.updatedAt).format("D MMM YYYY")}
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                              {/* <div className="flex items-center gap-2 w-full sm:w-auto">
                               {request.status === "pending" && (
                                 <Button
                                   size="sm"
@@ -401,17 +433,17 @@ const EmployeeLeave = () => {
                                 <Eye className="h-4 w-4" />
                                 View Details
                               </Button>
+                            </div> */}
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  ))
-                ) : (
-                  <div className="bg-white border border-slate-200 rounded-2xl py-20">
-                    <NoDataFound />
-                  </div>
-                )}
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="bg-white border border-slate-200 rounded-2xl py-20">
+                      <NoDataFound />
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -448,11 +480,10 @@ const EmployeeLeave = () => {
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`min-w-[36px] h-9 px-2 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
-                        currentPage === i + 1
+                      className={`min-w-[36px] h-9 px-2 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${currentPage === i + 1
                           ? "bg-slate-900 text-white shadow-md scale-105"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                      }`}
+                        }`}
                     >
                       {i + 1}
                     </Button>
