@@ -8,6 +8,26 @@ import { Settings as SettingsIcon, Edit3 } from "lucide-react";
 import axiosInstance from "../../../api/axiosInstance";
 import { useFormValidation } from "../../../hooks/useFormValidation";
 
+const policyValue = (policy, key, fallback = "") =>
+  policy?.[key] ?? policy?.[key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)] ?? fallback;
+
+const policyBoolean = (policy, key, fallback = true) => {
+  const value = policy?.[key] ?? policy?.[key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)];
+  if (value === undefined || value === null) return fallback;
+  if (typeof value === "string") return value.toLowerCase() === "true";
+  return Boolean(value);
+};
+
+const buildPolicyPayload = (policy) => ({
+  type: policy.type,
+  annual_days: Number(policy.annual_days || 0),
+  monthlyAccrual: Number(policy.monthlyAccrual || 0),
+  resetCycleMonths: Number(policy.resetCycleMonths || 6),
+  carryForwardEnabled: Boolean(policy.carryForwardEnabled),
+  salaryDeductionEnabled: Boolean(policy.salaryDeductionEnabled),
+  status: policy.status || "active",
+});
+
 function UpdateLeaveModel(props) {
   const [loader, setLoader] = useState(false);
   const { data, OnClose } = props;
@@ -44,10 +64,10 @@ function UpdateLeaveModel(props) {
         id: data.id,
         type: data.type || "",
         annual_days: data.totalEntitlement ?? data.annual_days ?? "",
-        monthlyAccrual: data.monthlyAccrual ?? "",
-        resetCycleMonths: data.resetCycleMonths ?? 6,
-        carryForwardEnabled: data.carryForwardEnabled ?? true,
-        salaryDeductionEnabled: data.salaryDeductionEnabled ?? true,
+        monthlyAccrual: policyValue(data, "monthlyAccrual", 0),
+        resetCycleMonths: policyValue(data, "resetCycleMonths", 6),
+        carryForwardEnabled: policyBoolean(data, "carryForwardEnabled"),
+        salaryDeductionEnabled: policyBoolean(data, "salaryDeductionEnabled"),
         status: data.status || "active",
       });
     }
@@ -90,13 +110,30 @@ function UpdateLeaveModel(props) {
       }
 
       const resp = await axiosInstance.put(`/setting/leave/${data.id}`, {
-        ...newLeaveType,
-        annual_days: Number(newLeaveType.annual_days),
-        monthlyAccrual: Number(newLeaveType.monthlyAccrual),
-        resetCycleMonths: Number(newLeaveType.resetCycleMonths),
+        ...buildPolicyPayload(newLeaveType),
       });
 
       if (resp.status === 200) {
+        const updatedPolicy = resp.data?.data;
+        if (updatedPolicy) {
+          setNewLeaveType({
+            id: updatedPolicy.id,
+            type: updatedPolicy.type || "",
+            annual_days:
+              updatedPolicy.totalEntitlement ?? updatedPolicy.annual_days ?? "",
+            monthlyAccrual: policyValue(updatedPolicy, "monthlyAccrual", 0),
+            resetCycleMonths: policyValue(updatedPolicy, "resetCycleMonths", 6),
+            carryForwardEnabled: policyBoolean(
+              updatedPolicy,
+              "carryForwardEnabled"
+            ),
+            salaryDeductionEnabled: policyBoolean(
+              updatedPolicy,
+              "salaryDeductionEnabled"
+            ),
+            status: updatedPolicy.status || "active",
+          });
+        }
         OnClose(); // success
       }
     } catch (error) {

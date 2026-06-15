@@ -229,12 +229,12 @@ const EmployeeLeave = () => {
                   {getBalanceMessage(remainingBalance)}
                 </div>
                 <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span>Available</span>
                     <span className={`font-semibold ${remainingBalanceColor}`}>
                       {formattedRemainingBalance}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between">
                     <span>Used</span>
                     <span className="font-semibold text-amber-600">
@@ -481,8 +481,8 @@ const EmployeeLeave = () => {
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
                       className={`min-w-[36px] h-9 px-2 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${currentPage === i + 1
-                          ? "bg-slate-900 text-white shadow-md scale-105"
-                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                        ? "bg-slate-900 text-white shadow-md scale-105"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
                         }`}
                     >
                       {i + 1}

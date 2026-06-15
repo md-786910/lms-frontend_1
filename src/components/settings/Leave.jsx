@@ -29,6 +29,26 @@ const emptyPolicy = {
   status: "active",
 };
 
+const policyValue = (policy, key, fallback = 0) =>
+  policy?.[key] ?? policy?.[key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)] ?? fallback;
+
+const policyBoolean = (policy, key, fallback = true) => {
+  const value = policy?.[key] ?? policy?.[key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)];
+  if (value === undefined || value === null) return fallback;
+  if (typeof value === "string") return value.toLowerCase() === "true";
+  return Boolean(value);
+};
+
+const buildPolicyPayload = (policy) => ({
+  type: policy.type,
+  annual_days: Number(policy.annual_days || 0),
+  monthlyAccrual: Number(policy.monthlyAccrual || 0),
+  resetCycleMonths: Number(policy.resetCycleMonths || 6),
+  carryForwardEnabled: Boolean(policy.carryForwardEnabled),
+  salaryDeductionEnabled: Boolean(policy.salaryDeductionEnabled),
+  status: policy.status || "active",
+});
+
 function Leave({ value }) {
   const [loader, setLoader] = useState(false);
   const [leaveTypes, setLeaveTypes] = useState([]);
@@ -70,10 +90,7 @@ function Leave({ value }) {
     setLoader(true);
     try {
       const resp = await axiosInstance.post("/setting/leave", {
-        ...newLeaveType,
-        annual_days: Number(newLeaveType.annual_days),
-        monthlyAccrual: Number(newLeaveType.monthlyAccrual),
-        resetCycleMonths: Number(newLeaveType.resetCycleMonths),
+        ...buildPolicyPayload(newLeaveType),
       });
 
       if (resp.status === 200) {
@@ -130,7 +147,7 @@ function Leave({ value }) {
                   onChange={(e) =>
                     setNewLeaveType({ ...newLeaveType, type: e.target.value })
                   }
-                  />
+                />
                 {errors.type && (
                   <p className="text-red-500 text-sm">{errors.type}</p>
                 )}
@@ -249,11 +266,11 @@ function Leave({ value }) {
                 <div>
                   <h4 className="font-medium text-slate-800 font-montserrat">{leave.type}</h4>
                   <div className="text-sm text-slate-500 font-montserrat mt-1 flex flex-wrap gap-x-4 gap-y-1">
-                    <span>Total: {leave.totalEntitlement ?? leave.annual_days}</span>
-                    <span>Monthly: {leave.monthlyAccrual}</span>
-                    <span>Cycle: {leave.resetCycleMonths} months</span>
-                    <span>Carry: {leave.carryForwardEnabled ? "On" : "Off"}</span>
-                    <span>Salary deduction: {leave.salaryDeductionEnabled ? "On" : "Off"}</span>
+                    <span>Total: {leave.totalEntitlement ?? leave.annual_days ?? 0}</span>
+                    <span>Monthly: {policyValue(leave, "monthlyAccrual")}</span>
+                    <span>Cycle: {policyValue(leave, "resetCycleMonths", 6)} months</span>
+                    <span>Carry: {policyBoolean(leave, "carryForwardEnabled") ? "On" : "Off"}</span>
+                    <span>Salary deduction: {policyBoolean(leave, "salaryDeductionEnabled") ? "On" : "Off"}</span>
                     <span className={leave.status === "active" ? "text-emerald-600" : "text-slate-400"}>
                       {leave.status}
                     </span>
