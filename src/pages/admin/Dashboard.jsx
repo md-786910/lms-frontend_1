@@ -32,6 +32,18 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { useSocketContext } from "../../contexts/SocketContext";
 import EmployeeLeaveTable from "../../components/EmployeeLeaveTable";
 import dayjs from "dayjs";
+
+const EXCESS_LEAVE_THRESHOLD_DAYS = 1.5;
+
+const getLeaveDays = (row) =>
+  Number(row?.total_leave ?? row?.dataValues?.total_leave ?? 0);
+
+const getExceededLeaveDays = (row) =>
+  Math.max(0, getLeaveDays(row) - EXCESS_LEAVE_THRESHOLD_DAYS);
+
+const filterEmployeesAboveLeaveThreshold = (rows = []) =>
+  rows.filter((row) => getExceededLeaveDays(row) > 0);
+
 const AdminDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const navigate = useNavigate();
@@ -214,6 +226,12 @@ const AdminDashboard = () => {
   const selectedDateLeaves = selectedDate
     ? getEmployeesOnLeave(selectedDate)
     : [];
+  const currentMonthExcessLeaves = filterEmployeesAboveLeaveThreshold(
+    dashboardData?.current_month_leaves || []
+  );
+  const previousMonthExcessLeaves = filterEmployeesAboveLeaveThreshold(
+    dashboardData?.previous_month_leaves || []
+  );
 
   return (
     <>
@@ -670,24 +688,24 @@ const AdminDashboard = () => {
                         Employee Name
                       </th>
                       <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
-                        Total Leave (Days)
+                        Exceeded Leave (Days)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(dashboardData?.current_month_leaves || []).length > 0 ? (
-                      dashboardData.current_month_leaves.map(
-                        ({ first_name, last_name, total_leave }, index) => (
+                    {currentMonthExcessLeaves.length > 0 ? (
+                      currentMonthExcessLeaves.map(
+                        (leaveRow, index) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
                           >
                             <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
-                              {`${first_name || ""} ${last_name || ""}`.trim() ||
+                              {`${leaveRow.first_name || ""} ${leaveRow.last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
-                              {total_leave ?? 0}
+                              {getExceededLeaveDays(leaveRow)}
                             </td>
                           </tr>
                         )
@@ -698,7 +716,7 @@ const AdminDashboard = () => {
                           colSpan="2"
                           className="py-6 text-center text-slate-500 text-sm font-montserrat"
                         >
-                          No leave data available for this month
+                          No employees above 1.5 leave days this month
                         </td>
                       </tr>
                     )}
@@ -763,24 +781,24 @@ const AdminDashboard = () => {
                         Employee Name
                       </th>
                       <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
-                        Total Leave (Days)
+                        Exceeded Leave (Days)
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(dashboardData?.previous_month_leaves || []).length > 0 ? (
-                      dashboardData.previous_month_leaves.map(
-                        ({ first_name, last_name, total_leave }, index) => (
+                    {previousMonthExcessLeaves.length > 0 ? (
+                      previousMonthExcessLeaves.map(
+                        (leaveRow, index) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
                           >
                             <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
-                              {`${first_name || ""} ${last_name || ""}`.trim() ||
+                              {`${leaveRow.first_name || ""} ${leaveRow.last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
-                              {total_leave ?? 0}
+                              {getExceededLeaveDays(leaveRow)}
                             </td>
                           </tr>
                         )
@@ -791,7 +809,7 @@ const AdminDashboard = () => {
                           colSpan="2"
                           className="py-6 text-center text-slate-500 text-sm font-montserrat"
                         >
-                          No leave data available for previous month
+                          No employees above 1.5 leave days for previous month
                         </td>
                       </tr>
                     )}

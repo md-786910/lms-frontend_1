@@ -253,12 +253,12 @@ const EmployeeLeave = () => {
                       {formatLeaveDays(leave.remaining ?? remainingBalance)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-slate-600 font-montserrat">
+                  {/* <div className="flex justify-between text-sm text-slate-600 font-montserrat">
                     <span>Unpaid / Excess</span>
                     <span className="font-semibold text-rose-600">
                       {formatLeaveDays(Math.max(leave.unpaidLeave || 0, leave.excessLeave || 0))}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="h-1 w-full overflow-hidden rounded-full bg-slate-200">
                   <div
