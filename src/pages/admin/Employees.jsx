@@ -494,13 +494,18 @@ const Employees = ({
         {filteredEmployees.map((employee) => {
           const leaveSummary = employee.employee_leaves?.reduce(
             (acc, leave) => {
-              acc.total += leave.leave_count || 0;
-              acc.used += leave.leave_used || 0;
-              acc.remaining += leave.leave_remaing || 0;
+              const total = Number(leave.annualTotal ?? leave.leave_count ?? 0);
+              const used = Number(leave.annualUsed ?? leave.leave_used ?? 0);
+              const remaining = Number(
+                leave.annualRemaining ?? total - used
+              );
+              acc.total += total;
+              acc.used += used;
+              acc.remaining += remaining;
               return acc;
             },
             { total: 0, used: 0, remaining: 0 }
-          );
+          ) ?? { total: 0, used: 0, remaining: 0 };
           const remainingBalance = leaveSummary.remaining ?? 0;
           const formattedRemainingBalance = formatLeaveDays(remainingBalance);
           const remainingBadgeClass =
