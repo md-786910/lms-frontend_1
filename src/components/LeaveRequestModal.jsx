@@ -57,6 +57,10 @@ const LEAVE = [
   },
 ];
 
+const getLeavePolicyId = (leave) => leave?.leave_id ?? leave?.id;
+const getLeavePolicyName = (leave) =>
+  leave?.leave_type ?? leave?.leaveType ?? leave?.type ?? "Leave";
+
 const LeaveRequestModal = ({
   onClose,
   onSuccess,
@@ -72,7 +76,7 @@ const LeaveRequestModal = ({
   const { toast } = useToast();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [leaveType, setLeaveType] = useState(leaves?.[0]?.leave_id);
+  const [leaveType, setLeaveType] = useState("");
   const [reason, setReason] = useState("");
   const [emergencyContact, setEmergencyContact] = useState("");
   const [dayCount, setDayCount] = useState(0);
@@ -152,7 +156,7 @@ const LeaveRequestModal = ({
     }
 
     const resp = await employeeLeaveApi.createNewLeaveRequest({
-      leave_type_id: leaveCalculate?.leave_id,
+      leave_type_id: Number(leaveType),
       start_date: startDate,
       end_date: endDate,
       total_days: totalLeaveCount,
@@ -172,9 +176,13 @@ const LeaveRequestModal = ({
   };
 
   const calculateLeave = useCallback(
-    (leaveId = leaves?.[0]?.leave_id) => {
-      const acc = leaves?.find((l) => l.leave_id == leaveId);
-      setLeaveCalculate(acc);
+    (leaveId) => {
+      if (!leaveId) {
+        setLeaveCalculate(null);
+        return;
+      }
+      const acc = leaves?.find((l) => getLeavePolicyId(l) == leaveId);
+      setLeaveCalculate(acc || null);
     },
     [leaves]
   );
@@ -282,8 +290,12 @@ const LeaveRequestModal = ({
   };
 
   useEffect(() => {
-    const match = leaves?.find((l) => l.leave_id == Number(leaveType));
-    setLeaveCalculate(match);
+    if (!leaveType) {
+      setLeaveCalculate(null);
+      return;
+    }
+    const match = leaves?.find((l) => getLeavePolicyId(l) == Number(leaveType));
+    setLeaveCalculate(match || null);
   }, [leaveType, leaves]);
 
   const formattedStart =
@@ -296,7 +308,9 @@ const LeaveRequestModal = ({
       ? format(endDate || dates?.end_date, "dd MMM, yyyy")
       : "End date";
 
-  const leaveTypeLabel = leaveCalculate?.leave_type || "Select leave type";
+  const leaveTypeLabel = leaveCalculate
+    ? getLeavePolicyName(leaveCalculate)
+    : "Select leave type";
 
   return (
     <div className="w-full max-h-[95vh] flex flex-col overflow-hidden">
@@ -380,19 +394,24 @@ const LeaveRequestModal = ({
                         <SelectValue placeholder="Choose leave type..." className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider" />
                       </SelectTrigger>
                       <SelectContent className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">
-                        {leaves?.map((type) => (
-                          <SelectItem
-                            key={type?.id}
-                            value={type?.leave_id.toString()}
-                            className="py-3 rounded-lg"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-medium text-slate-700 font-montserrat capitalize tracking-wider">
-                                {type?.leave_type}
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {leaves
+                          ?.filter((type) => getLeavePolicyId(type) !== undefined && getLeavePolicyId(type) !== null)
+                          .map((type) => {
+                            const policyId = getLeavePolicyId(type);
+                            return (
+                              <SelectItem
+                                key={policyId}
+                                value={policyId.toString()}
+                                className="py-3 rounded-lg"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-medium text-slate-700 font-montserrat capitalize tracking-wider">
+                                    {getLeavePolicyName(type)}
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            );
+                          })}
                       </SelectContent>
                     </Select>
                     {errors.leave_type && (
@@ -620,7 +639,7 @@ const LeaveRequestModal = ({
                     <div className="space-y-4 relative">
                       <div className="space-y-1">
                         <p className="text-indigo-100 text-[10px] capitalize font-semibold font-montserrat tracking-widest">Leave Type</p>
-                        <p className="font-black text-lg font-montserrat truncate">{leaveCalculate?.leave_type || "-"}</p>
+                        <p className="font-black text-lg font-montserrat truncate">{getLeavePolicyName(leaveCalculate)}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
