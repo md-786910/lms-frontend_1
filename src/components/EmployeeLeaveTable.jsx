@@ -226,30 +226,52 @@ const EmployeeLeaveTable = () => {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
+                {/* First Header Row */}
                 <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10 font-montserrat">
+                  <TableHead
+                    rowSpan={2}
+                    className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10 font-montserrat align-middle"
+                  >
                     Employee Name
                   </TableHead>
+
                   {columnsToShow.map((month) => (
-                    <Fragment key={month}>
-                      <TableHead
-                        className="font-semibold text-slate-700 text-center capitalize min-w-[90px] font-montserrat"
-                      >
-                        {month.slice(0, 3).toUpperCase()} Availed
+                    <TableHead
+                      key={month}
+                      colSpan={2}
+                      className="font-semibold text-slate-700 text-center capitalize font-montserrat"
+                    >
+                      {month.slice(0, 3).toUpperCase()}
+                    </TableHead>
+                  ))}
+
+                  <TableHead
+                    rowSpan={2}
+                    className="font-semibold text-slate-700 text-center bg-blue-50 font-montserrat align-middle"
+                  >
+                    Total Availed
+                  </TableHead>
+
+                  <TableHead
+                    rowSpan={2}
+                    className="font-semibold text-slate-700 text-center bg-rose-50 font-montserrat align-middle"
+                  >
+                    Total Deduction
+                  </TableHead>
+                </TableRow>
+
+                {/* Second Header Row */}
+                <TableRow className="bg-slate-50">
+                  {columnsToShow.map((month) => (
+                    <Fragment key={`${month}-sub`}>
+                      <TableHead className="text-left min-w-[90px] font-medium font-montserrat">
+                        Availed
                       </TableHead>
-                      <TableHead
-                        className="font-semibold text-slate-700 text-center capitalize min-w-[105px] font-montserrat"
-                      >
-                        {month.slice(0, 3).toUpperCase()} Deduction
+                      <TableHead className="text-right min-w-[105px] font-medium font-montserrat">
+                        Deduction
                       </TableHead>
                     </Fragment>
                   ))}
-                  <TableHead className="font-semibold text-slate-700 text-center bg-blue-50 font-montserrat">
-                    Total Availed
-                  </TableHead>
-                  <TableHead className="font-semibold text-slate-700 text-center bg-rose-50 font-montserrat">
-                    Total Deduction
-                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -261,8 +283,8 @@ const EmployeeLeaveTable = () => {
                         totalValue > 0
                           ? "text-blue-700"
                           : totalValue < 0
-                          ? "text-rose-600"
-                          : "text-slate-400";
+                            ? "text-rose-600"
+                            : "text-slate-400";
                       return (
                         <TableRow
                           key={employee.employee_id || index}
@@ -493,11 +515,10 @@ const EmployeeLeaveTable = () => {
                               </Fragment>
                             ))}
                             <TableCell
-                              className={`text-center font-semibold bg-blue-50 ${
-                                employee.total > 0
-                                  ? "text-blue-700"
-                                  : "text-slate-400"
-                              }`}
+                              className={`text-center font-semibold bg-blue-50 ${employee.total > 0
+                                ? "text-blue-700"
+                                : "text-slate-400"
+                                }`}
                             >
                               {employee.total || 0}
                             </TableCell>
@@ -530,8 +551,8 @@ const EmployeeLeaveTable = () => {
                               total > 0
                                 ? "text-slate-900"
                                 : total < 0
-                                ? "text-rose-600"
-                                : "text-slate-500";
+                                  ? "text-rose-600"
+                                  : "text-slate-500";
                             return (
                               <Fragment key={month}>
                                 <TableCell
@@ -551,13 +572,12 @@ const EmployeeLeaveTable = () => {
                             );
                           })}
                           <TableCell
-                            className={`text-center bg-blue-100 ${
-                              grandTotal > 0
-                                ? "text-blue-700"
-                                : grandTotal < 0
+                            className={`text-center bg-blue-100 ${grandTotal > 0
+                              ? "text-blue-700"
+                              : grandTotal < 0
                                 ? "text-rose-600"
                                 : "text-slate-500"
-                            }`}
+                              }`}
                           >
                             {grandTotal}
                           </TableCell>
