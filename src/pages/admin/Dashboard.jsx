@@ -431,7 +431,7 @@ const AdminDashboard = () => {
           <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-md md:flex-row md:items-center md:justify-between">
             <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize font-montserrat">
               <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-              <TimerReset className="h-5 w-5" />
+                <TimerReset className="h-5 w-5" />
               </span>
               Pending leave requests
             </CardTitle>
@@ -450,44 +450,51 @@ const AdminDashboard = () => {
                 No pending leave requests at the moment.
               </div>
             ) : (
-              <div className="space-y-4 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-2">
                 {pendingLeaveRequests.map((request) => (
                   <div
                     key={request.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+                    onClick={() => navigate("/admin/leave")}
+                    className="flex flex-row gap-10 rounded-2xl border border-slate-100 cursor-pointer bg-white px-4 py-4 shadow-sm"
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-900 text-sm font-semibold capitalize text-white font-montserrat">
                         {request.employee?.first_name?.[0]}
                         {request.employee?.last_name?.[0]}
                       </div>
-                      <div className="min-w-0">
+
+                      <div className="min-w-0 flex-1">
                         <p className="text-lg font-semibold text-slate-900 font-montserrat">
-                          {request.employee?.first_name}{" "}
-                          {request.employee?.last_name}
+                          {request.employee?.first_name} {request.employee?.last_name}
                         </p>
+
                         <p className="text-xs text-slate-500 font-montserrat">
                           {request.employee?.employee_no}
                         </p>
+
                         <p className="text-sm font-medium text-slate-500 font-montserrat">
                           {dayjs(request.start_date).format("D MMM YYYY")} -{" "}
                           {dayjs(request.end_date).format("D MMM YYYY")} -{" "}
                           {request.total_days || 0} days
                         </p>
+
                         {request.reason && (
-                          <p className="text-sm font-mediums text-slate-400 font-montserrat">
+                          <p className="text-sm text-slate-400 font-montserrat">
                             {request.reason}
                           </p>
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-2 text-right">
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-amber-700 font-montserrat">
+
+                    <div className="flex flex-col gap-2">
+                      <span className="w-fit rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-amber-700 font-montserrat">
                         Pending
                       </span>
+
                       <p className="text-[11px] font-medium text-slate-500 font-montserrat">
                         Applied {dayjs(request.createdAt).fromNow()}
                       </p>
+
                       <p className="text-[11px] font-medium text-slate-500 font-montserrat">
                         {request.leave_type?.leave_type || "Leave"}
                       </p>

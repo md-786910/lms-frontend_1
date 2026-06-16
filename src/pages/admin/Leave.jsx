@@ -112,7 +112,7 @@ const Leave = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 25;
 
   const fetchLeaveData = async (query = "", overrides) => {
     const activeFilter = overrides ?? statusFilter;
@@ -151,9 +151,8 @@ const Leave = () => {
     if (searchTerm) {
       const normalized = searchTerm.toLowerCase();
       result = result.filter((request) => {
-        const employeeName = `${request.employee?.first_name || ""} ${
-          request.employee?.last_name || ""
-        }`.toLowerCase();
+        const employeeName = `${request.employee?.first_name || ""} ${request.employee?.last_name || ""
+          }`.toLowerCase();
         const leaveType = request.leave_type?.leave_type?.toLowerCase() || "";
         const employeeNo = request.employee?.employee_no?.toLowerCase() || "";
         return (
@@ -167,7 +166,7 @@ const Leave = () => {
   }, [leaveRequest, searchTerm]);
 
   const totalPages = Math.ceil(filteredLeaveRequest.length / itemsPerPage);
-  
+
   const paginatedRequests = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredLeaveRequest.slice(startIndex, startIndex + itemsPerPage);
@@ -214,12 +213,72 @@ const Leave = () => {
           </div>
         </CardContent>
       </Card>
+      <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
+        <CardContent className="p-4">
+          <div className="flex flex-wrap items-end gap-4">
+            {/* Search */}
+            <div className="min-w-[280px] flex-1">
+              <div className="relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input
+                  className="h-11 pl-10"
+                  placeholder="Employee or leave type..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr),520px]">
+            {/* Status */}
+            <div className="w-[200px]">
+              <Select
+                value={statusFilter.status}
+                onValueChange={(val) =>
+                  setStatusFilter((prev) => ({ ...prev, status: val }))
+                }
+              >
+                <SelectTrigger className="h-11">
+                  <SelectValue placeholder="All Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Leave Type */}
+            <div className="w-[220px]">
+              <Select
+                value={statusFilter.leave_type_id}
+                onValueChange={(val) =>
+                  setStatusFilter((prev) => ({ ...prev, leave_type_id: val }))
+                }
+              >
+                <SelectTrigger className="h-11">
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={0}>All Types</SelectItem>
+                  {leavePolicy?.map((policy) => (
+                    <SelectItem key={policy.id} value={policy.id}>
+                      {policy.type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="">
         {/* Main Content Area */}
         <div className="min-w-0 space-y-4">
           {/* Requests List - Scrollable Area */}
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {paginatedRequests?.map((request) => (
               <Card
                 key={request.id}
@@ -311,7 +370,7 @@ const Leave = () => {
                         {request?.status === "approved" && (
                           <div className="flex items-center gap-2 text-emerald-600 font-semibold font-montserrat bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
                             <CheckCircle className="h-4 w-4" />
-                            Approved on {dayjs(request?.updatedAt).format("D MMM YYYY")}
+                            Approved on {dayjs(request?.updatedAt).format("DD MMM YYYY, hh:mm A")}
                           </div>
                         )}
                         {request?.status === "pending" && (
@@ -413,7 +472,7 @@ const Leave = () => {
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                
+
                 <div className="flex items-center gap-1">
                   {[...Array(totalPages)].map((_, i) => (
                     <Button
@@ -421,11 +480,10 @@ const Leave = () => {
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`h-9 w-9 p-0 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
-                        currentPage === i + 1 
-                          ? "bg-slate-900 text-white shadow-md scale-105" 
-                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                      }`}
+                      className={`h-9 w-9 p-0 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${currentPage === i + 1
+                        ? "bg-slate-900 text-white shadow-md scale-105"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                        }`}
                     >
                       {i + 1}
                     </Button>
@@ -446,151 +504,6 @@ const Leave = () => {
           )}
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-6 lg:sticky lg:top-4">
-          {/* Filters Card */}
-          <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
-            <CardHeader className="border-b border-slate-100">
-              <CardTitle className="text-lg font-bold text-slate-700 font-montserrat capitalize tracking-wider flex items-center justify-between">
-                Filters
-                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                   <Filter className="h-4 w-4" />
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-5 py-4 space-y-5">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Search</label>
-                  <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <Input
-                      className="h-11 pl-10 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
-                      placeholder="Employee or leave type..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Status</label>
-                  <Select
-                    value={statusFilter.status}
-                    onValueChange={(val) =>
-                      setStatusFilter((prev) => ({ ...prev, status: val }))
-                    }
-                  >
-                    <SelectTrigger className="w-full h-11 border-slate-200 rounded-xl font-medium">
-                      <SelectValue placeholder="All Status" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
-                    </SelectTrigger>
-                    <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
-                      <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Leave Type</label>
-                  <Select
-                    value={statusFilter.leave_type_id}
-                    onValueChange={(val) =>
-                      setStatusFilter((prev) => ({ ...prev, leave_type_id: val }))
-                    }
-                  >
-                    <SelectTrigger className="w-full h-11 border-slate-200 rounded-xl font-medium">
-                      <SelectValue placeholder="All Types" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
-                    </SelectTrigger>
-                    <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
-                      <SelectItem value={0}>All Types</SelectItem>
-                      {leavePolicy?.map((policy) => (
-                        <SelectItem key={policy.id} value={policy.id}>
-                          {policy?.type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <p className="text-xs font-bold text-slate-400 flex items-center gap-2">
-                  <ArrowRight className="h-3 w-3" />
-                  Showing {filteredRequestCount} results
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          {/* Stats Card */}
-          <Card className="border-slate-200 shadow-sm rounded-md overflow-hidden bg-white">
-            <CardHeader className="border-b border-slate-100">
-              <CardTitle className="text-lg font-bold text-slate-700 font-montserrat capitalize tracking-wider flex items-center justify-between">
-                Quick Overview
-                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                   <Eye className="h-4 w-4" />
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5 space-y-4">
-              <div className="grid grid-cols-1 gap-3">
-                {[
-                  {
-                    label: "Pending Requests",
-                    value: leaveDash?.pending_requests,
-                    tone: "amber",
-                    icon: AlertCircle,
-                  },
-                  {
-                    label: "Approved Requests",
-                    value: leaveDash?.approved_requests,
-                    tone: "emerald",
-                    icon: CheckCircle,
-                  },
-                  {
-                    label: "Total Leave Days",
-                    value: leaveDash?.total_leave_days,
-                    tone: "blue",
-                    icon: Calendar,
-                  },
-                  {
-                    label: "Taken This Month",
-                    value: leaveDash?.this_month,
-                    tone: "indigo",
-                    icon: Clock,
-                  },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.label}
-                      className="flex items-center justify-between px-4 py-2 rounded-xl border border-slate-100 hover:border-indigo-100 hover:bg-slate-50/50 transition-all duration-300"
-                    >
-                      {/* Left: Icon + Label */}
-                      <div className="flex items-center space-x-3">
-                        <div
-                          className={`h-8 w-8 rounded-xl border flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${tone[item.tone]}`}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
-                          {item.label}
-                        </p>
-                      </div>
-                                      
-                      {/* Right: Value */}
-                      <p className="text-base font-semibold font-montserrat capitalize tracking-wider text-slate-400">
-                        {item.value ?? 0}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
 
       {/* Create Leave Modal */}
