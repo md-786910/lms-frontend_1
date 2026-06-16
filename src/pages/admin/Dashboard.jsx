@@ -670,14 +670,26 @@ const AdminDashboard = () => {
                         Employee Name
                       </th>
                       <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
-                        Total Leave (Days)
+                        Leave Availed
+                      </th>
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
+                        Leave Deduction
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {(dashboardData?.current_month_leaves || []).length > 0 ? (
                       dashboardData.current_month_leaves.map(
-                        ({ first_name, last_name, total_leave }, index) => (
+                        (
+                          {
+                            first_name,
+                            last_name,
+                            total_leave,
+                            leave_availed,
+                            leave_deduction,
+                          },
+                          index
+                        ) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
@@ -687,7 +699,10 @@ const AdminDashboard = () => {
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
-                              {total_leave ?? 0}
+                              {leave_availed ?? total_leave ?? 0}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                              {leave_deduction ?? 0}
                             </td>
                           </tr>
                         )
@@ -695,7 +710,7 @@ const AdminDashboard = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="2"
+                          colSpan="3"
                           className="py-6 text-center text-slate-500 text-sm font-montserrat"
                         >
                           No leave data available for this month
@@ -763,14 +778,26 @@ const AdminDashboard = () => {
                         Employee Name
                       </th>
                       <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
-                        Total Leave (Days)
+                        Leave Availed
+                      </th>
+                      <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                        Leave Deduction
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {(dashboardData?.previous_month_leaves || []).length > 0 ? (
                       dashboardData.previous_month_leaves.map(
-                        ({ first_name, last_name, total_leave }, index) => (
+                        (
+                          {
+                            first_name,
+                            last_name,
+                            total_leave,
+                            leave_availed,
+                            leave_deduction,
+                          },
+                          index
+                        ) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
@@ -780,7 +807,10 @@ const AdminDashboard = () => {
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
-                              {total_leave ?? 0}
+                              {leave_availed ?? total_leave ?? 0}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                              {leave_deduction ?? 0}
                             </td>
                           </tr>
                         )
@@ -788,7 +818,7 @@ const AdminDashboard = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="2"
+                          colSpan="3"
                           className="py-6 text-center text-slate-500 text-sm font-montserrat"
                         >
                           No leave data available for previous month
