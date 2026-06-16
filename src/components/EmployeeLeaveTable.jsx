@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Calendar, Filter, Users, Eye, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -123,6 +123,13 @@ const EmployeeLeaveTable = () => {
     (sum, emp) => sum + (emp.total ?? 0),
     0
   );
+  const grandTotalDeduction = summaryData.reduce(
+    (sum, emp) => sum + (emp.total_deduction ?? 0),
+    0
+  );
+
+  const getValueClass = (value, positiveClass = "text-orange-600") =>
+    value > 0 ? `${positiveClass} font-medium` : "text-slate-400";
 
   return (
     <Card className="border border-slate-200 shadow-sm rounded-md">
@@ -224,15 +231,24 @@ const EmployeeLeaveTable = () => {
                     Employee Name
                   </TableHead>
                   {columnsToShow.map((month) => (
-                    <TableHead
-                      key={month}
-                      className="font-semibold text-slate-700 text-center capitalize min-w-[80px] font-montserrat"
-                    >
-                      {month.slice(0, 3).toUpperCase()}
-                    </TableHead>
+                    <Fragment key={month}>
+                      <TableHead
+                        className="font-semibold text-slate-700 text-center capitalize min-w-[90px] font-montserrat"
+                      >
+                        {month.slice(0, 3).toUpperCase()} Availed
+                      </TableHead>
+                      <TableHead
+                        className="font-semibold text-slate-700 text-center capitalize min-w-[105px] font-montserrat"
+                      >
+                        {month.slice(0, 3).toUpperCase()} Deduction
+                      </TableHead>
+                    </Fragment>
                   ))}
                   <TableHead className="font-semibold text-slate-700 text-center bg-blue-50 font-montserrat">
-                    Total
+                    Total Availed
+                  </TableHead>
+                  <TableHead className="font-semibold text-slate-700 text-center bg-rose-50 font-montserrat">
+                    Total Deduction
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -257,25 +273,38 @@ const EmployeeLeaveTable = () => {
                           </TableCell>
                           {columnsToShow.map((month) => {
                             const monthValue = employee[month] ?? 0;
-                            const monthClass =
-                              monthValue > 0
-                                ? "text-orange-600 font-medium"
-                                : monthValue < 0
-                                ? "text-rose-600 font-medium"
-                                : "text-slate-400";
+                            const deductionValue =
+                              employee[`${month}_deduction`] ?? 0;
                             return (
-                              <TableCell
-                                key={month}
-                                className={`text-center ${monthClass}`}
-                              >
-                                {monthValue}
-                              </TableCell>
+                              <Fragment key={month}>
+                                <TableCell
+                                  className={`text-center ${getValueClass(monthValue)}`}
+                                >
+                                  {monthValue}
+                                </TableCell>
+                                <TableCell
+                                  className={`text-center ${getValueClass(
+                                    deductionValue,
+                                    "text-rose-600"
+                                  )}`}
+                                >
+                                  {deductionValue}
+                                </TableCell>
+                              </Fragment>
                             );
                           })}
                           <TableCell
                             className={`text-center font-semibold bg-blue-50 ${totalClass}`}
                           >
                             {totalValue}
+                          </TableCell>
+                          <TableCell
+                            className={`text-center font-semibold bg-rose-50 ${getValueClass(
+                              employee.total_deduction ?? 0,
+                              "text-rose-600"
+                            )}`}
+                          >
+                            {employee.total_deduction ?? 0}
                           </TableCell>
                         </TableRow>
                       );
@@ -301,7 +330,7 @@ const EmployeeLeaveTable = () => {
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={columnsToShow.length + 2}
+                      colSpan={columnsToShow.length * 2 + 3}
                       className="text-center py-8 text-slate-500 font-montserrat"
                     >
                       No leave data found for the selected filters
@@ -414,15 +443,24 @@ const EmployeeLeaveTable = () => {
                         Employee Name
                       </TableHead>
                       {MONTH_KEYS.map((month) => (
-                        <TableHead
-                          key={month}
-                          className="font-semibold text-slate-700 text-center capitalize min-w-[80px]"
-                        >
-                          {month.slice(0, 3).toUpperCase()}
-                        </TableHead>
+                        <Fragment key={month}>
+                          <TableHead
+                            className="font-semibold text-slate-700 text-center capitalize min-w-[90px]"
+                          >
+                            {month.slice(0, 3).toUpperCase()} Availed
+                          </TableHead>
+                          <TableHead
+                            className="font-semibold text-slate-700 text-center capitalize min-w-[105px]"
+                          >
+                            {month.slice(0, 3).toUpperCase()} Deduction
+                          </TableHead>
+                        </Fragment>
                       ))}
                       <TableHead className="font-semibold text-slate-700 text-center bg-blue-50">
-                        Total
+                        Total Availed
+                      </TableHead>
+                      <TableHead className="font-semibold text-slate-700 text-center bg-rose-50">
+                        Total Deduction
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -438,16 +476,21 @@ const EmployeeLeaveTable = () => {
                               {employee.name}
                             </TableCell>
                             {MONTH_KEYS.map((month) => (
-                              <TableCell
-                                key={month}
-                                className={`text-center ${
-                                  employee[month] > 0
-                                    ? "text-orange-600 font-medium"
-                                    : "text-slate-400"
-                                }`}
-                              >
-                                {employee[month] || 0}
-                              </TableCell>
+                              <Fragment key={month}>
+                                <TableCell
+                                  className={`text-center ${getValueClass(employee[month] ?? 0)}`}
+                                >
+                                  {employee[month] || 0}
+                                </TableCell>
+                                <TableCell
+                                  className={`text-center ${getValueClass(
+                                    employee[`${month}_deduction`] ?? 0,
+                                    "text-rose-600"
+                                  )}`}
+                                >
+                                  {employee[`${month}_deduction`] || 0}
+                                </TableCell>
+                              </Fragment>
                             ))}
                             <TableCell
                               className={`text-center font-semibold bg-blue-50 ${
@@ -457,6 +500,14 @@ const EmployeeLeaveTable = () => {
                               }`}
                             >
                               {employee.total || 0}
+                            </TableCell>
+                            <TableCell
+                              className={`text-center font-semibold bg-rose-50 ${getValueClass(
+                                employee.total_deduction ?? 0,
+                                "text-rose-600"
+                              )}`}
+                            >
+                              {employee.total_deduction || 0}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -470,6 +521,11 @@ const EmployeeLeaveTable = () => {
                               (sum, emp) => sum + (emp[month] ?? 0),
                               0
                             );
+                            const deductionTotal = summaryData.reduce(
+                              (sum, emp) =>
+                                sum + (emp[`${month}_deduction`] ?? 0),
+                              0
+                            );
                             const totalClass =
                               total > 0
                                 ? "text-slate-900"
@@ -477,12 +533,21 @@ const EmployeeLeaveTable = () => {
                                 ? "text-rose-600"
                                 : "text-slate-500";
                             return (
-                              <TableCell
-                                key={month}
-                                className={`text-center ${totalClass}`}
-                              >
-                                {total}
-                              </TableCell>
+                              <Fragment key={month}>
+                                <TableCell
+                                  className={`text-center ${totalClass}`}
+                                >
+                                  {total}
+                                </TableCell>
+                                <TableCell
+                                  className={`text-center ${getValueClass(
+                                    deductionTotal,
+                                    "text-rose-600"
+                                  )}`}
+                                >
+                                  {deductionTotal}
+                                </TableCell>
+                              </Fragment>
                             );
                           })}
                           <TableCell
@@ -496,12 +561,20 @@ const EmployeeLeaveTable = () => {
                           >
                             {grandTotal}
                           </TableCell>
+                          <TableCell
+                            className={`text-center bg-rose-100 ${getValueClass(
+                              grandTotalDeduction,
+                              "text-rose-600"
+                            )}`}
+                          >
+                            {grandTotalDeduction}
+                          </TableCell>
                         </TableRow>
                       </>
                     ) : (
                       <TableRow>
                         <TableCell
-                          colSpan={14}
+                          colSpan={26}
                           className="text-center py-8 text-slate-500"
                         >
                           No leave data found for the selected filters
