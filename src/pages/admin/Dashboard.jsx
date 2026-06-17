@@ -676,8 +676,8 @@ const AdminDashboard = () => {
                       <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-montserrat">
                         Employee Name
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
-                        Leave Availed
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-center font-montserrat">
+                        Leave
                       </th>
                       <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
                         Leave Deduction
@@ -705,10 +705,10 @@ const AdminDashboard = () => {
                               {`${first_name || ""} ${last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-montserrat">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
-                            <td className="py-3 px-4 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-montserrat">
                               {leave_deduction ?? 0}
                             </td>
                           </tr>
@@ -784,8 +784,8 @@ const AdminDashboard = () => {
                       <th className="text-left py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
-                        Leave Availed
+                      <th className="text-center py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                        Leave
                       </th>
                       <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
                         Leave Deduction
@@ -813,10 +813,10 @@ const AdminDashboard = () => {
                               {`${first_name || ""} ${last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-montserrat">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
-                            <td className="py-3 px-4 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-montserrat">
                               {leave_deduction ?? 0}
                             </td>
                           </tr>

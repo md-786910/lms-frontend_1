@@ -230,7 +230,7 @@ const EmployeeLeaveTable = () => {
                 <TableRow className="bg-slate-50">
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 sticky left-0 bg-slate-50 z-10 font-montserrat align-middle"
+                    className="min-w-[150px] w-[150px] font-semibold text-slate-700 sticky left-0 bg-slate-50 z-30 font-montserrat align-middle"
                   >
                     Employee Name
                   </TableHead>
@@ -247,14 +247,14 @@ const EmployeeLeaveTable = () => {
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 text-center bg-blue-50 font-montserrat align-middle"
+                    className="font-semibold text-slate-700 font-montserrat align-middle sticky right-[120px] bg-blue-50 z-30 min-w-[120px] text-center"
                   >
-                    Total Availed
+                    Total Leave
                   </TableHead>
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 text-center bg-rose-50 font-montserrat align-middle"
+                    className="font-semibold text-slate-700 font-montserrat align-middle sticky right-0 bg-rose-50 z-30 min-w-[120px] text-center"
                   >
                     Total Deduction
                   </TableHead>
@@ -265,7 +265,7 @@ const EmployeeLeaveTable = () => {
                   {columnsToShow.map((month) => (
                     <Fragment key={`${month}-sub`}>
                       <TableHead className="text-left min-w-[90px] font-medium font-montserrat">
-                        Availed
+                        Leave
                       </TableHead>
                       <TableHead className="text-right min-w-[105px] font-medium font-montserrat">
                         Deduction
@@ -290,7 +290,7 @@ const EmployeeLeaveTable = () => {
                           key={employee.employee_id || index}
                           className="hover:bg-slate-50"
                         >
-                          <TableCell className="font-medium text-slate-800 sticky left-0 bg-white z-10 font-montserrat">
+                          <TableCell className="min-w-[150px] w-[150px] font-medium text-slate-800 sticky left-0 bg-white z-20 font-montserrat">
                             {employee.name}
                           </TableCell>
                           {columnsToShow.map((month) => {
@@ -316,12 +316,12 @@ const EmployeeLeaveTable = () => {
                             );
                           })}
                           <TableCell
-                            className={`text-center font-semibold bg-blue-50 ${totalClass}`}
+                            className={`text-center font-semibold bg-blue-50 sticky right-[120px] z-20 ${totalClass}`}
                           >
                             {totalValue}
                           </TableCell>
                           <TableCell
-                            className={`text-center font-semibold bg-rose-50 ${getValueClass(
+                            className={`text-center font-semibold bg-rose-50 sticky right-0 z-20 ${getValueClass(
                               employee.total_deduction ?? 0,
                               "text-rose-600"
                             )}`}
