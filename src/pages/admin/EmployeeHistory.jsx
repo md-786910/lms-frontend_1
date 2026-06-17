@@ -521,6 +521,9 @@ const filteredLeaves = useMemo(() => {
                           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
                             Used: {formatLeaveDays(leaveSummary.used)}
                           </Badge>
+                          <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
+                            Deduction: {formatLeaveDays(leaveSummary.deduction ?? 0)}
+                          </Badge>
                           <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
                             Total: {formatLeaveDays(leaveSummary.total)}
                           </Badge>
@@ -542,6 +545,9 @@ const filteredLeaves = useMemo(() => {
                           </Badge>
                           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
                             Used: {formatLeaveDays(cycleLeaveSummary.used)}
+                          </Badge>
+                          <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
+                            Deduction: {formatLeaveDays(cycleLeaveSummary.deduction ?? 0)}
                           </Badge>
                           <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
                             Total: {formatLeaveDays(cycleLeaveSummary.total)}

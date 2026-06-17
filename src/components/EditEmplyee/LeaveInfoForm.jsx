@@ -77,15 +77,18 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
         const yearlyRemaining =
           leave?.yearly_remaining ??
           Math.max(0, Number(yearlyTotal || 0) - Number(yearlyUsed || 0));
+        const yearlyDeduction = leave?.yearly_deduction ?? 0;
         const cycleTotal =
           leave?.cycle_total ?? (Number(leave_count || 0) / 2);
         const firstCycleTotal = leave?.first_cycle_total ?? cycleTotal;
         const firstCycleUsed = leave?.first_cycle_used ?? 0;
+        const firstCycleDeduction = leave?.first_cycle_deduction ?? 0;
         const firstCycleRemaining =
           leave?.first_cycle_remaining ??
           Math.max(0, Number(firstCycleTotal || 0) - Number(firstCycleUsed || 0));
         const secondCycleTotal = leave?.second_cycle_total ?? cycleTotal;
         const secondCycleUsed = leave?.second_cycle_used ?? 0;
+        const secondCycleDeduction = leave?.second_cycle_deduction ?? 0;
         const secondCycleRemaining =
           leave?.second_cycle_remaining ??
           Math.max(0, Number(secondCycleTotal || 0) - Number(secondCycleUsed || 0));
@@ -99,6 +102,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                 stats: [
                   { label: "Remaining", value: firstCycleRemaining, color: "text-emerald-600" },
                   { label: "Used", value: firstCycleUsed, color: "text-amber-600" },
+                  { label: "Deduction", value: firstCycleDeduction, color: "text-rose-600" },
                   { label: "Total", value: firstCycleTotal, color: "text-slate-700" },
                 ],
               }
@@ -108,6 +112,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                 stats: [
                   { label: "Remaining", value: secondCycleRemaining, color: "text-emerald-600" },
                   { label: "Used", value: secondCycleUsed, color: "text-amber-600" },
+                  { label: "Deduction", value: secondCycleDeduction, color: "text-rose-600" },
                   { label: "Total", value: secondCycleTotal, color: "text-slate-700" },
                 ],
               };
@@ -142,6 +147,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                   stats: [
                     { label: "Remaining", value: yearlyRemaining, color: "text-emerald-600" },
                     { label: "Used", value: yearlyUsed, color: "text-amber-600" },
+                    { label: "Deduction", value: yearlyDeduction, color: "text-rose-600" },
                     { label: "Total", value: yearlyTotal, color: "text-slate-700" },
                   ],
                 },
@@ -159,13 +165,13 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                       {group.subtitle}
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     {group.stats.map((field) => (
                       <div key={`${group.title}-${field.label}`} className="text-center group/stat">
                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">
                           {field.label}
                         </div>
-                        <div className="flex items-center justify-center min-h-10 min-w-16 bg-white rounded-lg border border-slate-100 shadow-inner group-hover/stat:border-slate-200 transition-all px-2">
+                        <div className="flex items-center justify-center min-h-10 min-w-0 bg-white rounded-lg border border-slate-100 shadow-inner group-hover/stat:border-slate-200 transition-all px-2">
                           <span className={cn("text-base font-black", field.color)}>
                             {formatLeaveDays(field.value || 0)}
                           </span>

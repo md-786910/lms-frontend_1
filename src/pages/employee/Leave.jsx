@@ -185,7 +185,7 @@ const EmployeeLeave = () => {
       {/* Leave Balance - Top Section */}
       <Card className="border border-slate-200 shadow-sm rounded-md bg-white">
         <CardContent className="p-4 md:p-5">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
             <div className="md:col-span-1">
               <p className="text-xs font-bold tracking-wide text-slate-500 font-montserrat uppercase">
                 Current Cycle
@@ -211,6 +211,14 @@ const EmployeeLeave = () => {
                 {formatLeaveDays(leaveDash?.cycle_used ?? 0)}
               </p>
             </div>
+            <div className="rounded-md bg-rose-50 border border-rose-100 p-3">
+              <p className="text-xs font-semibold text-rose-700 font-montserrat">
+                Deduction In Cycle
+              </p>
+              <p className="text-2xl font-bold text-rose-700 font-montserrat">
+                {formatLeaveDays(leaveDash?.cycle_deduction ?? 0)}
+              </p>
+            </div>
             <div className="rounded-md bg-emerald-50 border border-emerald-100 p-3">
               <p className="text-xs font-semibold text-emerald-700 font-montserrat">
                 Remaining In Cycle
@@ -227,6 +235,7 @@ const EmployeeLeave = () => {
         {leaveDash?.leaves?.map((leave, index) => {
           const remainingBalance =
             leave.cycle_leave_remaining ?? leave.leave_remaing ?? 0;
+          const deductionBalance = leave.cycle_leave_deduction ?? 0;
           const remainingBalanceColor =
             remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
           const totalLeaves = leave.cycle_leave_count ?? leave.leave_count ?? 0;
@@ -260,6 +269,12 @@ const EmployeeLeave = () => {
                     <span>Used</span>
                     <span className="font-semibold text-amber-600">
                       {leave.cycle_leave_used ?? leave.leave_used ?? 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Deduction</span>
+                    <span className="font-semibold text-rose-600">
+                      {formatLeaveDays(deductionBalance)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm text-slate-600 font-montserrat">
