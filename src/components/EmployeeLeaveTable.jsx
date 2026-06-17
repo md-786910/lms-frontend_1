@@ -131,6 +131,9 @@ const EmployeeLeaveTable = () => {
   const getValueClass = (value, positiveClass = "text-orange-600") =>
     value > 0 ? `${positiveClass} font-medium` : "text-slate-400";
 
+  const getMonthBgClass = (index) =>
+    index % 2 === 0 ? "bg-slate-100" : "bg-white";
+
   return (
     <Card className="border border-slate-200 shadow-sm rounded-md">
       <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
@@ -234,12 +237,11 @@ const EmployeeLeaveTable = () => {
                   >
                     Employee Name
                   </TableHead>
-
-                  {columnsToShow.map((month) => (
+                  {columnsToShow.map((month, index) => (
                     <TableHead
                       key={month}
                       colSpan={2}
-                      className="font-semibold text-slate-700 text-center capitalize font-montserrat"
+                      className={`font-semibold text-slate-700 text-center capitalize font-montserrat ${getMonthBgClass(index)}`}
                     >
                       {month.slice(0, 3).toUpperCase()}
                     </TableHead>
@@ -261,13 +263,18 @@ const EmployeeLeaveTable = () => {
                 </TableRow>
 
                 {/* Second Header Row */}
-                <TableRow className="bg-slate-50">
-                  {columnsToShow.map((month) => (
+                <TableRow>
+                  {columnsToShow.map((month, index) => (
                     <Fragment key={`${month}-sub`}>
-                      <TableHead className="text-left min-w-[90px] font-medium font-montserrat">
+                      <TableHead
+                        className={`text-center min-w-[90px] font-medium font-montserrat ${getMonthBgClass(index)}`}
+                      >
                         Leave
                       </TableHead>
-                      <TableHead className="text-right min-w-[105px] font-medium font-montserrat">
+
+                      <TableHead
+                        className={`text-center min-w-[105px] font-medium font-montserrat ${getMonthBgClass(index)}`}
+                      >
                         Deduction
                       </TableHead>
                     </Fragment>
@@ -293,19 +300,20 @@ const EmployeeLeaveTable = () => {
                           <TableCell className="min-w-[150px] w-[150px] font-medium text-slate-800 sticky left-0 bg-white z-20 font-montserrat">
                             {employee.name}
                           </TableCell>
-                          {columnsToShow.map((month) => {
+                          {columnsToShow.map((month, monthIndex) => {
                             const monthValue = employee[month] ?? 0;
-                            const deductionValue =
-                              employee[`${month}_deduction`] ?? 0;
+                            const deductionValue = employee[`${month}_deduction`] ?? 0;
+
                             return (
                               <Fragment key={month}>
                                 <TableCell
-                                  className={`text-center ${getValueClass(monthValue)}`}
+                                  className={`text-center ${getMonthBgClass(monthIndex)} ${getValueClass(monthValue)}`}
                                 >
                                   {monthValue}
                                 </TableCell>
+
                                 <TableCell
-                                  className={`text-center ${getValueClass(
+                                  className={`text-center ${getMonthBgClass(monthIndex)} ${getValueClass(
                                     deductionValue,
                                     "text-rose-600"
                                   )}`}
