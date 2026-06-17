@@ -102,6 +102,10 @@ const EmployeeHistory = () => {
   const [personalInfo, setPersonalInfo] = useState({});
   const [salaryInfo, setSalaryInfo] = useState({});
   const [leaveInfo, setLeaveInfo] = useState([]);
+  const [leaveSummaryMeta, setLeaveSummaryMeta] = useState({
+    yearly: null,
+    cycle: null,
+  });
 
   // Refs for validation
   const basicInfoRef = useRef();
@@ -176,7 +180,11 @@ const EmployeeHistory = () => {
           setSalaryInfo(formatSalaryInfo(res.data));
         } else if (activeTab === "leave_balance") {
           const res = await employeeLeaveApi.getAllLeave(employeeId);
-          setLeaveInfo(res.data);
+          setLeaveInfo(Array.isArray(res.data) ? res.data : []);
+          setLeaveSummaryMeta({
+            yearly: res.yearly_leave_summary ?? null,
+            cycle: res.cycle_leave_summary ?? null,
+          });
         }
       } catch (error) {
         console.error(`Error loading ${activeTab} data:`, error);
@@ -278,7 +286,7 @@ const EmployeeHistory = () => {
     return Array.from(types);
   }, [leaveRecords]);
 
-  const leaveSummary = useMemo(() => {
+  const yearlyLeaveSummary = useMemo(() => {
     const source = (activeTab === "leave_balance" && leaveInfo && leaveInfo.length > 0)
       ? leaveInfo
       : (employee?.employee_leaves ?? []);
@@ -292,8 +300,34 @@ const EmployeeHistory = () => {
       },
       { total: 0, used: 0, remaining: 0 }
     );
-    return aggregated;
+    return {
+      ...aggregated,
+      remaining: Math.max(0, aggregated.total - aggregated.used),
+    };
   }, [employee, leaveInfo, activeTab]);
+
+  const cycleLeaveSummary = useMemo(() => {
+    if (leaveSummaryMeta.cycle) return leaveSummaryMeta.cycle;
+
+    const total = leaveInfo.reduce(
+      (sum, leave) => sum + (Number(leave?.leave_count) || 0) / 2,
+      0
+    );
+    const used = leaveInfo.reduce(
+      (sum, leave) => sum + (Number(leave?.leave_used) || 0),
+      0
+    );
+
+    return {
+      cycle_name: "Current Cycle",
+      cycle_label: "",
+      total,
+      used,
+      remaining: Math.max(0, total - used),
+    };
+  }, [leaveInfo, leaveSummaryMeta.cycle]);
+
+  const leaveSummary = leaveSummaryMeta.yearly || yearlyLeaveSummary;
 
   const yearOptions = useMemo(() => {
     const years = new Set();
@@ -469,15 +503,52 @@ const filteredLeaves = useMemo(() => {
 
             <TabsContent value="leave_balance" className="mt-0 space-y-6">
               <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-slate-900">Annual Leave Balances</h3>
-                  <div className="flex gap-3">
-                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-sm font-semibold">
-                      Remaining Leave: {formatLeaveDays(leaveSummary.remaining)}
-                    </Badge>
-                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-sm font-semibold">
-                      Used Leave: {formatLeaveDays(leaveSummary.used)}
-                    </Badge>
+                <div className="flex flex-col gap-4 mb-6">
+                  <h3 className="text-xl font-bold text-slate-900">Leave Balances</h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <p className="text-sm font-bold text-slate-900">Yearly</p>
+                          <p className="text-xs font-semibold text-slate-500">
+                            {leaveSummary.year ? `Current year ${leaveSummary.year}` : "Current year"}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
+                            Remaining: {formatLeaveDays(leaveSummary.remaining)}
+                          </Badge>
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
+                            Used: {formatLeaveDays(leaveSummary.used)}
+                          </Badge>
+                          <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
+                            Total: {formatLeaveDays(leaveSummary.total)}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <p className="text-sm font-bold text-slate-900">Current Cycle</p>
+                          <p className="text-xs font-semibold text-slate-500">
+                            {cycleLeaveSummary.cycle_name}
+                            {cycleLeaveSummary.cycle_label ? `: ${cycleLeaveSummary.cycle_label}` : ""}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
+                            Remaining: {formatLeaveDays(cycleLeaveSummary.remaining)}
+                          </Badge>
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
+                            Used: {formatLeaveDays(cycleLeaveSummary.used)}
+                          </Badge>
+                          <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
+                            Total: {formatLeaveDays(cycleLeaveSummary.total)}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />

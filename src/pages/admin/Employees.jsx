@@ -492,7 +492,7 @@ const Employees = ({
       {/* Employee Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {filteredEmployees.map((employee) => {
-          const leaveSummary = employee.employee_leaves?.reduce(
+          const fallbackLeaveSummary = employee.employee_leaves?.reduce(
             (acc, leave) => {
               acc.total += leave.leave_count || 0;
               acc.used += leave.leave_used || 0;
@@ -500,9 +500,21 @@ const Employees = ({
               return acc;
             },
             { total: 0, used: 0, remaining: 0 }
-          );
+          ) || { total: 0, used: 0, remaining: 0 };
+          const sourceLeaveSummary =
+            employee.yearly_leave_summary || fallbackLeaveSummary;
+          const leaveSummary = {
+            ...sourceLeaveSummary,
+            remaining: Math.max(
+              0,
+              Number(sourceLeaveSummary.total || 0) -
+                Number(sourceLeaveSummary.used || 0)
+            ),
+          };
           const remainingBalance = leaveSummary.remaining ?? 0;
           const formattedRemainingBalance = formatLeaveDays(remainingBalance);
+          const formattedUsedBalance = formatLeaveDays(leaveSummary.used ?? 0);
+          const formattedTotalBalance = formatLeaveDays(leaveSummary.total ?? 0);
           const remainingBadgeClass =
             remainingBalance < 0
               ? "bg-rose-50 text-rose-700 border border-rose-100"
@@ -738,10 +750,10 @@ const Employees = ({
                             Remaining: {formattedRemainingBalance}
                           </Badge>
                           <Badge className="bg-amber-50 text-amber-700 border border-amber-100 font-montserrat">
-                            Used: {leaveSummary.used}
+                            Used: {formattedUsedBalance}
                           </Badge>
                           <Badge className="bg-slate-100 text-slate-700 border border-slate-200 font-montserrat">
-                            Total: {leaveSummary.total}
+                            Total: {formattedTotalBalance}
                           </Badge>
                         </div>
                       </div>

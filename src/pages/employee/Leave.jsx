@@ -51,7 +51,7 @@ const EmployeeLeave = () => {
   const [monthFilter, setMonthFilter] = useState("all");
   const itemsPerPage = 5;
   
-  const totalRemaining = leaveDash?.total_remaining ?? 0;
+  const totalRemaining = leaveDash?.cycle_remaining ?? leaveDash?.total_remaining ?? 0;
   const totalRemainingLabel = formatLeaveDays(totalRemaining);
   const totalRemainingBadgeClass =
     totalRemaining < 0
@@ -183,12 +183,53 @@ const EmployeeLeave = () => {
       </Card>
 
       {/* Leave Balance - Top Section */}
+      <Card className="border border-slate-200 shadow-sm rounded-md bg-white">
+        <CardContent className="p-4 md:p-5">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+            <div className="md:col-span-1">
+              <p className="text-xs font-bold tracking-wide text-slate-500 font-montserrat uppercase">
+                Current Cycle
+              </p>
+              <h2 className="text-xl font-bold text-slate-900 font-montserrat">
+                {leaveDash?.cycle_name || "Current Cycle"}:{" "}
+                {leaveDash?.cycle_label || "-"}
+              </h2>
+            </div>
+            <div className="rounded-md bg-slate-50 border border-slate-100 p-3">
+              <p className="text-xs font-semibold text-slate-500 font-montserrat">
+                Cycle Entitlement
+              </p>
+              <p className="text-2xl font-bold text-slate-900 font-montserrat">
+                {formatLeaveDays(leaveDash?.cycle_total ?? 0)}
+              </p>
+            </div>
+            <div className="rounded-md bg-amber-50 border border-amber-100 p-3">
+              <p className="text-xs font-semibold text-amber-700 font-montserrat">
+                Used In Cycle
+              </p>
+              <p className="text-2xl font-bold text-amber-700 font-montserrat">
+                {formatLeaveDays(leaveDash?.cycle_used ?? 0)}
+              </p>
+            </div>
+            <div className="rounded-md bg-emerald-50 border border-emerald-100 p-3">
+              <p className="text-xs font-semibold text-emerald-700 font-montserrat">
+                Remaining In Cycle
+              </p>
+              <p className="text-2xl font-bold text-emerald-700 font-montserrat">
+                {formatLeaveDays(leaveDash?.cycle_remaining ?? 0)}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {leaveDash?.leaves?.map((leave, index) => {
-          const remainingBalance = leave.leave_remaing ?? 0;
+          const remainingBalance =
+            leave.cycle_leave_remaining ?? leave.leave_remaing ?? 0;
           const remainingBalanceColor =
             remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
-          const totalLeaves = leave.leave_count ?? 0;
+          const totalLeaves = leave.cycle_leave_count ?? leave.leave_count ?? 0;
           const progressPercent =
             totalLeaves > 0
               ? Math.min(
@@ -197,7 +238,7 @@ const EmployeeLeave = () => {
                 )
               : 0;
           const formattedRemainingBalance = formatLeaveDays(remainingBalance);
-          const formattedTotal = leave.leave_count ?? 0;
+          const formattedTotal = formatLeaveDays(totalLeaves);
           return (
             <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
               <CardContent className="p-4">
@@ -207,18 +248,18 @@ const EmployeeLeave = () => {
                       {leave.leave_type}
                     </p>
                     <h4 className="text-lg font-semibold text-slate-900 font-montserrat mt-1">
-                      {formattedTotal} days
+                      {formattedTotal}
                     </h4>
                   </div>
                   <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
-                    Annual
+                    {leaveDash?.cycle_name || leave.cycle_name || "Cycle"}
                   </span>
                 </div>
                 <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
                   <div className="flex justify-between">
                     <span>Used</span>
                     <span className="font-semibold text-amber-600">
-                      {leave.leave_used || 0}
+                      {leave.cycle_leave_used ?? leave.leave_used ?? 0}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm text-slate-600 font-montserrat">
@@ -545,10 +586,12 @@ const EmployeeLeave = () => {
                     Total Approved
                   </p>
                   <p className="text-2xl font-bold text-slate-900 font-montserrat">
-                    {leaveDash?.total_approved || 0}
+                    {leaveDash?.cycle_used ?? leaveDash?.total_approved ?? 0}
                     <span className="text-xs font-medium text-slate-400"> days</span>
                   </p>
-                  <p className="text-xs text-slate-500 font-montserrat">Year to date</p>
+                  <p className="text-xs text-slate-500 font-montserrat">
+                    {leaveDash?.cycle_name || "Current cycle"}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -588,6 +631,9 @@ const EmployeeLeave = () => {
                     {totalRemainingLabel}
                   </p>
                   <p className="text-xs text-slate-500 font-montserrat">Available balance</p>
+                  <p className="text-xs text-slate-400 font-montserrat">
+                    {leaveDash?.cycle_label || ""}
+                  </p>
                 </div>
               </div>
             </CardContent>

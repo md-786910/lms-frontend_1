@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { cn } from "@/lib/utils"; 
+import { cn } from "@/lib/utils";
 import NoDataFound from "../../common/NoDataFound";
+import { formatLeaveDays } from "../../utility/utility";
 
 const leaveTypes = [
   {
@@ -57,10 +58,10 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
       prev.map((leave) =>
         leave.id === id
           ? {
-              ...leave,
-              addon: field === "available" ? 0 : 0,
-              subst: field === "booked" ? 0 : 0,
-            }
+            ...leave,
+            addon: field === "available" ? 0 : 0,
+            subst: field === "booked" ? 0 : 0,
+          }
           : { ...leave, addon: 0, subst: 0 }
       )
     );
@@ -69,15 +70,32 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
   return (
     <div className="space-y-4 font-montserrat">
       {leaveInfo?.map((leave, index) => {
-        const { leave_count, leave_remaing, leave_used, leave_type, id } =
+        const { leave_count, leave_used, leave_type, id } =
           leave;
+        const yearlyTotal = leave?.yearly_total ?? leave_count ?? 0;
+        const yearlyUsed = leave?.yearly_used ?? leave_used ?? 0;
+        const yearlyRemaining =
+          leave?.yearly_remaining ??
+          Math.max(0, Number(yearlyTotal || 0) - Number(yearlyUsed || 0));
+        const cycleTotal =
+          leave?.cycle_total ?? (Number(leave_count || 0) / 2);
+        const firstCycleTotal = leave?.first_cycle_total ?? cycleTotal;
+        const firstCycleUsed = leave?.first_cycle_used ?? 0;
+        const firstCycleRemaining =
+          leave?.first_cycle_remaining ??
+          Math.max(0, Number(firstCycleTotal || 0) - Number(firstCycleUsed || 0));
+        const secondCycleTotal = leave?.second_cycle_total ?? cycleTotal;
+        const secondCycleUsed = leave?.second_cycle_used ?? 0;
+        const secondCycleRemaining =
+          leave?.second_cycle_remaining ??
+          Math.max(0, Number(secondCycleTotal || 0) - Number(secondCycleUsed || 0));
         const config = leaveTypes.find(t => t.label.toLowerCase().includes(leave_type.toLowerCase())) || leaveTypes[index % leaveTypes.length];
         const { icon, bg, iconColor } = config;
 
         return (
           <div
             key={id || index}
-            className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 group"
+            className="flex flex-col gap-5 p-5 bg-white rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 group lg:flex-row lg:items-center lg:justify-between"
           >
             <div className="flex items-center gap-5">
               <div className={cn("h-14 w-14 rounded-xl flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform duration-200", bg, iconColor)}>
@@ -94,21 +112,63 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
             </div>
 
             {/* Leave Controls */}
-            <div className="flex items-center gap-8">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-1">
               {[
-                { label: "Available", value: leave?.leave_remaing, color: "text-emerald-600" },
-                { label: "Booked", value: leave?.leave_used, color: "text-amber-600" }
-              ].map((field) => (
-                <div key={field.label} className="text-center group/stat">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">
-                    {field.label}
+                {
+                  title: "Yearly",
+                  subtitle: "Current year",
+                  stats: [
+                    { label: "Remaining", value: yearlyRemaining, color: "text-emerald-600" },
+                    { label: "Used", value: yearlyUsed, color: "text-amber-600" },
+                    { label: "Total", value: yearlyTotal, color: "text-slate-700" },
+                  ],
+                },
+                // {
+                //   title: "1st Cycle",
+                //   subtitle: leave?.first_cycle_label ?? "Jan-Jun",
+                //   stats: [
+                //     { label: "Remaining", value: firstCycleRemaining, color: "text-emerald-600" },
+                //     { label: "Used", value: firstCycleUsed, color: "text-amber-600" },
+                //     { label: "Total", value: firstCycleTotal, color: "text-slate-700" },
+                //   ],
+                // },
+                // {
+                //   title: "2nd Cycle",
+                //   subtitle: leave?.second_cycle_label ?? "Jul-Dec",
+                //   stats: [
+                //     { label: "Remaining", value: secondCycleRemaining, color: "text-emerald-600" },
+                //     { label: "Used", value: secondCycleUsed, color: "text-amber-600" },
+                //     { label: "Total", value: secondCycleTotal, color: "text-slate-700" },
+                //   ],
+                // },
+              ].map((group) => (
+                <div
+                  key={group.title}
+                  className="rounded-xl border border-slate-100 bg-slate-50/70 p-3"
+                >
+                  <div className="mb-2">
+                    <div className="text-xs font-black uppercase text-slate-700">
+                      {group.title}
+                    </div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      {group.subtitle}
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center h-10 w-20 bg-slate-50 rounded-lg border border-slate-100 shadow-inner group-hover/stat:bg-white group-hover/stat:border-slate-200 transition-all">
-                    <span className={cn("text-lg font-black", field.color)}>
-                      {field.value || 0}
-                    </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {group.stats.map((field) => (
+                      <div key={`${group.title}-${field.label}`} className="text-center group/stat">
+                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">
+                          {field.label}
+                        </div>
+                        <div className="flex items-center justify-center min-h-10 min-w-16 bg-white rounded-lg border border-slate-100 shadow-inner group-hover/stat:border-slate-200 transition-all px-2">
+                          <span className={cn("text-base font-black", field.color)}>
+                            {formatLeaveDays(field.value || 0)}
+                          </span>
+                        </div>
+                        <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">days</div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">days</div>
                 </div>
               ))}
             </div>

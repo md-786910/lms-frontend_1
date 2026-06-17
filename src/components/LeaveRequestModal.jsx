@@ -87,7 +87,8 @@ const LeaveRequestModal = ({
   const [dayErrors, setDayErrors] = useState([]);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
-  const availableBalance = leaveCalculate?.leave_remaing ?? 0;
+  const availableBalance =
+    leaveCalculate?.cycle_leave_remaining ?? leaveCalculate?.leave_remaing ?? 0;
   const formattedAvailableBalance = formatLeaveDays(availableBalance);
   const remainingAfterRequest = availableBalance - totalLeaveCount;
   const formattedRemainingAfterRequest = formatLeaveDays(remainingAfterRequest);
@@ -652,7 +653,7 @@ const LeaveRequestModal = ({
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Available Balance</span>
+                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
                         <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
                       </div>
                       <div className="flex items-center justify-between group">
