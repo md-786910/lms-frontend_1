@@ -89,6 +89,28 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
         const secondCycleRemaining =
           leave?.second_cycle_remaining ??
           Math.max(0, Number(secondCycleTotal || 0) - Number(secondCycleUsed || 0));
+        const currentCycle =
+          leave?.cycle ?? (new Date().getMonth() < 6 ? "first" : "second");
+        const activeCycleGroup =
+          currentCycle === "first"
+            ? {
+                title: "1st Cycle",
+                subtitle: leave?.first_cycle_label ?? "Jan-Jun",
+                stats: [
+                  { label: "Remaining", value: firstCycleRemaining, color: "text-emerald-600" },
+                  { label: "Used", value: firstCycleUsed, color: "text-amber-600" },
+                  { label: "Total", value: firstCycleTotal, color: "text-slate-700" },
+                ],
+              }
+            : {
+                title: "2nd Cycle",
+                subtitle: leave?.second_cycle_label ?? "Jul-Dec",
+                stats: [
+                  { label: "Remaining", value: secondCycleRemaining, color: "text-emerald-600" },
+                  { label: "Used", value: secondCycleUsed, color: "text-amber-600" },
+                  { label: "Total", value: secondCycleTotal, color: "text-slate-700" },
+                ],
+              };
         const config = leaveTypes.find(t => t.label.toLowerCase().includes(leave_type.toLowerCase())) || leaveTypes[index % leaveTypes.length];
         const { icon, bg, iconColor } = config;
 
@@ -112,7 +134,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
             </div>
 
             {/* Leave Controls */}
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-1">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {[
                 {
                   title: "Yearly",
@@ -123,24 +145,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                     { label: "Total", value: yearlyTotal, color: "text-slate-700" },
                   ],
                 },
-                // {
-                //   title: "1st Cycle",
-                //   subtitle: leave?.first_cycle_label ?? "Jan-Jun",
-                //   stats: [
-                //     { label: "Remaining", value: firstCycleRemaining, color: "text-emerald-600" },
-                //     { label: "Used", value: firstCycleUsed, color: "text-amber-600" },
-                //     { label: "Total", value: firstCycleTotal, color: "text-slate-700" },
-                //   ],
-                // },
-                // {
-                //   title: "2nd Cycle",
-                //   subtitle: leave?.second_cycle_label ?? "Jul-Dec",
-                //   stats: [
-                //     { label: "Remaining", value: secondCycleRemaining, color: "text-emerald-600" },
-                //     { label: "Used", value: secondCycleUsed, color: "text-amber-600" },
-                //     { label: "Total", value: secondCycleTotal, color: "text-slate-700" },
-                //   ],
-                // },
+                activeCycleGroup,
               ].map((group) => (
                 <div
                   key={group.title}
