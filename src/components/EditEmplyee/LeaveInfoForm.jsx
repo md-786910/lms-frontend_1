@@ -70,50 +70,30 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
   return (
     <div className="space-y-4 font-montserrat">
       {leaveInfo?.map((leave, index) => {
-        const { leave_count, leave_used, leave_type, id } =
+        const { leave_used, leave_type, id } =
           leave;
-        const yearlyTotal = leave?.yearly_total ?? leave_count ?? 0;
-        const yearlyUsed = leave?.yearly_used ?? leave_used ?? 0;
-        const yearlyRemaining =
-          leave?.yearly_remaining ??
-          Math.max(0, Number(yearlyTotal || 0) - Number(yearlyUsed || 0));
-        const yearlyDeduction = leave?.yearly_deduction ?? 0;
-        const cycleTotal =
-          leave?.cycle_total ?? (Number(leave_count || 0) / 2);
-        const firstCycleTotal = leave?.first_cycle_total ?? cycleTotal;
-        const firstCycleUsed = leave?.first_cycle_used ?? 0;
-        const firstCycleDeduction = leave?.first_cycle_deduction ?? 0;
-        const firstCycleRemaining =
-          leave?.first_cycle_remaining ??
-          Math.max(0, Number(firstCycleTotal || 0) - Number(firstCycleUsed || 0));
-        const secondCycleTotal = leave?.second_cycle_total ?? cycleTotal;
-        const secondCycleUsed = leave?.second_cycle_used ?? 0;
-        const secondCycleDeduction = leave?.second_cycle_deduction ?? 0;
-        const secondCycleRemaining =
-          leave?.second_cycle_remaining ??
-          Math.max(0, Number(secondCycleTotal || 0) - Number(secondCycleUsed || 0));
+        const yearlyAvailed =
+          leave?.yearly_availed ?? leave?.yearly_used ?? leave_used ?? 0;
+        const firstCycleAvailed =
+          leave?.first_cycle_availed ?? leave?.first_cycle_used ?? 0;
+        const secondCycleAvailed =
+          leave?.second_cycle_availed ?? leave?.second_cycle_used ?? 0;
         const currentCycle =
           leave?.cycle ?? (new Date().getMonth() < 6 ? "first" : "second");
         const activeCycleGroup =
           currentCycle === "first"
             ? {
-                title: "1st Cycle",
+                title: "1st Cycle Activity",
                 subtitle: leave?.first_cycle_label ?? "Jan-Jun",
                 stats: [
-                  { label: "Remaining", value: firstCycleRemaining, color: "text-emerald-600" },
-                  { label: "Used", value: firstCycleUsed, color: "text-amber-600" },
-                  { label: "Deduction", value: firstCycleDeduction, color: "text-rose-600" },
-                  { label: "Total", value: firstCycleTotal, color: "text-slate-700" },
+                  { label: "Availed", value: firstCycleAvailed, color: "text-amber-600" },
                 ],
               }
             : {
-                title: "2nd Cycle",
+                title: "2nd Cycle Activity",
                 subtitle: leave?.second_cycle_label ?? "Jul-Dec",
                 stats: [
-                  { label: "Remaining", value: secondCycleRemaining, color: "text-emerald-600" },
-                  { label: "Used", value: secondCycleUsed, color: "text-amber-600" },
-                  { label: "Deduction", value: secondCycleDeduction, color: "text-rose-600" },
-                  { label: "Total", value: secondCycleTotal, color: "text-slate-700" },
+                  { label: "Availed", value: secondCycleAvailed, color: "text-amber-600" },
                 ],
               };
         const config = leaveTypes.find(t => t.label.toLowerCase().includes(leave_type.toLowerCase())) || leaveTypes[index % leaveTypes.length];
@@ -133,7 +113,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                   {leave_type}
                 </div>
                 <div className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                  Total Annual leave: <span className="text-slate-900 font-extrabold">{leave_count} days</span>
+                  Leave activity breakdown
                 </div>
               </div>
             </div>
@@ -142,13 +122,10 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {[
                 {
-                  title: "Yearly",
+                  title: "Yearly Activity",
                   subtitle: "Current year",
                   stats: [
-                    { label: "Remaining", value: yearlyRemaining, color: "text-emerald-600" },
-                    { label: "Used", value: yearlyUsed, color: "text-amber-600" },
-                    { label: "Deduction", value: yearlyDeduction, color: "text-rose-600" },
-                    { label: "Total", value: yearlyTotal, color: "text-slate-700" },
+                    { label: "Availed", value: yearlyAvailed, color: "text-amber-600" },
                   ],
                 },
                 activeCycleGroup,
@@ -165,7 +142,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
                       {group.subtitle}
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-1 gap-2">
                     {group.stats.map((field) => (
                       <div key={`${group.title}-${field.label}`} className="text-center group/stat">
                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mb-1 transition-colors group-hover/stat:text-slate-600">

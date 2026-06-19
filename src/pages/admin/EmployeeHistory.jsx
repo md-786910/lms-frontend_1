@@ -519,7 +519,7 @@ const filteredLeaves = useMemo(() => {
                             Remaining: {formatLeaveDays(leaveSummary.remaining)}
                           </Badge>
                           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
-                            Used: {formatLeaveDays(leaveSummary.used)}
+                            Availed: {formatLeaveDays(leaveSummary.availed ?? leaveSummary.used)}
                           </Badge>
                           <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
                             Deduction: {formatLeaveDays(leaveSummary.deduction ?? 0)}
@@ -544,7 +544,7 @@ const filteredLeaves = useMemo(() => {
                             Remaining: {formatLeaveDays(cycleLeaveSummary.remaining)}
                           </Badge>
                           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
-                            Used: {formatLeaveDays(cycleLeaveSummary.used)}
+                            Availed: {formatLeaveDays(cycleLeaveSummary.availed ?? cycleLeaveSummary.used)}
                           </Badge>
                           <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
                             Deduction: {formatLeaveDays(cycleLeaveSummary.deduction ?? 0)}

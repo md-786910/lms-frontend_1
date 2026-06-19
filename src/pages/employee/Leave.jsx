@@ -205,10 +205,10 @@ const EmployeeLeave = () => {
             </div>
             <div className="rounded-md bg-amber-50 border border-amber-100 p-3">
               <p className="text-xs font-semibold text-amber-700 font-montserrat">
-                Used In Cycle
+                Availed In Cycle
               </p>
               <p className="text-2xl font-bold text-amber-700 font-montserrat">
-                {formatLeaveDays(leaveDash?.cycle_used ?? 0)}
+                {formatLeaveDays(leaveDash?.cycle_availed ?? leaveDash?.cycle_used ?? 0)}
               </p>
             </div>
             <div className="rounded-md bg-rose-50 border border-rose-100 p-3">
@@ -233,21 +233,9 @@ const EmployeeLeave = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {leaveDash?.leaves?.map((leave, index) => {
-          const remainingBalance =
-            leave.cycle_leave_remaining ?? leave.leave_remaing ?? 0;
-          const deductionBalance = leave.cycle_leave_deduction ?? 0;
-          const remainingBalanceColor =
-            remainingBalance < 0 ? "text-rose-600" : "text-emerald-600";
-          const totalLeaves = leave.cycle_leave_count ?? leave.leave_count ?? 0;
-          const progressPercent =
-            totalLeaves > 0
-              ? Math.min(
-                  Math.max((remainingBalance / totalLeaves) * 100, 0),
-                  100
-                )
-              : 0;
-          const formattedRemainingBalance = formatLeaveDays(remainingBalance);
-          const formattedTotal = formatLeaveDays(totalLeaves);
+          const cycleAvailed =
+            leave.cycle_leave_availed ?? leave.cycle_leave_used ?? leave.leave_used ?? 0;
+          const formattedAvailed = formatLeaveDays(cycleAvailed);
           return (
             <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
               <CardContent className="p-4">
@@ -257,7 +245,7 @@ const EmployeeLeave = () => {
                       {leave.leave_type}
                     </p>
                     <h4 className="text-lg font-semibold text-slate-900 font-montserrat mt-1">
-                      {formattedTotal}
+                      {formattedAvailed} availed
                     </h4>
                   </div>
                   <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
@@ -266,31 +254,11 @@ const EmployeeLeave = () => {
                 </div>
                 <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
                   <div className="flex justify-between">
-                    <span>Used</span>
+                    <span>Availed in cycle</span>
                     <span className="font-semibold text-amber-600">
-                      {leave.cycle_leave_used ?? leave.leave_used ?? 0}
+                      {formattedAvailed}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Deduction</span>
-                    <span className="font-semibold text-rose-600">
-                      {formatLeaveDays(deductionBalance)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm text-slate-600 font-montserrat">
-                    <span>Remaining</span>
-                    <span className={`font-semibold ${remainingBalanceColor}`}>
-                      {formattedRemainingBalance}
-                    </span>
-                  </div>
-                </div>
-                <div className="h-1 w-full overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    className="h-1 rounded-full bg-emerald-500 transition-all"
-                    style={{
-                      width: `${progressPercent}%`,
-                    }}
-                  ></div>
                 </div>
               </CardContent>
             </Card>
@@ -601,7 +569,7 @@ const EmployeeLeave = () => {
                     Total Approved
                   </p>
                   <p className="text-2xl font-bold text-slate-900 font-montserrat">
-                    {leaveDash?.cycle_used ?? leaveDash?.total_approved ?? 0}
+                    {leaveDash?.cycle_availed ?? leaveDash?.total_approved ?? leaveDash?.cycle_used ?? 0}
                     <span className="text-xs font-medium text-slate-400"> days</span>
                   </p>
                   <p className="text-xs text-slate-500 font-montserrat">
