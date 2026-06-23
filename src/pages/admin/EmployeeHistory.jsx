@@ -12,6 +12,7 @@ import {
   IndianRupee,
   Calendar,
   History,
+  ClipboardCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +40,7 @@ import DocumentsForm from "../../components/EditEmplyee/DocumentsInfo";
 import PersonalInfoForm from "../../components/EditEmplyee/PersonalInfo";
 import SalaryForm from "../../components/EditEmplyee/SalaryInfo";
 import LeaveInfoForm from "../../components/EditEmplyee/LeaveInfoForm";
+import ProofOfWorkAdminTab from "../../components/ProofOfWorkAdminTab";
 
 // Utilities
 import { getTabPayload, validateTabForm } from "../../utility/employeeUpdate";
@@ -465,6 +467,7 @@ const filteredLeaves = useMemo(() => {
                 { id: "salary", label: "Salary", icon: IndianRupee },
                 { id: "leave_balance", label: "Leave Balance", icon: Calendar },
                 { id: "history", label: "Leave History", icon: History },
+                { id: "proof_of_work", label: "Proof of Work", icon: ClipboardCheck },
               ].map((tab) => (
                 <TabsTrigger
                   key={tab.id}
@@ -668,10 +671,14 @@ const filteredLeaves = useMemo(() => {
                 )}
               </div>
             </TabsContent>
+
+            <TabsContent value="proof_of_work" className="mt-0 space-y-6">
+              <ProofOfWorkAdminTab employeeId={employeeId} />
+            </TabsContent>
           </div>
 
           {/* Action Bar (Sticky at bottom if needed, but here simple) */}
-          {activeTab !== "history" && activeTab !== "leave_balance" && (
+          {activeTab !== "history" && activeTab !== "leave_balance" && activeTab !== "proof_of_work" && (
             <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-montserrat">
               <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
               <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat">

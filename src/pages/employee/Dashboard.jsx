@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import holidayJsonData from "../../data/holiday.json";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import LeaveRequestModal from "@/components/LeaveRequestModal";
+import ProofOfWorkModal from "@/components/ProofOfWorkModal";
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -25,6 +26,7 @@ import {
   Ribbon,
   CalendarX,
   CheckCircle,
+  FileCheck2,
 } from "lucide-react";
 import { EmpDashboardApi } from "../../api/employee/dashboard";
 import { useSocketContext } from "../../contexts/SocketContext";
@@ -32,6 +34,7 @@ import { authAPI } from "../../api/authapi/authAPI";
 import dayjs from "dayjs";
 import NoDataFound from "../../common/NoDataFound";
 import { employeeLeaveApi } from "../../api/employee/leaveApi";
+import { proofOfWorkApi } from "../../api/proofOfWorkApi";
 import { formatLeaveDays } from "../../utility/utility";
 
 const EmployeeDashboard = () => {
@@ -52,11 +55,14 @@ const EmployeeDashboard = () => {
   const [leaveDash, setLeaveDash] = useState(null);
   const [leaveRequest, setLeaveRequest] = useState([]);
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showProofOfWorkModal, setShowProofOfWorkModal] = useState(false);
+  const [proofOfWorkRecords, setProofOfWorkRecords] = useState([]);
+  const [proofOfWorkLoading, setProofOfWorkLoading] = useState(false);
   const [leaveRequestViewMode, setLeaveRequestViewMode] = useState({});
   const [greeting, setGreeting] = useState("");
-const statToneMap = {
-  amber: {
-    accent: "bg-amber-500",
+  const statToneMap = {
+    amber: {
+      accent: "bg-amber-500",
       chip: "bg-amber-50 text-amber-700",
       dot: "bg-amber-500",
       iconBg: "bg-amber-100 text-amber-700",
@@ -83,15 +89,15 @@ const statToneMap = {
       accent: "bg-slate-500",
       chip: "bg-slate-100 text-slate-700",
       dot: "bg-slate-500",
-    iconBg: "bg-slate-100 text-slate-700",
-  },
-  rose: {
-    accent: "bg-rose-500",
-    chip: "bg-rose-50 text-rose-700",
-    dot: "bg-rose-500",
-    iconBg: "bg-rose-100 text-rose-700",
-  },
-};
+      iconBg: "bg-slate-100 text-slate-700",
+    },
+    rose: {
+      accent: "bg-rose-500",
+      chip: "bg-rose-50 text-rose-700",
+      dot: "bg-rose-500",
+      iconBg: "bg-rose-100 text-rose-700",
+    },
+  };
   const myLeaveData = [
     {
       id: 1,
@@ -237,9 +243,24 @@ const statToneMap = {
     }
   };
 
+  const fetchProofOfWork = async () => {
+    setProofOfWorkLoading(true);
+    try {
+      const resp = await proofOfWorkApi.getMySubmissions();
+      if (resp.status === 200) {
+        setProofOfWorkRecords(resp.data?.data || []);
+      }
+    } catch (error) {
+      console.error("Proof of Work fetch error:", error);
+    } finally {
+      setProofOfWorkLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchLeave();
     getLeaveRequest();
+    fetchProofOfWork();
   }, [updateDashboard]);
 
   useEffect(() => {
@@ -301,6 +322,18 @@ const statToneMap = {
   const formattedDashboardBalance = formatLeaveDays(dashboardLeaveBalance);
   const dashboardBalanceClass =
     dashboardLeaveBalance < 0 ? "text-rose-200" : "text-emerald-200";
+  const proofStatusStyles = {
+    pending: "bg-amber-50 text-amber-700 border-amber-100",
+    approved: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    rejected: "bg-rose-50 text-rose-700 border-rose-100",
+  };
+  const proofTypeLabels = {
+    remote: "Remote Work",
+    overtime: "Overtime",
+    special_assignment: "Special Assignment",
+    task_completion: "Task Completion",
+  };
+  const recentProofOfWork = proofOfWorkRecords.slice(0, 5);
   return (
     <>
       <div className="space-y-8">
@@ -443,7 +476,7 @@ const statToneMap = {
                 </p>
               </div>
               <div className="col-span-12 md:col-span-4 flex md:justify-end">
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-3">
                   <Button
                     size="lg"
                     className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
@@ -454,6 +487,12 @@ const statToneMap = {
                     }}
                   >
                     Apply for Leave
+                  </Button>                  <Button
+                    size="lg"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    onClick={() => setShowProofOfWorkModal(true)}
+                  >
+                    Apply for Proof of Work
                   </Button>
                   <Button
                     size="lg"
@@ -507,6 +546,50 @@ const statToneMap = {
             );
           })}
         </div>
+        <Card className="rounded-md border border-slate-200 shadow-sm">
+          <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+              <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                <FileCheck2 className="h-5 w-5" />
+              </span>
+              My Proof of Work
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            {proofOfWorkLoading ? (
+              <p className="text-sm font-semibold text-slate-500 font-montserrat">Loading submissions...</p>
+            ) : recentProofOfWork.length > 0 ? (
+              <div className="space-y-3">
+                {recentProofOfWork.map((submission) => (
+                  <div
+                    key={submission.id}
+                    className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 rounded-xl border border-slate-100 bg-white p-4 shadow-sm"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm font-bold text-slate-900 font-montserrat">{submission.title}</p>
+                        <Badge className={"capitalize border text-xs " + (proofStatusStyles[submission.status] || proofStatusStyles.pending)}>
+                          {submission.status}
+                        </Badge>
+                      </div>
+                      <p className="text-xs font-medium text-slate-500 font-montserrat">
+                        {proofTypeLabels[submission.work_type] || submission.work_type} - {dayjs(submission.work_date).format("D MMM YYYY")} - {(submission.attachments || []).length} evidence file{(submission.attachments || []).length === 1 ? "" : "s"}
+                      </p>
+                    </div>
+                    {submission.manager_comment && (
+                      <p className="text-xs font-semibold text-slate-500 lg:max-w-md">
+                        {submission.manager_comment}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <NoDataFound title="No proof of work submitted yet" />
+            )}
+          </CardContent>
+        </Card>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Calendar */}
@@ -694,9 +777,8 @@ const statToneMap = {
                           >
                             <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
                               {emp.employee_name ||
-                                `${emp.first_name || ""} ${
-                                  emp.last_name || ""
-                                }`.trim() ||
+                                `${emp.first_name || ""} ${emp.last_name || ""
+                                  }`.trim() ||
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
@@ -761,9 +843,8 @@ const statToneMap = {
                           >
                             <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
                               {emp.employee_name ||
-                                `${emp.first_name || ""} ${
-                                  emp.last_name || ""
-                                }`.trim() ||
+                                `${emp.first_name || ""} ${emp.last_name || ""
+                                  }`.trim() ||
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
@@ -864,6 +945,14 @@ const statToneMap = {
             leaves={leaveDash?.leaves}
             readOnly={readOnly || false}
             leaveRequestViewMode={leaveRequestViewMode}
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={showProofOfWorkModal} onOpenChange={setShowProofOfWorkModal}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto scroll-slim p-0 gap-0">
+          <ProofOfWorkModal
+            onClose={() => setShowProofOfWorkModal(false)}
+            onSuccess={fetchProofOfWork}
           />
         </DialogContent>
       </Dialog>
