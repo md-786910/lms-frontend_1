@@ -186,24 +186,24 @@ const Leave = () => {
           <div className="grid grid-cols-12 items-center gap-4 relative">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
                   Leave Management
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+              <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
                 Monitor and manage employee leave requests and policies
               </p>
             </div>
             <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
               <Button
-                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => setShowLeavePolicyModal(true)}
               >
                 <FileText className="h-4 w-4 text-slate-500" />
                 Leave Policy
               </Button>
               <Button
-                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => setShowCreateLeaveModal(true)}
               >
                 <Plus className="h-4 w-4" />
@@ -289,15 +289,15 @@ const Leave = () => {
                     {/* Top Row: Employee & Status */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-4">
-                        <div className={`h-10 w-10 rounded-xl ${getAvatarColor(request.employee?.first_name || "A")} flex items-center justify-center font-montserrat text-white font-semibold text-md shadow-sm group-hover:scale-105 transition-transform duration-300`}>
+                        <div className={`h-10 w-10 rounded-xl ${getAvatarColor(request.employee?.first_name || "A")} flex items-center justify-center font-graphik text-white font-semibold text-md shadow-sm group-hover:scale-105 transition-transform duration-300`}>
                           {request.employee?.first_name?.[0]}
                           {request.employee?.last_name?.[0]}
                         </div>
                         <div className="space-y-0.5">
-                          <h3 className="font-semibold font-montserrat text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
+                          <h3 className="font-semibold font-graphik text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
                             {request.employee?.first_name} {request.employee?.last_name}
                           </h3>
-                          <div className="flex items-center gap-2 text-slate-700 text-xs font-montserrat font-medium">
+                          <div className="flex items-center gap-2 text-slate-700 text-xs font-graphik font-medium">
                             <span className="flex items-center gap-1">
                               <Hash className="h-3 w-3" />
                               {request.employee?.employee_no}
@@ -313,41 +313,41 @@ const Leave = () => {
                     {/* Middle Row: Info Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                       <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                           <Calendar className="h-3 w-3" />
                           Applied On
                         </div>
-                        <div className="font-semibold text-slate-900 font-montserrat">
+                        <div className="font-semibold text-slate-900 font-graphik">
                           {dayjs(request?.createdAt).format("D MMM YYYY")}
                         </div>
                       </div>
 
                       <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                           <Clock className="h-3 w-3" />
                           Duration
                         </div>
-                        <div className="font-semibold text-slate-900 font-montserrat">
+                        <div className="font-semibold text-slate-900 font-graphik">
                           {request?.total_days} {request?.total_days === 1 ? "Day" : "Days"}
                         </div>
                       </div>
 
                       <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                           <CalendarDays className="h-3 w-3" />
                           Leave Dates
                         </div>
-                        <div className="font-semibold text-slate-900 truncate font-montserrat">
+                        <div className="font-semibold text-slate-900 truncate font-graphik">
                           {dayjs(request?.start_date).format("D MMM")} – {dayjs(request?.end_date).format("D MMM")}
                         </div>
                       </div>
 
                       <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                        <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                           <FileText className="h-3 w-3" />
                           Leave Type
                         </div>
-                        <div className="font-semibold text-slate-900 font-montserrat">
+                        <div className="font-semibold text-slate-900 font-graphik">
                           {request.leave_type?.leave_type}
                         </div>
                       </div>
@@ -355,11 +355,11 @@ const Leave = () => {
 
                     {/* Reason Section */}
                     <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-md py-2 px-3">
-                      <div className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                      <div className="text-[10px] capitalize font-graphik tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
                         <MoreVertical className="h-3 w-3 rotate-90" />
                         Reason for Leave
                       </div>
-                      <p className="text-slate-700 text-sm font-medium leading-relaxed font-montserrat">
+                      <p className="text-slate-700 text-sm font-medium leading-relaxed font-graphik">
                         "{request?.reason}"
                       </p>
                     </div>
@@ -368,19 +368,19 @@ const Leave = () => {
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
                       <div className="text-sm">
                         {request?.status === "approved" && (
-                          <div className="flex items-center gap-2 text-emerald-600 font-semibold font-montserrat bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+                          <div className="flex items-center gap-2 text-emerald-600 font-semibold font-graphik bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
                             <CheckCircle className="h-4 w-4" />
                             Approved on {dayjs(request?.updatedAt).format("DD MMM YYYY, hh:mm A")}
                           </div>
                         )}
                         {request?.status === "pending" && (
-                          <div className="flex items-center gap-2 text-amber-600 font-semibold font-montserrat bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100">
+                          <div className="flex items-center gap-2 text-amber-600 font-semibold font-graphik bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100">
                             <Clock className="h-4 w-4" />
                             Awaiting Review
                           </div>
                         )}
                         {request?.status === "rejected" && (
-                          <div className="flex items-center gap-2 text-rose-600 font-semibold font-montserrat bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
+                          <div className="flex items-center gap-2 text-rose-600 font-semibold font-graphik bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
                             <XCircle className="h-4 w-4" />
                             Rejected on {dayjs(request?.updatedAt).format("D MMM YYYY")}
                           </div>
@@ -391,7 +391,7 @@ const Leave = () => {
                         <div className="flex items-center gap-2 w-full sm:w-auto">
                           <Button
                             size="sm"
-                            className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 font-montserrat"
+                            className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 font-graphik"
                             onClick={() => {
                               ConfirmFn({
                                 onDelete: async () => {
@@ -416,7 +416,7 @@ const Leave = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="flex-1 sm:flex-none text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-300 font-semibold font-montserrat px-4"
+                            className="flex-1 sm:flex-none text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-300 font-semibold font-graphik px-4"
                             onClick={() => {
                               ConfirmFn({
                                 onDelete: async () => {
@@ -456,7 +456,7 @@ const Leave = () => {
           {totalPages > 1 && (
             <div className="flex items-center justify-between bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium text-slate-500 font-montserrat">
+                <p className="text-sm font-medium text-slate-500 font-graphik">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
                   <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredRequestCount)}</span> of{" "}
                   <span className="text-slate-900">{filteredRequestCount}</span> results
@@ -480,7 +480,7 @@ const Leave = () => {
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`h-9 w-9 p-0 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${currentPage === i + 1
+                      className={`h-9 w-9 p-0 rounded-lg font-graphik text-sm font-semibold transition-all duration-200 ${currentPage === i + 1
                         ? "bg-slate-900 text-white shadow-md scale-105"
                         : "border-slate-200 text-slate-600 hover:bg-slate-50"
                         }`}
@@ -530,8 +530,8 @@ const Leave = () => {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-md border-none shadow-xl p-0">
           <div className="bg-slate-900 px-6 py-4">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold font-montserrat text-white">Company Leave Policy</DialogTitle>
-              <p className="text-slate-300 font-medium font-montserrat">Current annual leave allocations for all types</p>
+              <DialogTitle className="text-2xl font-semibold font-graphik text-white">Company Leave Policy</DialogTitle>
+              <p className="text-slate-300 font-medium font-graphik">Current annual leave allocations for all types</p>
             </DialogHeader>
           </div>
           <div className="p-6">
@@ -541,13 +541,13 @@ const Leave = () => {
                 leavePolicy?.map((section, idx) => (
                   <Card key={idx} className="border-slate-100 shadow-sm rounded-2xl bg-slate-50/50">
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-base font-semibold text-slate-900 font-montserrat">{section?.type}</CardTitle>
+                      <CardTitle className="text-base font-semibold text-slate-900 font-graphik">{section?.type}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-700">Annual Allowance</span>
-                        <div className="bg-white border border-slate-200 font-montserrat rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
-                          {section?.annual_days} <span className="text-sm font-medium font-montserrat text-slate-600 capitalize">Days</span>
+                        <span className="text-[10px] capitalize font-graphik tracking-wider font-semibold text-slate-700">Annual Allowance</span>
+                        <div className="bg-white border border-slate-200 font-graphik rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
+                          {section?.annual_days} <span className="text-sm font-medium font-graphik text-slate-600 capitalize">Days</span>
                         </div>
                       </div>
                     </CardContent>
@@ -556,7 +556,7 @@ const Leave = () => {
             </div>
           </div>
           <div className="px-4 pb-4 flex justify-end">
-            <Button onClick={() => setShowLeavePolicyModal(false)} className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl px-6 shadow-slate-900/20 font-Montserrat">
+            <Button onClick={() => setShowLeavePolicyModal(false)} className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl px-6 shadow-slate-900/20 font-graphik">
               Close
             </Button>
           </div>

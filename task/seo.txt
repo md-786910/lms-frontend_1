@@ -24,7 +24,6 @@
 
     <!-- Preconnects (speed up critical third-parties) -->
     <!-- Adjust or remove if unused -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://analytics.example.com" crossorigin />
 
     <!-- Optional: Preload your main webfont or critical CSS -->

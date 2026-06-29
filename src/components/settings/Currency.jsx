@@ -84,7 +84,7 @@ function Currency() {
   return (
     <Card className="border-0 shadow-md">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+        <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
           <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
             <IndianRupee className="h-5 w-5" />
           </span>
@@ -94,9 +94,9 @@ function Currency() {
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="currency" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Default Currency</Label>
+            <Label htmlFor="currency" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Default Currency</Label>
             <Select
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               disabled
               value={prefixData.name}
               onValueChange={(value) => {
@@ -121,9 +121,9 @@ function Currency() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="currencySymbol" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Currency Symbol</Label>
+            <Label htmlFor="currencySymbol" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Currency Symbol</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               disabled
               id="currencySymbol"
               value={prefixData.symbol}
@@ -139,7 +139,7 @@ function Currency() {
         <Button
           // onClick={() => handleSave()}
           // disabled
-          className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
+          className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
         >
           <Save className="h-4 w-4 mr-2" />
           Save Currency Settings

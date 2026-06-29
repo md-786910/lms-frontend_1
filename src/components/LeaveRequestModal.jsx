@@ -309,10 +309,10 @@ const LeaveRequestModal = ({
                   <CalendarPlus className="h-5 w-5" />
                 </span>
                 <div className="space-y-0.5">
-                  <h2 className="text-2xl font-semibold font-montserrat text-[#FFFFFF] tracking-tight">
+                  <h2 className="text-2xl font-semibold font-graphik text-[#FFFFFF] tracking-tight">
                     {readOnly ? "Leave Request Details" : "New Leave Request"}
                   </h2>
-                  <p className="text-[#FFFFFF] font-montserrat font-medium">
+                  <p className="text-[#FFFFFF] font-graphik font-medium">
                     {readOnly
                       ? "Review what you submitted and its current status."
                       : "Submit time away with clear dates, reasons, and coverage."}
@@ -358,14 +358,14 @@ const LeaveRequestModal = ({
                   <div className="h-8 w-8 border-[#047857] bg-[#e2e8f0] text-[#047857] flex items-center justify-center rounded-md">
                     <FileText className="h-4 w-4" />
                   </div>
-                  <h3 className="font-semibold font-montserrat text-slate-900 text-lg capitalize tracking-tight">Leave Details</h3>
+                  <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Leave Details</h3>
                 </div>
 
                 <div className="space-y-4">
                   {/* Leave Type Selection */}
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">
-                      Leave Type <span className="text-rose-500 font-montserrat font-medium text-sm">*</span>
+                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
+                      Leave Type <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
                     </Label>
                     <Select
                       value={leaveType ? leaveType.toString() : ""}
@@ -375,10 +375,10 @@ const LeaveRequestModal = ({
                       }}
                       disabled={readOnly}
                     >
-                      <SelectTrigger className="h-12 bg-white border-slate-200 font-montserrat rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
-                        <SelectValue placeholder="Choose leave type..." className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider" />
+                      <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
+                        <SelectValue placeholder="Choose leave type..." className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider" />
                       </SelectTrigger>
-                      <SelectContent className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+                      <SelectContent className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">
                         {leaves?.map((type) => (
                           <SelectItem
                             key={type?.id}
@@ -386,7 +386,7 @@ const LeaveRequestModal = ({
                             className="py-3 rounded-lg"
                           >
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-medium text-slate-700 font-montserrat capitalize tracking-wider">
+                              <span className="text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider">
                                 {type?.leave_type}
                               </span>
                             </div>
@@ -405,18 +405,18 @@ const LeaveRequestModal = ({
                   {/* Date Selection Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Start Date <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Start Date <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
                       <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-montserrat capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
+                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !startDate && !dates?.start_date && "text-slate-400"
                             )}
                             disabled={readOnly}
                           >
-                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-montserrat justify-center rounded-md">
+                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-3 h-3" />
                             </span>
                             {startDate || dates?.start_date ? format(startDate || dates?.start_date, "dd MMM yyyy") : <span>Pick start date</span>}
@@ -442,18 +442,18 @@ const LeaveRequestModal = ({
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">End Date <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">End Date <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
                       <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-montserrat capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
+                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !endDate && !dates?.end_date && "text-slate-400"
                             )}
                             disabled={readOnly}
                           >
-                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-montserrat justify-center rounded-md">
+                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-3 h-3" />
                             </span>
                             {endDate || dates?.end_date ? format(endDate || dates?.end_date, "dd MMM yyyy") : <span>Pick end date</span>}
@@ -490,7 +490,7 @@ const LeaveRequestModal = ({
                       <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                         <Clock className="h-4 w-4" />
                       </span>
-                      <h3 className="font-semibold font-montserrat text-slate-900 text-lg capitalize tracking-tight">Daily Breakdown</h3>
+                      <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Daily Breakdown</h3>
                     </div>
                     <Badge className="bg-white border-slate-200 text-indigo-600 font-bold px-3 py-1 text-xs shadow-sm">
                       {dayCount} {dayCount === 1 ? "Working Day" : "Working Days"}
@@ -516,7 +516,7 @@ const LeaveRequestModal = ({
                             <p className="font-bold text-slate-900 leading-tight">
                               {dayjs(day.date).format("dddd")}
                             </p>
-                            <p className="text-xs text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">
+                            <p className="text-xs text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
                               {dayjs(day.date).format("DD MMMM YYYY")}
                             </p>
                           </div>
@@ -563,15 +563,15 @@ const LeaveRequestModal = ({
               {/* Reason Section */}
               <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
-                  <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-montserrat justify-center rounded-md">
+                  <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-graphik justify-center rounded-md">
                     <FileText className="h-4 w-4" />
                   </span>
-                  <h3 className="font-semibold font-montserrat text-slate-900 text-lg capitalize tracking-tight">Justification</h3>
+                  <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Justification</h3>
                 </div>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Reason for Leave <span className="text-rose-500 font-montserrat font-medium text-sm">*</span></Label>
+                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Reason for Leave <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
                     <Textarea
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
@@ -586,7 +586,7 @@ const LeaveRequestModal = ({
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-montserrat text-slate-600 flex items-center gap-1">Emergency Contact <span className="text-slate-400 font-montserrat font-medium text-xs">(optional)</span></Label>
+                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Emergency Contact <span className="text-slate-400 font-graphik font-medium text-xs">(optional)</span></Label>
                     <Input
                       value={emergencyContact}
                       onChange={(e) => setEmergencyContact(e.target.value)}
@@ -613,23 +613,23 @@ const LeaveRequestModal = ({
                       <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                         <CheckCircle2 className="h-4 w-4" />
                       </span>
-                      <h3 className="font-semibold font-montserrat text-[#FFFFFF] capitalize tracking-tight text-md">Leave Summary</h3>
+                      <h3 className="font-semibold font-graphik text-[#FFFFFF] capitalize tracking-tight text-md">Leave Summary</h3>
                     </div>
 
                     <div className="space-y-4 relative">
                       <div className="space-y-1">
-                        <p className="text-indigo-100 text-[10px] capitalize font-semibold font-montserrat tracking-widest">Leave Type</p>
-                        <p className="font-black text-lg font-montserrat truncate">{leaveCalculate?.leave_type || "-"}</p>
+                        <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Leave Type</p>
+                        <p className="font-black text-lg font-graphik truncate">{leaveCalculate?.leave_type || "-"}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
                         <div className="space-y-1">
-                          <p className="text-indigo-100 text-[10px] capitalize font-semibold font-montserrat tracking-widest">Selected Days</p>
-                          <p className="font-bold text-xl font-montserrat">{totalLeaveCount || 0} <span className="text-xs font-medium font-montserrat">Days</span></p>
+                          <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Selected Days</p>
+                          <p className="font-bold text-xl font-graphik">{totalLeaveCount || 0} <span className="text-xs font-medium font-graphik">Days</span></p>
                         </div>
                         <div className="space-y-1 text-right">
-                          <p className="text-indigo-100 text-[10px] capitalize font-montserrat font-semibold tracking-widest">Total Days</p>
-                          <p className="font-bold text-lg font-montserrat">{dayCount || 0}</p>
+                          <p className="text-indigo-100 text-[10px] capitalize font-graphik font-semibold tracking-widest">Total Days</p>
+                          <p className="font-bold text-lg font-graphik">{dayCount || 0}</p>
                         </div>
                       </div>
 
@@ -648,20 +648,20 @@ const LeaveRequestModal = ({
                       <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                         <CalendarDays className="h-4 w-4" />
                       </span>
-                      <h3 className="font-semibold text-slate-900 text-sm capitalize font-montserrat tracking-tight">Leave Balance</h3>
+                      <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">Leave Balance</h3>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
+                        <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
                         <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
                       </div>
                       <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Working Days Selected</span>
+                        <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Working Days Selected</span>
                         <span className="font-black text-slate-900 text-md">{dayCount || 0}</span>
                       </div>
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-montserrat text-emerald-600 capitalize tracking-wider">Remaining After Request</span>
+                        <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Remaining After Request</span>
                         <span className={`font-black text-md group-hover:scale-110 transition-transform ${remainingAfterClass}`}>
                           {formattedRemainingAfterRequest}
                         </span>
@@ -680,7 +680,7 @@ const LeaveRequestModal = ({
                   <div className="h-10 w-10 border-[#047857] bg-[#e2e8f0] text-[#047857] flex items-center mx-auto justify-center rounded-md">
                     <FileText className="h-5 w-5" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-500 capitalize font-montserrat tracking-widest">Select leave type to see summary</p>
+                  <p className="text-sm font-semibold text-slate-500 capitalize font-graphik tracking-widest">Select leave type to see summary</p>
                 </div>
               )}
             </div>
@@ -695,7 +695,7 @@ const LeaveRequestModal = ({
             type="button"
             variant="ghost"
             onClick={onClose}
-            className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300 w-full sm:w-auto"
+            className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300 w-full sm:w-auto"
           >
             <X className="h-4 w-4" />
             Cancel
@@ -704,7 +704,7 @@ const LeaveRequestModal = ({
             <Button
               type="submit"
               onClick={handleSubmit}
-              className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat w-full sm:w-auto"
+              className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik w-full sm:w-auto"
             >
               <CheckCircle2 className="h-5 w-5" />
               Submit Request

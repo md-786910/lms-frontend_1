@@ -1,5 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap");
 @import "react-day-picker/dist/style.css";
+
+@font-face {
+  font-family: "Graphik";
+  src: url("/fonts/graphik-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +14,8 @@
 
 @layer base {
   :root {
+    --font-graphik: "Graphik", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
     --background: 220 22% 98%;
     --foreground: 222 47% 10%;
     --landing-sky: 201 239 255;
@@ -100,7 +109,7 @@
 
 @layer base {
   .landing-shell {
-    font-family: "Manrope", "Space Grotesk", system-ui, sans-serif;
+    font-family: var(--font-graphik);
     color: var(--landing-accent-color);
     background-color: var(--landing-primary);
   }
@@ -249,13 +258,13 @@
   html {
     scroll-behavior: smooth;
     background-color: hsl(var(--background));
+    font-family: var(--font-graphik);
     overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Manrope", "Space Grotesk", system-ui, -apple-system,
-      sans-serif;
+    font-family: var(--font-graphik);
     letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
@@ -297,13 +306,29 @@
   ::selection {
     background: hsla(226, 52%, 32%, 0.12);
   }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea,
+  [role="dialog"],
+  [role="menu"],
+  [role="listbox"],
+  [data-radix-popper-content-wrapper],
+  .react-confirm-alert-overlay,
+  .react-confirm-alert-body,
+  .Toastify__toast,
+  .Toastify__toast-body {
+    font-family: var(--font-graphik);
+  }
 }
 
 @layer utilities {
   .landing-shell {
     background: linear-gradient(180deg, #ffffff, #eaf7ff 65%);
     color: #1f2937;
-    font-family: "Space Grotesk", "Manrope", system-ui, -apple-system, sans-serif;
+    font-family: var(--font-graphik);
   }
 
   .landing-hero {

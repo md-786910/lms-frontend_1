@@ -471,7 +471,7 @@ const EmployeeDashboard = () => {
                     {greeting}, {basicProfile?.first_name + " " + basicProfile?.last_name}!
                   </h1>
                 </div>
-                <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
+                <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-graphik">
                   Stay on top of your leave balance, team updates, and recent activity with a dashboard built for daily flow.
                 </p>
               </div>
@@ -479,7 +479,7 @@ const EmployeeDashboard = () => {
                 <div className="flex items-center gap-3">
                   <Button
                     size="lg"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => {
                       setReadOnly(false);
                       setLeaveRequestViewMode({});
@@ -489,7 +489,7 @@ const EmployeeDashboard = () => {
                     Apply for Leave
                   </Button>                  <Button
                     size="lg"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowProofOfWorkModal(true)}
                   >
                     Apply for Proof of Work
@@ -497,7 +497,7 @@ const EmployeeDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Leave Policy
@@ -523,15 +523,15 @@ const EmployeeDashboard = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
                       <span
-                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-montserrat tracking-wide ${palette.chip}`}
+                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
                       >
                         <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
                         {stat.subtitle}
                       </span>
-                      <p className="text-lg font-semibold text-slate-900 font-montserrat">
+                      <p className="text-lg font-semibold text-slate-900 font-graphik">
                         {stat.title}
                       </p>
-                      <p className="text-3xl font-bold text-slate-900 leading-tight font-montserrat">
+                      <p className="text-3xl font-bold text-slate-900 leading-tight font-graphik">
                         {stat.value}
                       </p>
                     </div>
@@ -548,7 +548,7 @@ const EmployeeDashboard = () => {
         </div>
         <Card className="rounded-md border border-slate-200 shadow-sm">
           <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-            <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
               <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                 <FileCheck2 className="h-5 w-5" />
               </span>
@@ -557,7 +557,7 @@ const EmployeeDashboard = () => {
           </CardHeader>
           <CardContent className="p-6">
             {proofOfWorkLoading ? (
-              <p className="text-sm font-semibold text-slate-500 font-montserrat">Loading submissions...</p>
+              <p className="text-sm font-semibold text-slate-500 font-graphik">Loading submissions...</p>
             ) : recentProofOfWork.length > 0 ? (
               <div className="space-y-3">
                 {recentProofOfWork.map((submission) => (
@@ -567,12 +567,12 @@ const EmployeeDashboard = () => {
                   >
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm font-bold text-slate-900 font-montserrat">{submission.title}</p>
+                        <p className="text-sm font-bold text-slate-900 font-graphik">{submission.title}</p>
                         <Badge className={"capitalize border text-xs " + (proofStatusStyles[submission.status] || proofStatusStyles.pending)}>
                           {submission.status}
                         </Badge>
                       </div>
-                      <p className="text-xs font-medium text-slate-500 font-montserrat">
+                      <p className="text-xs font-medium text-slate-500 font-graphik">
                         {proofTypeLabels[submission.work_type] || submission.work_type} - {dayjs(submission.work_date).format("D MMM YYYY")} - {(submission.attachments || []).length} evidence file{(submission.attachments || []).length === 1 ? "" : "s"}
                       </p>
                     </div>
@@ -595,7 +595,7 @@ const EmployeeDashboard = () => {
           {/* Calendar */}
           <Card className="lg:col-span-2 rounded-md border border-slate-200 shadow-sm overflow-hidden">
             <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
                 <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                   <CalendarIcon className="h-5 w-5" />
                 </span>
@@ -650,7 +650,7 @@ const EmployeeDashboard = () => {
                     </div>
                     <Badge
                       variant="outline"
-                      className="rounded-full border-slate-200 text-slate-700 font-montserrat"
+                      className="rounded-full border-slate-200 text-slate-700 font-graphik"
                     >
                       Calendar
                     </Badge>
@@ -659,7 +659,7 @@ const EmployeeDashboard = () => {
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
                     <div className="p-4 border-b border-slate-100 flex items-center gap-2">
                       <CalendarIcon className="h-4 w-4 text-primary" />
-                      <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                      <p className="text-sm font-semibold text-slate-900 font-graphik">
                         Team on leave today
                       </p>
                     </div>
@@ -671,15 +671,15 @@ const EmployeeDashboard = () => {
                             className="p-4 flex items-center justify-between gap-3"
                           >
                             <div>
-                              <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                              <p className="text-sm font-semibold text-slate-900 font-graphik">
                                 {leave.employeeName}
                               </p>
-                              <p className="text-xs text-slate-500 font-montserrat">
+                              <p className="text-xs text-slate-500 font-graphik">
                                 ID: {leave.employeeId}
                               </p>
                             </div>
                             <Badge
-                              className="rounded-full text-xs font-semibold font-montserrat border-slate-200"
+                              className="rounded-full text-xs font-semibold font-graphik border-slate-200"
                               variant="outline"
                             >
                               {leave.type}
@@ -691,10 +691,10 @@ const EmployeeDashboard = () => {
                           <div className="h-10 w-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
                             <CalendarX className="h-5 w-5" />
                           </div>
-                          <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                          <p className="text-sm font-semibold text-slate-900 font-graphik">
                             Clear schedule
                           </p>
-                          <p className="text-xs text-slate-500 font-montserrat">
+                          <p className="text-xs text-slate-500 font-graphik">
                             No one is on leave today.
                           </p>
                         </div>
@@ -709,7 +709,7 @@ const EmployeeDashboard = () => {
           {/* Recent Activities */}
           <Card className="border border-slate-200 rounded-md shadow-sm">
             <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
                 <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                   <BellRing className="h-5 w-5" />
                 </span>
@@ -728,10 +728,10 @@ const EmployeeDashboard = () => {
                     )}
                   </div>
                   <div className="space-y-1">
-                    <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                    <p className="text-sm font-semibold text-slate-900 font-graphik">
                       {activity.message}
                     </p>
-                    <p className="text-xs text-slate-500 font-montserrat">
+                    <p className="text-xs text-slate-500 font-graphik">
                       {dayjs(activity.createdAt).fromNow()}
                     </p>
                   </div>
@@ -746,7 +746,7 @@ const EmployeeDashboard = () => {
           <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
             <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-500" />
             <CardHeader className="py-3">
-              <CardTitle className="flex items-center gap-2 text-base font-semibold font-montserrat text-slate-900">
+              <CardTitle className="flex items-center gap-2 text-base font-semibold font-graphik text-slate-900">
                 <Award className="h-5 w-5 text-amber-600" />
                 <span>
                   My leaves for Month - {format(new Date(), "MMMM yyyy")}
@@ -759,10 +759,10 @@ const EmployeeDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-montserrat">
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-graphik">
                         Name
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -773,15 +773,15 @@ const EmployeeDashboard = () => {
                         ({ employee: emp, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
+                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
                               {emp.employee_name ||
                                 `${emp.first_name || ""} ${emp.last_name || ""
                                   }`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -791,7 +791,7 @@ const EmployeeDashboard = () => {
                       <tr>
                         <td
                           colSpan="2"
-                          className="py-6 text-center text-slate-500 text-sm font-montserrat"
+                          className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for this month
                         </td>
@@ -806,7 +806,7 @@ const EmployeeDashboard = () => {
           <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
             <div className="absolute inset-x-0 top-0 h-[1px] bg-primary" />
             <CardHeader className="py-3">
-              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900 font-montserrat">
+              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900 font-graphik">
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-primary" />
                   <span>
@@ -825,10 +825,10 @@ const EmployeeDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="text-left py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="text-left py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Name
                       </th>
-                      <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -839,15 +839,15 @@ const EmployeeDashboard = () => {
                         ({ employee: emp, total_leave }, index) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
+                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
                               {emp.employee_name ||
                                 `${emp.first_name || ""} ${emp.last_name || ""
                                   }`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
                               {total_leave ?? 0}
                             </td>
                           </tr>
@@ -857,7 +857,7 @@ const EmployeeDashboard = () => {
                       <tr>
                         <td
                           colSpan="2"
-                          className="py-6 text-center text-slate-500 text-sm font-montserrat"
+                          className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for previous month
                         </td>

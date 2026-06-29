@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -132,7 +132,7 @@ const Salary = () => {
             View History
           </Button>
           <Button
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-Montserrat"
+            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-graphik"
             onClick={async () => {
               const currentMonth = salaryHistory?.find(
                 (item) => item?.month_in_digit === month_in_digit
@@ -159,17 +159,17 @@ const Salary = () => {
                 <h2 className="text-4xl font-semibold tracking-tight">
                   ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
                 </h2>
-                <Badge className="bg-emerald-100 text-emerald-800 border-0 font-montserrat">
+                <Badge className="bg-emerald-100 text-emerald-800 border-0 font-graphik">
                   Net after deductions
                 </Badge>
               </div>
-              <p className="text-slate-300 text-sm font-montserrat">
+              <p className="text-slate-300 text-sm font-graphik">
                 Updated for {dayjs().format("MMMM YYYY")}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
               <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs text-slate-200 font-montserrat">Gross Salary</p>
+                <p className="text-xs text-slate-200 font-graphik">Gross Salary</p>
                 <p className="text-lg font-semibold">
                   ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
                 </p>

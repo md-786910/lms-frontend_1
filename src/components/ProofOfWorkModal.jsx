@@ -100,10 +100,10 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
                   <FileUp className="h-5 w-5" />
                 </span>
                 <div>
-                  <h2 className="text-2xl font-semibold font-montserrat text-white tracking-tight">
+                  <h2 className="text-2xl font-semibold font-graphik text-white tracking-tight">
                     Apply for Proof of Work
                   </h2>
-                  <p className="text-sm font-medium text-white/90 font-montserrat">
+                  <p className="text-sm font-medium text-white/90 font-graphik">
                     Submit work details and evidence for admin review.
                   </p>
                 </div>
@@ -127,24 +127,24 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 md:px-8 py-5 md:py-6 space-y-5 bg-white">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
-            <Label className="text-xs font-bold tracking-wide text-slate-600 font-montserrat">
+            <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
               Title <span className="text-rose-500">*</span>
             </Label>
             <Input
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Completed remote support shift"
-              className="h-12 rounded-xl border-slate-200 font-montserrat"
+              className="h-12 rounded-xl border-slate-200 font-graphik"
             />
             {errors.title && <p className="text-xs font-semibold text-rose-500">{errors.title}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs font-bold tracking-wide text-slate-600 font-montserrat">
+            <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
               Work Type <span className="text-rose-500">*</span>
             </Label>
             <Select value={workType} onValueChange={setWorkType}>
-              <SelectTrigger className="h-12 rounded-xl border-slate-200 font-montserrat">
+              <SelectTrigger className="h-12 rounded-xl border-slate-200 font-graphik">
                 <SelectValue placeholder="Select work type" />
               </SelectTrigger>
               <SelectContent>
@@ -159,31 +159,31 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs font-bold tracking-wide text-slate-600 font-montserrat">
+            <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
               Work Date <span className="text-rose-500">*</span>
             </Label>
             <Input
               type="date"
               value={workDate}
               onChange={(event) => setWorkDate(event.target.value)}
-              className="h-12 rounded-xl border-slate-200 font-montserrat"
+              className="h-12 rounded-xl border-slate-200 font-graphik"
             />
             {errors.workDate && <p className="text-xs font-semibold text-rose-500">{errors.workDate}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs font-bold tracking-wide text-slate-600 font-montserrat">
+            <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
               Evidence Files <span className="text-rose-500">*</span>
             </Label>
             <Input
               type="file"
               multiple
               onChange={(event) => setFiles(Array.from(event.target.files || []))}
-              className="h-12 rounded-xl border-slate-200 font-montserrat file:mr-4 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-slate-700"
+              className="h-12 rounded-xl border-slate-200 font-graphik file:mr-4 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-slate-700"
             />
             {errors.files && <p className="text-xs font-semibold text-rose-500">{errors.files}</p>}
             {files.length > 0 && (
-              <p className="text-xs font-semibold text-slate-500 font-montserrat">
+              <p className="text-xs font-semibold text-slate-500 font-graphik">
                 {files.length} file{files.length === 1 ? "" : "s"} selected
               </p>
             )}
@@ -191,7 +191,7 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
         </div>
 
         <div className="space-y-2">
-          <Label className="text-xs font-bold tracking-wide text-slate-600 font-montserrat">
+          <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
             Description <span className="text-rose-500">*</span>
           </Label>
           <Textarea
@@ -199,7 +199,7 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Describe the completed work and reference the attached evidence."
             rows={5}
-            className="rounded-xl border-slate-200 font-montserrat resize-none"
+            className="rounded-xl border-slate-200 font-graphik resize-none"
           />
           {errors.description && <p className="text-xs font-semibold text-rose-500">{errors.description}</p>}
         </div>
@@ -210,14 +210,14 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
             variant="outline"
             onClick={onClose}
             disabled={submitting}
-            className="w-full sm:w-auto rounded-xl border-slate-200 font-montserrat"
+            className="w-full sm:w-auto rounded-xl border-slate-200 font-graphik"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-montserrat"
+            className="w-full sm:w-auto rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-graphik"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
             Submit Proof

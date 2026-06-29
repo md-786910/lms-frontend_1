@@ -397,11 +397,11 @@ const Employees = ({
           <div className="grid grid-cols-12 items-center gap-4 relative z-10">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-montserrat">
+                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-graphik">
                   {customTitle}
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
+              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-graphik">
                 {customSubtitle}
               </p>
             </div>
@@ -466,7 +466,7 @@ const Employees = ({
                 <SelectTrigger className="w-full sm:w-64 h-11 border-slate-200 rounded-xl font-medium">
                   <SelectValue placeholder="All Departments" />
                 </SelectTrigger>
-                <SelectContent className="font-montserrat">
+                <SelectContent className="font-graphik">
                   {departments.map((dept) => (
                     <SelectItem key={dept} value={dept}>
                       {dept === "all" ? "All Departments" : dept}
@@ -537,7 +537,7 @@ const Employees = ({
                   {/* Avatar & quick status */}
                   <div className="flex md:flex-col items-center gap-3 md:w-32">
                     <div
-                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 font-montserrat"
+                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 font-graphik"
                     >
                       {employee.profile ? (
                         <img
@@ -546,7 +546,7 @@ const Employees = ({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize font-montserrat">
+                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize font-graphik">
                           {avatarLoadingId === employee.id ? (
                             <Loader2 className="animate-spin" />
                           ) : (
@@ -591,8 +591,8 @@ const Employees = ({
                       <Badge
                         className={
                           employee.is_active === true
-                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100 font-montserrat"
-                            : "bg-amber-50 text-amber-700 border border-amber-100 font-montserrat"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100 font-graphik"
+                            : "bg-amber-50 text-amber-700 border border-amber-100 font-graphik"
                         }
                       >
                         {employee.is_active === true ? "Active" : "Not Active"}
@@ -600,7 +600,7 @@ const Employees = ({
                       {employee.department?.name && (
                         <Badge
                           variant="outline"
-                          className="border-slate-200 text-slate-700 bg-white font-montserrat"
+                          className="border-slate-200 text-slate-700 bg-white font-graphik"
                         >
                           {employee.department?.name}
                         </Badge>
@@ -612,10 +612,10 @@ const Employees = ({
                   <div className="flex-1 space-y-3">
                     <div className="flex flex-wrap items-start gap-3 justify-between">
                       <div>
-                        <CardTitle className="text-lg text-slate-900 font-semibold font-montserrat">
+                        <CardTitle className="text-lg text-slate-900 font-semibold font-graphik">
                           {employee.first_name} {employee.last_name}
                         </CardTitle>
-                        <p className="text-sm text-slate-600 font-montserrat font-semibold">
+                        <p className="text-sm text-slate-600 font-graphik font-semibold">
                           {employee.designation?.title || "Role not set"}
                         </p>
                       </div>
@@ -638,7 +638,7 @@ const Employees = ({
                               title="Suspend"
                               variant="ghost"
                               size="icon"
-                              className="text-rose-600 font-montserrat"
+                              className="text-rose-600 font-graphik"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 setEmployeeToDelete(employee);
@@ -652,7 +652,7 @@ const Employees = ({
                               title="Suspend"
                               variant="outline"
                               size="sm"
-                              className="text-rose-600 border-rose-200 font-montserrat"
+                              className="text-rose-600 border-rose-200 font-graphik"
                               onClick={async (event) => {
                                 event.stopPropagation();
                                 const resp =
@@ -679,7 +679,7 @@ const Employees = ({
                                   setResendTarget(employee);
                                   setShowResendConfirm(true);
                                 }}
-                                className="px-3 font-montserrat"
+                                className="px-3 font-graphik"
                               >
                                 Resend invite
                               </Button>
@@ -691,43 +691,43 @@ const Employees = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                       <div className="flex items-center gap-2 text-slate-700">
                         <User className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">ID</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">ID</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {employee?.employee_no || employee.id}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
                         <Mail className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">Email</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">Email</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {employee.email}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
                         <Phone className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">Phone</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">Phone</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {employee.phone_number}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
                         <MapPin className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">Location</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">Location</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {employee.address?.city}, {employee.address?.zip_code}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
                         <IndianRupee className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">Payable</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">Payable</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {employee.employee_salary?.payable_salary ?? "—"}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-700">
                         <Calendar className="h-4 w-4 text-slate-600 font-semibold" />
-                        <span className="font-semibold font-montserrat text-slate-700">Joined</span>
-                        <span className="text-slate-500 font-montserrat font-medium">
+                        <span className="font-semibold font-graphik text-slate-700">Joined</span>
+                        <span className="text-slate-500 font-graphik font-medium">
                           {new Date(
                             employee.date_of_joining
                           ).toLocaleDateString("en-GB", {
@@ -742,17 +742,17 @@ const Employees = ({
                     {/* Leave Balance */}
                     {!readOnly && (
                       <div className="flex flex-wrap items-center justify-between gap-3 text-sm mt-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
-                        <span className="text-slate-700 font-semibold font-montserrat">
+                        <span className="text-slate-700 font-semibold font-graphik">
                           Leave balance
                         </span>
-                        <div className="flex flex-wrap gap-3 text-xs font-semibold font-montserrat">
+                        <div className="flex flex-wrap gap-3 text-xs font-semibold font-graphik">
                           <Badge className={remainingBadgeClass}>
                             Remaining: {formattedRemainingBalance}
                           </Badge>
-                          <Badge className="bg-amber-50 text-amber-700 border border-amber-100 font-montserrat">
+                          <Badge className="bg-amber-50 text-amber-700 border border-amber-100 font-graphik">
                             Used: {formattedUsedBalance}
                           </Badge>
-                          <Badge className="bg-slate-100 text-slate-700 border border-slate-200 font-montserrat">
+                          <Badge className="bg-slate-100 text-slate-700 border border-slate-200 font-graphik">
                             Total: {formattedTotalBalance}
                           </Badge>
                         </div>
@@ -769,10 +769,10 @@ const Employees = ({
 
       {/* Dialogs & Modals */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl font-montserrat">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl font-graphik">
           <div className="bg-slate-900 text-white p-6 sticky top-0 z-10">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-3 text-xl font-semibold font-montserrat">
+              <DialogTitle className="flex items-center gap-3 text-xl font-semibold font-graphik">
                 <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                   <User className="h-5 w-5" />
                 </span>
@@ -787,7 +787,7 @@ const Employees = ({
       </Dialog>
       <ConfirmationModal open={showConfirmDelete} onClose={() => setShowConfirmDelete(false)} onConfirm={() => handleDeleteEmployee()} employee={employeeToDelete} />
       {showResendConfirm && resendTarget && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-montserrat animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-graphik animate-in fade-in duration-200">
           <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden border border-slate-200">
             <div className="bg-slate-900 p-4 flex items-center gap-3">
               <Mail className="h-5 w-5 text-emerald-400" />

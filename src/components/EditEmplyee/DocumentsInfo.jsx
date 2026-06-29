@@ -87,14 +87,14 @@ const DocumentsForm = ({
   const isImage = (fileName) => /\.(jpg|jpeg|png)$/i.test(fileName);
   const isPdf = (fileName) => /\.pdf$/i.test(fileName);
   return (
-    <div className="space-y-8 font-montserrat">
+    <div className="space-y-8 font-graphik">
       {/* Upload Form */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
         {/* Document Type */}
         <div className="space-y-2">
           <Label
             htmlFor="docType"
-            className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider"
+            className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider"
           >
             Document Type *
           </Label>
@@ -102,10 +102,10 @@ const DocumentsForm = ({
             value={selectedType}
             onValueChange={(value) => setSelectedType(value)}
           >
-            <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-montserrat rounded-md shadow-sm">
+            <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik rounded-md shadow-sm">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
-            <SelectContent className="font-montserrat">
+            <SelectContent className="font-graphik">
               {documentType.map((doc) => (
                 <SelectItem key={doc.id} value={doc.id}>
                   {doc.type}
@@ -119,7 +119,7 @@ const DocumentsForm = ({
         <div className="space-y-2">
           <Label
             htmlFor="docFile"
-            className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider"
+            className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider"
           >
             File <span className="text-[10px] text-slate-400 font-normal">(PDF, JPG, PNG)</span> *
           </Label>
@@ -127,7 +127,7 @@ const DocumentsForm = ({
             id="docFile"
             type="file"
             accept=".pdf,.jpg,.jpeg,.png"
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat cursor-pointer file:font-bold file:text-slate-700 file:bg-slate-50 file:border-0 file:mr-4 file:h-full"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik cursor-pointer file:font-bold file:text-slate-700 file:bg-slate-50 file:border-0 file:mr-4 file:h-full"
             onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
           />
         </div>
@@ -137,7 +137,7 @@ const DocumentsForm = ({
           <Button
             type="button"
             onClick={handleAddDocument}
-            className="w-full h-11 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-lg transition-all font-montserrat font-bold uppercase tracking-wider"
+            className="w-full h-11 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-lg transition-all font-graphik font-bold uppercase tracking-wider"
           >
             <UploadCloud className="w-4 h-4 mr-2" />
             Add Document
@@ -149,7 +149,7 @@ const DocumentsForm = ({
       {Array.isArray(documents) && documents.some((doc) => doc.isPending) && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 border-b border-amber-100 pb-2">
-            <h3 className="text-lg font-bold text-amber-700 font-montserrat uppercase tracking-wider">
+            <h3 className="text-lg font-bold text-amber-700 font-graphik uppercase tracking-wider">
               Unsaved Files
             </h3>
             <Badge className="bg-amber-100 text-amber-700 border-amber-200 font-bold">New</Badge>
@@ -208,7 +208,7 @@ const DocumentsForm = ({
       {Array.isArray(documents) && documents.some((doc) => !doc.isPending) && (
         <div className="space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <h3 className="text-lg font-bold text-slate-700 font-montserrat uppercase tracking-wider">
+            <h3 className="text-lg font-bold text-slate-700 font-graphik uppercase tracking-wider">
               Uploaded Documents
             </h3>
             <Badge variant="outline" className="text-slate-400 border-slate-200 font-bold">{documents.filter(d => !d.isPending).length}</Badge>

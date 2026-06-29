@@ -99,7 +99,7 @@ function Documents({ value }) {
     <>
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
             <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
               <FolderTree className="h-5 w-5" />
             </span>
@@ -109,12 +109,12 @@ function Documents({ value }) {
         <CardContent className="space-y-6">
           {/* Add New Department */}
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-4">
+            <h3 className="font-bold text-slate-700 font-graphik capitalize tracking-wider mb-4">
               Add New Document
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
               <Input
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
                 name="type"
                 placeholder="Document Name"
                 value={newDocument.type}
@@ -128,7 +128,7 @@ function Documents({ value }) {
             <Button
               onClick={addDocument}
               disabled={loader}
-              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat"
+              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
             >
               <Plus className="h-4 w-4" />
               {loader ? "saving data.." : "Save Document Details"}
@@ -143,7 +143,7 @@ function Documents({ value }) {
                 className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
               >
                 <div>
-                  <h4 className="font-medium text-slate-800 font-montserrat">{doc.type}</h4>
+                  <h4 className="font-medium text-slate-800 font-graphik">{doc.type}</h4>
                 </div>
                 <div className="flex space-x-2">
                   <Button

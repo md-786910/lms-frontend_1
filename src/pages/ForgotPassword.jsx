@@ -63,7 +63,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-montserrat overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-graphik overflow-hidden">
       {/* Left Side: Visual/Branding Section (Consistent with Login) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#0F172A] items-center justify-center p-12 overflow-hidden">
         {/* Animated Background Elements */}

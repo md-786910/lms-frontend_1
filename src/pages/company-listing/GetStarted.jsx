@@ -540,7 +540,7 @@ const GetStarted = () => {
                 {currentStep < 3 ? (
                   <Button
                     onClick={handleNext}
-                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-montserrat"
+                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
                   >
                     Next
                   </Button>
@@ -548,7 +548,7 @@ const GetStarted = () => {
                   <Button
                     onClick={() => handleSubmitForm()}
                     disabled={errors.agreeToTerms}
-                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-montserrat"
+                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
                   >
                     Create Account
                   </Button>

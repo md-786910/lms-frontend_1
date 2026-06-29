@@ -47,7 +47,7 @@ const DatePickerField = ({ name, label, value, required, onChange, onBlur, error
 
   return (
     <div className="flex flex-col space-y-2">
-      <Label htmlFor={name} className="text-[#131313] font-montserrat">
+      <Label htmlFor={name} className="text-[#131313] font-graphik">
         {label} {required && "*"}
       </Label>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -76,7 +76,7 @@ const DatePickerField = ({ name, label, value, required, onChange, onBlur, error
               }
             }}
             initialFocus
-            className="font-montserrat"
+            className="font-graphik"
           />
         </PopoverContent>
       </Popover>
@@ -124,39 +124,39 @@ const BasicInfoForm = forwardRef(
     }
 
     return (
-      <div className="font-montserrat text-slate-900">
+      <div className="font-graphik text-slate-900">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
           {/* First Name */}
           <div className="space-y-2">
-            <Label htmlFor="first_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">First Name *</Label>
+            <Label htmlFor="first_name" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">First Name *</Label>
             <Input
               id="first_name"
               name="first_name"
               value={values.first_name || ""}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("first_name")}
           </div>
 
           {/* Last Name */}
           <div className="space-y-2">
-            <Label htmlFor="last_name" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Last Name</Label>
+            <Label htmlFor="last_name" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Last Name</Label>
             <Input
               id="last_name"
               name="last_name"
               value={values.last_name || ""}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("last_name")}
           </div>
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Email *</Label>
+            <Label htmlFor="email" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Email *</Label>
             <Input
               id="email"
               name="email"
@@ -164,28 +164,28 @@ const BasicInfoForm = forwardRef(
               value={values.email || ""}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("email")}
           </div>
 
           {/* Phone Number */}
           <div className="space-y-2">
-            <Label htmlFor="phone_number" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Phone *</Label>
+            <Label htmlFor="phone_number" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Phone *</Label>
             <Input
               id="phone_number"
               name="phone_number"
               value={values.phone_number || ""}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("phone_number")}
           </div>
 
           {/* Gender */}
           <div className="space-y-2">
-            <Label htmlFor="gender" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Gender *</Label>
+            <Label htmlFor="gender" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Gender *</Label>
             <Select
               value={values.gender || ""}
               onValueChange={(val) =>
@@ -194,10 +194,10 @@ const BasicInfoForm = forwardRef(
                 })
               }
             >
-              <SelectTrigger onBlur={() => triggerBlur("gender")} className="h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
+              <SelectTrigger onBlur={() => triggerBlur("gender")} className="h-11 font-graphik border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
-              <SelectContent className="font-montserrat">
+              <SelectContent className="font-graphik">
                 <SelectItem value="male">Male</SelectItem>
                 <SelectItem value="female">Female</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
@@ -211,7 +211,7 @@ const BasicInfoForm = forwardRef(
 
           {/* Marital Status */}
           <div className="space-y-2">
-            <Label htmlFor="martial_status" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Marital Status *</Label>
+            <Label htmlFor="martial_status" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Marital Status *</Label>
             <Select
               value={values.martial_status || ""}
               onValueChange={(val) =>
@@ -220,10 +220,10 @@ const BasicInfoForm = forwardRef(
                 })
               }
             >
-              <SelectTrigger onBlur={() => triggerBlur("martial_status")} className="h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
+              <SelectTrigger onBlur={() => triggerBlur("martial_status")} className="h-11 font-graphik border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
-              <SelectContent className="font-montserrat">
+              <SelectContent className="font-graphik">
                 <SelectItem value="single">Single</SelectItem>
                 <SelectItem value="married">Married</SelectItem>
                 <SelectItem value="divorced">Divorced</SelectItem>
@@ -257,17 +257,17 @@ const BasicInfoForm = forwardRef(
 
           {/* Department */}
           <div className="space-y-2">
-            <Label htmlFor="department_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Department *</Label>
+            <Label htmlFor="department_id" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Department *</Label>
             <Select
               value={String(values.department_id || "")}
               onValueChange={(val) =>
                 handleChange({ target: { name: "department_id", value: val } })
               }
             >
-              <SelectTrigger onBlur={() => triggerBlur("department_id")} className="w-full h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
+              <SelectTrigger onBlur={() => triggerBlur("department_id")} className="w-full h-11 font-graphik border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select department" />
               </SelectTrigger>
-              <SelectContent className="font-montserrat">
+              <SelectContent className="font-graphik">
                 {departments.map((dept) => (
                   <SelectItem key={dept.id} value={String(dept.id)}>
                     {dept.name}
@@ -280,17 +280,17 @@ const BasicInfoForm = forwardRef(
 
           {/* Designation */}
           <div className="space-y-2">
-            <Label htmlFor="designation_id" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Designation *</Label>
+            <Label htmlFor="designation_id" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Designation *</Label>
             <Select
               value={String(values.designation_id || "")}
               onValueChange={(val) =>
                 handleChange({ target: { name: "designation_id", value: val } })
               }
             >
-              <SelectTrigger onBlur={() => triggerBlur("designation_id")} className="w-full h-11 font-montserrat border border-slate-200 focus:border-slate-900 transition-all">
+              <SelectTrigger onBlur={() => triggerBlur("designation_id")} className="w-full h-11 font-graphik border border-slate-200 focus:border-slate-900 transition-all">
                 <SelectValue placeholder="Select designation" />
               </SelectTrigger>
-              <SelectContent className="font-montserrat">
+              <SelectContent className="font-graphik">
                 {designations.map((designation) => (
                   <SelectItem
                     key={designation.id}
@@ -306,14 +306,14 @@ const BasicInfoForm = forwardRef(
 
           {/* Nationality */}
           <div className="space-y-2 w-full">
-            <Label htmlFor="nationality" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Nationality *</Label>
+            <Label htmlFor="nationality" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Nationality *</Label>
             <Input
               id="nationality"
               name="nationality"
               value={values.nationality || ""}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("nationality")}
           </div>

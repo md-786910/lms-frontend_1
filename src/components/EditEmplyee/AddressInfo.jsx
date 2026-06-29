@@ -40,71 +40,71 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
     ) : null;
 
   return (
-    <div className="font-montserrat text-slate-900">
+    <div className="font-graphik text-slate-900">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
         <div className="space-y-2">
-          <Label htmlFor="street" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Street Address *</Label>
+          <Label htmlFor="street" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Street Address *</Label>
           <Input
             id="street"
             name="street"
             value={values.street}
             onChange={handleChange}
             onBlur={handleBlur}
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
           />
           {renderError("street")}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="city" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">City *</Label>
+          <Label htmlFor="city" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">City *</Label>
           <Input
             id="city"
             name="city"
             value={values.city}
             onChange={handleChange}
             onBlur={handleBlur}
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
           />
           {renderError("city")}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="state" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">State *</Label>
+          <Label htmlFor="state" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">State *</Label>
           <Input
             id="state"
             name="state"
             value={values.state}
             onChange={handleChange}
             onBlur={handleBlur}
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
           />
           {renderError("state")}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="zip_code" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">ZIP Code *</Label>
+          <Label htmlFor="zip_code" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">ZIP Code *</Label>
           <Input
             id="zip_code"
             name="zip_code"
             value={values.zip_code}
             onChange={handleChange}
             onBlur={handleBlur}
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
           />
           {renderError("zip_code")}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="country" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Country</Label>
+          <Label htmlFor="country" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Country</Label>
           <Input
             id="country"
             name="country"
             value={values.country}
             onChange={handleChange}
             onBlur={handleBlur}
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
           />
           {renderError("country")}
         </div>
         
         <div className="col-span-full space-y-2">
-          <Label htmlFor="permanent_address" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Permanent Address</Label>
+          <Label htmlFor="permanent_address" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Permanent Address</Label>
           <Textarea
             id="permanent_address"
             name="permanent_address"
@@ -112,7 +112,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
             onChange={handleChange}
             onBlur={handleBlur}
             rows={3}
-            className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat min-h-[100px]"
+            className="border border-slate-200 focus:border-slate-900 transition-all font-graphik min-h-[100px]"
           />
           {renderError("permanent_address")}
         </div>

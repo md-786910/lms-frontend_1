@@ -59,10 +59,10 @@ const PersonalInfoForm = forwardRef(
       ) : null;
 
     return (
-      <div className="font-montserrat text-slate-900">
+      <div className="font-graphik text-slate-900">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
           <div className="space-y-2">
-            <Label htmlFor="emergency_contact_person" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">
+            <Label htmlFor="emergency_contact_person" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">
               Emergency Contact Name
             </Label>
             <Input
@@ -71,13 +71,13 @@ const PersonalInfoForm = forwardRef(
               value={values.emergency_contact_person}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("emergency_contact_person")}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="emergency_contact_number" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">
+            <Label htmlFor="emergency_contact_number" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">
               Emergency Contact Phone
             </Label>
             <Input
@@ -86,34 +86,34 @@ const PersonalInfoForm = forwardRef(
               value={values.emergency_contact_number}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("emergency_contact_number")}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="emergency_contact_relationship" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Relationship</Label>
+            <Label htmlFor="emergency_contact_relationship" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Relationship</Label>
             <Input
               id="emergency_contact_relationship"
               name="emergency_contact_relationship"
               value={values.emergency_contact_relationship}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("emergency_contact_relationship")}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="blood_group" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Blood Group *</Label>
+            <Label htmlFor="blood_group" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Blood Group *</Label>
             <Select
               value={values.blood_group}
               onValueChange={(value) => setFieldValue("blood_group", value)}
             >
-              <SelectTrigger className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+              <SelectTrigger className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik">
                 <SelectValue placeholder="Select blood group" />
               </SelectTrigger>
-              <SelectContent className="font-montserrat">
+              <SelectContent className="font-graphik">
                 {BLOOD_GROUPS.map((group) => (
                   <SelectItem key={group} value={group}>
                     {group}
@@ -125,52 +125,52 @@ const PersonalInfoForm = forwardRef(
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="epf_no" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">EPF Number</Label>
+            <Label htmlFor="epf_no" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">EPF Number</Label>
             <Input
               id="epf_no"
               name="epf_no"
               value={values.epf_no}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("epf_no")}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="pan_no" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">PAN Number</Label>
+            <Label htmlFor="pan_no" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">PAN Number</Label>
             <Input
               id="pan_no"
               name="pan_no"
               value={values.pan_no}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             />
             {renderError("pan_no")}
           </div>
 
           <div className="col-span-full space-y-2">
-            <Label htmlFor="medical_conditions" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Medical Conditions</Label>
+            <Label htmlFor="medical_conditions" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Medical Conditions</Label>
             <Textarea
               id="medical_conditions"
               name="medical_conditions"
               value={values.medical_conditions}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat min-h-[100px]"
+              className="border border-slate-200 focus:border-slate-900 transition-all font-graphik min-h-[100px]"
             />
           </div>
 
           <div className="col-span-full space-y-2">
-            <Label htmlFor="hobbies" className="text-sm font-bold text-slate-700 font-montserrat uppercase tracking-wider">Hobbies & Interests</Label>
+            <Label htmlFor="hobbies" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Hobbies & Interests</Label>
             <Textarea
               id="hobbies"
               name="hobbies"
               value={values.hobbies}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat min-h-[100px]"
+              className="border border-slate-200 focus:border-slate-900 transition-all font-graphik min-h-[100px]"
             />
           </div>
         </div>

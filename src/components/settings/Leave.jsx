@@ -90,7 +90,7 @@ function Leave({ value }) {
     <>
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
             <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
               <CalendarClock className="h-5 w-5" />
             </span>
@@ -100,13 +100,13 @@ function Leave({ value }) {
         <CardContent className="space-y-6">
           {/* Add New Leave Type */}
           <div className="p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-4">
+            <h3 className="font-bold text-slate-700 font-graphik capitalize tracking-wider mb-4">
               Add New Leave Type
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Input
-                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
                   placeholder="Leave Type Name"
                   value={newLeaveType.type}
                   onChange={(e) =>
@@ -119,7 +119,7 @@ function Leave({ value }) {
               </div>
               <div>
                 <Input
-                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
                   type="number"
                   placeholder="Annual Days"
                   value={newLeaveType.annual_days}
@@ -138,7 +138,7 @@ function Leave({ value }) {
             <Button
               onClick={addLeaveType}
               disabled={loader}
-              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat"
+              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
             >
               <Plus className="h-4 w-4 mr-2" />
               {loader ? "saving data..." : "Save Leave"}
@@ -153,8 +153,8 @@ function Leave({ value }) {
                 className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
               >
                 <div>
-                  <h4 className="font-medium text-slate-800 font-montserrat">{leave.type}</h4>
-                  <div className="text-sm text-slate-500 font-montserrat mt-1">
+                  <h4 className="font-medium text-slate-800 font-graphik">{leave.type}</h4>
+                  <div className="text-sm text-slate-500 font-graphik mt-1">
                     <span>Annual Days: {leave.annual_days}</span>
                   </div>
                 </div>

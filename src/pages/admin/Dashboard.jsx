@@ -354,7 +354,7 @@ const AdminDashboard = () => {
                     Welcome back, Admin!
                   </h1>
                 </div>
-                <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-montserrat">
+                <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-graphik">
                   Keep a pulse on people, leave, and payroll with a clean
                   control room built for quick actions.
                 </p>
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
                 <div className="flex flex-wrap items-center gap-3">
                   <Button
                     size="lg"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Holidays
@@ -371,7 +371,7 @@ const AdminDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowDownloadConfirm(true)}
                     disabled={downloading}
                   >
@@ -403,15 +403,15 @@ const AdminDashboard = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
                       <span
-                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-montserrat tracking-wide ${palette.chip}`}
+                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
                       >
                         <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
                         Live metric
                       </span>
-                      <p className="text-lg font-semibold text-slate-900 font-montserrat">
+                      <p className="text-lg font-semibold text-slate-900 font-graphik">
                         {stat.title}
                       </p>
-                      <p className="text-3xl font-bold text-slate-900 leading-tight font-montserrat">
+                      <p className="text-3xl font-bold text-slate-900 leading-tight font-graphik">
                         {stat.value}
                       </p>
                     </div>
@@ -429,7 +429,7 @@ const AdminDashboard = () => {
 
         <Card className="border rounded-md border-slate-200 shadow-sm">
           <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-md md:flex-row md:items-center md:justify-between">
-            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize font-montserrat">
+            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize font-graphik">
               <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                 <TimerReset className="h-5 w-5" />
               </span>
@@ -439,7 +439,7 @@ const AdminDashboard = () => {
               size="sm"
               variant="outline"
               onClick={() => navigate("/admin/leave")}
-              className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+              className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
             >
               View all
             </Button>
@@ -458,28 +458,28 @@ const AdminDashboard = () => {
                     className="flex flex-row gap-10 rounded-2xl border border-slate-100 cursor-pointer bg-white px-4 py-4 shadow-sm"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-900 text-sm font-semibold capitalize text-white font-montserrat">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-900 text-sm font-semibold capitalize text-white font-graphik">
                         {request.employee?.first_name?.[0]}
                         {request.employee?.last_name?.[0]}
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="text-lg font-semibold text-slate-900 font-montserrat">
+                        <p className="text-lg font-semibold text-slate-900 font-graphik">
                           {request.employee?.first_name} {request.employee?.last_name}
                         </p>
 
-                        <p className="text-xs text-slate-500 font-montserrat">
+                        <p className="text-xs text-slate-500 font-graphik">
                           {request.employee?.employee_no}
                         </p>
 
-                        <p className="text-sm font-medium text-slate-500 font-montserrat">
+                        <p className="text-sm font-medium text-slate-500 font-graphik">
                           {dayjs(request.start_date).format("D MMM YYYY")} -{" "}
                           {dayjs(request.end_date).format("D MMM YYYY")} -{" "}
                           {request.total_days || 0} days
                         </p>
 
                         {request.reason && (
-                          <p className="text-sm text-slate-400 font-montserrat">
+                          <p className="text-sm text-slate-400 font-graphik">
                             {request.reason}
                           </p>
                         )}
@@ -487,15 +487,15 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <span className="w-fit rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-amber-700 font-montserrat">
+                      <span className="w-fit rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-amber-700 font-graphik">
                         Pending
                       </span>
 
-                      <p className="text-[11px] font-medium text-slate-500 font-montserrat">
+                      <p className="text-[11px] font-medium text-slate-500 font-graphik">
                         Applied {dayjs(request.createdAt).fromNow()}
                       </p>
 
-                      <p className="text-[11px] font-medium text-slate-500 font-montserrat">
+                      <p className="text-[11px] font-medium text-slate-500 font-graphik">
                         {request.leave_type?.leave_type || "Leave"}
                       </p>
                     </div>
@@ -510,7 +510,7 @@ const AdminDashboard = () => {
           {/* Calendar */}
           <Card className="lg:col-span-2 rounded-md border border-slate-200 shadow-sm overflow-hidden">
             <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
                 <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                   <CalendarIcon className="h-5 w-5" />
                 </span>
@@ -565,7 +565,7 @@ const AdminDashboard = () => {
                     </div>
                     <Badge
                       variant="outline"
-                      className="rounded-full border-slate-200 text-slate-700 font-montserrat"
+                      className="rounded-full border-slate-200 text-slate-700 font-graphik"
                     >
                       Calendar
                     </Badge>
@@ -574,7 +574,7 @@ const AdminDashboard = () => {
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
                     <div className="p-4 border-b border-slate-100 flex items-center gap-2">
                       <CalendarIcon className="h-4 w-4 text-primary" />
-                      <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                      <p className="text-sm font-semibold text-slate-900 font-graphik">
                         Team on leave today
                       </p>
                     </div>
@@ -586,15 +586,15 @@ const AdminDashboard = () => {
                             className="p-4 flex items-center justify-between gap-3"
                           >
                             <div>
-                              <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                              <p className="text-sm font-semibold text-slate-900 font-graphik">
                                 {leave.employeeName}
                               </p>
-                              <p className="text-xs text-slate-500 font-montserrat">
+                              <p className="text-xs text-slate-500 font-graphik">
                                 ID: {leave.employeeId}
                               </p>
                             </div>
                             <Badge
-                              className="rounded-full text-xs font-semibold font-montserrat border-slate-200"
+                              className="rounded-full text-xs font-semibold font-graphik border-slate-200"
                               variant="outline"
                             >
                               {leave.type}
@@ -606,10 +606,10 @@ const AdminDashboard = () => {
                           <div className="h-10 w-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
                             <CalendarX className="h-5 w-5" />
                           </div>
-                          <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                          <p className="text-sm font-semibold text-slate-900 font-graphik">
                             Clear schedule
                           </p>
-                          <p className="text-xs text-slate-500 font-montserrat">
+                          <p className="text-xs text-slate-500 font-graphik">
                             No one is on leave today.
                           </p>
                         </div>
@@ -624,7 +624,7 @@ const AdminDashboard = () => {
           {/* Recent Activities */}
           <Card className="border border-slate-200 rounded-md shadow-sm">
             <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-montserrat gap-2">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
                 <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
                   <BellRing className="h-5 w-5" />
                 </span>
@@ -643,10 +643,10 @@ const AdminDashboard = () => {
                     )}
                   </div>
                   <div className="space-y-1">
-                    <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                    <p className="text-sm font-semibold text-slate-900 font-graphik">
                       {activity.message}
                     </p>
-                    <p className="text-xs text-slate-500 font-montserrat">
+                    <p className="text-xs text-slate-500 font-graphik">
                       {dayjs(activity.createdAt).fromNow()}
                     </p>
                   </div>
@@ -661,7 +661,7 @@ const AdminDashboard = () => {
           <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
             <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-500" />
             <CardHeader className="pb-6">
-              <CardTitle className="flex items-center gap-2 text-base font-semibold font-montserrat text-slate-900">
+              <CardTitle className="flex items-center gap-2 text-base font-semibold font-graphik text-slate-900">
                 <Award className="h-5 w-5 text-amber-600" />
                 <span>
                   Leaves - {format(new Date(), "MMMM yyyy")}
@@ -673,13 +673,13 @@ const AdminDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-montserrat">
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-graphik">
                         Employee Name
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-center font-montserrat">
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-center font-graphik">
                         Leave
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-montserrat">
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
                         Leave Deduction
                       </th>
                     </tr>
@@ -699,16 +699,16 @@ const AdminDashboard = () => {
                         ) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
+                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
                               {`${first_name || ""} ${last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-graphik">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
-                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-graphik">
                               {leave_deduction ?? 0}
                             </td>
                           </tr>
@@ -718,7 +718,7 @@ const AdminDashboard = () => {
                       <tr>
                         <td
                           colSpan="3"
-                          className="py-6 text-center text-slate-500 text-sm font-montserrat"
+                          className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for this month
                         </td>
@@ -733,7 +733,7 @@ const AdminDashboard = () => {
           <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
             <div className="absolute inset-x-0 top-0 h-[1px] bg-primary" />
             <CardHeader className="py-3">
-              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900 font-montserrat">
+              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900 font-graphik">
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-primary" />
                   <span>
@@ -781,13 +781,13 @@ const AdminDashboard = () => {
                 <table className="w-full border-t border-slate-100">
                   <thead className="bg-slate-50 text-left">
                     <tr>
-                      <th className="text-left py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="text-left py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Employee Name
                       </th>
-                      <th className="text-center py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="text-center py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Leave
                       </th>
-                      <th className="text-right py-3 px-4 text-md font-montserrat font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Leave Deduction
                       </th>
                     </tr>
@@ -807,16 +807,16 @@ const AdminDashboard = () => {
                         ) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-montserrat"
+                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
                               {`${first_name || ""} ${last_name || ""}`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-montserrat">
+                            <td className="py-3 px-4 text-sm text-slate-700 text-center font-semibold font-graphik">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
-                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-montserrat">
+                            <td className="py-3 pl-4 pr-20 text-sm text-rose-600 text-right font-semibold font-graphik">
                               {leave_deduction ?? 0}
                             </td>
                           </tr>
@@ -826,7 +826,7 @@ const AdminDashboard = () => {
                       <tr>
                         <td
                           colSpan="3"
-                          className="py-6 text-center text-slate-500 text-sm font-montserrat"
+                          className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for previous month
                         </td>

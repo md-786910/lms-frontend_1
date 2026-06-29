@@ -83,7 +83,7 @@ function UpdateDocumentModel(props) {
       <div className="p-4 bg-slate-50 ">
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           <Input
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
             placeholder="Document Name"
             name="type"
             value={newDocument.type}
@@ -92,13 +92,13 @@ function UpdateDocumentModel(props) {
           {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
         </div>
         <div className="flex justify-end space-x-4 pt-4">
-          <Button type="button" className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300" onClick={() => OnClose()}>
+          <Button type="button" className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300" onClick={() => OnClose()}>
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={loader}
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-Montserrat"
+            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
           >
             <Edit3 className="h-4 w-4" />
             {loader ? "saving data..." : "Update Document"}

@@ -176,17 +176,17 @@ const Salary = () => {
             <div className="grid grid-cols-12 items-center gap-4 relative">
               <div className="col-span-12 md:col-span-8 space-y-2">
                 <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                  <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
                     Salary Management
                   </h1>
                 </div>
-                <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+                <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
                   Manage employee salaries, payouts, and monthly payroll flows with a clear snapshot of totals.
                 </p>
               </div>
               <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
                 <Button
-                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                   onClick={handleExportReport}
                 >
                   <Download className="h-4 w-4 text-slate-500" />
@@ -203,10 +203,10 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
+                  <p className="text-slate-600 text-sm font-semibold font-graphik">
                     Total Payroll
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
+                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
                     ₹{dashboard?.total_netpay?.toLocaleString()}
                   </p>
                 </div>
@@ -221,10 +221,10 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
+                  <p className="text-slate-600 text-sm font-semibold font-graphik">
                     Paid Amount
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
+                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
                     ₹{dashboard?.paid_amount?.toLocaleString()}
                   </p>
                 </div>
@@ -239,10 +239,10 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-montserrat">
+                  <p className="text-slate-600 text-sm font-semibold font-graphik">
                     Pending Amount
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
+                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
                     ₹{dashboard?.pending_amount?.toLocaleString()}
                   </p>
                 </div>
@@ -257,8 +257,8 @@ const Salary = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-montserrat">Employees</p>
-                  <p className="text-2xl font-semibold text-slate-900 font-montserrat">
+                  <p className="text-slate-600 text-sm font-semibold font-graphik">Employees</p>
+                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
                     {dashboard?.employee_count}
                   </p>
                 </div>
@@ -280,14 +280,14 @@ const Salary = () => {
                 placeholder="Search by employee name or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                className="pl-10 h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-40 h-11 border-slate-200 rounded-xl font-medium">
-                <SelectValue placeholder="Filter by Status" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
+                <SelectValue placeholder="Filter by Status" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik" />
               </SelectTrigger>
-              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-graphik">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="paid">Paid</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
@@ -295,9 +295,9 @@ const Salary = () => {
             </Select>
             <Select value={monthFilter} onValueChange={setMonthFilter}>
               <SelectTrigger className="w-40 h-11 border-slate-200 rounded-xl font-medium">
-                <SelectValue placeholder="Filter by Month" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" />
+                <SelectValue placeholder="Filter by Month" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik" />
               </SelectTrigger>
-              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+              <SelectContent className="border border-slate-200 focus:border-slate-900 transition-all font-graphik">
                 <SelectItem value={"current"}>Current Month</SelectItem>
                 <SelectItem value={1}>January</SelectItem>
                 <SelectItem value={2}>February</SelectItem>
@@ -316,7 +316,7 @@ const Salary = () => {
 
             <div className="relative ">
               <Button
-                className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white font-montserrat mb-1 h-11 rounded-xl"
+                className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white font-graphik mb-1 h-11 rounded-xl"
                 onClick={async () => {
                   const resp = await salaryAPI.importCurrentSalaryManually();
                   if (resp.status == 200) {
@@ -345,7 +345,7 @@ const Salary = () => {
 
       {/* Salary Table */}
       <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
-        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5 border-b border-gray-100 pb-3">
+        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5 border-b border-gray-100 pb-3">
           <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
             <AlarmClockMinus className="h-5 w-5" />
           </span>
@@ -358,28 +358,28 @@ const Salary = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Employee
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Position
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Base Salary
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Bonus
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Deductions
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Net Salary
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Status
                   </th>
-                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-montserrat">
+                  <th className="py-3 px-4 font-semibold text-start text-slate-700 font-graphik">
                     Actions
                   </th>
                 </tr>
@@ -398,37 +398,37 @@ const Salary = () => {
                       key={salary.id}
                       className="border-b border-slate-100 hover:bg-slate-50"
                     >
-                      <td className="py-4 px-4 text-start text-slate-600 font-montserrat">
+                      <td className="py-4 px-4 text-start text-slate-600 font-graphik">
                         <div>
-                          <p className="font-medium text-slate-800 font-montserrat">
+                          <p className="font-medium text-slate-800 font-graphik">
                             {first_name + " " + last_name}
                           </p>
-                          <p className="text-xs text-slate-500 font-montserrat">
+                          <p className="text-xs text-slate-500 font-graphik">
                             {employee_no || `EMP-${salary?.employee?.id}`}
                           </p>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-start text-slate-600 font-montserrat">
+                      <td className="py-4 px-4 text-start text-slate-600 font-graphik">
                         {salary.employee?.designation?.title || "N/A"}
                       </td>
-                      <td className="py-4 px-4 text-start text-slate-800 font-montserrat">
+                      <td className="py-4 px-4 text-start text-slate-800 font-graphik">
                         ₹{salary.base_salary.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-start text-green-600 font-montserrat">
+                      <td className="py-4 px-4 text-start text-green-600 font-graphik">
                         ₹{salary.bonus.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-start text-red-600 font-montserrat">
+                      <td className="py-4 px-4 text-start text-red-600 font-graphik">
                         ₹{salary.deduction.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-start font-semibold text-slate-800 font-montserrat">
+                      <td className="py-4 px-4 text-start font-semibold text-slate-800 font-graphik">
                         ₹{salary.net_salary.toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-start font-montserrat">
+                      <td className="py-4 px-4 text-start font-graphik">
                         <Badge className={getStatusColor(salary.status)}>
                           {salary.status}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4 text-start font-montserrat">
+                      <td className="py-4 px-4 text-start font-graphik">
                         <div className="">
                           <Button
                             variant="ghost"
@@ -511,7 +511,7 @@ const Salary = () => {
 
       {/* View Employee Salary Modal */}
       {showViewModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm font-montserrat">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm font-graphik">
           {/* Modal */}
           <div className="relative w-full max-w-lg rounded-xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <Card className="bg-slate-900 text-white">
@@ -523,10 +523,10 @@ const Salary = () => {
                           <AlarmClockMinus className="h-5 w-5" />
                         </span>
                         <div className="space-y-0.5">
-                          <h2 className="text-2xl font-semibold font-montserrat text-[#FFFFFF] tracking-tight">
+                          <h2 className="text-2xl font-semibold font-graphik text-[#FFFFFF] tracking-tight">
                             {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
                           </h2>
-                          <p className="text-[#FFFFFF] font-montserrat font-medium">
+                          <p className="text-[#FFFFFF] font-graphik font-medium">
                             {selectedEmployee?.employee?.designation?.title || "Employee Details"}
                           </p>
                         </div>

@@ -68,7 +68,7 @@ const LeaveInfoForm = forwardRef(({ leaveInfo, setLeaveInfo }, ref) => {
   };
 
   return (
-    <div className="space-y-4 font-montserrat">
+    <div className="space-y-4 font-graphik">
       {leaveInfo?.map((leave, index) => {
         const { leave_used, leave_type, id } =
           leave;

@@ -112,7 +112,7 @@ const CompanyHeader = () => {
       <div className="bg-[#0f172a] text-slate-300 py-2.5 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="max-w-8xl mx-auto xl:mx-60 flex justify-between items-center text-sm font-medium">
           <div className="hidden lg:block">
-            <p className="text-slate-400 font-montserrat">
+            <p className="text-slate-400 font-graphik">
               <span className="text-[#90D7F5] font-semibold mr-2">New:</span> 
               Empowering your workforce with smart leave management solutions.
             </p>
@@ -154,7 +154,7 @@ const CompanyHeader = () => {
             <div className="p-2 bg-[#222875] rounded-xl group-hover:scale-105 transition-transform">
                 <Building className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight font-montserrat">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight font-graphik">
                 Leanport <span className="text-[#222875]">HR</span>
             </span>
           </Link>
@@ -167,7 +167,7 @@ const CompanyHeader = () => {
                   {item.submenu ? (
                     <div className="relative">
                         <button
-                        className={`flex items-center space-x-1 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-montserrat
+                        className={`flex items-center space-x-1 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-graphik
                             ${isActive(item.href) ? "text-[#222875]" : "text-slate-600 hover:text-[#222875] hover:bg-slate-50"}`}
                         >
                             <span>{item.name}</span>
@@ -189,10 +189,10 @@ const CompanyHeader = () => {
                                         </div>
                                         <div className="flex-1">
                                             <div className="text-sm font-bold text-slate-900 mb-1 flex items-center justify-between">
-                                                <span className="font-montserrat">{sub.name}</span>
+                                                <span className="font-graphik">{sub.name}</span>
                                                 <ArrowRight className="h-3 w-3 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-transform" />
                                             </div>
-                                            <p className="text-xs text-slate-500 leading-relaxed font-montserrat">{sub.description}</p>
+                                            <p className="text-xs text-slate-500 leading-relaxed font-graphik">{sub.description}</p>
                                         </div>
                                     </Link>
                                     ))}
@@ -203,7 +203,7 @@ const CompanyHeader = () => {
                   ) : (
                     <Link
                       to={item.href}
-                      className={`px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-montserrat
+                      className={`px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-graphik
                         ${isActive(item.href)
                             ? "text-[#222875] bg-slate-50"
                             : "text-slate-600 hover:text-[#222875] hover:bg-slate-50"
@@ -219,7 +219,7 @@ const CompanyHeader = () => {
             {/* CTA Button */}
             <Link
               to={user ? (user.role === "employee" ? "/employee/dashboard" : "/admin/dashboard") : "/company/get-started"}
-              className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-montserrat"
+              className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
             >
               {user ? "Dashboard" : "Get Started"}
             </Link>
@@ -250,7 +250,7 @@ const CompanyHeader = () => {
                         featuresOpen ? "bg-slate-50 text-[#222875]" : "text-slate-600"
                       }`}
                     >
-                      <span className="font-montserrat">{item.name}</span>
+                      <span className="font-graphik">{item.name}</span>
                       <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${featuresOpen ? "rotate-180" : ""}`} />
                     </button>
                     <div className={`overflow-hidden transition-all duration-500 ease-in-out ${featuresOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
@@ -265,8 +265,8 @@ const CompanyHeader = () => {
                               <sub.icon className="h-5 w-5" />
                             </div>
                             <div className="flex-1">
-                                <div className="text-sm font-bold text-slate-900 font-montserrat">{sub.name}</div>
-                                <div className="text-xs text-slate-500 font-montserrat line-clamp-1">{sub.description}</div>
+                                <div className="text-sm font-bold text-slate-900 font-graphik">{sub.name}</div>
+                                <div className="text-xs text-slate-500 font-graphik line-clamp-1">{sub.description}</div>
                             </div>
                           </Link>
                         ))}
@@ -278,7 +278,7 @@ const CompanyHeader = () => {
                     to={item.href}
                     className={`text-lg font-bold p-3 rounded-xl transition-all ${
                       isActive(item.href) ? "bg-slate-50 text-[#222875]" : "text-slate-600 hover:bg-slate-50"
-                    } font-montserrat`}
+                    } font-graphik`}
                   >
                     {item.name}
                   </Link>
@@ -288,7 +288,7 @@ const CompanyHeader = () => {
             <div className="pt-6 border-t border-slate-100 mt-6 pb-2">
                 <Link
                 to={user ? (user.role === "employee" ? "/employee/dashboard" : "/admin/dashboard") : "/company/get-started"}
-                className="w-full inline-flex justify-center items-center px-6 py-4 bg-[#222875] text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 active:scale-95 transition-all font-montserrat"
+                className="w-full inline-flex justify-center items-center px-6 py-4 bg-[#222875] text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 active:scale-95 transition-all font-graphik"
                 >
                 {user ? "Go to Dashboard" : "Get Started Now"}
                 </Link>

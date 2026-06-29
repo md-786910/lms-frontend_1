@@ -116,11 +116,11 @@ const User = () => {
           <div className="grid grid-cols-12 items-center gap-4">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
                   User Management
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+              <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
                 Manage users to your HR system
               </p>
             </div>
@@ -129,7 +129,7 @@ const User = () => {
       </Card>
 
       <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
-        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">
+        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">
           <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
             <Users className="h-5 w-5" />
           </span>
@@ -139,9 +139,9 @@ const User = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">First name *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">First name *</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               placeholder="first name"
               name="first name"
               value={user.first_name}
@@ -152,9 +152,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Last name</Label>
+            <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">Last name</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               placeholder="first name"
               name="last name"
               value={user.last_name}
@@ -165,9 +165,9 @@ const User = () => {
             )}
           </div>{" "}
           <div>
-            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Phone number</Label>
+            <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">Phone number</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               placeholder="first name"
               name="phone number"
               value={user.phone_number}
@@ -180,9 +180,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Email *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">Email *</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               placeholder="Email"
               name="email"
               value={user.email}
@@ -193,9 +193,9 @@ const User = () => {
             )}
           </div>
           <div>
-            <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mb-5">Password *</Label>
+            <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5">Password *</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               placeholder="password"
               name="password"
               value={user.password}
@@ -207,7 +207,7 @@ const User = () => {
           </div>{" "}
         </div>
         <Button
-          className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-Montserrat"
+          className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-graphik"
           onClick={() => handleSubmit()}
         >
           <Plus className="h-4 w-4" />
@@ -223,16 +223,16 @@ const User = () => {
             className="flex items-center justify-between p-4 border border-slate-200 bg-[#FFFFFF] rounded-lg"
           >
             <div>
-              <h4 className="font-medium text-slate-800 font-montserrat">
+              <h4 className="font-medium text-slate-800 font-graphik">
                 {dept.first_name + " " + dept.last_name + ""}
               </h4>
-              <p className="text-sm font-medium text-slate-800 font-montserrat">{dept.email}</p>
+              <p className="text-sm font-medium text-slate-800 font-graphik">{dept.email}</p>
             </div>
             <div className="flex space-x-2 items-center">
               <div className="flex items-center">
-                <Label className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider mr-1">password</Label>
+                <Label className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider mr-1">password</Label>
                 <Input
-                  className="h-8 border border-slate-200 mx-2 focus:border-slate-900 transition-all font-montserrat"
+                  className="h-8 border border-slate-200 mx-2 focus:border-slate-900 transition-all font-graphik"
                   placeholder="password"
                   type={`${viewPassword ? "text" : "password"}`}
                   name="password"

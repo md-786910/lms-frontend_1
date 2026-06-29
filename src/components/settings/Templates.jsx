@@ -51,7 +51,7 @@ function Templates({ value }) {
   const [templates, setTemplates] = useState({
     payslip: {
       type: "pdf",
-      content: `<div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+      content: `<div style="font-family: Graphik, Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
   <div style="text-align: center; border-bottom: 2px solid #3B82F6; padding-bottom: 20px; margin-bottom: 30px;">
     <h1 style="color: #1E40AF; margin: 0;">{{company_name}}</h1>
     <h2 style="color: #64748B; margin: 10px 0;">Monthly Payslip</h2>
@@ -138,7 +138,7 @@ function Templates({ value }) {
 
     leave: {
       type: "email",
-      content: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      content: `<div style="font-family: Graphik, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
   <h2 style="color: #1E40AF; text-align: center;">Leave Application Approved</h2>
   <p>Dear {{employee_name}},</p>
   <p>We are pleased to inform you that your leave application has been <strong style="color: #059669;">approved</strong>.</p>
@@ -163,7 +163,7 @@ function Templates({ value }) {
 
     employment: {
       type: "email",
-      content: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      content: `<div style="font-family: Graphik, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
   <h2 style="color: #1E40AF; text-align: center;">Employment Verification</h2>
   <p>To Whom It May Concern,</p>
   
@@ -192,7 +192,7 @@ function Templates({ value }) {
 
     invitation: {
       type: "email",
-      content: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px;">
+      content: `<div style="font-family: Graphik, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px;">
   <div style="text-align: center; margin-bottom: 30px;">
     <h1 style="margin: 0; font-size: 28px;">Welcome to {{company_name}}!</h1>
     <p style="font-size: 18px; margin: 10px 0; opacity: 0.9;">We're excited to have you on board</p>

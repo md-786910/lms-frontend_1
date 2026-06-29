@@ -434,18 +434,18 @@ const filteredLeaves = useMemo(() => {
           <div className="grid grid-cols-12 items-center gap-4">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">{employeeName}</h1>
-                <Badge className={employee?.is_active ? "bg-emerald-100 font-montserrat text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
+                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">{employeeName}</h1>
+                <Badge className={employee?.is_active ? "bg-emerald-100 font-graphik text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
                   {employee?.is_active ? "Active" : "Inactive"}
                 </Badge>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-xl font-montserrat">
+              <p className="text-[#FFFFFF] font-medium text-xl font-graphik">
                 {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
               </p>
-              <p className="text-md text-[#FFFFFF] font-montserrat tracking-wider">{employee?.employee_no}</p>
+              <p className="text-md text-[#FFFFFF] font-graphik tracking-wider">{employee?.employee_no}</p>
             </div>
             <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
+              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 <span>Back to Employees</span> 
               </div>
@@ -472,7 +472,7 @@ const filteredLeaves = useMemo(() => {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-montserrat data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
+                  className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-graphik data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] group-data-[state=active]:border-transparent group-data-[state=active]:bg-[#e2e8f0] group-data-[state=active]:text-[#047857]">
                     <tab.icon className="h-4 w-4" />
@@ -505,7 +505,7 @@ const filteredLeaves = useMemo(() => {
             </TabsContent>
 
             <TabsContent value="leave_balance" className="mt-0 space-y-6">
-              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
                 <div className="flex flex-col gap-4 mb-6">
                   <h3 className="text-xl font-bold text-slate-900">Leave Balances</h3>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -566,7 +566,7 @@ const filteredLeaves = useMemo(() => {
 
             <TabsContent value="history" className="mt-0 space-y-6">
               {/* Leave History Content */}
-              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat">
+              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {[
                     { label: "Total Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
@@ -588,14 +588,14 @@ const filteredLeaves = useMemo(() => {
                       placeholder="Search leaves..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                      className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik"
                     />
                   </div>
                   <Select value={yearFilter} onValueChange={setYearFilter}>
-                    <SelectTrigger className="w-full md:w-32 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                    <SelectTrigger className="w-full md:w-32 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
-                    <SelectContent className="font-montserrat">
+                    <SelectContent className="font-graphik">
                       <SelectItem value="all">All Years</SelectItem>
                       {yearOptions.map((y) => (
                         <SelectItem key={y} value={y}>
@@ -605,10 +605,10 @@ const filteredLeaves = useMemo(() => {
                     </SelectContent>
                   </Select>
                   <Select value={monthFilter} onValueChange={setMonthFilter}>
-                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
-                    <SelectContent className="font-montserrat">
+                    <SelectContent className="font-graphik">
                       <SelectItem value="all">All Months</SelectItem>
                       {monthOptions.map((m) => (
                         <SelectItem key={m.value} value={m.value}>
@@ -618,10 +618,10 @@ const filteredLeaves = useMemo(() => {
                     </SelectContent>
                   </Select>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="font-montserrat">
+                    <SelectContent className="font-graphik">
                       <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="approved">Approved</SelectItem>
                       <SelectItem value="pending">Pending</SelectItem>
@@ -679,9 +679,9 @@ const filteredLeaves = useMemo(() => {
 
           {/* Action Bar (Sticky at bottom if needed, but here simple) */}
           {activeTab !== "history" && activeTab !== "leave_balance" && activeTab !== "proof_of_work" && (
-            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-montserrat">
-              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-montserrat font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
-              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat">
+            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-graphik">
+              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
+              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik">
                 {saveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 Save Changes
               </Button>

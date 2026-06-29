@@ -88,7 +88,7 @@ function Prefix({ value }) {
       {/* Prefix & Currency Settings */}
       <Card className="border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-montserrat capitalize tracking-wider">
+          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
             <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
               <Hash className="h-5 w-5" />
             </span>
@@ -103,13 +103,13 @@ function Prefix({ value }) {
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#f1f5f9] p-3 rounded-md"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="empPrefix" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Department</Label>
-                  <Input id="empPrefix" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" value={pref?.name} />
+                  <Label htmlFor="empPrefix" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Department</Label>
+                  <Input id="empPrefix" className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik" value={pref?.name} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="salaryPrefix" className="text-sm font-bold text-slate-700 font-montserrat capitalize tracking-wider">Prefix</Label>
+                  <Label htmlFor="salaryPrefix" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Prefix</Label>
                   <Input
-                    className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-montserrat" 
+                    className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik" 
                     id="salaryPrefix"
                     value={pref?.prefix}
                     name="prefix"
@@ -129,7 +129,7 @@ function Prefix({ value }) {
           <Button
             onClick={() => handleSave("Prefix")}
             disabled={loader}
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-montserrat"
+            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
           >
             <Save className="h-4 w-4 mr-2" />
             {loader ? "saving data..." : "Save Prefix Settings"}

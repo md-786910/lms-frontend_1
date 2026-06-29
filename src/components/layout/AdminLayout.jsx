@@ -177,7 +177,7 @@ const AdminLayout = () => {
               <p className="text-sm font-semibold">
                 {companyData?.company_name || "Admin Console"}
               </p>
-              <p className="text-xs text-slate-500 font-montserrat">Control Center</p>
+              <p className="text-xs text-slate-500 font-graphik">Control Center</p>
             </div>
           </div>
           <Button
@@ -203,7 +203,7 @@ const AdminLayout = () => {
                     navigate(item.path);
                     setSidebarOpen(false);
                   }}
-                  className={`group flex w-full items-center gap-3 font-montserrat rounded-xl border px-3 py-2 text-left text-sm font-semibold transition-all ${
+                  className={`group flex w-full items-center gap-3 font-graphik rounded-xl border px-3 py-2 text-left text-sm font-semibold transition-all ${
                     isActive
                       ? "border-slate-800 bg-primary/10 text-slate-800 shadow-sm"
                       : "border-transparent hover:border-slate-200 hover:bg-slate-50"
@@ -230,21 +230,21 @@ const AdminLayout = () => {
 
         <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 px-5 py-4 bg-white/90 backdrop-blur">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold font-montserrat">
+            <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold font-graphik">
               {user?.first_name?.[0]?.toUpperCase()}
               {user?.last_name?.[0]?.toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold truncate font-montserrat">
+              <p className="text-sm font-semibold truncate font-graphik">
                 {user?.first_name} {user?.last_name}
               </p>
-              <p className="text-xs text-slate-500 truncate font-montserrat">{user?.email}</p>
+              <p className="text-xs text-slate-500 truncate font-graphik">{user?.email}</p>
             </div>
           </div>
           <Button
             onClick={handleLogout}
             variant="outline"
-            className="mt-3 w-full justify-center gap-2 border-slate-200 text-slate-700 font-montserrat hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+            className="mt-3 w-full justify-center gap-2 border-slate-200 text-slate-700 font-graphik hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
           >
             <LogOut className="w-4 h-4" />
             Sign out
@@ -292,18 +292,18 @@ const AdminLayout = () => {
                   className="w-96 p-0 border border-slate-200 shadow-xl rounded-xl"
                   align="end"
                 >
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 font-montserrat">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 font-graphik">
                     <div>
-                      <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                      <p className="text-sm font-semibold text-slate-900 font-graphik">
                         Notifications
                       </p>
-                      <p className="text-xs text-slate-500 font-montserrat">
+                      <p className="text-xs text-slate-500 font-graphik">
                         Latest updates for your company
                       </p>
                     </div>
                     <Badge
                       variant="secondary"
-                      className="bg-slate-100 text-slate-700 font-montserrat"
+                      className="bg-slate-100 text-slate-700 font-graphik"
                     >
                       {unreadCount} new
                     </Badge>
@@ -328,13 +328,13 @@ const AdminLayout = () => {
                             <Bell className="h-5 w-5" />
                           </div>
                           <div className="flex-1 space-y-1">
-                            <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                            <p className="text-sm font-semibold text-slate-900 font-graphik">
                               {notification.title || "Notification"}
                             </p>
-                            <p className="text-xs text-slate-600 font-montserrat">
+                            <p className="text-xs text-slate-600 font-graphik">
                               {notification.message}
                             </p>
-                            <p className="text-[11px] text-slate-400 font-montserrat">
+                            <p className="text-[11px] text-slate-400 font-graphik">
                               {dayjs(notification?.createdAt).fromNow()}
                             </p>
                           </div>
@@ -344,7 +344,7 @@ const AdminLayout = () => {
                         </button>
                       ))
                     ) : (
-                      <div className="p-4 text-sm text-slate-500 text-center font-montserrat">
+                      <div className="p-4 text-sm text-slate-500 text-center font-graphik">
                         No notifications yet.
                       </div>
                     )}
@@ -353,7 +353,7 @@ const AdminLayout = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1 border-slate-200 font-montserrat text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+                      className="flex-1 border-slate-200 font-graphik text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
                       onClick={handleMarkAllAsRead}
                       disabled={unreadCount === 0}
                     >
@@ -372,12 +372,12 @@ const AdminLayout = () => {
 
               <div className="hidden sm:flex items-center gap-3">
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-slate-900 font-montserrat">
+                  <p className="text-sm font-semibold text-slate-900 font-graphik">
                     {user?.first_name && user?.last_name
                       ? `${user.first_name} ${user.last_name}`
                       : "Admin User"}
                   </p>
-                  <p className="text-xs text-slate-500 font-montserrat">Administrator</p>
+                  <p className="text-xs text-slate-500 font-graphik">Administrator</p>
                 </div>
               </div>
             </div>

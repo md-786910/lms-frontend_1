@@ -129,7 +129,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
     ) : null;
 
   return (
-    <div className="space-y-8 font-montserrat">
+    <div className="space-y-8 font-graphik">
       {/* === Salary Summary === */}
       <div className="bg-slate-900 text-white rounded-xl p-6 shadow-xl border border-slate-800">
         <div className="flex items-center gap-3 mb-6">
@@ -185,7 +185,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                     value={values[field]}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                    className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-graphik"
                   />
                 </div>
                 {renderError(field)}
@@ -209,10 +209,10 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                   setFieldValue("is_epf_applicable", value === "true")
                 }
               >
-                <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-montserrat">
+                <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="font-montserrat">
+                <SelectContent className="font-graphik">
                   <SelectItem value="true">Yes</SelectItem>
                   <SelectItem value="false">No</SelectItem>
                 </SelectContent>
@@ -238,7 +238,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                         value={values[field]}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                        className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-graphik"
                       />
                     </div>
                     {renderError(field)}
@@ -272,7 +272,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                 value={values[field]}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="h-11 border-slate-200 focus:border-slate-900 transition-all font-montserrat"
+                className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik"
               />
               {renderError(field)}
             </div>

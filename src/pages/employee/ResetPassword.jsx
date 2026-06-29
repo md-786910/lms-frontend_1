@@ -9,11 +9,11 @@ const EmployeeResetPassword = () => {
                 <div className="grid grid-cols-12 items-center gap-4 relative">
                   <div className="col-span-12 md:col-span-8 space-y-2">
                     <div className="flex items-center gap-3">
-                      <h1 className="text-3xl font-bold font-montserrat text-[#FFFFFF]">
+                      <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
                         Settings
                       </h1>
                     </div>
-                    <p className="text-[#FFFFFF] font-medium text-sm font-montserrat">
+                    <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
                       Manage your account settings and preferences
                     </p>
                   </div>

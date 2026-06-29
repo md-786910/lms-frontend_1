@@ -109,7 +109,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
   };
 
   return (
-    <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-montserrat space-y-6">
+    <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik space-y-6">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h3 className="text-xl font-bold text-slate-900">Proof of Work</h3>
@@ -119,7 +119,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-44 h-11 border-slate-200 font-montserrat">
+            <SelectTrigger className="w-full sm:w-44 h-11 border-slate-200 font-graphik">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -130,7 +130,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-full sm:w-56 h-11 border-slate-200 font-montserrat">
+            <SelectTrigger className="w-full sm:w-56 h-11 border-slate-200 font-graphik">
               <SelectValue placeholder="Work Type" />
             </SelectTrigger>
             <SelectContent>

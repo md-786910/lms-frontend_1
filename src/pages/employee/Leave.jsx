@@ -155,11 +155,11 @@ const EmployeeLeave = () => {
             {/* Left Content */}
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-2xl sm:text-3xl font-bold font-montserrat text-white">
+                <h1 className="text-2xl sm:text-3xl font-bold font-graphik text-white">
                   Leave Management
                 </h1>
               </div>
-              <p className="text-white font-medium text-sm font-montserrat">
+              <p className="text-white font-medium text-sm font-graphik">
                 Track balances, submit requests, and view leave history with ease
               </p>
             </div>
@@ -167,7 +167,7 @@ const EmployeeLeave = () => {
             {/* Right Button */}
             <div className="col-span-12 md:col-span-4 flex md:justify-end">
               <Button
-                className="w-full sm:w-auto rounded-xl shadow-sm border border-slate-200 flex items-center justify-center gap-2 py-2 px-4 text-sm font-montserrat font-medium text-slate-900 bg-white hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="w-full sm:w-auto rounded-xl shadow-sm border border-slate-200 flex items-center justify-center gap-2 py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-white hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => {
                   setReadOnly(false);
                   setLeaveRequestViewMode({});
@@ -187,43 +187,43 @@ const EmployeeLeave = () => {
         <CardContent className="p-4 md:p-5">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
             <div className="md:col-span-1">
-              <p className="text-xs font-bold tracking-wide text-slate-500 font-montserrat uppercase">
+              <p className="text-xs font-bold tracking-wide text-slate-500 font-graphik uppercase">
                 Current Cycle
               </p>
-              <h2 className="text-xl font-bold text-slate-900 font-montserrat">
+              <h2 className="text-xl font-bold text-slate-900 font-graphik">
                 {leaveDash?.cycle_name || "Current Cycle"}:{" "}
                 {leaveDash?.cycle_label || "-"}
               </h2>
             </div>
             <div className="rounded-md bg-slate-50 border border-slate-100 p-3">
-              <p className="text-xs font-semibold text-slate-500 font-montserrat">
+              <p className="text-xs font-semibold text-slate-500 font-graphik">
                 Cycle Entitlement
               </p>
-              <p className="text-2xl font-bold text-slate-900 font-montserrat">
+              <p className="text-2xl font-bold text-slate-900 font-graphik">
                 {formatLeaveDays(leaveDash?.cycle_total ?? 0)}
               </p>
             </div>
             <div className="rounded-md bg-amber-50 border border-amber-100 p-3">
-              <p className="text-xs font-semibold text-amber-700 font-montserrat">
+              <p className="text-xs font-semibold text-amber-700 font-graphik">
                 Availed In Cycle
               </p>
-              <p className="text-2xl font-bold text-amber-700 font-montserrat">
+              <p className="text-2xl font-bold text-amber-700 font-graphik">
                 {formatLeaveDays(leaveDash?.cycle_availed ?? leaveDash?.cycle_used ?? 0)}
               </p>
             </div>
             <div className="rounded-md bg-rose-50 border border-rose-100 p-3">
-              <p className="text-xs font-semibold text-rose-700 font-montserrat">
+              <p className="text-xs font-semibold text-rose-700 font-graphik">
                 Deduction In Cycle
               </p>
-              <p className="text-2xl font-bold text-rose-700 font-montserrat">
+              <p className="text-2xl font-bold text-rose-700 font-graphik">
                 {formatLeaveDays(leaveDash?.cycle_deduction ?? 0)}
               </p>
             </div>
             <div className="rounded-md bg-emerald-50 border border-emerald-100 p-3">
-              <p className="text-xs font-semibold text-emerald-700 font-montserrat">
+              <p className="text-xs font-semibold text-emerald-700 font-graphik">
                 Remaining In Cycle
               </p>
-              <p className="text-2xl font-bold text-emerald-700 font-montserrat">
+              <p className="text-2xl font-bold text-emerald-700 font-graphik">
                 {formatLeaveDays(leaveDash?.cycle_remaining ?? 0)}
               </p>
             </div>
@@ -241,10 +241,10 @@ const EmployeeLeave = () => {
               <CardContent className="p-4">
                 <div className="mb-4 flex items-start justify-between">
                   <div>
-                    <p className="text-xl  font-semibold tracking-wide text-slate-700 font-montserrat">
+                    <p className="text-xl  font-semibold tracking-wide text-slate-700 font-graphik">
                       {leave.leave_type}
                     </p>
-                    <h4 className="text-lg font-semibold text-slate-900 font-montserrat mt-1">
+                    <h4 className="text-lg font-semibold text-slate-900 font-graphik mt-1">
                       {formattedAvailed} availed
                     </h4>
                   </div>
@@ -252,7 +252,7 @@ const EmployeeLeave = () => {
                     {leaveDash?.cycle_name || leave.cycle_name || "Cycle"}
                   </span>
                 </div>
-                <div className="space-y-2 text-sm text-slate-600 font-montserrat mb-3">
+                <div className="space-y-2 text-sm text-slate-600 font-graphik mb-3">
                   <div className="flex justify-between">
                     <span>Availed in cycle</span>
                     <span className="font-semibold text-amber-600">
@@ -285,10 +285,10 @@ const EmployeeLeave = () => {
                           {/* Header with Leave Type and Status */}
                           <div className="flex items-start justify-between">
                             <div className="space-y-0.5">
-                              <h3 className="font-semibold font-montserrat text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
+                              <h3 className="font-semibold font-graphik text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
                                 {request.leave_type?.leave_type || request.type} Leave Request
                               </h3>
-                              <p className="text-xs text-slate-500 font-montserrat">
+                              <p className="text-xs text-slate-500 font-graphik">
                                 Request ID: #{request.id}
                               </p>
                             </div>
@@ -304,41 +304,41 @@ const EmployeeLeave = () => {
                           {/* Leave Details Grid */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                             <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <Calendar className="h-3 w-3" />
                                 Applied On
                               </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                              <div className="font-semibold text-slate-900 font-graphik text-sm">
                                 {dayjs(request?.createdAt).format("D MMM YYYY")}
                               </div>
                             </div>
 
                             <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <Clock className="h-3 w-3" />
                                 Duration
                               </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                              <div className="font-semibold text-slate-900 font-graphik text-sm">
                                 {request?.total_days} {request?.total_days === 1 ? "Day" : "Days"}
                               </div>
                             </div>
 
                             <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <CalendarDays className="h-3 w-3" />
                                 Leave Dates
                               </div>
-                              <div className="font-semibold text-slate-900 truncate font-montserrat text-sm">
+                              <div className="font-semibold text-slate-900 truncate font-graphik text-sm">
                                 {dayjs(request?.start_date).format("D MMM")} – {dayjs(request?.end_date).format("D MMM")}
                               </div>
                             </div>
 
                             <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
-                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-montserrat text-slate-400">
+                              <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <FileText className="h-3 w-3" />
                                 Type
                               </div>
-                              <div className="font-semibold text-slate-900 font-montserrat text-sm">
+                              <div className="font-semibold text-slate-900 font-graphik text-sm">
                                 {request.leave_type?.leave_type || request.type}
                               </div>
                             </div>
@@ -346,11 +346,11 @@ const EmployeeLeave = () => {
 
                           {/* Reason Section */}
                           <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-md py-2 px-3">
-                            <div className="text-[10px] capitalize font-montserrat tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px] capitalize font-graphik tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
                               <MoreVertical className="h-3 w-3 rotate-90" />
                               Reason for Leave
                             </div>
-                            <p className="text-slate-700 text-sm font-medium leading-relaxed font-montserrat">
+                            <p className="text-slate-700 text-sm font-medium leading-relaxed font-graphik">
                               "{request?.reason}"
                             </p>
                           </div>
@@ -359,19 +359,19 @@ const EmployeeLeave = () => {
                           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
                             <div className="text-sm w-full sm:w-auto">
                               {request?.status === "approved" && (
-                                <div className="flex items-center gap-2 text-emerald-600 font-semibold font-montserrat bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+                                <div className="flex items-center gap-2 text-emerald-600 font-semibold font-graphik bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
                                   <CheckCircle className="h-4 w-4" />
                                   Approved on {dayjs(request?.updatedAt).format("D MMM YYYY")}
                                 </div>
                               )}
                               {request?.status === "pending" && (
-                                <div className="flex items-center gap-2 text-amber-600 font-semibold font-montserrat bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100 w-full">
+                                <div className="flex items-center gap-2 text-amber-600 font-semibold font-graphik bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100 w-full">
                                   <Clock className="h-4 w-4" />
                                   <span className="flex-1">Awaiting Review</span>
                                 </div>
                               )}
                               {request?.status === "rejected" && (
-                                <div className="flex items-center gap-2 text-rose-600 font-semibold font-montserrat bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
+                                <div className="flex items-center gap-2 text-rose-600 font-semibold font-graphik bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
                                   <XCircle className="h-4 w-4" />
                                   Rejected on {dayjs(request?.updatedAt).format("D MMM YYYY")}
                                 </div>
@@ -383,7 +383,7 @@ const EmployeeLeave = () => {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="flex-1 sm:flex-none text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-300 font-semibold font-montserrat px-4"
+                                  className="flex-1 sm:flex-none text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-300 font-semibold font-graphik px-4"
                                   onClick={async () => {
                                     ConfirmFn({
                                       onDelete: async () => {
@@ -415,7 +415,7 @@ const EmployeeLeave = () => {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="flex-1 sm:flex-none rounded-lg border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold font-montserrat px-4"
+                                className="flex-1 sm:flex-none rounded-lg border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold font-graphik px-4"
                                 onClick={() => {
                                   setReadOnly(true);
                                   setLeaveRequestViewMode(request || {});
@@ -445,7 +445,7 @@ const EmployeeLeave = () => {
           {totalPages > 1 && (
             <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 bg-white px-3 py-3 border border-slate-200 rounded-xl shrink-0">
               <div className="w-full sm:w-auto text-center sm:text-left">
-                <p className="text-sm font-medium text-slate-500 font-montserrat">
+                <p className="text-sm font-medium text-slate-500 font-graphik">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}
                   <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, filteredLeaveRequests.length)}</span> of{' '}
                   <span className="text-slate-900">{filteredLeaveRequests.length}</span> results
@@ -472,7 +472,7 @@ const EmployeeLeave = () => {
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`min-w-[36px] h-9 px-2 rounded-lg font-montserrat text-sm font-semibold transition-all duration-200 ${
+                      className={`min-w-[36px] h-9 px-2 rounded-lg font-graphik text-sm font-semibold transition-all duration-200 ${
                         currentPage === i + 1
                           ? "bg-slate-900 text-white shadow-md scale-105"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50"
@@ -504,7 +504,7 @@ const EmployeeLeave = () => {
           {/* Filter Card */}
           <Card className="border border-slate-200 shadow-sm rounded-md bg-white h-fit md:sticky md:top-20">
             <CardHeader className="pb-4 border-b border-slate-100">
-              <CardTitle className="text-base font-bold text-slate-900 font-montserrat flex items-center gap-2">
+              <CardTitle className="text-base font-bold text-slate-900 font-graphik flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
                   <Filter className="h-4 w-4" />
                 </div>
@@ -514,11 +514,11 @@ const EmployeeLeave = () => {
             <CardContent className="p-4 space-y-4">
               {/* Status Filter */}
               <div className="space-y-2">
-                <label className="text-xs font-bold tracking-wide text-slate-500 font-montserrat">
+                <label className="text-xs font-bold tracking-wide text-slate-500 font-graphik">
                   Status
                 </label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-montserrat">
+                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-graphik">
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -532,11 +532,11 @@ const EmployeeLeave = () => {
 
               {/* Month Filter */}
               <div className="space-y-2">
-                <label className="text-xs font-bold tracking-wide text-slate-500 font-montserrat">
+                <label className="text-xs font-bold tracking-wide text-slate-500 font-graphik">
                   Month
                 </label>
                 <Select value={monthFilter} onValueChange={setMonthFilter}>
-                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-montserrat">
+                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-graphik">
                     <SelectValue placeholder="Filter by month" />
                   </SelectTrigger>
                   <SelectContent>
@@ -565,14 +565,14 @@ const EmployeeLeave = () => {
                   <CheckCircle className="h-5 w-5" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-xs capitalize tracking-wide text-slate-500 font-montserrat">
+                  <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
                     Total Approved
                   </p>
-                  <p className="text-2xl font-bold text-slate-900 font-montserrat">
+                  <p className="text-2xl font-bold text-slate-900 font-graphik">
                     {leaveDash?.cycle_availed ?? leaveDash?.total_approved ?? leaveDash?.cycle_used ?? 0}
                     <span className="text-xs font-medium text-slate-400"> days</span>
                   </p>
-                  <p className="text-xs text-slate-500 font-montserrat">
+                  <p className="text-xs text-slate-500 font-graphik">
                     {leaveDash?.cycle_name || "Current cycle"}
                   </p>
                 </div>
@@ -587,14 +587,14 @@ const EmployeeLeave = () => {
                   <Clock className="h-5 w-5" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-xs capitalize tracking-wide text-slate-500 font-montserrat">
+                  <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
                     Pending
                   </p>
-                  <p className="text-2xl font-bold text-slate-900 font-montserrat">
+                  <p className="text-2xl font-bold text-slate-900 font-graphik">
                     {leaveDash?.total_pending || 0}
                     <span className="text-xs font-medium text-slate-400"> days</span>
                   </p>
-                  <p className="text-xs text-slate-500 font-montserrat">Awaiting approval</p>
+                  <p className="text-xs text-slate-500 font-graphik">Awaiting approval</p>
                 </div>
               </div>
             </CardContent>
@@ -607,14 +607,14 @@ const EmployeeLeave = () => {
                   <CalendarDays className="h-5 w-5" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-xs capitalize tracking-wide text-slate-500 font-montserrat">
+                  <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
                     Remaining
                   </p>
-                  <p className={`text-2xl font-bold ${totalRemainingValueClass} font-montserrat`}>
+                  <p className={`text-2xl font-bold ${totalRemainingValueClass} font-graphik`}>
                     {totalRemainingLabel}
                   </p>
-                  <p className="text-xs text-slate-500 font-montserrat">Available balance</p>
-                  <p className="text-xs text-slate-400 font-montserrat">
+                  <p className="text-xs text-slate-500 font-graphik">Available balance</p>
+                  <p className="text-xs text-slate-400 font-graphik">
                     {leaveDash?.cycle_label || ""}
                   </p>
                 </div>

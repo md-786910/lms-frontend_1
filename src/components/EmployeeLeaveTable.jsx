@@ -138,8 +138,8 @@ const EmployeeLeaveTable = () => {
     <Card className="border border-slate-200 shadow-sm rounded-md">
       <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 font-montserrat text-slate-900 text-lg font-bold">
-            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center font-montserrat rounded-md">
+          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 font-graphik text-slate-900 text-lg font-bold">
+            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center font-graphik rounded-md">
               <Calendar className="h-5 w-5" />
             </span>
             <span>Employee Leave Summary - {year}</span>
@@ -157,7 +157,7 @@ const EmployeeLeaveTable = () => {
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-slate-900" />
-            <span className="text-sm text-slate-900 font-montserrat font-semibold">Filters:</span>
+            <span className="text-sm text-slate-900 font-graphik font-semibold">Filters:</span>
           </div>
 
           {/* Year Select */}
@@ -165,7 +165,7 @@ const EmployeeLeaveTable = () => {
             value={year.toString()}
             onValueChange={(v) => setYear(parseInt(v))}
           >
-            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md font-montserrat hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md font-graphik hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -182,7 +182,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Month Select */}
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 font-montserrat rounded-md hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 font-graphik rounded-md hover:bg-gray-100 hover:text-gray-500">
               <SelectValue placeholder="Select Month" />
             </SelectTrigger>
             <SelectContent>
@@ -196,7 +196,7 @@ const EmployeeLeaveTable = () => {
 
           {/* Employee Select */}
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md font-montserrat hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md font-graphik hover:bg-gray-100 hover:text-gray-500">
               <Users className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Select Employee" />
             </SelectTrigger>
@@ -213,7 +213,7 @@ const EmployeeLeaveTable = () => {
           {/* Reset Button */}
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 font-montserrat hover:text-gray-500"
+            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 font-graphik hover:text-gray-500"
           >
             Reset
           </button>
@@ -233,7 +233,7 @@ const EmployeeLeaveTable = () => {
                 <TableRow className="bg-slate-50">
                   <TableHead
                     rowSpan={2}
-                    className="min-w-[150px] w-[150px] font-semibold text-slate-700 sticky left-0 bg-slate-50 z-30 font-montserrat align-middle"
+                    className="min-w-[150px] w-[150px] font-semibold text-slate-700 sticky left-0 bg-slate-50 z-30 font-graphik align-middle"
                   >
                     Employee Name
                   </TableHead>
@@ -241,7 +241,7 @@ const EmployeeLeaveTable = () => {
                     <TableHead
                       key={month}
                       colSpan={2}
-                      className={`font-semibold text-slate-700 text-center capitalize font-montserrat ${getMonthBgClass(index)}`}
+                      className={`font-semibold text-slate-700 text-center capitalize font-graphik ${getMonthBgClass(index)}`}
                     >
                       {month.slice(0, 3).toUpperCase()}
                     </TableHead>
@@ -249,14 +249,14 @@ const EmployeeLeaveTable = () => {
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 font-montserrat align-middle sticky right-[120px] bg-blue-50 z-30 min-w-[120px] text-center"
+                    className="font-semibold text-slate-700 font-graphik align-middle sticky right-[120px] bg-blue-50 z-30 min-w-[120px] text-center"
                   >
                     Total Leave
                   </TableHead>
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 font-montserrat align-middle sticky right-0 bg-rose-50 z-30 min-w-[120px] text-center"
+                    className="font-semibold text-slate-700 font-graphik align-middle sticky right-0 bg-rose-50 z-30 min-w-[120px] text-center"
                   >
                     Total Deduction
                   </TableHead>
@@ -267,13 +267,13 @@ const EmployeeLeaveTable = () => {
                   {columnsToShow.map((month, index) => (
                     <Fragment key={`${month}-sub`}>
                       <TableHead
-                        className={`text-center min-w-[90px] font-medium font-montserrat ${getMonthBgClass(index)}`}
+                        className={`text-center min-w-[90px] font-medium font-graphik ${getMonthBgClass(index)}`}
                       >
                         Leave
                       </TableHead>
 
                       <TableHead
-                        className={`text-center min-w-[105px] font-medium font-montserrat ${getMonthBgClass(index)}`}
+                        className={`text-center min-w-[105px] font-medium font-graphik ${getMonthBgClass(index)}`}
                       >
                         Deduction
                       </TableHead>
@@ -297,7 +297,7 @@ const EmployeeLeaveTable = () => {
                           key={employee.employee_id || index}
                           className="hover:bg-slate-50"
                         >
-                          <TableCell className="min-w-[150px] w-[150px] font-medium text-slate-800 sticky left-0 bg-white z-20 font-montserrat">
+                          <TableCell className="min-w-[150px] w-[150px] font-medium text-slate-800 sticky left-0 bg-white z-20 font-graphik">
                             {employee.name}
                           </TableCell>
                           {columnsToShow.map((month, monthIndex) => {
@@ -361,7 +361,7 @@ const EmployeeLeaveTable = () => {
                   <TableRow>
                     <TableCell
                       colSpan={columnsToShow.length * 2 + 3}
-                      className="text-center py-8 text-slate-500 font-montserrat"
+                      className="text-center py-8 text-slate-500 font-graphik"
                     >
                       No leave data found for the selected filters
                     </TableCell>
