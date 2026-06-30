@@ -182,24 +182,42 @@ const EmployeeDashboard = () => {
         }
 
         const dashboard = dashboardRes.data?.data || {};
-        const leaveBalanceValue = dashboard.leave_balance ?? 0;
-        const leaveBalanceText = formatLeaveDays(leaveBalanceValue);
-        const leaveBalanceTone = leaveBalanceValue < 0 ? "rose" : "blue";
         const profile = profileRes.data?.data || {};
         const leaves = leaveRes.data?.data || {};
+        const leavePolicyValue = leaves.yearly_total ?? 0;
+        const approvedLeaveValue = leaves.yearly_availed ?? leaves.yearly_used ?? 0;
+        const leaveDeductionValue = leaves.yearly_deduction ?? 0;
+        const leaveBalanceValue = leaves.yearly_remaining ?? dashboard.leave_balance ?? 0;
+        const leaveBalanceText = formatLeaveDays(leaveBalanceValue);
+        const leaveBalanceTone = leaveBalanceValue < 0 ? "rose" : "blue";
+        const currentYear = new Date().getFullYear();
 
         const quickStats = [
           {
             title: "Total Approved leave",
-            value: `${leaves.total_approved || 0} days`,
-            subtitle: "This year",
+            value: formatLeaveDays(approvedLeaveValue),
+            subtitle: `approved`,
             icon: TrendingUp,
             tone: "amber",
           },
           {
+            title: "Leave Policy",
+            value: formatLeaveDays(leavePolicyValue),
+            subtitle: `policy`,
+            icon: Ribbon,
+            tone: "emerald",
+          },
+          {
+            title: "Leave Deduction",
+            value: formatLeaveDays(leaveDeductionValue),
+            subtitle: `deduction`,
+            icon: CalendarX,
+            tone: "rose",
+          },
+          {
             title: "Leave Balance",
             value: leaveBalanceText,
-            subtitle: "Available this year",
+            subtitle: `Available`,
             icon: CalendarIcon,
             tone: leaveBalanceTone,
           },
@@ -509,7 +527,7 @@ const EmployeeDashboard = () => {
         </Card>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
           {quickStat?.map((stat, index) => {
             const Icon = stat.icon;
             const palette = statToneMap[stat.tone] || statToneMap.default;
