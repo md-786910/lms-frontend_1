@@ -201,28 +201,28 @@ const EmployeeDashboard = () => {
             tone: "amber",
           },
           {
-            title: "Leave Policy",
+            title: "Total Leave Policy",
             value: formatLeaveDays(leavePolicyValue),
             subtitle: `policy`,
             icon: Ribbon,
             tone: "emerald",
           },
           {
-            title: "Leave Deduction",
+            title: "Total Leave Deduction",
             value: formatLeaveDays(leaveDeductionValue),
             subtitle: `deduction`,
             icon: CalendarX,
             tone: "rose",
           },
           {
-            title: "Leave Balance",
+            title: "Total Leave Balance",
             value: leaveBalanceText,
             subtitle: `Available`,
             icon: CalendarIcon,
             tone: leaveBalanceTone,
           },
           {
-            title: "Current Salary",
+            title: "Total Current Salary",
             value: `\u20B9${dashboard.net_salary || 0}`,
             subtitle: "Annual gross",
             icon: IndianRupee,
@@ -540,12 +540,20 @@ const EmployeeDashboard = () => {
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-2">
-                      <span
-                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
-                      >
-                        <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
-                        {stat.subtitle}
-                      </span>
+                      <div className="flex w-full items-center justify-between">
+                        <span
+                          className={`rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
+                        >
+                          <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
+                          {stat.subtitle}
+                        </span>
+
+                        {/* <span
+                          className={`rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
+                        >
+                          Year
+                        </span> */}
+                      </div>
                       <p className="text-lg font-semibold text-slate-900 font-graphik">
                         {stat.title}
                       </p>
