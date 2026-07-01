@@ -494,22 +494,30 @@ const Employees = ({
         {filteredEmployees.map((employee) => {
           const fallbackLeaveSummary = employee.employee_leaves?.reduce(
             (acc, leave) => {
-              acc.total += leave.leave_count || 0;
-              acc.used += leave.leave_used || 0;
-              acc.remaining += leave.leave_remaing || 0;
+              acc.total += (Number(leave.leave_count) || 0) / 2;
+              acc.used += Number(leave.cycle_leave_used ?? leave.cycle_availed ?? 0) || 0;
               return acc;
             },
             { total: 0, used: 0, remaining: 0 }
           ) || { total: 0, used: 0, remaining: 0 };
+          fallbackLeaveSummary.remaining = Math.max(
+            0,
+            Number(fallbackLeaveSummary.total || 0) -
+              Number(fallbackLeaveSummary.used || 0)
+          );
           const sourceLeaveSummary =
-            employee.yearly_leave_summary || fallbackLeaveSummary;
+            employee.cycle_leave_summary || fallbackLeaveSummary;
+          const calculatedRemaining =
+            Number(sourceLeaveSummary.total || 0) -
+            Number(sourceLeaveSummary.used ?? sourceLeaveSummary.availed ?? 0) -
+            Number(sourceLeaveSummary.deduction || 0);
+          const summaryRemaining = Number(sourceLeaveSummary.remaining);
           const leaveSummary = {
             ...sourceLeaveSummary,
-            remaining: Math.max(
-              0,
-              Number(sourceLeaveSummary.total || 0) -
-                Number(sourceLeaveSummary.used || 0)
-            ),
+            used: sourceLeaveSummary.used ?? sourceLeaveSummary.availed ?? 0,
+            remaining: Number.isFinite(summaryRemaining)
+              ? summaryRemaining
+              : Math.max(0, calculatedRemaining),
           };
           const remainingBalance = leaveSummary.remaining ?? 0;
           const formattedRemainingBalance = formatLeaveDays(remainingBalance);
@@ -743,7 +751,7 @@ const Employees = ({
                     {!readOnly && (
                       <div className="flex flex-wrap items-center justify-between gap-3 text-sm mt-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100">
                         <span className="text-slate-700 font-semibold font-graphik">
-                          Leave balance
+                          {leaveSummary.cycle_name || "Current cycle"}
                         </span>
                         <div className="flex flex-wrap gap-3 text-xs font-semibold font-graphik">
                           <Badge className={remainingBadgeClass}>

@@ -78,6 +78,53 @@ const getInitials = (employee) => {
   return initials || "EE";
 };
 
+const getCycleSummaryFromLeaveInfo = (leaveInfo, cycle) => {
+  const prefix = cycle === "first" ? "first_cycle" : "second_cycle";
+  const defaultLabel = cycle === "first" ? "Jan-Jun" : "Jul-Dec";
+  const defaultName = cycle === "first" ? "First Cycle" : "Second Cycle";
+  const totals = (leaveInfo || []).reduce(
+    (acc, leave) => {
+      const explicitTotal = leave?.[`${prefix}_total`];
+      const total =
+        explicitTotal === null || explicitTotal === undefined
+          ? (Number(leave?.leave_count) || 0) / 2
+          : Number(explicitTotal) || 0;
+      const availed =
+        Number(leave?.[`${prefix}_availed`] ?? leave?.[`${prefix}_used`]) || 0;
+      const deduction = Number(leave?.[`${prefix}_deduction`]) || 0;
+      const explicitRemaining = leave?.[`${prefix}_remaining`];
+
+      acc.total += total;
+      acc.availed += availed;
+      acc.used += availed;
+      acc.deduction += deduction;
+      acc.remaining +=
+        explicitRemaining === null || explicitRemaining === undefined
+          ? Math.max(0, total - availed - deduction)
+          : Number(explicitRemaining) || 0;
+      acc.cycle_label = acc.cycle_label || leave?.[`${prefix}_label`];
+      acc.cycle_name = acc.cycle_name || leave?.[`${prefix}_name`];
+      return acc;
+    },
+    {
+      cycle,
+      cycle_label: "",
+      cycle_name: "",
+      total: 0,
+      availed: 0,
+      used: 0,
+      remaining: 0,
+      deduction: 0,
+    }
+  );
+
+  return {
+    ...totals,
+    cycle_label: totals.cycle_label || defaultLabel,
+    cycle_name: totals.cycle_name || defaultName,
+  };
+};
+
 const EmployeeHistory = () => {
   const { employeeId } = useParams();
   const navigate = useNavigate();
@@ -89,13 +136,13 @@ const EmployeeHistory = () => {
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   // Tab-specific data
   const [departments, setDepartments] = useState([]);
   const [designations, setDesignations] = useState([]);
   const [documentType, setDocumentType] = useState([]);
   const [hit, setHit] = useState(Math.random());
-  
+
   // Form states
   const [basicInfo, setBasicInfo] = useState({});
   const [addressInfo, setAddressInfo] = useState({});
@@ -105,8 +152,8 @@ const EmployeeHistory = () => {
   const [salaryInfo, setSalaryInfo] = useState({});
   const [leaveInfo, setLeaveInfo] = useState([]);
   const [leaveSummaryMeta, setLeaveSummaryMeta] = useState({
-    yearly: null,
-    cycle: null,
+    firstCycle: null,
+    secondCycle: null,
   });
 
   // Refs for validation
@@ -184,8 +231,8 @@ const EmployeeHistory = () => {
           const res = await employeeLeaveApi.getAllLeave(employeeId);
           setLeaveInfo(Array.isArray(res.data) ? res.data : []);
           setLeaveSummaryMeta({
-            yearly: res.yearly_leave_summary ?? null,
-            cycle: res.cycle_leave_summary ?? null,
+            firstCycle: res.first_cycle_leave_summary ?? null,
+            secondCycle: res.second_cycle_leave_summary ?? null,
           });
         }
       } catch (error) {
@@ -288,48 +335,17 @@ const EmployeeHistory = () => {
     return Array.from(types);
   }, [leaveRecords]);
 
-  const yearlyLeaveSummary = useMemo(() => {
-    const source = (activeTab === "leave_balance" && leaveInfo && leaveInfo.length > 0)
-      ? leaveInfo
-      : (employee?.employee_leaves ?? []);
+  const firstCycleLeaveSummary = useMemo(
+    () =>
+      leaveSummaryMeta.firstCycle || getCycleSummaryFromLeaveInfo(leaveInfo, "first"),
+    [leaveInfo, leaveSummaryMeta.firstCycle]
+  );
 
-    const aggregated = source.reduce(
-      (acc, leave) => {
-        acc.total += Number(leave?.leave_count) || 0;
-        acc.used += Number(leave?.leave_used) || 0;
-        acc.remaining += Number(leave?.leave_remaing) || 0;
-        return acc;
-      },
-      { total: 0, used: 0, remaining: 0 }
-    );
-    return {
-      ...aggregated,
-      remaining: Math.max(0, aggregated.total - aggregated.used),
-    };
-  }, [employee, leaveInfo, activeTab]);
-
-  const cycleLeaveSummary = useMemo(() => {
-    if (leaveSummaryMeta.cycle) return leaveSummaryMeta.cycle;
-
-    const total = leaveInfo.reduce(
-      (sum, leave) => sum + (Number(leave?.leave_count) || 0) / 2,
-      0
-    );
-    const used = leaveInfo.reduce(
-      (sum, leave) => sum + (Number(leave?.leave_used) || 0),
-      0
-    );
-
-    return {
-      cycle_name: "Current Cycle",
-      cycle_label: "",
-      total,
-      used,
-      remaining: Math.max(0, total - used),
-    };
-  }, [leaveInfo, leaveSummaryMeta.cycle]);
-
-  const leaveSummary = leaveSummaryMeta.yearly || yearlyLeaveSummary;
+  const secondCycleLeaveSummary = useMemo(
+    () =>
+      leaveSummaryMeta.secondCycle || getCycleSummaryFromLeaveInfo(leaveInfo, "second"),
+    [leaveInfo, leaveSummaryMeta.secondCycle]
+  );
 
   const yearOptions = useMemo(() => {
     const years = new Set();
@@ -355,61 +371,61 @@ const EmployeeHistory = () => {
     { value: "11", label: "December" },
   ];
 
-const filteredLeaves = useMemo(() => {
-  let results = leaveRecords;
+  const filteredLeaves = useMemo(() => {
+    let results = leaveRecords;
 
-  if (statusFilter !== "all") {
-    results = results.filter(
-      (leave) =>
-        (leave?.status ?? "").toLowerCase() === statusFilter.toLowerCase()
+    if (statusFilter !== "all") {
+      results = results.filter(
+        (leave) =>
+          (leave?.status ?? "").toLowerCase() === statusFilter.toLowerCase()
+      );
+    }
+
+    if (leaveTypeFilter !== "all") {
+      results = results.filter(
+        (leave) =>
+          (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
+          leaveTypeFilter.toLowerCase()
+      );
+    }
+
+    if (yearFilter !== "all") {
+      results = results.filter((leave) => {
+        return [leave?.start_date, leave?.end_date].some(
+          (d) =>
+            d &&
+            dayjs(d).isValid() &&
+            dayjs(d).format("YYYY") === yearFilter
+        );
+      });
+    }
+
+    if (monthFilter !== "all") {
+      results = results.filter((leave) => {
+        return [leave?.start_date, leave?.end_date].some(
+          (d) =>
+            d &&
+            dayjs(d).isValid() &&
+            dayjs(d).month().toString() === monthFilter
+        );
+      });
+    }
+
+    if (searchTerm.trim()) {
+      const s = searchTerm.toLowerCase();
+
+      results = results.filter((leave) => {
+        return (
+          leave.leave_type?.leave_type?.toLowerCase().includes(s) ||
+          leave.reason?.toLowerCase().includes(s)
+        );
+      });
+    }
+
+    return results.sort(
+      (a, b) => new Date(b.start_date) - new Date(a.start_date)
     );
-  }
-
-  if (leaveTypeFilter !== "all") {
-    results = results.filter(
-      (leave) =>
-        (leave?.leave_type?.leave_type ?? "").toLowerCase() ===
-        leaveTypeFilter.toLowerCase()
-    );
-  }
-
-  if (yearFilter !== "all") {
-    results = results.filter((leave) => {
-      return [leave?.start_date, leave?.end_date].some(
-        (d) =>
-          d &&
-          dayjs(d).isValid() &&
-          dayjs(d).format("YYYY") === yearFilter
-      );
-    });
-  }
-
-  if (monthFilter !== "all") {
-    results = results.filter((leave) => {
-      return [leave?.start_date, leave?.end_date].some(
-        (d) =>
-          d &&
-          dayjs(d).isValid() &&
-          dayjs(d).month().toString() === monthFilter
-      );
-    });
-  }
-
-  if (searchTerm.trim()) {
-    const s = searchTerm.toLowerCase();
-
-    results = results.filter((leave) => {
-      return (
-        leave.leave_type?.leave_type?.toLowerCase().includes(s) ||
-        leave.reason?.toLowerCase().includes(s)
-      );
-    });
-  }
-
-  return results.sort(
-    (a, b) => new Date(b.start_date) - new Date(a.start_date)
-  );
-}, [leaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
+  }, [leaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
 
   const historySummary = useMemo(() => {
     const counts = { approved: 0, pending: 0, rejected: 0 };
@@ -447,7 +463,7 @@ const filteredLeaves = useMemo(() => {
             <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
               <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                <span>Back to Employees</span> 
+                <span>Back to Employees</span>
               </div>
             </div>
           </div>
@@ -509,55 +525,34 @@ const filteredLeaves = useMemo(() => {
                 <div className="flex flex-col gap-4 mb-6">
                   <h3 className="text-xl font-bold text-slate-900">Leave Balances</h3>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <p className="text-sm font-bold text-slate-900">Yearly</p>
-                          <p className="text-xs font-semibold text-slate-500">
-                            {leaveSummary.year ? `Current year ${leaveSummary.year}` : "Current year"}
-                          </p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
-                            Remaining: {formatLeaveDays(leaveSummary.remaining)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
-                            Availed: {formatLeaveDays(leaveSummary.availed ?? leaveSummary.used)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
-                            Deduction: {formatLeaveDays(leaveSummary.deduction ?? 0)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
-                            Total: {formatLeaveDays(leaveSummary.total)}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <p className="text-sm font-bold text-slate-900">Current Cycle</p>
-                          <p className="text-xs font-semibold text-slate-500">
-                            {cycleLeaveSummary.cycle_name}
-                            {cycleLeaveSummary.cycle_label ? `: ${cycleLeaveSummary.cycle_label}` : ""}
-                          </p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
-                            Remaining: {formatLeaveDays(cycleLeaveSummary.remaining)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
-                            Availed: {formatLeaveDays(cycleLeaveSummary.availed ?? cycleLeaveSummary.used)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
-                            Deduction: {formatLeaveDays(cycleLeaveSummary.deduction ?? 0)}
-                          </Badge>
-                          <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
-                            Total: {formatLeaveDays(cycleLeaveSummary.total)}
-                          </Badge>
+                    {[firstCycleLeaveSummary, secondCycleLeaveSummary].map((summary) => (
+                      <div key={summary.cycle} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-bold text-slate-900">
+                              {summary.cycle_name}
+                            </p>
+                            <p className="text-xs font-semibold text-slate-500">
+                              {summary.cycle_label}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
+                              Remaining: {formatLeaveDays(summary.remaining)}
+                            </Badge>
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
+                              Availed: {formatLeaveDays(summary.availed ?? summary.used)}
+                            </Badge>
+                            <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
+                              Deduction: {formatLeaveDays(summary.deduction ?? 0)}
+                            </Badge>
+                            <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
+                              Total: {formatLeaveDays(summary.total)}
+                            </Badge>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
                 <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />
@@ -569,10 +564,10 @@ const filteredLeaves = useMemo(() => {
               <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {[
-                    { label: "Total Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
-                    { label: "Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
-                    { label: "Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
-                    { label: "Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
+                    { label: "Total Leave Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
+                    { label: "Total Leave Requests Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                    { label: "Total Leave Requests Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
+                    { label: "Total Leave Requests Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
                   ].map((stat) => (
                     <div key={stat.label} className={`p-5 rounded-xl border ${stat.color} transition-all duration-200 hover:shadow-md`}>
                       <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
@@ -650,7 +645,7 @@ const filteredLeaves = useMemo(() => {
                               </div>
                               <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
-                                {dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")} 
+                                {dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")}
                                 <span className="text-slate-900 font-bold ml-1">({leave.total_days} days)</span>
                               </p>
                             </div>
