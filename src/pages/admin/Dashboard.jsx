@@ -32,6 +32,10 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { useSocketContext } from "../../contexts/SocketContext";
 import EmployeeLeaveTable from "../../components/EmployeeLeaveTable";
 import dayjs from "dayjs";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+
+import "swiper/css";
 const AdminDashboard = () => {
   const { updateDashboard, setUpdateDashboard } = useSocketContext();
   const navigate = useNavigate();
@@ -45,6 +49,8 @@ const AdminDashboard = () => {
   const [downloading, setDownloading] = useState(false);
   const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
   const [showEmailConfirm, setShowEmailConfirm] = useState(false);
+
+  const unreadNotifications = notifications?.filter((a) => !a.read) || [];
 
   const fetchNotification = async () => {
     try {
@@ -219,75 +225,87 @@ const AdminDashboard = () => {
     <>
       <div className="space-y-5">
 
-        {notifications?.filter((a) => !a.read)?.length > 0 && (
-          <div className="grid gap-3">
-            {notifications
-              ?.filter((a) => !a.read)
-              ?.map((notification) => {
-                const isLeaveRequest =
-                  notification.title?.toLowerCase().includes("leave");
-                const isApproved = notification.message
-                  ?.toLowerCase()
-                  .includes("approved");
-                const isRejected = notification.message
-                  ?.toLowerCase()
-                  .includes("rejected");
+        {unreadNotifications.length > 0 && (
+          <Swiper
+            modules={[Autoplay]}
+            slidesPerView={1}
+            spaceBetween={20}
+            loop={true}
+            autoplay={{
+              delay: 1000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            className="w-full"
+          >
+            {unreadNotifications.map((notification) => {
+              const isLeaveRequest =
+                notification.title?.toLowerCase().includes("leave");
 
-                const tone = (() => {
-                  if (isApproved) return "emerald";
-                  if (isRejected) return "rose";
-                  if (isLeaveRequest) return "indigo";
-                  return "blue";
-                })();
+              const isApproved = notification.message
+                ?.toLowerCase()
+                .includes("approved");
 
-                const tonePalette = {
-                  emerald: {
-                    indicator: "bg-emerald-500",
-                    icon: "bg-emerald-50 text-emerald-700",
-                    badge: "bg-emerald-50 text-emerald-700",
-                  },
-                  rose: {
-                    indicator: "bg-rose-500",
-                    icon: "bg-rose-50 text-rose-700",
-                    badge: "bg-rose-50 text-rose-700",
-                  },
-                  indigo: {
-                    indicator: "bg-indigo-500",
-                    icon: "bg-indigo-50 text-indigo-700",
-                    badge: "bg-indigo-50 text-indigo-700",
-                  },
-                  blue: {
-                    indicator: "bg-blue-500",
-                    icon: "bg-blue-50 text-blue-700",
-                    badge: "bg-blue-50 text-blue-700",
-                  },
-                };
+              const isRejected = notification.message
+                ?.toLowerCase()
+                .includes("rejected");
 
-                const palette = tonePalette[tone];
+              const tone = (() => {
+                if (isApproved) return "emerald";
+                if (isRejected) return "rose";
+                if (isLeaveRequest) return "indigo";
+                return "blue";
+              })();
 
-                const getIcon = () => {
-                  if (isApproved) return <CheckCircle className="h-5 w-5" />;
-                  if (isRejected) return <X className="h-5 w-5" />;
-                  if (isLeaveRequest)
-                    return <CalendarIcon className="h-5 w-5" />;
-                  return <Bell className="h-5 w-5" />;
-                };
+              const tonePalette = {
+                emerald: {
+                  indicator: "bg-emerald-500",
+                  icon: "bg-emerald-50 text-emerald-700",
+                  badge: "bg-emerald-50 text-emerald-700",
+                },
+                rose: {
+                  indicator: "bg-rose-500",
+                  icon: "bg-rose-50 text-rose-700",
+                  badge: "bg-rose-50 text-rose-700",
+                },
+                indigo: {
+                  indicator: "bg-indigo-500",
+                  icon: "bg-indigo-50 text-indigo-700",
+                  badge: "bg-indigo-50 text-indigo-700",
+                },
+                blue: {
+                  indicator: "bg-blue-500",
+                  icon: "bg-blue-50 text-blue-700",
+                  badge: "bg-blue-50 text-blue-700",
+                },
+              };
 
-                const getTitle = () => {
-                  if (isApproved) return "Leave Approved";
-                  if (isRejected) return "Leave Rejected";
-                  if (isLeaveRequest) return "Leave Update";
-                  return notification.title || "Notification";
-                };
+              const palette = tonePalette[tone];
 
-                return (
+              const getIcon = () => {
+                if (isApproved) return <CheckCircle className="h-5 w-5" />;
+                if (isRejected) return <X className="h-5 w-5" />;
+                if (isLeaveRequest)
+                  return <CalendarIcon className="h-5 w-5" />;
+                return <Bell className="h-5 w-5" />;
+              };
+
+              const getTitle = () => {
+                if (isApproved) return "Leave Approved";
+                if (isRejected) return "Leave Rejected";
+                if (isLeaveRequest) return "Leave Update";
+                return notification.title || "Notification";
+              };
+
+              return (
+                <SwiperSlide key={notification.id}>
                   <div
-                    key={notification.id}
-                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                     onClick={async () => {
                       const resp = await companyAPI.readNotification(
                         notification.id
                       );
+
                       if (resp.status) {
                         fetchNotification();
                       }
@@ -296,28 +314,32 @@ const AdminDashboard = () => {
                     <div
                       className={`absolute inset-y-0 left-0 w-1 ${palette.indicator}`}
                     />
+
                     <div className="flex items-start gap-4 p-4">
                       <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-xl ${palette.icon} flex items-center justify-center shadow-md`}
+                        className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${palette.icon} shadow-md`}
                       >
                         {getIcon()}
                       </div>
 
-                      <div className="flex-1 min-w-0 space-y-1">
+                      <div className="min-w-0 flex-1 space-y-1">
                         <div className="flex items-center gap-2">
-                          <p className="font-semibold text-slate-900 text-sm">
+                          <p className="text-sm font-semibold text-slate-900">
                             {getTitle()}
                           </p>
+
                           <span
-                            className={`inline-flex items-center gap-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold capitalize tracking-wide ${palette.badge} border border-transparent`}
+                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${palette.badge}`}
                           >
                             New
                           </span>
                         </div>
-                        <p className="text-sm text-slate-600 leading-relaxed">
+
+                        <p className="text-sm leading-relaxed text-slate-600">
                           {notification.message}
                         </p>
-                        <p className="text-xs text-slate-400 flex items-center gap-1">
+
+                        <p className="flex items-center gap-1 text-xs text-slate-400">
                           <Clock className="h-3 w-3" />
                           {dayjs(notification.createdAt).fromNow()}
                         </p>
@@ -326,12 +348,14 @@ const AdminDashboard = () => {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="h-8 w-8 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                        className="h-8 w-8 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600"
                         onClick={async (e) => {
                           e.stopPropagation();
+
                           const resp = await companyAPI.readNotification(
                             notification.id
                           );
+
                           if (resp.status) {
                             fetchNotification();
                           }
@@ -341,10 +365,12 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </div>
-                );
-              })}
-          </div>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         )}
+
         <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white overflow-hidden">
           <CardContent className="p-5 md:p-7 relative">
             <div className="grid grid-cols-12 items-center gap-4 relative z-10">
