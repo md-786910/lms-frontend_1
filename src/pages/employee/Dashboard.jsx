@@ -190,6 +190,9 @@ const EmployeeDashboard = () => {
         const leaveBalanceValue = leaves.yearly_remaining ?? dashboard.leave_balance ?? 0;
         const leaveBalanceText = formatLeaveDays(leaveBalanceValue);
         const leaveBalanceTone = leaveBalanceValue < 0 ? "rose" : "blue";
+        const extraWorkLeaveBalanceText = formatLeaveDays(
+          leaves.extra_work_leave_balance?.balance ?? 0
+        );
         const currentYear = new Date().getFullYear();
 
         const quickStats = [
@@ -220,6 +223,13 @@ const EmployeeDashboard = () => {
             subtitle: `Available`,
             icon: CalendarIcon,
             tone: leaveBalanceTone,
+          },
+          {
+            title: "Extra Work Leave",
+            value: extraWorkLeaveBalanceText,
+            subtitle: "earned balance",
+            icon: Award,
+            tone: "default",
           },
           {
             title: "Total Current Salary",
@@ -310,7 +320,7 @@ const EmployeeDashboard = () => {
       employeeName: `${leave.employee.first_name} ${leave.employee.last_name}`,
       employeeId: leave.employee.employee_no,
       date: new Date(),
-      type: leave.leave_type.leave_type,
+      type: leave.leave_type?.leave_type,
       status: leave.status,
       leaveOn: JSON.parse(leave?.leave_on)?.find(
         (f) => f.date === format(new Date(), "yyyy-MM-dd")
@@ -350,6 +360,10 @@ const EmployeeDashboard = () => {
     overtime: "Overtime",
     special_assignment: "Special Assignment",
     task_completion: "Task Completion",
+  };
+  const workingHoursLabels = {
+    half_day: "Half Day",
+    full_day: "Full Day",
   };
   const recentProofOfWork = proofOfWorkRecords.slice(0, 5);
   return (
@@ -599,7 +613,7 @@ const EmployeeDashboard = () => {
                         </Badge>
                       </div>
                       <p className="text-xs font-medium text-slate-500 font-graphik">
-                        {proofTypeLabels[submission.work_type] || submission.work_type} - {dayjs(submission.work_date).format("D MMM YYYY")} - {(submission.attachments || []).length} evidence file{(submission.attachments || []).length === 1 ? "" : "s"}
+                        {proofTypeLabels[submission.work_type] || submission.work_type} - {workingHoursLabels[submission.working_hours] || submission.working_hours || "Full Day"} - {dayjs(submission.work_date).format("D MMM YYYY")} - {(submission.attachments || []).length} evidence file{(submission.attachments || []).length === 1 ? "" : "s"}
                       </p>
                     </div>
                     {submission.manager_comment && (
@@ -969,6 +983,7 @@ const EmployeeDashboard = () => {
             }}
             onSuccess={() => handleRequestSuccess()}
             leaves={leaveDash?.leaves}
+            extraWorkLeaveBalance={leaveDash?.extra_work_leave_balance}
             readOnly={readOnly || false}
             leaveRequestViewMode={leaveRequestViewMode}
           />

@@ -119,7 +119,7 @@ const AdminDashboard = () => {
       employeeName: `${leave.employee.first_name} ${leave.employee.last_name}`,
       employeeId: leave.employee?.employee_no ?? leave?.employee?.id,
       date: new Date(),
-      type: leave.leave_type.leave_type,
+      type: leave.leave_type?.leave_type,
       status: leave.status,
       leaveOn: JSON.parse(leave?.leave_on)?.find(
         (f) => f.date === format(new Date(), "yyyy-MM-dd")

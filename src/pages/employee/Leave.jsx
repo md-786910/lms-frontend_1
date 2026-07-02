@@ -53,6 +53,9 @@ const EmployeeLeave = () => {
   
   const totalRemaining = leaveDash?.cycle_remaining ?? leaveDash?.total_remaining ?? 0;
   const totalRemainingLabel = formatLeaveDays(totalRemaining);
+  const extraWorkBalanceLabel = formatLeaveDays(
+    leaveDash?.extra_work_leave_balance?.balance ?? 0
+  );
   const totalRemainingBadgeClass =
     totalRemaining < 0
       ? "bg-rose-50 text-rose-600 border border-rose-100"
@@ -621,6 +624,27 @@ const EmployeeLeave = () => {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="border border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.08)] rounded-2xl bg-white">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 text-slate-700">
+                  <Hash className="h-5 w-5" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
+                    Extra Work Leave
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900 font-graphik">
+                    {extraWorkBalanceLabel}
+                  </p>
+                  <p className="text-xs text-slate-500 font-graphik">
+                    Separate earned balance
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
       {/* Leave Request Modal */}
@@ -634,6 +658,7 @@ const EmployeeLeave = () => {
             }}
             onSuccess={() => handleRequestSuccess()}
             leaves={leaveDash?.leaves}
+            extraWorkLeaveBalance={leaveDash?.extra_work_leave_balance}
             readOnly={readOnly || false}
             leaveRequestViewMode={leaveRequestViewMode}
           />

@@ -43,6 +43,8 @@ import holidayJsonData from "../data/holiday.json";
 
 const FLOATING_LEAVE_VALUE = "floating_leave";
 const FLOATING_LEAVE_LABEL = "Floating Leave";
+const EXTRA_WORK_LEAVE_VALUE = "extra_work_leave";
+const EXTRA_WORK_LEAVE_LABEL = "Extra Work Leave";
 
 const LEAVE = [
   { id: 1, name: "Full Day", count: 1 },
@@ -87,6 +89,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     (holiday) => holiday.key === selectedFestivalKey
   );
   const isFloatingLeave = leaveType === FLOATING_LEAVE_VALUE;
+  const isExtraWorkLeave = leaveType === EXTRA_WORK_LEAVE_VALUE;
 
   const sortedEmployees = useMemo(() => {
     const list = [...employees];
@@ -191,6 +194,10 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     });
     setDayErrors(tempErrors);
 
+    if (isExtraWorkLeave && totalLeaveCount > extraWorkBalance) {
+      return false;
+    }
+
     return isMainValid && tempErrors.every((err) => !err);
   };
 
@@ -231,8 +238,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
               ]),
             }
           : {
-              request_type: "policy",
-              leave_type_id: parseInt(leaveType),
+              request_type: isExtraWorkLeave ? "extra_work" : "policy",
+              leave_type_id: isExtraWorkLeave ? null : parseInt(leaveType),
               start_date: dayjs(startDate).format("YYYY-MM-DD"),
               end_date: dayjs(endDate).format("YYYY-MM-DD"),
               total_days: totalLeaveCount,
@@ -352,6 +359,9 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   const selectedEmployeeData = employees.find(
     (emp) => emp.id === parseInt(selectedEmployee)
   );
+  const extraWorkBalance = Number(
+    selectedEmployeeData?.extra_work_leave_balance?.balance || 0
+  );
 
   return (
     <div className="w-full max-h-[95vh] flex flex-col overflow-hidden">
@@ -469,6 +479,15 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           setLeaveDays([]);
                           return;
                         }
+                        if (val === EXTRA_WORK_LEAVE_VALUE) {
+                          setLeaveType(EXTRA_WORK_LEAVE_VALUE);
+                          setStartDate(null);
+                          setEndDate(null);
+                          setDayCount(0);
+                          setTotalLeaveCount(0);
+                          setLeaveDays([]);
+                          return;
+                        }
                         setLeaveType(parseInt(val));
                       }}
                     >
@@ -491,6 +510,13 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
                         >
                           {FLOATING_LEAVE_LABEL}
+                        </SelectItem>
+                        <SelectItem
+                          key={EXTRA_WORK_LEAVE_VALUE}
+                          value={EXTRA_WORK_LEAVE_VALUE}
+                          className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
+                        >
+                          {EXTRA_WORK_LEAVE_LABEL}
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -742,6 +768,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           <p className="font-bold text-sm font-graphik">
                             {isFloatingLeave
                               ? FLOATING_LEAVE_LABEL
+                              : isExtraWorkLeave
+                                ? EXTRA_WORK_LEAVE_LABEL
                               : leaveTypes.find((t) => t.leave_id === leaveType)?.leave_type || "Not set"}
                           </p>
                         </div>
@@ -767,10 +795,30 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                           <CalendarDays className="h-4 w-4" />
                         </span>
-                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">Policy Snapshot</h3>
+                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">
+                          {isExtraWorkLeave ? "Extra Work Balance" : "Policy Snapshot"}
+                        </h3>
                       </div>
                       
                       {(() => {
+                        if (isExtraWorkLeave) {
+                          return (
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between group">
+                                <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Earned</span>
+                                <span className="font-black text-slate-900 text-md">{selectedEmployeeData?.extra_work_leave_balance?.total_earned ?? 0}</span>
+                              </div>
+                              <div className="flex items-center justify-between group">
+                                <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Used</span>
+                                <span className="font-black text-slate-900 text-md">{selectedEmployeeData?.extra_work_leave_balance?.total_used ?? 0}</span>
+                              </div>
+                              <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
+                                <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Available</span>
+                                <span className="font-black text-emerald-600 text-md group-hover:scale-110 transition-transform">{extraWorkBalance}</span>
+                              </div>
+                            </div>
+                          );
+                        }
                         const policy = leaveTypes.find((t) => t.leave_id === leaveType);
                         if (!policy) return null;
                         return (

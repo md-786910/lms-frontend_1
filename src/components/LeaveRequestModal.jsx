@@ -42,6 +42,8 @@ import holidayJsonData from "../data/holiday.json";
 
 const FLOATING_LEAVE_VALUE = "floating_leave";
 const FLOATING_LEAVE_LABEL = "Floating Leave";
+const EXTRA_WORK_LEAVE_VALUE = "extra_work_leave";
+const EXTRA_WORK_LEAVE_LABEL = "Extra Work Leave";
 
 const LEAVE = [
   {
@@ -65,6 +67,7 @@ const LeaveRequestModal = ({
   onClose,
   onSuccess,
   leaves = [],
+  extraWorkLeaveBalance = {},
   readOnly = false,
   leaveRequestViewMode = {},
 }) => {
@@ -112,8 +115,12 @@ const LeaveRequestModal = ({
     (holiday) => holiday.key === selectedFestivalKey
   );
   const isFloatingLeave = leaveType === FLOATING_LEAVE_VALUE;
+  const isExtraWorkLeave = leaveType === EXTRA_WORK_LEAVE_VALUE;
+  const extraWorkBalance = Number(extraWorkLeaveBalance?.balance || 0);
   const availableBalance =
-    leaveCalculate?.cycle_leave_remaining ?? leaveCalculate?.leave_remaing ?? 0;
+    isExtraWorkLeave
+      ? extraWorkBalance
+      : leaveCalculate?.cycle_leave_remaining ?? leaveCalculate?.leave_remaing ?? 0;
   const formattedAvailableBalance = formatLeaveDays(availableBalance);
   const remainingAfterRequest = availableBalance - totalLeaveCount;
   const formattedRemainingAfterRequest = formatLeaveDays(remainingAfterRequest);
@@ -176,6 +183,10 @@ const LeaveRequestModal = ({
     });
     setDayErrors(tempErrors);
 
+    if (isExtraWorkLeave && totalLeaveCount > extraWorkBalance) {
+      return false;
+    }
+
     return isMainValid && tempErrors.every((err) => !err);
   };
 
@@ -189,14 +200,17 @@ const LeaveRequestModal = ({
         title: "Validation Error",
         description: isFloatingLeave
           ? "Please select a festival and enter a justification."
-          : "Please fill all required fields.",
+          : isExtraWorkLeave && totalLeaveCount > extraWorkBalance
+            ? "Requested days exceed your Extra Work Leave balance."
+            : "Please fill all required fields.",
         variant: "destructive",
       });
       return;
     }
 
-    const payload = isFloatingLeave
-      ? {
+    let payload;
+    if (isFloatingLeave) {
+      payload = {
         request_type: "floating",
         leave_type_id: null,
         festival_name: selectedFestival.name,
@@ -210,8 +224,20 @@ const LeaveRequestModal = ({
         ]),
         reason,
         emergency_contact_person: emergencyContact,
-      }
-      : {
+      };
+    } else if (isExtraWorkLeave) {
+      payload = {
+        request_type: "extra_work",
+        leave_type_id: null,
+        start_date: dayjs(startDate).format("YYYY-MM-DD"),
+        end_date: dayjs(endDate).format("YYYY-MM-DD"),
+        total_days: totalLeaveCount,
+        leave_on: JSON.stringify(leaveDays),
+        reason,
+        emergency_contact_person: emergencyContact,
+      };
+    } else {
+      payload = {
         request_type: "policy",
         leave_type_id: leaveCalculate?.leave_id,
         start_date: dayjs(startDate).format("YYYY-MM-DD"),
@@ -221,6 +247,7 @@ const LeaveRequestModal = ({
         reason,
         emergency_contact_person: emergencyContact,
       };
+    }
 
     const resp = await employeeLeaveApi.createNewLeaveRequest(payload);
 
@@ -304,8 +331,14 @@ const LeaveRequestModal = ({
     if (readOnly) {
       const readOnlyFloating =
         leaveRequestViewMode?.request_type === "floating";
+      const readOnlyExtraWork =
+        leaveRequestViewMode?.request_type === "extra_work";
       setLeaveType(
-        readOnlyFloating ? FLOATING_LEAVE_VALUE : leaveRequestViewMode?.leave_type_id
+        readOnlyFloating
+          ? FLOATING_LEAVE_VALUE
+          : readOnlyExtraWork
+            ? EXTRA_WORK_LEAVE_VALUE
+            : leaveRequestViewMode?.leave_type_id
       );
       if (readOnlyFloating) {
         setSelectedFestivalKey(
@@ -364,9 +397,16 @@ const LeaveRequestModal = ({
       });
       return;
     }
+    if (isExtraWorkLeave) {
+      setLeaveCalculate({
+        leave_id: EXTRA_WORK_LEAVE_VALUE,
+        leave_type: EXTRA_WORK_LEAVE_LABEL,
+      });
+      return;
+    }
     const match = leaves?.find((l) => l.leave_id == Number(leaveType));
     setLeaveCalculate(match);
-  }, [leaveType, leaves, isFloatingLeave]);
+  }, [leaveType, leaves, isFloatingLeave, isExtraWorkLeave]);
 
   const handleFestivalChange = (key) => {
     const festival = restrictedHolidays.find((holiday) => holiday.key === key);
@@ -486,6 +526,20 @@ const LeaveRequestModal = ({
                           setLeaveDays([]);
                           return;
                         }
+                        if (val === EXTRA_WORK_LEAVE_VALUE) {
+                          setLeaveType(EXTRA_WORK_LEAVE_VALUE);
+                          setLeaveCalculate({
+                            leave_id: EXTRA_WORK_LEAVE_VALUE,
+                            leave_type: EXTRA_WORK_LEAVE_LABEL,
+                          });
+                          setStartDate(null);
+                          setEndDate(null);
+                          setDates({ start_date: "", end_date: "" });
+                          setDayCount(0);
+                          setTotalLeaveCount(0);
+                          setLeaveDays([]);
+                          return;
+                        }
                         setLeaveType(Number(val));
                         calculateLeave(Number(val));
                       }}
@@ -516,6 +570,17 @@ const LeaveRequestModal = ({
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider">
                               {FLOATING_LEAVE_LABEL}
+                            </span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem
+                          key={EXTRA_WORK_LEAVE_VALUE}
+                          value={EXTRA_WORK_LEAVE_VALUE}
+                          className="py-3 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider">
+                              {EXTRA_WORK_LEAVE_LABEL}
                             </span>
                           </div>
                         </SelectItem>
@@ -550,7 +615,7 @@ const LeaveRequestModal = ({
                               disabled={holiday.isPast}
                             >
                               {holiday.name} - {dayjs(holiday.date).format("DD MMM YYYY")}
-                              {holiday.isPast}
+                              {holiday.isPast ? " (Past)" : ""}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -779,7 +844,13 @@ const LeaveRequestModal = ({
                     <div className="space-y-4 relative">
                       <div className="space-y-1">
                         <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Leave Type</p>
-                        <p className="font-black text-lg font-graphik truncate">{isFloatingLeave ? FLOATING_LEAVE_LABEL : leaveCalculate?.leave_type || "-"}</p>
+                        <p className="font-black text-lg font-graphik truncate">
+                          {isFloatingLeave
+                            ? FLOATING_LEAVE_LABEL
+                            : isExtraWorkLeave
+                              ? EXTRA_WORK_LEAVE_LABEL
+                              : leaveCalculate?.leave_type || "-"}
+                        </p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
@@ -809,12 +880,16 @@ const LeaveRequestModal = ({
                         <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                           <CalendarDays className="h-4 w-4" />
                         </span>
-                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">Leave Balance</h3>
+                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">
+                          {isExtraWorkLeave ? "Extra Work Balance" : "Leave Balance"}
+                        </h3>
                       </div>
 
                       <div className="space-y-4">
                         <div className="flex items-center justify-between group">
-                          <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
+                          <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">
+                            {isExtraWorkLeave ? "Available Balance" : "Cycle Available Balance"}
+                          </span>
                           <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
                         </div>
                         <div className="flex items-center justify-between group">

@@ -16,16 +16,20 @@ import { CheckCircle2, FileUp, Loader2, X } from "lucide-react";
 import { proofOfWorkApi } from "../api/proofOfWorkApi";
 
 const WORK_TYPES = [
-  { value: "remote", label: "Remote Work" },
   { value: "overtime", label: "Overtime" },
   { value: "special_assignment", label: "Special Assignment" },
-  { value: "task_completion", label: "Task Completion" },
+];
+
+const WORKING_HOURS = [
+  { value: "half_day", label: "Half Day" },
+  { value: "full_day", label: "Full Day" },
 ];
 
 const ProofOfWorkModal = ({ onClose, onSuccess }) => {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [workType, setWorkType] = useState("");
+  const [workingHours, setWorkingHours] = useState("");
   const [workDate, setWorkDate] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
@@ -36,6 +40,7 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
     const nextErrors = {};
     if (!title.trim()) nextErrors.title = "Title is required";
     if (!workType) nextErrors.workType = "Work type is required";
+    if (!workingHours) nextErrors.workingHours = "Working hours is required";
     if (!workDate) nextErrors.workDate = "Work date is required";
     if (!description.trim()) nextErrors.description = "Description is required";
     if (!files.length) nextErrors.files = "At least one evidence file is required";
@@ -68,6 +73,7 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
       await proofOfWorkApi.createSubmission({
         title: title.trim(),
         work_type: workType,
+        working_hours: workingHours,
         work_date: workDate,
         description: description.trim(),
         file_ids: fileIds,
@@ -169,6 +175,25 @@ const ProofOfWorkModal = ({ onClose, onSuccess }) => {
               className="h-12 rounded-xl border-slate-200 font-graphik"
             />
             {errors.workDate && <p className="text-xs font-semibold text-rose-500">{errors.workDate}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-xs font-bold tracking-wide text-slate-600 font-graphik">
+              Working Hours <span className="text-rose-500">*</span>
+            </Label>
+            <Select value={workingHours} onValueChange={setWorkingHours}>
+              <SelectTrigger className="h-12 rounded-xl border-slate-200 font-graphik">
+                <SelectValue placeholder="Select working hours" />
+              </SelectTrigger>
+              <SelectContent>
+                {WORKING_HOURS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.workingHours && <p className="text-xs font-semibold text-rose-500">{errors.workingHours}</p>}
           </div>
 
           <div className="space-y-2">

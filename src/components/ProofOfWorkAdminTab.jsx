@@ -37,6 +37,11 @@ const WORK_TYPE_LABELS = {
   task_completion: "Task Completion",
 };
 
+const WORKING_HOURS_LABELS = {
+  half_day: "Half Day",
+  full_day: "Full Day",
+};
+
 const statusStyles = {
   pending: "bg-amber-50 text-amber-700 border-amber-100",
   approved: "bg-emerald-50 text-emerald-700 border-emerald-100",
@@ -166,6 +171,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
                       <span>{WORK_TYPE_LABELS[submission.work_type] || submission.work_type}</span>
+                      <span>{WORKING_HOURS_LABELS[submission.working_hours] || submission.working_hours || "Full Day"}</span>
                       <span>Applied {dayjs(submission.createdAt).format("D MMM YYYY")}</span>
                       <span>Work date {dayjs(submission.work_date).format("D MMM YYYY")}</span>
                     </div>
