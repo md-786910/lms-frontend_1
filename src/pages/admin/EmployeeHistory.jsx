@@ -347,14 +347,24 @@ const EmployeeHistory = () => {
     [leaveInfo, leaveSummaryMeta.secondCycle]
   );
 
+  const historyLeaveRecords = useMemo(
+    () =>
+      leaveRecords.filter((leave) =>
+        [leave?.start_date, leave?.end_date].some(
+          (d) => d && dayjs(d).isValid() && dayjs(d).format("YYYY") === "2026"
+        )
+      ),
+    [leaveRecords]
+  );
+
   const yearOptions = useMemo(() => {
     const years = new Set();
-    leaveRecords.forEach((leave) => {
+    historyLeaveRecords.forEach((leave) => {
       if (leave?.start_date) years.add(dayjs(leave.start_date).format("YYYY"));
       if (leave?.end_date) years.add(dayjs(leave.end_date).format("YYYY"));
     });
     return Array.from(years).sort((a, b) => b - a);
-  }, [leaveRecords]);
+  }, [historyLeaveRecords]);
 
   const monthOptions = [
     { value: "0", label: "January" },
@@ -372,7 +382,7 @@ const EmployeeHistory = () => {
   ];
 
   const filteredLeaves = useMemo(() => {
-    let results = leaveRecords;
+    let results = historyLeaveRecords;
 
     if (statusFilter !== "all") {
       results = results.filter(
@@ -425,18 +435,19 @@ const EmployeeHistory = () => {
     return results.sort(
       (a, b) => new Date(b.start_date) - new Date(a.start_date)
     );
-  }, [leaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
+  }, [historyLeaveRecords, statusFilter, leaveTypeFilter, yearFilter, monthFilter, searchTerm]);
 
   const historySummary = useMemo(() => {
-    const counts = { approved: 0, pending: 0, rejected: 0 };
+    const days = { approved: 0, pending: 0, rejected: 0 };
     let totalDays = 0;
-    leaveRecords.forEach((leave) => {
+    historyLeaveRecords.forEach((leave) => {
       const status = (leave?.status || "").toLowerCase();
-      if (counts.hasOwnProperty(status)) counts[status]++;
-      totalDays += Number(leave?.total_days || 0);
+      const leaveDays = Number(leave?.total_days || 0);
+      if (days.hasOwnProperty(status)) days[status] += leaveDays;
+      totalDays += leaveDays;
     });
-    return { counts, totalDays };
-  }, [leaveRecords]);
+    return { days, totalDays };
+  }, [historyLeaveRecords]);
 
   if (loading) return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
@@ -519,41 +530,59 @@ const EmployeeHistory = () => {
             <TabsContent value="salary" className="mt-0">
               <SalaryForm ref={salaryRef} salaryInfo={salaryInfo} setSalaryInfo={setSalaryInfo} />
             </TabsContent>
-
+            {/* Leave Balance - Top Section */}
             <TabsContent value="leave_balance" className="mt-0 space-y-6">
               <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
-                <div className="flex flex-col gap-4 mb-6">
-                  <h3 className="text-xl font-bold text-slate-900">Leave Balances</h3>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {[firstCycleLeaveSummary, secondCycleLeaveSummary].map((summary) => (
-                      <div key={summary.cycle} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div>
-                            <p className="text-sm font-bold text-slate-900">
-                              {summary.cycle_name}
-                            </p>
-                            <p className="text-xs font-semibold text-slate-500">
-                              {summary.cycle_label}
-                            </p>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-100 px-3 py-1 text-xs font-semibold">
-                              Remaining: {formatLeaveDays(summary.remaining)}
-                            </Badge>
-                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100 px-3 py-1 text-xs font-semibold">
-                              Availed: {formatLeaveDays(summary.availed ?? summary.used)}
-                            </Badge>
-                            <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-100 px-3 py-1 text-xs font-semibold">
-                              Deduction: {formatLeaveDays(summary.deduction ?? 0)}
-                            </Badge>
-                            <Badge variant="outline" className="bg-white text-slate-700 border-slate-200 px-3 py-1 text-xs font-semibold">
-                              Total: {formatLeaveDays(summary.total)}
-                            </Badge>
-                          </div>
+                <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                  {[firstCycleLeaveSummary, secondCycleLeaveSummary].map((summary) => (
+                    <div
+                      key={summary.cycle}
+                      className="rounded-md border border-slate-200 bg-white p-4 shadow-sm"
+                    >
+                      <div className="grid grid-cols-1 items-center gap-3 sm:grid-cols-5">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                            {summary.cycle_name}
+                          </p>
+                          <h3 className="text-lg font-bold text-slate-900">
+                            {summary.cycle_label}-2026
+                          </h3>
+                        </div>
+                        <div className="rounded-md border border-slate-100 bg-slate-50 p-3">
+                          <p className="text-xs font-semibold text-slate-500">
+                            Cycle Entitlement
+                          </p>
+                          <p className="text-2xl font-bold text-slate-900">
+                            {formatLeaveDays(summary.total)}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-amber-100 bg-amber-50 p-3">
+                          <p className="text-xs font-semibold text-amber-700">
+                            Leave In Cycle
+                          </p>
+                          <p className="text-2xl font-bold text-amber-700">
+                            {formatLeaveDays(summary.availed ?? summary.used)}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-rose-100 bg-rose-50 p-3">
+                          <p className="text-xs font-semibold text-rose-700">
+                            Deduction
+                          </p>
+                          <p className="text-2xl font-bold text-rose-700">
+                            {formatLeaveDays(summary.deduction ?? 0)}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-emerald-100 bg-emerald-50 p-3">
+                          <p className="text-xs font-semibold text-emerald-700">
+                            Remaining
+                          </p>
+                          <p className="text-2xl font-bold text-emerald-700">
+                            {formatLeaveDays(summary.remaining)}
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
                 <LeaveInfoForm ref={leaveRef} leaveInfo={leaveInfo} setLeaveInfo={setLeaveInfo} />
               </div>
@@ -564,10 +593,10 @@ const EmployeeHistory = () => {
               <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {[
-                    { label: "Total Leave Requests", value: leaveRecords.length, color: "bg-slate-50 text-slate-700 border-slate-100" },
-                    { label: "Total Leave Requests Approved", value: historySummary.counts.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
-                    { label: "Total Leave Requests Pending", value: historySummary.counts.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
-                    { label: "Total Leave Requests Rejected", value: historySummary.counts.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
+                    { label: "Total Leaves", value: historySummary.totalDays, color: "bg-slate-50 text-slate-700 border-slate-100" },
+                    { label: "Total Leaves Approved", value: historySummary.days.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                    { label: "Total Leaves Pending", value: historySummary.days.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
+                    { label: "Total Leaves Rejected", value: historySummary.days.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
                   ].map((stat) => (
                     <div key={stat.label} className={`p-5 rounded-xl border ${stat.color} transition-all duration-200 hover:shadow-md`}>
                       <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
