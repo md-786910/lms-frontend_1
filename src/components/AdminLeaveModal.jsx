@@ -39,6 +39,10 @@ import dayjs from "dayjs";
 import { leaveApi } from "../api/leave/leave";
 import { employeeAPI } from "../api/employeeApi";
 import { useFormValidation } from "../hooks/useFormValidation";
+import holidayJsonData from "../data/holiday.json";
+
+const FLOATING_LEAVE_VALUE = "floating_leave";
+const FLOATING_LEAVE_LABEL = "Floating Leave";
 
 const LEAVE = [
   { id: 1, name: "Full Day", count: 1 },
@@ -62,6 +66,27 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedFestivalKey, setSelectedFestivalKey] = useState("");
+  const today = dayjs().startOf("day");
+  const currentYear = today.year();
+  const restrictedHolidays = (
+    (holidayJsonData.holiday_data || []).find(
+      (yearData) => Number(yearData.year) === currentYear
+    )?.restricted_holidays || []
+  )
+    .map((holiday) => ({
+      ...holiday,
+      year: currentYear,
+      key: `${holiday.date}|${holiday.name}`,
+      isPast: dayjs(holiday.date).isBefore(today, "day"),
+    }))
+    .sort((a, b) =>
+      dayjs(a.date).valueOf() - dayjs(b.date).valueOf()
+  );
+  const selectedFestival = restrictedHolidays.find(
+    (holiday) => holiday.key === selectedFestivalKey
+  );
+  const isFloatingLeave = leaveType === FLOATING_LEAVE_VALUE;
 
   const sortedEmployees = useMemo(() => {
     const list = [...employees];
@@ -132,9 +157,19 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     setStartDate(null);
     setEndDate(null);
     setTotalLeaveCount(0);
+    setSelectedFestivalKey("");
+    setReason("");
   };
 
   const validateLeaveSection = () => {
+    if (isFloatingLeave) {
+      const isMainValid = formValidation(["employee_id", "leave_type"], {
+        employee_id: selectedEmployee,
+        leave_type: leaveType,
+      });
+      return isMainValid && Boolean(selectedFestival) && Boolean(reason.trim());
+    }
+
     const isMainValid = formValidation(
       ["employee_id", "leave_type", "start_date", "end_date", "reason"],
       {
@@ -176,11 +211,33 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
     try {
       const response = await leaveApi.adminCreateLeave({
         employee_id: parseInt(selectedEmployee),
-        leave_type_id: parseInt(leaveType),
-        start_date: startDate,
-        end_date: endDate,
-        total_days: totalLeaveCount,
-        leave_on: JSON.stringify(leaveDays),
+        ...(isFloatingLeave
+          ? {
+              request_type: "floating",
+              leave_type_id: null,
+              festival_name: selectedFestival.name,
+              festival_date: selectedFestival.date,
+              justification: reason,
+              start_date: selectedFestival.date,
+              end_date: selectedFestival.date,
+              total_days: 1,
+              leave_on: JSON.stringify([
+                {
+                  date: selectedFestival.date,
+                  type: 1,
+                  id: "Full Day",
+                  count: 1,
+                },
+              ]),
+            }
+          : {
+              request_type: "policy",
+              leave_type_id: parseInt(leaveType),
+              start_date: dayjs(startDate).format("YYYY-MM-DD"),
+              end_date: dayjs(endDate).format("YYYY-MM-DD"),
+              total_days: totalLeaveCount,
+              leave_on: JSON.stringify(leaveDays),
+            }),
         reason,
         emergency_contact_person: "",
       });
@@ -223,6 +280,8 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   };
 
   useEffect(() => {
+    if (isFloatingLeave) return;
+
     if (startDate && endDate && dayjs(endDate).isBefore(dayjs(startDate), "day")) {
       setEndDate(null);
       return;
@@ -262,7 +321,23 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
         setTotalLeaveCount(0);
       }
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isFloatingLeave]);
+
+  const handleFestivalChange = (key) => {
+    const festival = restrictedHolidays.find((holiday) => holiday.key === key);
+    if (festival?.isPast) return;
+    setSelectedFestivalKey(key);
+    if (!festival) return;
+    const festivalDate = dayjs(festival.date).toDate();
+    setStartDate(festivalDate);
+    setEndDate(festivalDate);
+    setDayCount(1);
+    setTotalLeaveCount(1);
+    setLeaveDays([
+      { date: festival.date, type: 1, id: "Full Day", count: 1 },
+    ]);
+    setDayErrors([]);
+  };
 
   const disableWeekends = (date) => {
     const day = date.getDay();
@@ -382,7 +457,20 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                     </Label>
                     <Select
                       value={leaveType ? leaveType.toString() : ""}
-                      onValueChange={(val) => setLeaveType(parseInt(val))}
+                      onValueChange={(val) => {
+                        setSelectedFestivalKey("");
+                        setReason("");
+                        if (val === FLOATING_LEAVE_VALUE) {
+                          setLeaveType(FLOATING_LEAVE_VALUE);
+                          setStartDate(null);
+                          setEndDate(null);
+                          setDayCount(0);
+                          setTotalLeaveCount(0);
+                          setLeaveDays([]);
+                          return;
+                        }
+                        setLeaveType(parseInt(val));
+                      }}
                     >
                       <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
                         <SelectValue placeholder="Select leave type..." className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider" />
@@ -397,6 +485,13 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                             {type?.leave_type}
                           </SelectItem>
                         ))}
+                        <SelectItem
+                          key={FLOATING_LEAVE_VALUE}
+                          value={FLOATING_LEAVE_VALUE}
+                          className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
+                        >
+                          {FLOATING_LEAVE_LABEL}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.leave_type && (
@@ -406,6 +501,34 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                       </p>
                     )}
                   </div>
+
+                  {isFloatingLeave && (
+                    <div className="space-y-2">
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
+                        Festival <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
+                      </Label>
+                      <Select
+                        value={selectedFestivalKey}
+                        onValueChange={handleFestivalChange}
+                      >
+                        <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
+                          <SelectValue placeholder="Choose restricted holiday..." />
+                        </SelectTrigger>
+                        <SelectContent className="text-sm font-semibold text-slate-700 font-graphik">
+                          {restrictedHolidays.map((holiday) => (
+                            <SelectItem
+                              key={holiday.key}
+                              value={holiday.key}
+                              disabled={holiday.isPast}
+                            >
+                              {holiday.name} - {dayjs(holiday.date).format("DD MMM YYYY")}
+                              {holiday.isPast ? " (Past)" : ""}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -418,6 +541,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                               "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !startDate && "text-slate-400"
                             )}
+                            disabled={isFloatingLeave}
                           >
                             <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-2 h-2" />
@@ -454,6 +578,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                               "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !endDate && "text-slate-400"
                             )}
+                            disabled={isFloatingLeave}
                           >
                             <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-2 h-2" />
@@ -485,7 +610,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
               )}
 
               {/* Day Selection Grid */}
-              {dayCount > 0 && selectedEmployee && (
+              {dayCount > 0 && selectedEmployee && !isFloatingLeave && (
                 <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
@@ -562,7 +687,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
               )}
 
               {/* Reason Section */}
-              {selectedEmployee && (
+              {selectedEmployee && (!isFloatingLeave || selectedFestival) && (
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                   <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
                     <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-graphik justify-center rounded-md">
@@ -572,11 +697,11 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Reason for Leave <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
+                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">{isFloatingLeave ? "Justification" : "Reason for Leave"} <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
                     <Textarea
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
-                      placeholder="Why is this leave being requested?"
+                      placeholder={isFloatingLeave ? "Why are you choosing this festival?" : "Why is this leave being requested?"}
                       rows={4}
                       className="bg-white border-slate-200 rounded-xl focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none font-medium fontmontserrat text-sm text-slate-700"
                     />
@@ -615,7 +740,9 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         <div className="space-y-1">
                           <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Type</p>
                           <p className="font-bold text-sm font-graphik">
-                            {leaveTypes.find((t) => t.leave_id === leaveType)?.leave_type || "Not set"}
+                            {isFloatingLeave
+                              ? FLOATING_LEAVE_LABEL
+                              : leaveTypes.find((t) => t.leave_id === leaveType)?.leave_type || "Not set"}
                           </p>
                         </div>
                         <div className="space-y-1 text-right">
@@ -634,7 +761,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                   </div>
 
                   {/* Policy Snapshot Card */}
-                  {leaveType && (
+                  {leaveType && !isFloatingLeave && (
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 animate-in slide-in-from-right-4 duration-500">
                       <div className="flex items-center gap-2.5 pb-4 border-b border-slate-50">
                         <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">

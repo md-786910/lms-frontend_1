@@ -38,6 +38,10 @@ import dayjs from "dayjs";
 import { employeeLeaveApi } from "../api/employee/leaveApi";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { formatLeaveDays } from "../utility/utility";
+import holidayJsonData from "../data/holiday.json";
+
+const FLOATING_LEAVE_VALUE = "floating_leave";
+const FLOATING_LEAVE_LABEL = "Floating Leave";
 
 const LEAVE = [
   {
@@ -87,6 +91,27 @@ const LeaveRequestModal = ({
   const [dayErrors, setDayErrors] = useState([]);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
+  const [selectedFestivalKey, setSelectedFestivalKey] = useState("");
+  const today = dayjs().startOf("day");
+  const currentYear = today.year();
+  const restrictedHolidays = (
+    (holidayJsonData.holiday_data || []).find(
+      (yearData) => Number(yearData.year) === currentYear
+    )?.restricted_holidays || []
+  )
+    .map((holiday) => ({
+      ...holiday,
+      year: currentYear,
+      key: `${holiday.date}|${holiday.name}`,
+      isPast: dayjs(holiday.date).isBefore(today, "day"),
+    }))
+    .sort((a, b) =>
+      dayjs(a.date).valueOf() - dayjs(b.date).valueOf()
+    );
+  const selectedFestival = restrictedHolidays.find(
+    (holiday) => holiday.key === selectedFestivalKey
+  );
+  const isFloatingLeave = leaveType === FLOATING_LEAVE_VALUE;
   const availableBalance =
     leaveCalculate?.cycle_leave_remaining ?? leaveCalculate?.leave_remaing ?? 0;
   const formattedAvailableBalance = formatLeaveDays(availableBalance);
@@ -120,6 +145,16 @@ const LeaveRequestModal = ({
   );
 
   const validateLeaveSection = () => {
+    if (isFloatingLeave) {
+      const isMainValid = formValidation(["leave_type"], {
+        leave_type: leaveType,
+      });
+      if (!selectedFestival || !String(reason || "").trim()) {
+        return false;
+      }
+      return isMainValid;
+    }
+
     const isMainValid = formValidation(
       ["leave_type", "start_date", "end_date", "reason", "name"],
       {
@@ -150,18 +185,44 @@ const LeaveRequestModal = ({
     const isValid = validateLeaveSection();
     if (!isValid) {
       console.error("Please fill all required fields.");
+      toast({
+        title: "Validation Error",
+        description: isFloatingLeave
+          ? "Please select a festival and enter a justification."
+          : "Please fill all required fields.",
+        variant: "destructive",
+      });
       return;
     }
 
-    const resp = await employeeLeaveApi.createNewLeaveRequest({
-      leave_type_id: leaveCalculate?.leave_id,
-      start_date: startDate,
-      end_date: endDate,
-      total_days: totalLeaveCount,
-      leave_on: JSON.stringify(leaveDays),
-      reason,
-      emergency_contact_person: emergencyContact,
-    });
+    const payload = isFloatingLeave
+      ? {
+        request_type: "floating",
+        leave_type_id: null,
+        festival_name: selectedFestival.name,
+        festival_date: selectedFestival.date,
+        justification: reason,
+        start_date: selectedFestival.date,
+        end_date: selectedFestival.date,
+        total_days: 1,
+        leave_on: JSON.stringify([
+          { date: selectedFestival.date, type: 1, id: "Full Day", count: 1 },
+        ]),
+        reason,
+        emergency_contact_person: emergencyContact,
+      }
+      : {
+        request_type: "policy",
+        leave_type_id: leaveCalculate?.leave_id,
+        start_date: dayjs(startDate).format("YYYY-MM-DD"),
+        end_date: dayjs(endDate).format("YYYY-MM-DD"),
+        total_days: totalLeaveCount,
+        leave_on: JSON.stringify(leaveDays),
+        reason,
+        emergency_contact_person: emergencyContact,
+      };
+
+    const resp = await employeeLeaveApi.createNewLeaveRequest(payload);
 
     if (resp.status == 200) {
       toast({
@@ -194,6 +255,8 @@ const LeaveRequestModal = ({
   };
 
   useEffect(() => {
+    if (isFloatingLeave) return;
+
     if (startDate && endDate && dayjs(endDate).isBefore(dayjs(startDate), "day")) {
       setEndDate(null);
       return;
@@ -235,18 +298,31 @@ const LeaveRequestModal = ({
         setTotalLeaveCount(0);
       }
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isFloatingLeave]);
 
   useEffect(() => {
     if (readOnly) {
-      setLeaveType(leaveRequestViewMode?.leave_type_id);
+      const readOnlyFloating =
+        leaveRequestViewMode?.request_type === "floating";
+      setLeaveType(
+        readOnlyFloating ? FLOATING_LEAVE_VALUE : leaveRequestViewMode?.leave_type_id
+      );
+      if (readOnlyFloating) {
+        setSelectedFestivalKey(
+          `${leaveRequestViewMode?.festival_date}|${leaveRequestViewMode?.festival_name}`
+        );
+      }
       setDates({
         start_date: new Date(leaveRequestViewMode?.start_date),
         end_date: new Date(leaveRequestViewMode?.end_date),
       });
       setDayCount(leaveRequestViewMode?.total_days);
       setLeaveDays(JSON.parse(leaveRequestViewMode?.leave_on));
-      setReason(leaveRequestViewMode?.reason);
+      setReason(
+        readOnlyFloating
+          ? leaveRequestViewMode?.justification || leaveRequestViewMode?.reason
+          : leaveRequestViewMode?.reason
+      );
       setEmergencyContact(leaveRequestViewMode?.emergency_contact_person);
 
       const total = JSON.parse(leaveRequestViewMode?.leave_on)?.reduce(
@@ -281,9 +357,33 @@ const LeaveRequestModal = ({
   };
 
   useEffect(() => {
+    if (isFloatingLeave) {
+      setLeaveCalculate({
+        leave_id: FLOATING_LEAVE_VALUE,
+        leave_type: FLOATING_LEAVE_LABEL,
+      });
+      return;
+    }
     const match = leaves?.find((l) => l.leave_id == Number(leaveType));
     setLeaveCalculate(match);
-  }, [leaveType, leaves]);
+  }, [leaveType, leaves, isFloatingLeave]);
+
+  const handleFestivalChange = (key) => {
+    const festival = restrictedHolidays.find((holiday) => holiday.key === key);
+    if (festival?.isPast) return;
+    setSelectedFestivalKey(key);
+    if (!festival) return;
+    const festivalDate = dayjs(festival.date).toDate();
+    setStartDate(festivalDate);
+    setEndDate(festivalDate);
+    setDates({ start_date: festivalDate, end_date: festivalDate });
+    setDayCount(1);
+    setTotalLeaveCount(1);
+    setLeaveDays([
+      { date: festival.date, type: 1, id: "Full Day", count: 1 },
+    ]);
+    setDayErrors([]);
+  };
 
   const formattedStart =
     startDate || dates?.start_date
@@ -370,6 +470,22 @@ const LeaveRequestModal = ({
                     <Select
                       value={leaveType ? leaveType.toString() : ""}
                       onValueChange={(val) => {
+                        setSelectedFestivalKey("");
+                        setReason("");
+                        if (val === FLOATING_LEAVE_VALUE) {
+                          setLeaveType(FLOATING_LEAVE_VALUE);
+                          setLeaveCalculate({
+                            leave_id: FLOATING_LEAVE_VALUE,
+                            leave_type: FLOATING_LEAVE_LABEL,
+                          });
+                          setStartDate(null);
+                          setEndDate(null);
+                          setDates({ start_date: "", end_date: "" });
+                          setDayCount(0);
+                          setTotalLeaveCount(0);
+                          setLeaveDays([]);
+                          return;
+                        }
                         setLeaveType(Number(val));
                         calculateLeave(Number(val));
                       }}
@@ -392,6 +508,17 @@ const LeaveRequestModal = ({
                             </div>
                           </SelectItem>
                         ))}
+                        <SelectItem
+                          key={FLOATING_LEAVE_VALUE}
+                          value={FLOATING_LEAVE_VALUE}
+                          className="py-3 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider">
+                              {FLOATING_LEAVE_LABEL}
+                            </span>
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.leave_type && (
@@ -401,6 +528,35 @@ const LeaveRequestModal = ({
                       </p>
                     )}
                   </div>
+
+                  {isFloatingLeave && (
+                    <div className="space-y-2">
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
+                        Festival <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
+                      </Label>
+                      <Select
+                        value={selectedFestivalKey}
+                        onValueChange={handleFestivalChange}
+                        disabled={readOnly}
+                      >
+                        <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
+                          <SelectValue placeholder="Choose restricted holiday..." />
+                        </SelectTrigger>
+                        <SelectContent className="text-sm font-semibold text-slate-700 font-graphik">
+                          {restrictedHolidays.map((holiday) => (
+                            <SelectItem
+                              key={holiday.key}
+                              value={holiday.key}
+                              disabled={holiday.isPast}
+                            >
+                              {holiday.name} - {dayjs(holiday.date).format("DD MMM YYYY")}
+                              {holiday.isPast}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
                   {/* Date Selection Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -414,7 +570,7 @@ const LeaveRequestModal = ({
                               "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !startDate && !dates?.start_date && "text-slate-400"
                             )}
-                            disabled={readOnly}
+                            disabled={readOnly || isFloatingLeave}
                           >
                             <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-3 h-3" />
@@ -451,7 +607,7 @@ const LeaveRequestModal = ({
                               "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
                               !endDate && !dates?.end_date && "text-slate-400"
                             )}
-                            disabled={readOnly}
+                            disabled={readOnly || isFloatingLeave}
                           >
                             <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
                               <CalendarIcon className="w-3 h-3" />
@@ -483,7 +639,7 @@ const LeaveRequestModal = ({
               </div>
 
               {/* Day Selection Grid */}
-              {dayCount > 0 && (
+              {dayCount > 0 && !isFloatingLeave && (
                 <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
@@ -561,43 +717,47 @@ const LeaveRequestModal = ({
               )}
 
               {/* Reason Section */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
-                  <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-graphik justify-center rounded-md">
-                    <FileText className="h-4 w-4" />
-                  </span>
-                  <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Justification</h3>
-                </div>
+              {(!isFloatingLeave || selectedFestival) && (
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
+                    <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-graphik justify-center rounded-md">
+                      <FileText className="h-4 w-4" />
+                    </span>
+                    <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Justification</h3>
+                  </div>
 
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Reason for Leave <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
-                    <Textarea
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                      placeholder="Why is this leave being requested?"
-                      rows={4}
-                      disabled={readOnly}
-                      className="bg-white border-slate-200 rounded-xl focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none font-medium fontmontserrat text-sm text-slate-700"
-                    />
-                    {errors.reason && (
-                      <p className="text-rose-500 text-xs font-bold mt-1">{errors.reason}</p>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">{isFloatingLeave ? "Justification" : "Reason for Leave"} <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
+                      <Textarea
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        placeholder={isFloatingLeave ? "Why are you choosing this festival?" : "Why is this leave being requested?"}
+                        rows={4}
+                        disabled={readOnly}
+                        className="bg-white border-slate-200 rounded-xl focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none font-medium fontmontserrat text-sm text-slate-700"
+                      />
+                      {errors.reason && (
+                        <p className="text-rose-500 text-xs font-bold mt-1">{errors.reason}</p>
+                      )}
+                    </div>
+
+                    {!isFloatingLeave && (
+                      <div className="space-y-2">
+                        <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Emergency Contact <span className="text-slate-400 font-graphik font-medium text-xs">(optional)</span></Label>
+                        <Input
+                          value={emergencyContact}
+                          onChange={(e) => setEmergencyContact(e.target.value)}
+                          placeholder="Who can be reached while you are away?"
+                          disabled={readOnly}
+                          className="h-12 rounded-xl border-slate-200 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium fontmontserrat text-sm text-slate-700"
+                        />
+                      </div>
                     )}
                   </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Emergency Contact <span className="text-slate-400 font-graphik font-medium text-xs">(optional)</span></Label>
-                    <Input
-                      value={emergencyContact}
-                      onChange={(e) => setEmergencyContact(e.target.value)}
-                      placeholder="Who can be reached while you are away?"
-                      disabled={readOnly}
-                      className="h-12 rounded-xl border-slate-200 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium fontmontserrat text-sm text-slate-700"
-                    />
-                  </div>
                 </div>
-              </div>
-              </div>
+              )}
+            </div>
 
             {/* Premium Summary Sidebar */}
             <div className="space-y-6">
@@ -608,7 +768,7 @@ const LeaveRequestModal = ({
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform duration-500">
                       <LayoutDashboard className="h-24 w-24" />
                     </div>
-                    
+
                     <div className="flex items-center gap-2 mb-6 relative">
                       <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
                         <CheckCircle2 className="h-4 w-4" />
@@ -619,7 +779,7 @@ const LeaveRequestModal = ({
                     <div className="space-y-4 relative">
                       <div className="space-y-1">
                         <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Leave Type</p>
-                        <p className="font-black text-lg font-graphik truncate">{leaveCalculate?.leave_type || "-"}</p>
+                        <p className="font-black text-lg font-graphik truncate">{isFloatingLeave ? FLOATING_LEAVE_LABEL : leaveCalculate?.leave_type || "-"}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
@@ -643,37 +803,39 @@ const LeaveRequestModal = ({
                   </div>
 
                   {/* Policy Snapshot Card */}
-                  <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 animate-in slide-in-from-right-4 duration-500">
-                    <div className="flex items-center gap-2.5 pb-4 border-b border-slate-50">
-                      <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
-                        <CalendarDays className="h-4 w-4" />
-                      </span>
-                      <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">Leave Balance</h3>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
-                        <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
-                      </div>
-                      <div className="flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Working Days Selected</span>
-                        <span className="font-black text-slate-900 text-md">{dayCount || 0}</span>
-                      </div>
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                        <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Remaining After Request</span>
-                        <span className={`font-black text-md group-hover:scale-110 transition-transform ${remainingAfterClass}`}>
-                          {formattedRemainingAfterRequest}
+                  {!isFloatingLeave && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 animate-in slide-in-from-right-4 duration-500">
+                      <div className="flex items-center gap-2.5 pb-4 border-b border-slate-50">
+                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
+                          <CalendarDays className="h-4 w-4" />
                         </span>
+                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">Leave Balance</h3>
                       </div>
-                      {remainingAfterRequest < 0 && (
-                        <div className="rounded-xl border border-dashed border-rose-200 bg-rose-50/60 px-3 py-2.5 text-xs text-rose-600 font-semibold flex items-center gap-2">
-                          <AlertCircle className="h-3.5 w-3.5" />
-                          Drops {formatLeaveDays(negativeBalanceDrift)} below zero
+
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between group">
+                          <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Cycle Available Balance</span>
+                          <span className={`font-black text-slate-900 text-md ${availableBalanceClass}`}>{formattedAvailableBalance}</span>
                         </div>
-                      )}
+                        <div className="flex items-center justify-between group">
+                          <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Working Days Selected</span>
+                          <span className="font-black text-slate-900 text-md">{dayCount || 0}</span>
+                        </div>
+                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
+                          <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Remaining After Request</span>
+                          <span className={`font-black text-md group-hover:scale-110 transition-transform ${remainingAfterClass}`}>
+                            {formattedRemainingAfterRequest}
+                          </span>
+                        </div>
+                        {remainingAfterRequest < 0 && (
+                          <div className="rounded-xl border border-dashed border-rose-200 bg-rose-50/60 px-3 py-2.5 text-xs text-rose-600 font-semibold flex items-center gap-2">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            Drops {formatLeaveDays(negativeBalanceDrift)} below zero
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ) : (
                 <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center space-y-3">
