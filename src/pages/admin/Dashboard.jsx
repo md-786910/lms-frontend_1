@@ -18,6 +18,7 @@ import {
   Download,
   BellRing,
   CalendarX,
+  ClipboardCheck,
 } from "lucide-react";
 
 import { toast } from "sonner";
@@ -111,6 +112,12 @@ const AdminDashboard = () => {
       icon: UserCheck,
       tone: "emerald",
     },
+    // {
+    //   title: "Pending Proof of Work",
+    //   value: dashboardData?.pending_proof_of_work_count ?? 0,
+    //   icon: ClipboardCheck,
+    //   tone: "blue",
+    // },
   ];
 
   const leaveData = (dashboardData?.on_leave_today || []).map(
@@ -168,6 +175,12 @@ const AdminDashboard = () => {
       icon: "bg-slate-100 text-slate-700",
       chip: "bg-slate-50 text-slate-700",
       dot: "bg-slate-600",
+    },
+    blue: {
+      accent: "bg-blue-600",
+      icon: "bg-blue-100 text-blue-700",
+      chip: "bg-blue-50 text-blue-700",
+      dot: "bg-blue-600",
     },
   };
 
@@ -527,6 +540,57 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border rounded-md border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-md md:flex-row md:items-center md:justify-between">
+            <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize font-graphik">
+              <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                <ClipboardCheck className="h-5 w-5" />
+              </span>
+              Pending proof of work
+            </CardTitle>
+            <Badge variant="outline" className="rounded-full border-slate-200 text-slate-700 font-graphik">
+              {dashboardData?.pending_proof_of_work_count ?? 0} pending
+            </Badge>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {dashboardData?.pending_proof_of_work_submissions?.length > 0 ? (
+              <div className="space-y-3">
+                {dashboardData.pending_proof_of_work_submissions.map((submission) => (
+                  <div
+                    key={submission.id}
+                    onClick={() =>
+                      submission.employee?.id &&
+                      navigate(
+                        `/admin/employees/${submission.employee.id}/history?tab=proof_of_work`
+                      )
+                    }
+                    className="cursor-pointer flex items-center justify-between gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition hover:bg-slate-50"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-900 font-graphik">
+                        {submission.title}
+                      </p>
+                      <p className="text-xs text-slate-500 font-graphik">
+                        {submission.employee?.first_name} {submission.employee?.last_name} • {submission.employee?.employee_no}
+                      </p>
+                      <p className="text-xs text-slate-500 font-graphik">
+                        {dayjs(submission.work_date).format("D MMM YYYY")}
+                      </p>
+                    </div>
+                    <Badge className="rounded-full border-slate-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700 font-graphik">
+                      Pending
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 text-center text-sm text-slate-500">
+                No pending proof of work submissions.
               </div>
             )}
           </CardContent>

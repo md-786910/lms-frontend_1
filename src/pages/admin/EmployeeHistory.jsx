@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import {
   ArrowLeft,
@@ -127,10 +127,13 @@ const getCycleSummaryFromLeaveInfo = (leaveInfo, cycle) => {
 
 const EmployeeHistory = () => {
   const { employeeId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [activeTab, setActiveTab] = useState("basic");
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("tab") || "basic"
+  );
   const [employee, setEmployee] = useState(null);
   const [leaveRecords, setLeaveRecords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -172,6 +175,11 @@ const EmployeeHistory = () => {
   const [monthFilter, setMonthFilter] = useState("all");
 
   useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+
     if (!employeeId) {
       setError("Employee ID is missing from the URL.");
       setLoading(false);

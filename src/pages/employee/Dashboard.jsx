@@ -242,6 +242,7 @@ const EmployeeDashboard = () => {
 
         setQuickStat(quickStats);
         setDashboardData(dashboard);
+        setLeaveDash(leaves);
         setBasicProfile(profile);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
@@ -350,6 +351,40 @@ const EmployeeDashboard = () => {
   const formattedDashboardBalance = formatLeaveDays(dashboardLeaveBalance);
   const dashboardBalanceClass =
     dashboardLeaveBalance < 0 ? "text-rose-200" : "text-emerald-200";
+  const firstCycleLeaveSummary = leaveDash?.first_cycle_leave_summary ?? {
+    cycle_name: leaveDash?.first_cycle_name || "First Cycle",
+    cycle_label: leaveDash?.first_cycle_label || "Jan-Jun",
+    total: leaveDash?.first_cycle_total ?? 0,
+    availed: leaveDash?.first_cycle_availed ?? leaveDash?.first_cycle_used ?? 0,
+    used: leaveDash?.first_cycle_used ?? leaveDash?.first_cycle_availed ?? 0,
+    remaining: leaveDash?.first_cycle_remaining ?? 0,
+    deduction: leaveDash?.first_cycle_deduction ?? 0,
+  };
+  const secondCycleLeaveSummary = leaveDash?.second_cycle_leave_summary ?? {
+    cycle_name: leaveDash?.second_cycle_name || "Second Cycle",
+    cycle_label: leaveDash?.second_cycle_label || "Jul-Dec",
+    total: leaveDash?.second_cycle_total ?? 0,
+    availed: leaveDash?.second_cycle_availed ?? leaveDash?.second_cycle_used ?? 0,
+    used: leaveDash?.second_cycle_used ?? leaveDash?.second_cycle_availed ?? 0,
+    remaining: leaveDash?.second_cycle_remaining ?? 0,
+    deduction: leaveDash?.second_cycle_deduction ?? 0,
+  };
+  const cycleSummaries = [
+    {
+      cycle: "first",
+      cycle_name: firstCycleLeaveSummary?.cycle_name || "First Cycle",
+      cycle_label: firstCycleLeaveSummary?.cycle_label,
+      summary: firstCycleLeaveSummary,
+      tone: "blue",
+    },
+    {
+      cycle: "second",
+      cycle_name: secondCycleLeaveSummary?.cycle_name || "Second Cycle",
+      cycle_label: secondCycleLeaveSummary?.cycle_label,
+      summary: secondCycleLeaveSummary,
+      tone: "emerald",
+    },
+  ];
   const proofStatusStyles = {
     pending: "bg-amber-50 text-amber-700 border-amber-100",
     approved: "bg-emerald-50 text-emerald-700 border-emerald-100",
@@ -540,49 +575,102 @@ const EmployeeDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
-          {quickStat?.map((stat, index) => {
-            const Icon = stat.icon;
-            const palette = statToneMap[stat.tone] || statToneMap.default;
-            return (
-              <Card
-                key={index}
-                className="relative overflow-hidden border rounded-md border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <div className={`absolute inset-x-0 top-0 h-[1px] ${palette.accent}`} />
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="space-y-2">
-                      <div className="flex w-full items-center justify-between">
-                        <span
-                          className={`rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
-                        >
-                          <span className={`h-2 w-2 rounded-full ${palette.dot}`} />
-                          {stat.subtitle}
-                        </span>
+        <div className="grid grid-cols-1 gap-6">
+          {cycleSummaries.map(({ cycle, cycle_name, summary }) => {
+            const stats = [
+              {
+                label: "Leave Policy",
+                value: formatLeaveDays(summary?.total ?? 0),
+                bg: "bg-slate-50",
+                border: "border-slate-200",
+                text: "text-slate-800",
+              },
+              {
+                label: "Leave Used",
+                value: formatLeaveDays(summary?.availed ?? summary?.used ?? 0),
+                bg: "bg-amber-50",
+                border: "border-amber-200",
+                text: "text-amber-700",
+              },
+              {
+                label: "Leave Balance",
+                value: formatLeaveDays(summary?.remaining ?? 0),
+                bg: "bg-emerald-50",
+                border: "border-emerald-200",
+                text: "text-emerald-700",
+              },
+              {
+                label: "Deduction",
+                value: formatLeaveDays(summary?.deduction ?? 0),
+                bg: "bg-rose-50",
+                border: "border-rose-200",
+                text: "text-rose-700",
+              },
+              {
+                label: "Extra Work",
+                value: formatLeaveDays(summary?.extra_work ?? 0),
+                bg: "bg-sky-50",
+                border: "border-sky-200",
+                text: "text-sky-700",
+              },
+              {
+                label: "Total Salary",
+                value: `₹${summary?.salary ?? "0"}`,
+                bg: "bg-violet-50",
+                border: "border-violet-200",
+                text: "text-violet-700",
+              },
+            ];
 
-                        {/* <span
-                          className={`rounded-full px-3 py-1 text-[11px] font-semibold capitalize font-graphik tracking-wide ${palette.chip}`}
-                        >
-                          Year
-                        </span> */}
-                      </div>
-                      <p className="text-lg font-semibold text-slate-900 font-graphik">
-                        {stat.title}
-                      </p>
-                      <p className="text-3xl font-bold text-slate-900 leading-tight font-graphik">
-                        {stat.value}
-                      </p>
-                    </div>
-                    <div
-                      className={`h-12 w-12 rounded-2xl ${palette.iconBg} flex items-center justify-center shadow-sm`}
-                    >
-                      <Icon className="h-6 w-6" />
-                    </div>
+            return (
+              <div
+                key={cycle}
+                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+              >
+                {/* Header */}
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between border-b border-slate-100 px-6 py-5">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] font-semibold text-slate-500">
+                      {cycle === "first" ? "First Cycle" : "Second Cycle"}
+                    </p>
+
+                    <h2 className="mt-1 text-3xl font-bold text-slate-900 font-graphik">
+                      {summary?.cycle_label || cycle_name}
+                    </h2>
                   </div>
-                </CardContent>
-              </Card>
+
+                  <div className="mt-3 lg:mt-0">
+                    <span
+                      className={`inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold ${cycle === "first"
+                          ? "bg-blue-50 text-blue-700"
+                          : "bg-emerald-50 text-emerald-700"
+                        }`}
+                    >
+                      {cycle === "first"
+                        ? "January - June"
+                        : "July - December"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 p-6">
+                  {stats.map((item) => (
+                    <div
+                      key={item.label}
+                      className={`${item.bg} ${item.border} rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-md`}
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        {item.label}
+                      </p>
+
+                      <h3 className={`mt-4 text-4xl font-bold ${item.text}`}>
+                        {item.value}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
             );
           })}
         </div>

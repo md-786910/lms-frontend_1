@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import NoDataFound from "../common/NoDataFound";
 import { proofOfWorkApi } from "../api/proofOfWorkApi";
+import { useSocketContext } from "../contexts/SocketContext";
 import {
   CheckCircle2,
   ExternalLink,
@@ -50,6 +51,7 @@ const statusStyles = {
 
 const ProofOfWorkAdminTab = ({ employeeId }) => {
   const { toast } = useToast();
+  const { setUpdateDashboard } = useSocketContext();
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -102,6 +104,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
       setRejectTarget(null);
       setRejectComment("");
       await fetchSubmissions();
+      setUpdateDashboard(Math.random());
     } catch (error) {
       toast({
         title: "Review failed",
