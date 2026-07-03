@@ -359,6 +359,7 @@ const EmployeeDashboard = () => {
     used: leaveDash?.first_cycle_used ?? leaveDash?.first_cycle_availed ?? 0,
     remaining: leaveDash?.first_cycle_remaining ?? 0,
     deduction: leaveDash?.first_cycle_deduction ?? 0,
+    extra_work: 0,
   };
   const secondCycleLeaveSummary = leaveDash?.second_cycle_leave_summary ?? {
     cycle_name: leaveDash?.second_cycle_name || "Second Cycle",
@@ -368,6 +369,7 @@ const EmployeeDashboard = () => {
     used: leaveDash?.second_cycle_used ?? leaveDash?.second_cycle_availed ?? 0,
     remaining: leaveDash?.second_cycle_remaining ?? 0,
     deduction: leaveDash?.second_cycle_deduction ?? 0,
+    extra_work: 0,
   };
   const cycleSummaries = [
     {
@@ -575,7 +577,7 @@ const EmployeeDashboard = () => {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {cycleSummaries.map(({ cycle, cycle_name, summary }) => {
             const stats = [
               {
@@ -613,58 +615,34 @@ const EmployeeDashboard = () => {
                 border: "border-sky-200",
                 text: "text-sky-700",
               },
-              {
-                label: "Total Salary",
-                value: `₹${summary?.salary ?? "0"}`,
-                bg: "bg-violet-50",
-                border: "border-violet-200",
-                text: "text-violet-700",
-              },
             ];
 
             return (
               <div
                 key={cycle}
-                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 {/* Header */}
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between border-b border-slate-100 px-6 py-5">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] font-semibold text-slate-500">
-                      {cycle === "first" ? "First Cycle" : "Second Cycle"}
-                    </p>
-
-                    <h2 className="mt-1 text-3xl font-bold text-slate-900 font-graphik">
-                      {summary?.cycle_label || cycle_name}
-                    </h2>
-                  </div>
-
-                  <div className="mt-3 lg:mt-0">
-                    <span
-                      className={`inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold ${cycle === "first"
-                          ? "bg-blue-50 text-blue-700"
-                          : "bg-emerald-50 text-emerald-700"
-                        }`}
-                    >
-                      {cycle === "first"
-                        ? "January - June"
-                        : "July - December"}
-                    </span>
-                  </div>
+                <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <h2 className="text-xl font-bold text-slate-900 font-graphik whitespace-nowrap">
+                    {cycle === "first" ? "First Cycle - Jan-Jun 2026" : "Second Cycle - Jul-Dec 2026"}
+                  </h2>
+                  <span className="inline-flex items-center rounded-xl bg-slate-100 p-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                    Cycle Overview
+                  </span>
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 p-6">
+                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
                   {stats.map((item) => (
                     <div
                       key={item.label}
-                      className={`${item.bg} ${item.border} rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-md`}
+                      className={`${item.bg} ${item.border} rounded-xl border p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
                     >
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                         {item.label}
                       </p>
 
-                      <h3 className={`mt-4 text-4xl font-bold ${item.text}`}>
+                      <h3 className={`mt-1 text-xl font-black ${item.text}`}>
                         {item.value}
                       </h3>
                     </div>
