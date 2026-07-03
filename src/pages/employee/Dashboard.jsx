@@ -812,11 +812,7 @@ const EmployeeDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
-              {proofOfWorkLoading ? (
-                <p className="text-sm font-semibold text-slate-500 font-graphik">
-                  Loading proof of work...
-                </p>
-              ) : proofOfWorkRecords.length > 0 ? (
+              {proofOfWorkRecords.length > 0 ? (
                 proofOfWorkRecords.map((submission) => (
                   <div
                     key={submission.id}
@@ -841,7 +837,7 @@ const EmployeeDashboard = () => {
                   </div>
                 ))
               ) : (
-                <NoDataFound title="No extra work proof submissions yet" />
+                <NoDataFound />
               )}
             </CardContent>
           </Card>
