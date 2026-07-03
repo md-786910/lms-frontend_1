@@ -652,52 +652,7 @@ const EmployeeDashboard = () => {
             );
           })}
         </div>
-        <Card className="rounded-md border border-slate-200 shadow-sm">
-          <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-            <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
-              <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                <FileCheck2 className="h-5 w-5" />
-              </span>
-              My Proof of Work
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            {proofOfWorkLoading ? (
-              <p className="text-sm font-semibold text-slate-500 font-graphik">Loading submissions...</p>
-            ) : recentProofOfWork.length > 0 ? (
-              <div className="space-y-3">
-                {recentProofOfWork.map((submission) => (
-                  <div
-                    key={submission.id}
-                    className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 rounded-xl border border-slate-100 bg-white p-4 shadow-sm"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm font-bold text-slate-900 font-graphik">{submission.title}</p>
-                        <Badge className={"capitalize border text-xs " + (proofStatusStyles[submission.status] || proofStatusStyles.pending)}>
-                          {submission.status}
-                        </Badge>
-                      </div>
-                      <p className="text-xs font-medium text-slate-500 font-graphik">
-                        {proofTypeLabels[submission.work_type] || submission.work_type} - {workingHoursLabels[submission.working_hours] || submission.working_hours || "Full Day"} - {dayjs(submission.work_date).format("D MMM YYYY")} - {(submission.attachments || []).length} evidence file{(submission.attachments || []).length === 1 ? "" : "s"}
-                      </p>
-                    </div>
-                    {submission.manager_comment && (
-                      <p className="text-xs font-semibold text-slate-500 lg:max-w-md">
-                        {submission.manager_comment}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <NoDataFound title="No proof of work submitted yet" />
-            )}
-          </CardContent>
-        </Card>
-
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Calendar */}
           <Card className="lg:col-span-2 rounded-md border border-slate-200 shadow-sm overflow-hidden">
             <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
@@ -843,6 +798,51 @@ const EmployeeDashboard = () => {
                   </div>
                 </div>
               ))}
+            </CardContent>
+          </Card>
+
+          {/* Extra Work Sidebar Category */}
+          <Card className="border border-slate-200 rounded-md shadow-sm">
+            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
+                <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+                  <Award className="h-5 w-5" />
+                </span>
+                Extra Work
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              {proofOfWorkLoading ? (
+                <p className="text-sm font-semibold text-slate-500 font-graphik">
+                  Loading proof of work...
+                </p>
+              ) : proofOfWorkRecords.length > 0 ? (
+                proofOfWorkRecords.map((submission) => (
+                  <div
+                    key={submission.id}
+                    className="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm font-semibold text-slate-900 font-graphik">
+                        {submission.title}
+                      </p>
+                      <Badge
+                        className={`capitalize text-xs font-semibold ${proofStatusStyles[submission.status] || proofStatusStyles.pending}`}
+                      >
+                        {submission.status}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-2 font-graphik">
+                      {proofTypeLabels[submission.work_type] || submission.work_type} • {workingHoursLabels[submission.working_hours] || submission.working_hours || "Full Day"}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1 font-graphik">
+                      {dayjs(submission.work_date).format("D MMM YYYY")}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <NoDataFound title="No extra work proof submissions yet" />
+              )}
             </CardContent>
           </Card>
         </div>
