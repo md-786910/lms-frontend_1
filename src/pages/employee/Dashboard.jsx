@@ -620,29 +620,29 @@ const EmployeeDashboard = () => {
             return (
               <div
                 key={cycle}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                className="overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 {/* Header */}
-                <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <h2 className="text-xl font-bold text-slate-900 font-graphik whitespace-nowrap">
+                <div className="flex flex-col gap-3 border-b border-slate-100 py-2 px-4 sm:flex-row sm:items-center sm:justify-between">
+                  <h2 className="text-lg font-bold text-slate-900 font-graphik whitespace-nowrap">
                     {cycle === "first" ? "First Cycle - Jan-Jun 2026" : "Second Cycle - Jul-Dec 2026"}
                   </h2>
-                  <span className="inline-flex items-center rounded-xl bg-slate-100 p-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                  <span className="inline-flex items-center rounded-lg bg-slate-100 p-1 text-[8px] font-semibold uppercase tracking-[0.2em] text-slate-600">
                     Cycle Overview
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-3 xl:grid-cols-5">
                   {stats.map((item) => (
                     <div
                       key={item.label}
-                      className={`${item.bg} ${item.border} rounded-xl border p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
+                      className={`${item.bg} ${item.border} rounded-lg border py-1 px-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
                     >
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                         {item.label}
                       </p>
 
-                      <h3 className={`mt-1 text-xl font-black ${item.text}`}>
+                      <h3 className={`mt-[2px] text-lg font-black ${item.text}`}>
                         {item.value}
                       </h3>
                     </div>
@@ -865,6 +865,9 @@ const EmployeeDashboard = () => {
                         Name
                       </th>
                       <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
+                        Total Deduction
+                      </th>
+                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -872,7 +875,15 @@ const EmployeeDashboard = () => {
                   <tbody>
                     {(dashboardData?.current_month_leaves || []).length > 0 ? (
                       dashboardData.current_month_leaves.map(
-                        ({ employee: emp, total_leave }, index) => (
+                        (
+                          {
+                            employee: emp,
+                            total_leave,
+                            leave_availed,
+                            leave_deduction,
+                          },
+                          index
+                        ) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
@@ -884,7 +895,10 @@ const EmployeeDashboard = () => {
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
-                              {total_leave ?? 0}
+                              {leave_deduction ?? 0}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                              {leave_availed ?? total_leave ?? 0}
                             </td>
                           </tr>
                         )
@@ -892,7 +906,7 @@ const EmployeeDashboard = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="2"
+                          colSpan="3"
                           className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for this month
@@ -931,6 +945,9 @@ const EmployeeDashboard = () => {
                         Name
                       </th>
                       <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
+                        Total Deduction
+                      </th>
+                      <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
                         Total Leave (Days)
                       </th>
                     </tr>
@@ -938,7 +955,15 @@ const EmployeeDashboard = () => {
                   <tbody>
                     {(dashboardData?.previous_month_leaves || []).length > 0 ? (
                       dashboardData.previous_month_leaves.map(
-                        ({ employee: emp, total_leave }, index) => (
+                        (
+                          {
+                            employee: emp,
+                            total_leave,
+                            leave_availed,
+                            leave_deduction,
+                          },
+                          index
+                        ) => (
                           <tr
                             key={index}
                             className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
@@ -950,7 +975,10 @@ const EmployeeDashboard = () => {
                                 "N/A"}
                             </td>
                             <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
-                              {total_leave ?? 0}
+                              {leave_deduction ?? 0}
+                            </td>
+                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                              {leave_availed ?? total_leave ?? 0}
                             </td>
                           </tr>
                         )
@@ -958,7 +986,7 @@ const EmployeeDashboard = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="2"
+                          colSpan="3"
                           className="py-6 text-center text-slate-500 text-sm font-graphik"
                         >
                           No leave data available for previous month
