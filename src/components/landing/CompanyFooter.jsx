@@ -56,15 +56,15 @@ const CompanyFooter = () => {
   ];
 
   return (
-    <footer className="bg-[#0f172a] text-slate-300 pt-16 md:pt-24 lg:pt-32 pb-8">
+    <footer className="bg-[#2E2E2E] text-slate-300 pt-16 md:pt-24 lg:pt-32 pb-8 border-t border-[#3D3D3D]">
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 mb-16">
           <div className="col-span-2 space-y-6">
             <Link to="/company" className="flex items-center space-x-2 text-white">
-              <Building className="h-8 w-8 text-[#90D7F5]" />
-              <span className="text-2xl font-bold tracking-tight">Leanport HR</span>
+              <Building className="h-8 w-8 text-[#C26819]" />
+              <span className="text-2xl font-bold tracking-tight font-heading">Leanport HR</span>
             </Link>
-            <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-sm">
+            <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-sm font-sans">
               Streamline company setup, employees, leave, salary records, documents,
               notifications, and reports in one focused HR workspace.
             </p>
@@ -73,10 +73,10 @@ const CompanyFooter = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="p-2 rounded-full bg-slate-800 hover:bg-[#222875] transition-colors duration-300 group"
+                  className="p-2 rounded-full bg-[#3D3D3D] hover:bg-[#734425] transition-colors duration-300 group"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-5 w-5 group-hover:text-[#90D7F5] transition-colors" />
+                  <social.icon className="h-5 w-5 group-hover:text-[#FAF6F2] transition-colors" />
                 </a>
               ))}
             </div>
@@ -84,11 +84,11 @@ const CompanyFooter = () => {
 
           {footerLinks.map((section) => (
             <div key={section.title} className="space-y-6">
-              <h3 className="text-white font-semibold text-lg">{section.title}</h3>
-              <ul className="space-y-4">
+              <h3 className="text-[#FAF6F2] font-semibold text-lg font-heading">{section.title}</h3>
+              <ul className="space-y-4 font-sans">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link to={link.href} className="hover:text-[#90D7F5] transition-colors duration-200">
+                    <Link to={link.href} className="hover:text-[#C26819] transition-colors duration-200">
                       {link.name}
                     </Link>
                   </li>
@@ -98,17 +98,17 @@ const CompanyFooter = () => {
           ))}
         </div>
 
-        <div className="border-y border-slate-800 py-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="border-y border-[#3D3D3D] py-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
           <div className="flex items-center space-x-3 break-all">
-            <Mail className="h-5 w-5 text-[#90D7F5] shrink-0" />
+            <Mail className="h-5 w-5 text-[#C26819] shrink-0" />
             <span>support@leanporthr.com</span>
           </div>
           <div className="flex items-center space-x-3">
-            <Phone className="h-5 w-5 text-[#90D7F5] shrink-0" />
+            <Phone className="h-5 w-5 text-[#C26819] shrink-0" />
             <span>+1 (555) 000-0000</span>
           </div>
           <div className="flex items-center space-x-3">
-            <MapPin className="h-5 w-5 text-[#90D7F5] shrink-0" />
+            <MapPin className="h-5 w-5 text-[#C26819] shrink-0" />
             <span>123 Business Ave, Tech City, TC 45678</span>
           </div>
         </div>

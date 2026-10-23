@@ -37,33 +37,33 @@ import {
 } from "lucide-react";
 
 const PageShell = ({ eyebrow, title, description, children, actions = true }) => (
-  <div className="bg-white text-slate-950">
-    <section className="relative overflow-hidden bg-[#f8fbff]">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#90D7F5] to-transparent" />
+  <div className="bg-[#F5ECE4] text-[#2E2E2E] font-sans selection:bg-[#C26819]/20 selection:text-[#2E2E2E]">
+    <section className="relative overflow-hidden bg-[#FAF5F0] border-b border-[#E1D4C7]">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C26819] to-transparent" />
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#90D7F5]/60 bg-white px-4 py-2 text-sm font-bold text-[#222875] shadow-sm">
-            <Sparkles className="h-4 w-4" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#C26819]/40 bg-[#FAF6F2] px-4 py-2 text-xs font-bold tracking-widest text-[#734425] uppercase shadow-sm font-heading">
+            <Sparkles className="h-4 w-4 text-[#C26819]" />
             {eyebrow}
           </div>
-          <h1 className="mt-7 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl leading-tight">
+          <h1 className="mt-7 text-4xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-5xl lg:text-6xl leading-[1.1] font-heading uppercase">
             {title}
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5A524C] font-sans">
             {description}
           </p>
           {actions && (
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row font-heading">
               <Link
                 to="/company/get-started"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#222875] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-indigo-100 transition duration-300 hover:-translate-y-0.5 hover:bg-[#1a1f5c]"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#734425] px-7 py-3.5 text-base font-bold text-[#FAF6F2] shadow-lg shadow-[#734425]/20 transition duration-300 hover:-translate-y-0.5 hover:bg-[#5D361D]"
               >
                 Start company setup
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3.5 text-base font-bold text-slate-900 transition duration-300 hover:-translate-y-0.5 hover:border-[#222875] hover:text-[#222875]"
+                className="inline-flex items-center justify-center rounded-full border-2 border-[#734425] bg-[#FAF6F2] px-7 py-3.5 text-base font-bold text-[#734425] transition duration-300 hover:-translate-y-0.5 hover:bg-[#734425] hover:text-[#FAF6F2]"
               >
                 Open portal
               </Link>
@@ -78,24 +78,24 @@ const PageShell = ({ eyebrow, title, description, children, actions = true }) =>
 
 const SectionIntro = ({ eyebrow, title, description, center = false }) => (
   <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
-    <p className="text-sm font-bold uppercase tracking-widest text-[#222875]">{eyebrow}</p>
-    <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">{title}</h2>
-    {description && <p className="mt-4 text-lg leading-8 text-slate-600">{description}</p>}
+    <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">{eyebrow}</p>
+    <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-4xl font-heading uppercase">{title}</h2>
+    {description && <p className="mt-4 text-lg leading-8 text-[#5A524C] font-sans">{description}</p>}
   </div>
 );
 
 const FeatureTile = ({ icon: Icon, title, description, items = [] }) => (
-  <div className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#90D7F5] hover:shadow-xl hover:shadow-slate-200/70">
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#222875] text-white transition duration-300 group-hover:bg-[#90D7F5] group-hover:text-[#222875]">
+  <div className="group rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#C26819] hover:shadow-xl hover:shadow-[#734425]/10">
+    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white">
       <Icon className="h-6 w-6" />
     </div>
-    <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
-    <p className="mt-3 leading-7 text-slate-600">{description}</p>
+    <h3 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase tracking-wide">{title}</h3>
+    <p className="mt-3 leading-7 text-[#5A524C] font-sans">{description}</p>
     {items.length > 0 && (
-      <ul className="mt-5 space-y-3">
+      <ul className="mt-5 space-y-3 font-sans">
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
-            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+          <li key={item} className="flex gap-3 text-sm leading-6 text-[#5A524C]">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#C26819]" />
             {item}
           </li>
         ))}
@@ -105,22 +105,22 @@ const FeatureTile = ({ icon: Icon, title, description, items = [] }) => (
 );
 
 const CTASection = ({ title, description }) => (
-  <section className="py-20 sm:py-24">
+  <section className="py-20 sm:py-24 bg-[#F5ECE4]">
     <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-      <div className="rounded-[28px] bg-[#222875] px-6 py-12 text-center text-white shadow-2xl shadow-indigo-200 sm:px-12">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#CBEFFF]">{description}</p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <div className="rounded-[28px] bg-gradient-to-br from-[#734425] to-[#492B17] px-6 py-12 text-center text-[#FAF6F2] shadow-2xl shadow-[#734425]/25 sm:px-12 border border-[#8D5531]">
+        <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">{title}</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#FAF6F2]/90 font-sans">{description}</p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row font-heading">
           <Link
             to="/company/get-started"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-bold text-[#222875] transition duration-300 hover:-translate-y-0.5 hover:bg-[#CBEFFF]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C26819] px-7 py-3.5 text-base font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#A85712] shadow-lg shadow-[#C26819]/25 uppercase tracking-wide"
           >
             Get started
             <ArrowRight className="h-5 w-5" />
           </Link>
           <Link
             to="/company/features"
-            className="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3.5 text-base font-bold text-white transition duration-300 hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-full border-2 border-[#FAF6F2]/80 px-7 py-3.5 text-base font-bold text-[#FAF6F2] transition duration-300 hover:bg-white/10 uppercase tracking-wide"
           >
             View features
           </Link>
@@ -198,7 +198,7 @@ export const CompanyFeatures = () => (
       </div>
     </section>
 
-    <section className="bg-[#f8fbff] py-20 sm:py-24">
+    <section className="bg-[#FAF5F0] py-20 sm:py-24 border-y border-[#E1D4C7]">
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <SectionIntro
@@ -206,15 +206,15 @@ export const CompanyFeatures = () => (
             title="Separate workspaces for admins and employees."
             description="The app uses protected route groups and role-aware sessions so each user lands in the right operational workspace."
           />
-          <div className="grid gap-4">
+          <div className="grid gap-4 font-sans">
             {[
               ["Admin", "Company profile, employee management, leave review, salary generation, settings, reports, notifications."],
               ["Light admin", "Admin-protected access with user management restrictions kept for full admins."],
               ["Employee", "Leave balances, leave requests, salary data, documents, profile data, notifications, and password settings."],
             ].map(([role, text]) => (
-              <div key={role} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-[#222875]">{role}</h3>
-                <p className="mt-2 leading-7 text-slate-600">{text}</p>
+              <div key={role} className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm">
+                <h3 className="text-lg font-bold text-[#734425] font-heading uppercase">{role}</h3>
+                <p className="mt-2 leading-7 text-[#5A524C]">{text}</p>
               </div>
             ))}
           </div>
@@ -289,23 +289,23 @@ export const CompanyServices = () => (
       </div>
     </section>
 
-    <section className="bg-[#0f172a] py-20 sm:py-24 text-white">
+    <section className="bg-[#2E2E2E] py-20 sm:py-24 text-white">
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-widest text-[#90D7F5]">Delivery path</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">From registration to repeatable HR operations.</h2>
-            <p className="mt-4 text-lg leading-8 text-slate-300">
+            <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Delivery path</p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">From registration to repeatable HR operations.</h2>
+            <p className="mt-4 text-lg leading-8 text-stone-300 font-sans">
               The product gives admins the setup controls and daily workflow screens needed to operate without spreadsheet handoffs.
             </p>
           </div>
-          <div className="grid gap-4">
+          <div className="grid gap-4 font-sans">
             {["Configure company defaults", "Invite employees", "Approve leave and send notifications", "Generate salary slips", "Download and email leave reports"].map((item, index) => (
-              <div key={item} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/10 p-5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#90D7F5] text-sm font-bold text-[#222875]">
+              <div key={item} className="flex items-center gap-4 rounded-2xl border border-stone-700 bg-white/5 p-5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#C26819] text-sm font-bold text-white font-heading">
                   {index + 1}
                 </div>
-                <span className="font-semibold">{item}</span>
+                <span className="font-semibold text-stone-100">{item}</span>
               </div>
             ))}
           </div>
@@ -358,32 +358,32 @@ export const CompanyPricing = () => (
             <div
               key={plan.name}
               className={`relative rounded-2xl border p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl ${
-                plan.highlighted ? "border-[#222875] bg-[#f8fbff] ring-4 ring-[#90D7F5]/25" : "border-slate-200 bg-white"
+                plan.highlighted ? "border-[#734425] bg-[#FAF5F0] ring-4 ring-[#C26819]/25" : "border-[#E1D4C7] bg-[#FAF6F2]"
               }`}
             >
               {plan.highlighted && (
-                <div className="absolute -top-4 left-6 rounded-full bg-[#222875] px-4 py-1.5 text-xs font-bold text-white">
+                <div className="absolute -top-4 left-6 rounded-full bg-[#C26819] px-4 py-1.5 text-xs font-bold text-white uppercase tracking-wider font-heading">
                   Recommended
                 </div>
               )}
-              <h3 className="text-2xl font-bold text-slate-950">{plan.name}</h3>
-              <p className="mt-3 min-h-16 leading-7 text-slate-600">{plan.fit}</p>
-              <div className="mt-7 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-                <div className="text-sm font-bold uppercase tracking-widest text-[#222875]">Contact for pricing</div>
-                <p className="mt-2 text-sm leading-6 text-slate-500">Final pricing can follow employee count, rollout needs, and selected modules.</p>
+              <h3 className="text-2xl font-bold text-[#2E2E2E] font-heading uppercase">{plan.name}</h3>
+              <p className="mt-3 min-h-16 leading-7 text-[#5A524C] font-sans">{plan.fit}</p>
+              <div className="mt-7 rounded-2xl bg-white p-5 ring-1 ring-[#E1D4C7]">
+                <div className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Contact for pricing</div>
+                <p className="mt-2 text-sm leading-6 text-stone-500 font-sans">Final pricing can follow employee count, rollout needs, and selected modules.</p>
               </div>
-              <ul className="mt-7 space-y-4">
+              <ul className="mt-7 space-y-4 font-sans">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex gap-3 text-sm leading-6 text-slate-600">
-                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                  <li key={feature} className="flex gap-3 text-sm leading-6 text-[#5A524C]">
+                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#C26819]" />
                     {feature}
                   </li>
                 ))}
               </ul>
               <Link
                 to="/company/get-started"
-                className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 font-bold transition duration-300 ${
-                  plan.highlighted ? "bg-[#222875] text-white hover:bg-[#1a1f5c]" : "border border-slate-300 text-slate-900 hover:border-[#222875] hover:text-[#222875]"
+                className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 font-bold transition duration-300 font-heading uppercase tracking-wide ${
+                  plan.highlighted ? "bg-[#734425] text-[#FAF6F2] hover:bg-[#5D361D] shadow-md shadow-[#734425]/20" : "border-2 border-[#734425] text-[#734425] hover:bg-[#734425] hover:text-[#FAF6F2]"
                 }`}
               >
                 Start setup
@@ -463,25 +463,25 @@ export const CompanyWhyUs = () => (
       </div>
     </section>
 
-    <section className="bg-[#0f172a] py-20 sm:py-24 text-white">
+    <section className="bg-[#2E2E2E] py-20 sm:py-24 text-white">
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-widest text-[#90D7F5]">Spreadsheet replacement</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">A system of record for repetitive HR work.</h2>
-            <p className="mt-4 text-lg leading-8 text-slate-300">
+            <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Spreadsheet replacement</p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">A system of record for repetitive HR work.</h2>
+            <p className="mt-4 text-lg leading-8 text-stone-300 font-sans">
               Instead of sending leave, payroll, document, and employee updates across separate files, teams can run them through one role-aware application.
             </p>
           </div>
-          <div className="overflow-hidden rounded-2xl bg-white text-slate-950">
+          <div className="overflow-hidden rounded-2xl bg-[#FAF6F2] text-[#2E2E2E] border border-stone-700">
             {[
               ["Manual tracking", "Shared spreadsheets, email trails, separate folders, and repeated calculations."],
               ["Leanport HR", "Requests, approvals, balances, salary history, documents, reports, notifications, and settings in one workspace."],
               ["Employee experience", "Employees can view their data, apply for leave, check balances, review salary history, and download paid salary slips."],
             ].map(([title, text], index) => (
-              <div key={title} className={`p-6 ${index !== 2 ? "border-b border-slate-200" : ""}`}>
-                <h3 className="font-bold text-[#222875]">{title}</h3>
-                <p className="mt-2 leading-7 text-slate-600">{text}</p>
+              <div key={title} className={`p-6 ${index !== 2 ? "border-b border-[#E1D4C7]" : ""}`}>
+                <h3 className="font-bold text-[#734425] font-heading uppercase">{title}</h3>
+                <p className="mt-2 leading-7 text-[#5A524C] font-sans">{text}</p>
               </div>
             ))}
           </div>
@@ -627,22 +627,22 @@ export const CompanyContact = () => (
             ))}
           </div>
 
-          <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/60 sm:p-8">
+          <div className="rounded-[28px] border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-xl shadow-[#734425]/10 sm:p-8">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#222875] text-white">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2]">
                 <MessageSquare className="h-6 w-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-950">Request a setup discussion</h2>
-                <p className="mt-1 text-sm text-slate-500">This form is a front-end contact experience for routing inquiries.</p>
+                <h2 className="text-2xl font-bold text-[#2E2E2E] font-heading uppercase">Request a setup discussion</h2>
+                <p className="mt-1 text-sm text-[#73685F] font-sans">This form is a front-end contact experience for routing inquiries.</p>
               </div>
             </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <input className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25" placeholder="First name" />
-              <input className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25" placeholder="Last name" />
-              <input className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25" placeholder="Work email" />
-              <input className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25" placeholder="Company name" />
-              <select className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25 sm:col-span-2" defaultValue="">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 font-sans">
+              <input className="rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25" placeholder="First name" />
+              <input className="rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25" placeholder="Last name" />
+              <input className="rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25" placeholder="Work email" />
+              <input className="rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25" placeholder="Company name" />
+              <select className="rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25 sm:col-span-2" defaultValue="">
                 <option value="" disabled>What do you want to discuss?</option>
                 <option>Company onboarding</option>
                 <option>Leave management</option>
@@ -650,11 +650,11 @@ export const CompanyContact = () => (
                 <option>Salary records and salary slips</option>
                 <option>Pricing and rollout scope</option>
               </select>
-              <textarea className="min-h-36 rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-[#222875] focus:ring-4 focus:ring-[#90D7F5]/25 sm:col-span-2" placeholder="Tell us what your HR team needs to manage." />
+              <textarea className="min-h-36 rounded-2xl border border-[#E1D4C7] bg-white px-4 py-3 outline-none transition focus:border-[#734425] focus:ring-4 focus:ring-[#C26819]/25 sm:col-span-2" placeholder="Tell us what your HR team needs to manage." />
             </div>
             <a
               href="mailto:support@leanporthr.com?subject=Leanport%20HR%20setup%20discussion"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#222875] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-indigo-100 transition duration-300 hover:-translate-y-0.5 hover:bg-[#1a1f5c]"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#734425] px-7 py-3.5 text-base font-bold text-[#FAF6F2] shadow-lg shadow-[#734425]/20 transition duration-300 hover:-translate-y-0.5 hover:bg-[#5D361D] font-heading uppercase tracking-wide"
             >
               Email setup request
               <Send className="h-5 w-5" />
@@ -694,18 +694,18 @@ const faqGroups = [
 ];
 
 const FAQRow = ({ question, answer, isOpen, onToggle }) => (
-  <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm">
     <button
       type="button"
       onClick={onToggle}
-      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-heading"
     >
-      <span className="font-bold text-slate-950">{question}</span>
-      <ChevronDown className={`h-5 w-5 shrink-0 text-[#222875] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      <span className="font-bold text-[#2E2E2E]">{question}</span>
+      <ChevronDown className={`h-5 w-5 shrink-0 text-[#734425] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
     </button>
     <div className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
       <div className="overflow-hidden">
-        <p className="border-t border-slate-100 px-5 py-4 leading-7 text-slate-600">{answer}</p>
+        <p className="border-t border-[#E1D4C7] px-5 py-4 leading-7 text-[#5A524C] font-sans">{answer}</p>
       </div>
     </div>
   </div>
@@ -731,8 +731,8 @@ export const CompanyFAQ = () => {
             <div className="grid gap-8">
               {faqGroups.map((group) => (
                 <div key={group.category}>
-                  <h2 className="mb-4 flex items-center gap-3 text-xl font-bold text-slate-950">
-                    <HelpCircle className="h-5 w-5 text-[#222875]" />
+                  <h2 className="mb-4 flex items-center gap-3 text-xl font-bold text-[#2E2E2E] font-heading uppercase">
+                    <HelpCircle className="h-5 w-5 text-[#C26819]" />
                     {group.category}
                   </h2>
                   <div className="grid gap-3">
@@ -819,20 +819,20 @@ const LegalPage = ({ type }) => {
       <section className="py-20 sm:py-24">
         <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="rounded-2xl border border-slate-200 bg-[#f8fbff] p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#222875] text-white">
+            <div className="rounded-2xl border border-[#E1D4C7] bg-[#FAF5F0] p-6 shadow-sm">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2]">
                 <Icon className="h-6 w-6" />
               </div>
-              <h2 className="mt-5 text-xl font-bold text-slate-950">Plain-language policy</h2>
-              <p className="mt-3 leading-7 text-slate-600">
+              <h2 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase">Plain-language policy</h2>
+              <p className="mt-3 leading-7 text-[#5A524C] font-sans">
                 This page is product-specific website copy and not a substitute for jurisdiction-specific legal advice.
               </p>
             </div>
-            <div className="grid gap-4">
+            <div className="grid gap-4 font-sans">
               {page.sections.map(([heading, text]) => (
-                <div key={heading} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-lg font-bold text-[#222875]">{heading}</h3>
-                  <p className="mt-3 leading-8 text-slate-600">{text}</p>
+                <div key={heading} className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm">
+                  <h3 className="text-lg font-bold text-[#734425] font-heading uppercase">{heading}</h3>
+                  <p className="mt-3 leading-8 text-[#5A524C]">{text}</p>
                 </div>
               ))}
             </div>

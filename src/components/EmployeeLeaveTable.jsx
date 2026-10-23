@@ -132,32 +132,25 @@ const EmployeeLeaveTable = () => {
     value > 0 ? `${positiveClass} font-medium` : "text-slate-400";
 
   const getMonthBgClass = (index) =>
-    index % 2 === 0 ? "bg-slate-100" : "bg-white";
+    index % 2 === 0 ? "bg-[#FAF6F2]" : "bg-white";
 
   return (
-    <Card className="border border-slate-200 shadow-sm rounded-md">
-      <CardHeader className="pb-4 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
+    <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+      <CardHeader className="pb-4 border-b border-[#E1D4C7] bg-[#FAF6F2] rounded-t-2xl">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle className="flex items-center space-x-2 pb-4 md:pb-4 font-graphik text-slate-900 text-lg font-bold">
-            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center font-graphik rounded-md">
+          <CardTitle className="flex items-center space-x-3 pb-2 md:pb-0 font-heading text-[#2E2E2E] text-lg font-bold uppercase tracking-tight">
+            <span className="bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
               <Calendar className="h-5 w-5" />
             </span>
             <span>Employee Leave Summary - {year}</span>
           </CardTitle>
-          {/* <button
-            onClick={handleViewAllLeaves}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
-          >
-            <Eye className="h-4 w-4" />
-            View All Leaves
-          </button> */}
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mt-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-slate-900" />
-            <span className="text-sm text-slate-900 font-graphik font-semibold">Filters:</span>
+            <Filter className="h-4 w-4 text-[#734425]" />
+            <span className="text-xs uppercase tracking-wider text-[#734425] font-heading font-bold">Filters:</span>
           </div>
 
           {/* Year Select */}
@@ -165,15 +158,15 @@ const EmployeeLeaveTable = () => {
             value={year.toString()}
             onValueChange={(v) => setYear(parseInt(v))}
           >
-            <SelectTrigger className="w-[120px] text-gray-500 bg-gray-50 rounded-md font-graphik hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[120px] text-[#2E2E2E] bg-white border border-[#E1D4C7] rounded-xl font-heading font-bold text-xs hover:bg-[#F5ECE4]/60">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
               {Array.from(
                 { length: currentYear - 2025 + 1 },
                 (_, i) => 2025 + i
               ).map((y) => (
-                <SelectItem key={y} value={y.toString()}>
+                <SelectItem key={y} value={y.toString()} className="focus:bg-[#F5ECE4] focus:text-[#734425]">
                   {y}
                 </SelectItem>
               ))}
@@ -182,12 +175,12 @@ const EmployeeLeaveTable = () => {
 
           {/* Month Select */}
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="w-[150px] text-gray-500 bg-gray-50 font-graphik rounded-md hover:bg-gray-100 hover:text-gray-500">
+            <SelectTrigger className="w-[150px] text-[#2E2E2E] bg-white border border-[#E1D4C7] font-heading font-bold text-xs rounded-xl hover:bg-[#F5ECE4]/60">
               <SelectValue placeholder="Select Month" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
               {MONTHS.map((month) => (
-                <SelectItem key={month.value} value={month.value}>
+                <SelectItem key={month.value} value={month.value} className="focus:bg-[#F5ECE4] focus:text-[#734425]">
                   {month.label}
                 </SelectItem>
               ))}
@@ -196,14 +189,14 @@ const EmployeeLeaveTable = () => {
 
           {/* Employee Select */}
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-            <SelectTrigger className="w-[180px] text-gray-500 bg-gray-50 rounded-md font-graphik hover:bg-gray-100 hover:text-gray-500">
-              <Users className="h-4 w-4 mr-2" />
+            <SelectTrigger className="w-[190px] text-[#2E2E2E] bg-white border border-[#E1D4C7] rounded-xl font-heading font-bold text-xs hover:bg-[#F5ECE4]/60">
+              <Users className="h-4 w-4 mr-2 text-[#734425]" />
               <SelectValue placeholder="Select Employee" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Employees</SelectItem>
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
+              <SelectItem value="all" className="focus:bg-[#F5ECE4] focus:text-[#734425]">All Employees</SelectItem>
               {employees.map((emp) => (
-                <SelectItem key={emp.id} value={emp.id.toString()}>
+                <SelectItem key={emp.id} value={emp.id.toString()} className="focus:bg-[#F5ECE4] focus:text-[#734425]">
                   {emp.name}
                 </SelectItem>
               ))}
@@ -213,27 +206,27 @@ const EmployeeLeaveTable = () => {
           {/* Reset Button */}
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-300 text-gray-500 bg-gray-50 rounded-md hover:bg-gray-100 font-graphik hover:text-gray-500"
+            className="px-4 py-2 border border-[#E1D4C7] text-[#2E2E2E] bg-white rounded-xl hover:bg-[#F5ECE4] font-heading font-bold text-xs uppercase tracking-wider transition-colors shadow-sm"
           >
             Reset
           </button>
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-4 md:p-6">
         {loading ? (
           <div className="py-8">
             <LoadingSpinner />
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-xl border border-[#E1D4C7]">
             <Table>
               <TableHeader>
                 {/* First Header Row */}
-                <TableRow className="bg-slate-50">
+                <TableRow className="bg-[#F5ECE4]/80 border-b border-[#E1D4C7]">
                   <TableHead
                     rowSpan={2}
-                    className="min-w-[150px] w-[150px] font-semibold text-slate-700 sticky left-0 bg-slate-50 z-30 font-graphik align-middle"
+                    className="min-w-[150px] w-[150px] font-heading font-bold text-[#734425] uppercase tracking-wider sticky left-0 bg-[#F5ECE4] z-30 align-middle text-xs"
                   >
                     Employee Name
                   </TableHead>
@@ -241,7 +234,7 @@ const EmployeeLeaveTable = () => {
                     <TableHead
                       key={month}
                       colSpan={2}
-                      className={`font-semibold text-slate-700 text-center capitalize font-graphik ${getMonthBgClass(index)}`}
+                      className={`font-heading font-bold text-[#2E2E2E] text-center uppercase tracking-wider text-xs ${getMonthBgClass(index)}`}
                     >
                       {month.slice(0, 3).toUpperCase()}
                     </TableHead>
@@ -249,14 +242,14 @@ const EmployeeLeaveTable = () => {
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 font-graphik align-middle sticky right-[120px] bg-blue-50 z-30 min-w-[120px] text-center"
+                    className="font-heading font-bold text-[#734425] uppercase tracking-wider align-middle sticky right-[120px] bg-[#734425]/10 z-30 min-w-[120px] text-center text-xs"
                   >
                     Total Leave
                   </TableHead>
 
                   <TableHead
                     rowSpan={2}
-                    className="font-semibold text-slate-700 font-graphik align-middle sticky right-0 bg-rose-50 z-30 min-w-[120px] text-center"
+                    className="font-heading font-bold text-rose-700 uppercase tracking-wider align-middle sticky right-0 bg-rose-50 z-30 min-w-[120px] text-center text-xs"
                   >
                     Total Deduction
                   </TableHead>
@@ -382,36 +375,36 @@ const EmployeeLeaveTable = () => {
             onClick={() => setShowModal(false)}
           />
           {/* Modal Content */}
-          <div className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-lg shadow-2xl mx-4 flex flex-col">
+          <div className="relative w-full max-w-6xl max-h-[90vh] bg-[#FAF6F2] rounded-2xl shadow-2xl mx-4 flex flex-col overflow-hidden border border-[#E1D4C7]">
             {/* Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-primary text-white rounded-t-lg">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
+            <div className="flex justify-between items-center px-6 py-5 bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white">
+              <h2 className="text-lg font-heading font-extrabold uppercase tracking-tight flex items-center gap-2.5">
+                <Calendar className="h-5 w-5 text-[#F5ECE4]" />
                 Employee Leave Summary - {year}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-white/80 hover:text-white text-2xl font-bold transition duration-200"
+                className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition duration-200"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Filters in Modal */}
-            <div className="flex flex-wrap gap-4 p-4 border-b bg-slate-50">
+            <div className="flex flex-wrap gap-4 p-4 border-b border-[#E1D4C7] bg-[#F5ECE4]/60">
               <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-slate-500" />
-                <span className="text-sm text-slate-600">Filters:</span>
+                <Filter className="h-4 w-4 text-[#734425]" />
+                <span className="text-xs font-heading font-bold uppercase text-[#734425]">Filters:</span>
               </div>
 
               <Select
                 value={year.toString()}
                 onValueChange={(v) => setYear(parseInt(v))}
               >
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[120px] bg-white border-[#E1D4C7] text-xs font-heading font-bold rounded-xl">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
                   {[currentYear - 1, currentYear, currentYear + 1].map((y) => (
                     <SelectItem key={y} value={y.toString()}>
                       {y}

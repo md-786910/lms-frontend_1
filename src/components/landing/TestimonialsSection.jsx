@@ -61,32 +61,32 @@ const testimonials = [
 
 const TestimonialCard = ({ testimonial, isActive }) => {
   return (
-    <div className={`group transition-all duration-500 ${isActive ? 'opacity-100 scale-100' : 'opacity-50 scale-95'}`}>
-      <div className="bg-white rounded-2xl border border-gray-200 p-8 h-full hover:shadow-xl transition-shadow duration-300">
+    <div className={`group transition-all duration-500 ${isActive ? 'opacity-100 scale-100' : 'opacity-60 scale-95'}`}>
+      <div className="bg-[#FAF6F2] rounded-3xl border border-[#E1D4C7] p-8 h-full shadow-sm hover:shadow-xl hover:border-[#734425]/40 transition-all duration-300">
         {/* Rating stars */}
         <div className="flex gap-1 mb-4">
           {[...Array(testimonial.rating)].map((_, i) => (
-            <Star key={i} size={18} className="fill-yellow-400 text-yellow-400" />
+            <Star key={i} size={16} className="fill-[#C26819] text-[#C26819]" />
           ))}
         </div>
 
         {/* Quote */}
-        <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
+        <p className="text-[#2E2E2E] text-base leading-relaxed mb-6 italic font-sans">
           "{testimonial.content}"
         </p>
 
         {/* Metrics highlight */}
-        <div className="bg-blue-50 rounded-lg px-4 py-3 mb-6 border-l-4 border-blue-500">
-          <p className="text-blue-900 font-semibold text-sm">{testimonial.metrics}</p>
+        <div className="bg-white rounded-xl px-4 py-3 mb-6 border-l-4 border-[#C26819] shadow-sm">
+          <p className="text-[#734425] font-heading font-bold text-xs uppercase tracking-wide">{testimonial.metrics}</p>
         </div>
 
         {/* Author */}
-        <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
-          <div className="text-4xl">{testimonial.image}</div>
+        <div className="flex items-center gap-4 pt-4 border-t border-[#E1D4C7]">
+          <div className="text-3xl">{testimonial.image}</div>
           <div>
-            <div className="font-bold text-gray-900">{testimonial.name}</div>
-            <div className="text-sm text-gray-600">{testimonial.role}</div>
-            <div className="text-xs text-gray-500">{testimonial.company}</div>
+            <div className="font-heading font-bold text-sm uppercase tracking-wide text-[#24130A]">{testimonial.name}</div>
+            <div className="text-xs text-[#5C5C5C] font-medium">{testimonial.role}</div>
+            <div className="text-[11px] text-[#734425] font-semibold">{testimonial.company}</div>
           </div>
         </div>
       </div>
@@ -124,16 +124,16 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <SectionContainer className="bg-white" id="testimonials">
+    <SectionContainer className="bg-[#F5ECE4] font-sans text-[#2E2E2E] py-16 md:py-24 border-t border-[#E1D4C7]" id="testimonials">
       {/* Header */}
       <div className="max-w-3xl mx-auto text-center mb-16">
-        <div className={`inline-block px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          ⭐ Success Stories
+        <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C26819]/10 border border-[#C26819]/25 text-[#734425] text-xs font-heading font-bold uppercase tracking-widest mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <span>⭐</span> Success Stories
         </div>
-        <h2 className={`text-4xl md:text-5xl font-bold text-gray-900 mb-6 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-4xl md:text-5xl font-heading font-black text-[#2E2E2E] mb-6 uppercase tracking-tight transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           Loved by HR teams everywhere
         </h2>
-        <p className={`text-xl text-gray-600 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <p className={`text-lg text-[#5A524C] leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           See how companies across industries are transforming their HR operations with our platform.
         </p>
       </div>
@@ -148,7 +148,7 @@ const TestimonialsSection = () => {
             return (
               <div
                 key={index}
-                className={`cursor-pointer transition-all duration-500 ${isActive ? 'md:scale-110 md:z-20' : 'md:scale-95'} ${position > 2 ? 'hidden' : ''}`}
+                className={`cursor-pointer transition-all duration-500 ${isActive ? 'md:scale-105 md:z-20' : 'md:scale-95'} ${position > 2 ? 'hidden' : ''}`}
                 onClick={() => {
                   setActiveIndex(index);
                   setAutoPlay(false);
@@ -167,9 +167,9 @@ const TestimonialsSection = () => {
         <div className="flex justify-center items-center gap-6">
           <button
             onClick={prev}
-            className="p-3 rounded-full border-2 border-gray-300 text-gray-600 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 group"
+            className="p-3 rounded-full border border-[#E1D4C7] bg-white text-[#734425] hover:bg-[#FAF6F2] hover:border-[#734425] transition-all duration-300 shadow-sm"
           >
-            <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+            <ChevronLeft size={20} className="hover:-translate-x-0.5 transition-transform" />
           </button>
 
           {/* Indicators */}
@@ -181,10 +181,10 @@ const TestimonialsSection = () => {
                   setActiveIndex(index);
                   setAutoPlay(false);
                 }}
-                className={`h-3 rounded-full transition-all duration-300 ${
+                className={`h-2.5 rounded-full transition-all duration-300 ${
                   index === activeIndex
-                    ? 'bg-blue-600 w-8'
-                    : 'bg-gray-300 w-3 hover:bg-gray-400'
+                    ? 'bg-[#734425] w-8'
+                    : 'bg-[#E1D4C7] w-2.5 hover:bg-[#734425]/40'
                 }`}
               />
             ))}
@@ -192,9 +192,9 @@ const TestimonialsSection = () => {
 
           <button
             onClick={next}
-            className="p-3 rounded-full border-2 border-gray-300 text-gray-600 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 group"
+            className="p-3 rounded-full border border-[#E1D4C7] bg-white text-[#734425] hover:bg-[#FAF6F2] hover:border-[#734425] transition-all duration-300 shadow-sm"
           >
-            <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+            <ChevronRight size={20} className="hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
@@ -207,9 +207,9 @@ const TestimonialsSection = () => {
           { value: '100K+', label: 'Happy Employees' },
           { value: '99.9%', label: 'Uptime' },
         ].map((stat, idx) => (
-          <div key={idx} className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
-            <div className="text-gray-600 text-sm">{stat.label}</div>
+          <div key={idx} className="text-center p-6 bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] shadow-sm">
+            <div className="text-3xl md:text-4xl font-heading font-black text-[#734425] mb-2">{stat.value}</div>
+            <div className="text-xs font-heading font-bold text-[#5C5C5C] uppercase tracking-wider">{stat.label}</div>
           </div>
         ))}
       </div>

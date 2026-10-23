@@ -41,7 +41,7 @@ const AddressForm = forwardRef(({ addressInfo, setAddressInfo }, ref) => {
 
   return (
     <div className="font-graphik text-slate-900">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
         <div className="space-y-2">
           <Label htmlFor="street" className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider">Street Address *</Label>
           <Input

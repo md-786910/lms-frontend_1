@@ -79,45 +79,49 @@ function UpdateDepartmentsForm(props) {
 
   return (
     <>
-      <div className="p-4 bg-slate-50">
+      <div className="p-5 bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+              className="h-11 border border-[#E1D4C7] bg-white focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
               placeholder="Department Name"
               name="name"
               value={newDepartment?.name ?? ""}
               onChange={handleChange}
             />
             {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name}</p>
+              <p className="text-red-500 text-xs font-bold mt-1 font-sans">{errors.name}</p>
             )}
           </div>
           <div>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+              className="h-11 border border-[#E1D4C7] bg-white focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
               placeholder="Description"
               name="description"
               value={newDepartment?.description ?? ""}
               onChange={handleChange}
             />
             {errors.description && (
-              <p className="text-red-500 text-sm">{errors.description}</p>
+              <p className="text-red-500 text-xs font-bold mt-1 font-sans">{errors.description}</p>
             )}
           </div>
         </div>
       </div>
-      <div className="flex justify-end space-x-4 pt-4">
-        <Button type="button" onClick={() => OnClose()} className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
+      <div className="flex justify-end space-x-3 pt-4">
+        <Button
+          type="button"
+          onClick={() => OnClose()}
+          className="rounded-xl shadow-sm border border-[#E1D4C7] text-sm font-heading font-bold text-[#2E2E2E] bg-white hover:bg-[#F5ECE4] cursor-pointer transition ease-in-out duration-300"
+        >
           Cancel
         </Button>
         <Button
           onClick={() => handleSubmit()}
           disabled={loader}
-          className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
+          className="rounded-xl bg-[#734425] hover:bg-[#5D361D] text-white shadow-lg shadow-[#734425]/20 font-heading font-bold"
         >
-          <Edit3 className="h-4 w-4" />
-          {loader ? "saving data..." : "Update Department"}
+          <Edit3 className="h-4 w-4 mr-2" />
+          {loader ? "Saving data..." : "Update Department"}
         </Button>
       </div>
     </>

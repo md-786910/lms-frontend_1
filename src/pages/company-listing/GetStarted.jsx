@@ -172,23 +172,23 @@ const GetStarted = () => {
   return (
     <>
       {init && (
-        <div className="fixed min-h-screen z-30 w-full bg-gradient-to-tr from-white via-[#eaf7ff] to-white">
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 text-center">
-            <h5 className="text-lg font-medium mb-4">
+        <div className="fixed min-h-screen z-30 w-full bg-gradient-to-tr from-[#F5ECE4] via-[#FAF6F2] to-[#F5ECE4]">
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/70 text-center font-sans">
+            <h5 className="text-lg font-bold mb-4 text-[#2E2E2E] font-heading uppercase">
               Initializing company, please wait...
             </h5>
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent" />
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#C26819] border-t-transparent" />
           </div>
         </div>
       )}
-      <div className="py-20 my-10">
+      <div className="py-20 my-10 font-sans">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">
+            <h1 className="text-4xl font-extrabold mb-4 text-[#2E2E2E] font-heading uppercase">
               Get Started with Our HRMS
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-[#5A524C]">
               Create your company account and start your free trial today
             </p>
           </div>
@@ -199,24 +199,24 @@ const GetStarted = () => {
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-center">
                 <div
-                  className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
+                  className={`flex items-center justify-center w-12 h-12 rounded-full border-2 font-heading font-bold ${
                     currentStep >= step.number
-                      ? "bg-[#EAF7FF] border-[#CDE7FF] text-[#0f172a]"
-                      : "border-white/30 text-[#0f172a]/70"
+                      ? "bg-[#734425] border-[#734425] text-[#FAF6F2]"
+                      : "border-[#E1D4C7] bg-[#FAF6F2] text-stone-500"
                   }`}
                 >
                     {currentStep > step.number ? (
-                      <CheckCircle className="h-6 w-6" />
+                      <CheckCircle className="h-6 w-6 text-[#FAF6F2]" />
                     ) : (
                       <step.icon className="h-6 w-6" />
                     )}
                   </div>
                   <div className="ml-3 hidden sm:block">
                     <p
-                      className={`font-medium ${
+                      className={`font-heading font-bold uppercase text-sm ${
                         currentStep >= step.number
-                          ? "text-[#0f172a]"
-                          : "text-[#0f172a]/60"
+                          ? "text-[#734425]"
+                          : "text-stone-400"
                       }`}
                     >
                       {step.title}
@@ -226,8 +226,8 @@ const GetStarted = () => {
                     <div
                       className={`hidden sm:block w-16 h-0.5 ml-8 ${
                         currentStep > step.number
-                          ? "bg-[#EAF7FF]"
-                          : "bg-white/30"
+                          ? "bg-[#734425]"
+                          : "bg-stone-300"
                       }`}
                     />
                   )}
@@ -237,9 +237,9 @@ const GetStarted = () => {
           </div>
 
           {/* Form */}
-          <Card className="max-w-3xl mx-auto landing-panel border-0 shadow-xl rounded-xl p-4">
+          <Card className="max-w-3xl mx-auto border border-[#E1D4C7] bg-[#FAF6F2] shadow-xl rounded-2xl p-4">
             <CardHeader>
-              <CardTitle className="text-[#0f172a] pb-5">
+              <CardTitle className="text-[#2E2E2E] font-heading uppercase pb-5">
                 Step {currentStep}: {steps[currentStep - 1].title}
               </CardTitle>
             </CardHeader>
@@ -491,11 +491,11 @@ const GetStarted = () => {
                       />
                       <Label htmlFor="agreeToTerms" className="text-sm">
                         I agree to the{" "}
-                        <a href="#" className="text-[#0f172a] hover:underline">
+                        <a href="#" className="text-[#734425] hover:text-[#C26819] font-semibold hover:underline">
                           Terms of Service
                         </a>{" "}
                         and{" "}
-                        <a href="#" className="text-[#0f172a] hover:underline">
+                        <a href="#" className="text-[#734425] hover:text-[#C26819] font-semibold hover:underline">
                           Privacy Policy
                         </a>{" "}
                         *
@@ -528,10 +528,10 @@ const GetStarted = () => {
               )}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6">
+              <div className="flex justify-between pt-6 font-heading">
                 <Button
                   variant="outline"
-                  className="text-[#0f172a] border-white/40"
+                  className="text-[#2E2E2E] border-[#E1D4C7] hover:bg-[#F5ECE4]"
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
                 >
@@ -540,7 +540,7 @@ const GetStarted = () => {
                 {currentStep < 3 ? (
                   <Button
                     onClick={handleNext}
-                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
+                    className="px-6 py-2.5 bg-[#734425] text-[#FAF6F2] rounded-full font-bold text-base hover:bg-[#5D361D] hover:shadow-lg hover:shadow-[#734425]/20 transition-all duration-300 active:scale-95 whitespace-nowrap font-heading uppercase tracking-wide"
                   >
                     Next
                   </Button>
@@ -548,7 +548,7 @@ const GetStarted = () => {
                   <Button
                     onClick={() => handleSubmitForm()}
                     disabled={errors.agreeToTerms}
-                    className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
+                    className="px-6 py-2.5 bg-[#C26819] text-white rounded-full font-bold text-base hover:bg-[#A85712] hover:shadow-lg hover:shadow-[#C26819]/25 transition-all duration-300 active:scale-95 whitespace-nowrap font-heading uppercase tracking-wide"
                   >
                     Create Account
                   </Button>

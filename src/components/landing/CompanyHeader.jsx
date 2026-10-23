@@ -109,11 +109,11 @@ const CompanyHeader = () => {
   return (
     <header className="w-full relative z-[100]">
       {/* Top Header Row */}
-      <div className="bg-[#0f172a] text-slate-300 py-2.5 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+      <div className="bg-[#2E2E2E] text-slate-300 py-2.5 px-4 sm:px-6 lg:px-8 border-b border-[#3D3D3D]">
         <div className="max-w-8xl mx-auto xl:mx-60 flex justify-between items-center text-sm font-medium">
           <div className="hidden lg:block">
-            <p className="text-slate-400 font-graphik">
-              <span className="text-[#90D7F5] font-semibold mr-2">New:</span> 
+            <p className="text-slate-300 font-sans">
+              <span className="text-[#C26819] font-bold mr-2">New:</span> 
               Empowering your workforce with smart leave management solutions.
             </p>
           </div>
@@ -130,7 +130,7 @@ const CompanyHeader = () => {
                 </Link>
             </div>
             {!user && (
-                <Link to="/login" className="flex items-center space-x-1.5 text-white hover:text-[#90D7F5] transition-colors">
+                <Link to="/login" className="flex items-center space-x-1.5 text-white hover:text-[#C26819] transition-colors">
                     <LogIn className="h-4 w-4" />
                     <span>Login</span>
                 </Link>
@@ -144,18 +144,18 @@ const CompanyHeader = () => {
         className={`w-full transition-all duration-300 border-b border-transparent
         ${
           isSticky
-            ? "fixed top-0 left-0 bg-white/80 backdrop-blur-xl shadow-sm border-slate-200 py-3"
-            : "bg-white py-5"
+            ? "fixed top-0 left-0 bg-[#F5ECE4]/90 backdrop-blur-xl shadow-sm border-[#E1D4C7] py-3"
+            : "bg-[#F5ECE4] py-5"
         }`}
       >
         <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link to="/company" className="flex items-center space-x-2 group shrink-0">
-            <div className="p-2 bg-[#222875] rounded-xl group-hover:scale-105 transition-transform">
-                <Building className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <div className="p-2 bg-[#734425] rounded-xl group-hover:scale-105 transition-transform">
+                <Building className="h-5 w-5 sm:h-6 sm:w-6 text-[#FAF6F2]" />
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight font-graphik">
-                Leanport <span className="text-[#222875]">HR</span>
+            <span className="text-xl sm:text-2xl font-bold text-[#2E2E2E] tracking-tight font-heading">
+                Leanport <span className="text-[#C26819]">HR</span>
             </span>
           </Link>
 
@@ -167,8 +167,8 @@ const CompanyHeader = () => {
                   {item.submenu ? (
                     <div className="relative">
                         <button
-                        className={`flex items-center space-x-1 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-graphik
-                            ${isActive(item.href) ? "text-[#222875]" : "text-slate-600 hover:text-[#222875] hover:bg-slate-50"}`}
+                        className={`flex items-center space-x-1 px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-heading
+                            ${isActive(item.href) ? "text-[#734425]" : "text-[#2E2E2E] hover:text-[#C26819] hover:bg-[#FAF6F2]"}`}
                         >
                             <span>{item.name}</span>
                             <ChevronDown className="h-4 w-4 transition-transform group-hover/nav:rotate-180" />
@@ -176,23 +176,23 @@ const CompanyHeader = () => {
                         
                         {/* Mega Dropdown */}
                         <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 invisible group-hover/nav:visible opacity-0 group-hover/nav:opacity-100 transition-all duration-300 transform scale-95 group-hover/nav:scale-100 z-50">
-                            <div className="w-[940px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+                            <div className="w-[940px] bg-[#FAF6F2] rounded-2xl shadow-2xl border border-[#E1D4C7] overflow-hidden">
                                 <div className="p-6 grid grid-cols-3 gap-x-6 gap-y-4">
                                     {item.submenu.map((sub) => (
                                     <Link
                                         key={sub.name}
                                         to={sub.href}
-                                        className="flex items-start space-x-4 p-4 rounded-xl hover:bg-slate-50 transition-all duration-200 group/item border border-transparent hover:border-slate-100 hover:shadow-sm"
+                                        className="flex items-start space-x-4 p-4 rounded-xl hover:bg-white transition-all duration-200 group/item border border-transparent hover:border-[#E1D4C7] hover:shadow-sm"
                                     >
                                         <div className={`p-3 rounded-lg ${sub.bg} ${sub.color} group-hover/item:scale-110 transition-transform shadow-sm`}>
                                             <sub.icon className="h-5 w-5" />
                                         </div>
                                         <div className="flex-1">
-                                            <div className="text-sm font-bold text-slate-900 mb-1 flex items-center justify-between">
-                                                <span className="font-graphik">{sub.name}</span>
-                                                <ArrowRight className="h-3 w-3 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-transform" />
+                                            <div className="text-sm font-bold text-[#2E2E2E] mb-1 flex items-center justify-between">
+                                                <span className="font-heading">{sub.name}</span>
+                                                <ArrowRight className="h-3 w-3 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-transform text-[#C26819]" />
                                             </div>
-                                            <p className="text-xs text-slate-500 leading-relaxed font-graphik">{sub.description}</p>
+                                            <p className="text-xs text-slate-600 leading-relaxed font-sans">{sub.description}</p>
                                         </div>
                                     </Link>
                                     ))}
@@ -203,10 +203,10 @@ const CompanyHeader = () => {
                   ) : (
                     <Link
                       to={item.href}
-                      className={`px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-graphik
+                      className={`px-4 py-2 rounded-lg text-base font-semibold transition-all duration-200 font-heading
                         ${isActive(item.href)
-                            ? "text-[#222875] bg-slate-50"
-                            : "text-slate-600 hover:text-[#222875] hover:bg-slate-50"
+                            ? "text-[#734425] bg-[#FAF6F2]"
+                            : "text-[#2E2E2E] hover:text-[#C26819] hover:bg-[#FAF6F2]"
                         }`}
                     >
                       {item.name}
@@ -219,7 +219,7 @@ const CompanyHeader = () => {
             {/* CTA Button */}
             <Link
               to={user ? (user.role === "employee" ? "/employee/dashboard" : "/admin/dashboard") : "/company/get-started"}
-              className="px-6 py-2.5 bg-[#222875] text-white rounded-full font-bold text-base hover:bg-[#1a1f5c] hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 active:scale-95 whitespace-nowrap font-graphik"
+              className="px-6 py-2.5 bg-[#734425] text-[#FAF6F2] rounded-full font-bold text-base hover:bg-[#5D361D] hover:shadow-lg hover:shadow-[#734425]/20 transition-all duration-300 active:scale-95 whitespace-nowrap font-heading"
             >
               {user ? "Dashboard" : "Get Started"}
             </Link>
@@ -227,7 +227,7 @@ const CompanyHeader = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 rounded-lg bg-slate-100 text-slate-900 transition-colors hover:bg-slate-200"
+            className="md:hidden p-2 rounded-lg bg-[#FAF6F2] text-[#2E2E2E] transition-colors hover:bg-[#EADCCF]"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -236,7 +236,7 @@ const CompanyHeader = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden z-50
+          className={`md:hidden absolute top-full left-0 w-full bg-[#F5ECE4] border-b border-[#E1D4C7] shadow-2xl transition-all duration-300 ease-in-out overflow-hidden z-50
           ${menuOpen ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0"}`}
         >
           <div className="px-6 py-8 flex flex-col space-y-2 overflow-y-auto">
@@ -247,10 +247,10 @@ const CompanyHeader = () => {
                     <button
                       onClick={() => setFeaturesOpen(!featuresOpen)}
                       className={`flex items-center justify-between text-lg font-bold p-3 rounded-xl transition-all ${
-                        featuresOpen ? "bg-slate-50 text-[#222875]" : "text-slate-600"
+                        featuresOpen ? "bg-[#FAF6F2] text-[#734425]" : "text-[#2E2E2E]"
                       }`}
                     >
-                      <span className="font-graphik">{item.name}</span>
+                      <span className="font-heading">{item.name}</span>
                       <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${featuresOpen ? "rotate-180" : ""}`} />
                     </button>
                     <div className={`overflow-hidden transition-all duration-500 ease-in-out ${featuresOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
@@ -259,14 +259,14 @@ const CompanyHeader = () => {
                           <Link
                             key={sub.name}
                             to={sub.href}
-                            className="flex items-center space-x-4 p-4 rounded-2xl hover:bg-slate-50 active:bg-slate-100 transition-colors border border-transparent hover:border-slate-100"
+                            className="flex items-center space-x-4 p-4 rounded-2xl hover:bg-[#FAF6F2] active:bg-[#EADCCF] transition-colors border border-transparent hover:border-[#E1D4C7]"
                           >
                             <div className={`p-2.5 rounded-xl ${sub.bg} ${sub.color} shadow-sm`}>
                               <sub.icon className="h-5 w-5" />
                             </div>
                             <div className="flex-1">
-                                <div className="text-sm font-bold text-slate-900 font-graphik">{sub.name}</div>
-                                <div className="text-xs text-slate-500 font-graphik line-clamp-1">{sub.description}</div>
+                                <div className="text-sm font-bold text-[#2E2E2E] font-heading">{sub.name}</div>
+                                <div className="text-xs text-slate-600 font-sans line-clamp-1">{sub.description}</div>
                             </div>
                           </Link>
                         ))}
@@ -277,18 +277,18 @@ const CompanyHeader = () => {
                   <Link
                     to={item.href}
                     className={`text-lg font-bold p-3 rounded-xl transition-all ${
-                      isActive(item.href) ? "bg-slate-50 text-[#222875]" : "text-slate-600 hover:bg-slate-50"
-                    } font-graphik`}
+                      isActive(item.href) ? "bg-[#FAF6F2] text-[#734425]" : "text-[#2E2E2E] hover:bg-[#FAF6F2]"
+                    } font-heading`}
                   >
                     {item.name}
                   </Link>
                 )}
               </div>
             ))}
-            <div className="pt-6 border-t border-slate-100 mt-6 pb-2">
+            <div className="pt-6 border-t border-[#E1D4C7] mt-6 pb-2">
                 <Link
                 to={user ? (user.role === "employee" ? "/employee/dashboard" : "/admin/dashboard") : "/company/get-started"}
-                className="w-full inline-flex justify-center items-center px-6 py-4 bg-[#222875] text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 active:scale-95 transition-all font-graphik"
+                className="w-full inline-flex justify-center items-center px-6 py-4 bg-[#734425] text-[#FAF6F2] rounded-2xl font-bold text-lg shadow-xl shadow-[#734425]/20 hover:bg-[#5D361D] active:scale-95 transition-all font-heading"
                 >
                 {user ? "Go to Dashboard" : "Get Started Now"}
                 </Link>

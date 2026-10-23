@@ -171,25 +171,25 @@ const Salary = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-        <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
-          <CardContent className="p-5 md:p-7">
-            <div className="grid grid-cols-12 items-center gap-4 relative">
-              <div className="col-span-12 md:col-span-8 space-y-2">
+        <Card className="border border-[#E1D4C7] shadow-xl rounded-3xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
+                  <h1 className="text-3xl md:text-4xl font-heading font-black tracking-tight uppercase text-white">
                     Salary Management
                   </h1>
                 </div>
-                <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
+                <p className="text-[#F5ECE4]/80 font-medium text-sm font-sans max-w-2xl">
                   Manage employee salaries, payouts, and monthly payroll flows with a clear snapshot of totals.
                 </p>
               </div>
-              <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
+              <div className="flex items-center gap-3">
                 <Button
-                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                  className="rounded-xl shadow-sm border border-white/20 flex items-center py-2.5 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                   onClick={handleExportReport}
                 >
-                  <Download className="h-4 w-4 text-slate-500" />
+                  <Download className="h-4 w-4 mr-1 text-[#734425]" />
                   Export Report
                 </Button>
               </div>
@@ -198,71 +198,71 @@ const Salary = () => {
         </Card>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="border border-slate-200 shadow-sm rounded-2xl">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
+            <CardContent className="p-5 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-graphik">
+                  <p className="text-[#2E2E2E]/60 text-xs font-heading font-bold uppercase tracking-wider">
                     Total Payroll
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
+                  <p className="text-2xl md:text-3xl font-heading font-black text-[#2E2E2E] mt-1">
                     ₹{dashboard?.total_netpay?.toLocaleString()}
                   </p>
                 </div>
-                <div className="p-3 rounded-2xl bg-blue-100 text-blue-700">
+                <div className="p-3 rounded-2xl bg-[#734425]/15 text-[#734425]">
                   <DollarSign className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border border-slate-200 shadow-sm rounded-2xl">
-            <CardContent className="p-6">
+          <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
+            <CardContent className="p-5 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-graphik">
+                  <p className="text-[#2E2E2E]/60 text-xs font-heading font-bold uppercase tracking-wider">
                     Paid Amount
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
+                  <p className="text-2xl md:text-3xl font-heading font-black text-[#2E2E2E] mt-1">
                     ₹{dashboard?.paid_amount?.toLocaleString()}
                   </p>
                 </div>
-                <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-700">
+                <div className="p-3 rounded-2xl bg-[#734425]/10 text-[#734425]">
                   <TrendingUp className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border border-slate-200 shadow-sm rounded-2xl">
-            <CardContent className="p-6">
+          <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
+            <CardContent className="p-5 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-graphik">
+                  <p className="text-[#2E2E2E]/60 text-xs font-heading font-bold uppercase tracking-wider">
                     Pending Amount
                   </p>
-                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
+                  <p className="text-2xl md:text-3xl font-heading font-black text-[#2E2E2E] mt-1">
                     ₹{dashboard?.pending_amount?.toLocaleString()}
                   </p>
                 </div>
-                <div className="p-3 rounded-2xl bg-amber-100 text-amber-700">
+                <div className="p-3 rounded-2xl bg-[#C26819]/15 text-[#C26819]">
                   <Calendar className="h-5 w-5" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border border-slate-200 shadow-sm rounded-2xl">
-            <CardContent className="p-6">
+          <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
+            <CardContent className="p-5 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-600 text-sm font-semibold font-graphik">Employees</p>
-                  <p className="text-2xl font-semibold text-slate-900 font-graphik">
+                  <p className="text-[#2E2E2E]/60 text-xs font-heading font-bold uppercase tracking-wider">Employees</p>
+                  <p className="text-2xl md:text-3xl font-heading font-black text-[#2E2E2E] mt-1">
                     {dashboard?.employee_count}
                   </p>
                 </div>
-                <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700">
+                <div className="p-3 rounded-2xl bg-[#8A522D]/15 text-[#8A522D]">
                   <Users className="h-5 w-5" />
                 </div>
               </div>
@@ -271,7 +271,7 @@ const Salary = () => {
         </div>
 
       {/* Search and Filters */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
+      <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
         <CardContent className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -344,9 +344,9 @@ const Salary = () => {
       </Card>
 
       {/* Salary Table */}
-      <div className="p-6 bg-[#FFFFFF] border border-slate-200 rounded-lg shadow-md">
-        <div className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider mb-5 border-b border-gray-100 pb-3">
-          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+      <div className="p-6 bg-[#FAF6F2] border border-[#E1D4C7] rounded-2xl shadow-sm">
+        <div className="flex items-center space-x-3 text-lg font-bold text-[#2E2E2E] font-heading uppercase tracking-tight mb-5 border-b border-[#E1D4C7]/60 pb-3">
+          <span className="bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
             <AlarmClockMinus className="h-5 w-5" />
           </span>
           <span>
@@ -513,51 +513,49 @@ const Salary = () => {
       {showViewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm font-graphik">
           {/* Modal */}
-          <div className="relative w-full max-w-lg rounded-xl bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <Card className="bg-slate-900 text-white">
-              <CardContent className="p-4 md:p-6">
-                <div className="grid grid-cols-12 items-center gap-4">
-                    <div className="col-span-12 md:col-span-8 space-y-2">
-                      <div className="flex items-center gap-3">
-                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                          <AlarmClockMinus className="h-5 w-5" />
-                        </span>
-                        <div className="space-y-0.5">
-                          <h2 className="text-2xl font-semibold font-graphik text-[#FFFFFF] tracking-tight">
-                            {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
-                          </h2>
-                          <p className="text-[#FFFFFF] font-graphik font-medium">
-                            {selectedEmployee?.employee?.designation?.title || "Employee Details"}
-                          </p>
-                        </div>
-                      </div>
+          <div className="relative w-full max-w-lg rounded-2xl bg-[#FAF6F2] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 border border-[#E1D4C7]">
+            <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white p-5 md:p-6 border-b border-[#734425]/40">
+              <div className="grid grid-cols-12 items-center gap-4">
+                <div className="col-span-12 md:col-span-8 space-y-1">
+                  <div className="flex items-center gap-3">
+                    <span className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center shadow-inner">
+                      <AlarmClockMinus className="h-5 w-5 text-[#F5ECE4]" />
+                    </span>
+                    <div className="space-y-0.5">
+                      <h2 className="text-xl font-heading font-extrabold uppercase tracking-tight text-white">
+                        {selectedEmployee?.employee?.first_name} {selectedEmployee?.employee?.last_name}
+                      </h2>
+                      <p className="text-white/80 font-sans text-xs font-medium">
+                        {selectedEmployee?.employee?.designation?.title || "Employee Details"}
+                      </p>
                     </div>
+                  </div>
+                </div>
                   <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => setShowViewModal(false)}
-                      className="rounded-md hover:bg-slate-100 bg-[#e2e8f0] text-slate-700 transition-colors"
+                      className="rounded-xl hover:bg-white/20 bg-white/10 text-white transition-colors border border-white/20"
                     >
                       <X className="h-5 w-5" />
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
             {selectedEmployee && (
-              <div className="p-5 space-y-5">
+              <div className="p-5 space-y-5 bg-[#FAF6F2]">
                 {/* Employee Quick Info */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Employee ID</p>
-                    <p className="text-sm font-semibold text-slate-800">
+                  <div className="px-3 py-2.5 rounded-xl bg-[#F5ECE4]/70 border border-[#E1D4C7] shadow-sm">
+                    <p className="text-[10px] font-bold text-[#734425] uppercase tracking-wider">Employee ID</p>
+                    <p className="text-sm font-semibold text-[#2E2E2E]">
                       {selectedEmployee.employee?.employee_no || `EMP-${selectedEmployee?.employee?.id}`}
                     </p>
                   </div>
-                  <div className="px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Status</p>
+                  <div className="px-3 py-2.5 rounded-xl bg-[#F5ECE4]/70 border border-[#E1D4C7] shadow-sm">
+                    <p className="text-[10px] font-bold text-[#734425] uppercase tracking-wider">Status</p>
                     <Badge variant="outline" className={`mt-0.5 text-[10px] h-5 ${getStatusColor(selectedEmployee.status)}`}>
                       {selectedEmployee.status}
                     </Badge>
@@ -566,33 +564,33 @@ const Salary = () => {
 
                 {/* Salary Breakdown */}
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1">Earnings & Deductions</h3>
+                  <h3 className="text-xs font-heading font-bold text-[#734425] uppercase tracking-widest border-b border-[#E1D4C7] pb-1">Earnings & Deductions</h3>
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">Base</p>
-                      <p className="text-sm font-bold text-slate-900 mt-0.5">₹{selectedEmployee.base_salary.toLocaleString()}</p>
+                    <div className="p-3 rounded-xl bg-[#F5ECE4]/70 border border-[#E1D4C7] shadow-sm">
+                      <p className="text-[10px] font-bold text-[#5C5C5C] uppercase">Base</p>
+                      <p className="text-sm font-bold text-[#2E2E2E] mt-0.5">₹{selectedEmployee.base_salary.toLocaleString()}</p>
                     </div>
-                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm text-emerald-600">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">Bonus</p>
+                    <div className="p-3 rounded-xl bg-[#F5ECE4]/70 border border-[#E1D4C7] shadow-sm text-emerald-600">
+                      <p className="text-[10px] font-bold text-[#5C5C5C] uppercase">Bonus</p>
                       <p className="text-sm font-bold mt-0.5">₹{selectedEmployee.bonus.toLocaleString()}</p>
                     </div>
-                    <div className="p-3 rounded-xl bg-white border border-slate-100 shadow-sm text-rose-600">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">Deduction</p>
+                    <div className="p-3 rounded-xl bg-[#F5ECE4]/70 border border-[#E1D4C7] shadow-sm text-rose-600">
+                      <p className="text-[10px] font-bold text-[#5C5C5C] uppercase">Deduction</p>
                       <p className="text-sm font-bold mt-0.5">₹{selectedEmployee.deduction.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Net Salary Highlight */}
-                <div className="relative overflow-hidden p-4 rounded-xl bg-slate-900 text-white shadow-lg group">
+                <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white shadow-lg group border border-[#734425]/30">
                   <div className="relative z-10 flex justify-between items-end">
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Net Monthly Salary</p>
-                      <p className="text-3xl font-black mt-1 tracking-tighter">
+                      <p className="text-[10px] font-heading font-bold text-[#F5ECE4]/80 uppercase tracking-wider">Net Monthly Salary</p>
+                      <p className="text-3xl font-heading font-black mt-1 tracking-tight text-white">
                         ₹{selectedEmployee.net_salary.toLocaleString()}
                       </p>
                     </div>
-                    <IndianRupee className="h-12 w-12 text-white/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500" />
+                    <IndianRupee className="h-12 w-12 text-white/10 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500" />
                   </div>
                 </div>
 
@@ -600,13 +598,13 @@ const Salary = () => {
                 <div className="flex gap-2 pt-1">
                   <Button
                     variant="outline"
-                    className="flex-1 font-bold text-xs py-5 rounded-lg border-slate-200 text-slate-600 hover:bg-slate-50 transition-all"
+                    className="flex-1 font-bold text-xs py-5 rounded-xl border-[#E1D4C7] text-[#2E2E2E] hover:bg-[#F5ECE4] transition-all uppercase tracking-wider"
                     onClick={() => setShowViewModal(false)}
                   >
                     Close
                   </Button>
                   <Button
-                    className="flex-[2] bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-5 rounded-lg shadow-md hover:shadow-lg transition-all"
+                    className="flex-[2] bg-[#734425] hover:bg-[#5D361D] text-white font-bold text-xs py-5 rounded-xl shadow-md hover:shadow-lg transition-all uppercase tracking-wider"
                     disabled={loading}
                     onClick={async () => {
                       try {

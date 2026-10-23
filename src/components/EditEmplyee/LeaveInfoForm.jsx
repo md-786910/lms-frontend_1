@@ -77,28 +77,28 @@ const LeaveInfoForm = forwardRef(({ leaveInfo }, ref) => {
         return (
           <div
             key={id || index}
-            className="flex flex-col gap-5 p-5 bg-white rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 group lg:flex-row lg:items-center lg:justify-between"
+            className="flex flex-col gap-5 p-5 bg-[#F5ECE4]/70 rounded-2xl border border-[#E1D4C7] hover:border-[#734425]/40 hover:shadow-md transition-all duration-200 group lg:flex-row lg:items-center lg:justify-between"
           >
             <div className="flex items-center gap-5">
               <div className={cn("h-14 w-14 rounded-xl flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform duration-200", bg, iconColor)}>
                 {icon}
               </div>
               <div className="space-y-1">
-                <div className="text-lg font-bold text-slate-800">
+                <div className="text-lg font-heading font-bold text-[#2E2E2E]">
                   {leave_type}
                 </div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <div className="text-xs font-heading font-bold text-[#734425]/70 uppercase tracking-widest flex items-center gap-2">
                   Leave activity breakdown
                 </div>
               </div>
             </div>
 
             <div className="flex items-center">
-              <div className="min-w-28 rounded-xl border border-slate-100 bg-slate-50/70 px-4 py-3 text-center">
-                <div className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <div className="min-w-28 rounded-xl border border-[#E1D4C7] bg-[#FAF6F2] px-4 py-3 text-center">
+                <div className="text-[10px] font-heading font-bold uppercase tracking-wider text-[#734425]/70">
                   Total Leave
                 </div>
-                <div className="mt-1 text-lg font-black text-slate-900">
+                <div className="mt-1 text-lg font-heading font-black text-[#2E2E2E]">
                   {formatLeaveDays(totalLeave)}
                 </div>
               </div>

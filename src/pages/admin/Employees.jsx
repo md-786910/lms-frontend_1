@@ -266,20 +266,20 @@ const Employees = ({
 
   return (
     <div className="space-y-6">
-      {/* <div className="relative overflow-hidden rounded-md border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 text-white shadow-xl">
-        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_15%_20%,rgba(94,234,212,0.18),transparent_25%),radial-gradient(circle_at_82%_0%,rgba(59,130,246,0.22),transparent_23%),radial-gradient(circle_at_58%_85%,rgba(99,102,241,0.16),transparent_22%)]" />
-        <div className="relative p-4 md:p-6 space-y-6">
+      <div className="relative overflow-hidden rounded-3xl border border-[#E1D4C7] bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white shadow-xl">
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_15%_20%,rgba(194,104,25,0.3),transparent_35%)]" />
+        <div className="relative p-6 md:p-8 space-y-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3 max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold capitalize tracking-[0.2em] text-slate-100 shadow-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1 text-xs font-heading font-bold uppercase tracking-wider text-[#F5ECE4] shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C26819]" />
                 People Operations
               </span>
               <div className="space-y-2">
-                <h1 className="text-3xl md:text-4xl font-semibold leading-tight text-white">
+                <h1 className="text-3xl md:text-4xl font-heading font-black leading-tight uppercase tracking-tight text-white">
                   {customTitle}
                 </h1>
-                <p className="text-sm md:text-base text-slate-200 max-w-2xl">
+                <p className="text-sm md:text-base text-[#F5ECE4]/80 max-w-2xl font-sans">
                   {customSubtitle}
                 </p>
               </div>
@@ -287,7 +287,7 @@ const Employees = ({
             {showAddButton && (
               <Button
                 onClick={() => setShowAddForm(true)}
-                className="bg-white text-slate-900 hover:bg-slate-100 shadow-lg border border-white/60 rounded-xl px-4 py-2"
+                className="bg-[#FAF6F2] text-[#734425] hover:bg-[#E1D4C7] font-heading font-bold uppercase tracking-wider shadow-lg rounded-xl px-5 py-2.5"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Add Employee
@@ -307,24 +307,24 @@ const Employees = ({
             ].map((stat) => (
               <Card
                 key={stat.label}
-                className="border border-white/10 bg-white/10 text-white shadow-lg rounded-md backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+                className="border border-white/15 bg-white/10 text-white shadow-lg rounded-2xl backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
               >
                 <CardContent className="p-4 space-y-2">
-                  <p className="text-[11px] font-semibold capitalize tracking-[0.18em] text-slate-200">
+                  <p className="text-[11px] font-heading font-bold uppercase tracking-widest text-[#F5ECE4]/80">
                     {stat.label}
                   </p>
-                  <p className="text-3xl font-bold leading-tight text-white">
+                  <p className="text-3xl font-heading font-black leading-tight text-white">
                     {stat.value}
                   </p>
                   <div
                     className={`mt-3 h-1.5 w-16 rounded-full ${
                       stat.tone === "primary"
-                        ? "bg-primary"
+                        ? "bg-[#C26819]"
                         : stat.tone === "emerald"
-                        ? "bg-emerald-400"
+                        ? "bg-[#E1D4C7]"
                         : stat.tone === "amber"
-                        ? "bg-amber-400"
-                        : "bg-indigo-400"
+                        ? "bg-[#C26819]"
+                        : "bg-[#734425]"
                     }`}
                   />
                 </CardContent>
@@ -333,33 +333,33 @@ const Employees = ({
           </div>
         </div>
       </div>
-      <Card className="border border-slate-200 shadow-sm rounded-md">
+      <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-3xl">
         <CardContent className="p-6 space-y-5">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-sm font-semibold text-slate-900">
+              <p className="text-sm font-heading font-bold uppercase tracking-tight text-[#2E2E2E]">
                 Find and filter employees
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#2E2E2E]/60 font-sans">
                 Search by name, email, department or toggle suspended staff.
               </p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-[#2E2E2E]/40" />
               <Input
                 placeholder="Search employees by name, email, or department..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-[#FAF6F2] border-[#E1D4C7] rounded-xl text-sm"
               />
             </div>
             <Select
               value={selectedDepartment}
               onValueChange={setSelectedDepartment}
             >
-              <SelectTrigger className="w-72">
+              <SelectTrigger className="w-72 bg-[#FAF6F2] border-[#E1D4C7] rounded-xl text-sm">
                 <SelectValue placeholder="Filter by Department" />
               </SelectTrigger>
               <SelectContent>
@@ -370,12 +370,12 @@ const Employees = ({
                 ))}
               </SelectContent>
             </Select>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 w-96">
+            <div className="flex items-center gap-3 px-3 py-2 rounded-xl border border-[#E1D4C7] bg-[#FAF6F2] w-96">
               <div className="flex-1">
-                <span className="text-xs font-semibold text-slate-700">
+                <span className="text-xs font-heading font-bold uppercase tracking-wider text-[#2E2E2E]">
                   {employeeActiveStatus ? "Suspended" : "Active"}
                 </span>
-                <span className="text-[11px] text-slate-500 pl-2">
+                <span className="text-[11px] text-[#2E2E2E]/60 pl-2">
                   Toggle to view suspended records
                 </span>
               </div>
@@ -387,103 +387,6 @@ const Employees = ({
                   setEmployeActiveStatus(!val);
                 }}
               />
-            </div>
-          </div>
-        </CardContent>
-      </Card> */}
-      {/* Header Banner */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white overflow-hidden">
-        <CardContent className="p-5 md:p-7 relative">
-          <div className="grid grid-cols-12 items-center gap-4 relative z-10">
-            <div className="col-span-12 md:col-span-8 space-y-2">
-              <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-graphik">
-                  {customTitle}
-                </h1>
-              </div>
-              <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-graphik">
-                {customSubtitle}
-              </p>
-            </div>
-            <div className="col-span-12 md:col-span-4 flex md:justify-end">
-              {showAddButton && (
-                <Button
-                  onClick={() => setShowAddForm(true)}
-                  className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-5 text-sm font-semibold text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300 h-11"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Employee
-                </Button>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Snapshot Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: "Total employees", value: totalEmployees, icon: Users, color: "blue" },
-          { label: "Active Staff", value: activeEmployees, icon: UserCheck, color: "emerald" },
-          { label: "Suspended", value: suspendedEmployees, icon: UserMinus, color: "amber" },
-          { label: "Departments", value: uniqueDepartments, icon: Briefcase, color: "indigo" },
-        ].map((stat) => (
-          <Card key={stat.label} className="border border-slate-200 shadow-sm rounded-2xl hover:shadow-md transition-shadow">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">
-                    {stat.label}
-                  </p>
-                  <p className="text-2xl font-bold text-slate-900">
-                    {stat.value}
-                  </p>
-                </div>
-                <div className={`p-3 rounded-2xl bg-${stat.color}-100 text-${stat.color}-700`}>
-                  <stat.icon className="h-5 w-5" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Filters & Search */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl">
-        <CardContent className="p-6">
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input
-                placeholder="Search by name, email, or department..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-11 border border-slate-200 focus:border-slate-900 transition-all rounded-xl"
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                <SelectTrigger className="w-full sm:w-64 h-11 border-slate-200 rounded-xl font-medium">
-                  <SelectValue placeholder="All Departments" />
-                </SelectTrigger>
-                <SelectContent className="font-graphik">
-                  {departments.map((dept) => (
-                    <SelectItem key={dept} value={dept}>
-                      {dept === "all" ? "All Departments" : dept}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className="flex items-center gap-3 px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 h-11">
-                <span className="text-xs font-bold text-slate-700">
-                  {employeeActiveStatus ? "Suspended" : "Active Only"}
-                </span>
-                <Switch
-                  title="Toggle suspended employees"
-                  defaultChecked={true}
-                  onCheckedChange={(val) => setEmployeActiveStatus(!val)}
-                />
-              </div>
             </div>
           </div>
         </CardContent>
@@ -534,7 +437,7 @@ const Employees = ({
               role={readOnly ? undefined : "button"}
               tabIndex={readOnly ? undefined : 0}
               className={[
-                "border border-slate-200 shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md",
+                "border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md",
                 readOnly ? "" : "cursor-pointer",
               ]
                 .filter(Boolean)
@@ -545,7 +448,7 @@ const Employees = ({
                   {/* Avatar & quick status */}
                   <div className="flex md:flex-col items-center gap-3 md:w-32">
                     <div
-                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 font-graphik"
+                      className="relative group h-20 w-20 rounded-xl overflow-hidden border border-[#E1D4C7] bg-[#F5ECE4] font-sans"
                     >
                       {employee.profile ? (
                         <img
@@ -554,7 +457,7 @@ const Employees = ({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xl capitalize font-graphik">
+                        <div className="w-full h-full bg-[#734425]/10 text-[#734425] flex items-center justify-center font-heading font-bold text-xl capitalize">
                           {avatarLoadingId === employee.id ? (
                             <Loader2 className="animate-spin" />
                           ) : (
@@ -599,8 +502,8 @@ const Employees = ({
                       <Badge
                         className={
                           employee.is_active === true
-                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100 font-graphik"
-                            : "bg-amber-50 text-amber-700 border border-amber-100 font-graphik"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-100 font-heading text-[10px] font-bold uppercase tracking-wider"
+                            : "bg-amber-50 text-amber-700 border border-amber-100 font-heading text-[10px] font-bold uppercase tracking-wider"
                         }
                       >
                         {employee.is_active === true ? "Active" : "Not Active"}
@@ -608,7 +511,7 @@ const Employees = ({
                       {employee.department?.name && (
                         <Badge
                           variant="outline"
-                          className="border-slate-200 text-slate-700 bg-white font-graphik"
+                          className="border-[#E1D4C7] text-[#734425] bg-[#F5ECE4] font-heading text-[10px] font-bold uppercase tracking-wider"
                         >
                           {employee.department?.name}
                         </Badge>
@@ -620,10 +523,10 @@ const Employees = ({
                   <div className="flex-1 space-y-3">
                     <div className="flex flex-wrap items-start gap-3 justify-between">
                       <div>
-                        <CardTitle className="text-lg text-slate-900 font-semibold font-graphik">
+                        <CardTitle className="text-lg text-[#2E2E2E] font-heading font-bold uppercase tracking-tight">
                           {employee.first_name} {employee.last_name}
                         </CardTitle>
-                        <p className="text-sm text-slate-600 font-graphik font-semibold">
+                        <p className="text-sm text-[#734425] font-sans font-medium">
                           {employee.designation?.title || "Role not set"}
                         </p>
                       </div>
@@ -777,37 +680,39 @@ const Employees = ({
 
       {/* Dialogs & Modals */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl font-graphik">
-          <div className="bg-slate-900 text-white p-6 sticky top-0 z-10">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-none shadow-2xl font-sans bg-[#FAF6F2]">
+          <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white p-6 sticky top-0 z-10 shadow-md">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-3 text-xl font-semibold font-graphik">
-                <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+              <DialogTitle className="flex items-center gap-3 text-xl font-heading font-extrabold text-white tracking-wide uppercase">
+                <span className="bg-white/10 text-[#F5ECE4] border border-white/20 flex h-10 w-10 items-center justify-center rounded-xl backdrop-blur-sm">
                   <User className="h-5 w-5" />
                 </span>
                 <span>Add New Employee</span>
               </DialogTitle>
             </DialogHeader>
           </div>
-          <div className="p-6">
+          <div className="p-6 bg-[#FAF6F2]">
             <AddEmployeeForm onClose={() => setShowAddForm(false)} onSuccess={() => handleAddSuccess()} />
           </div>
         </DialogContent>
       </Dialog>
       <ConfirmationModal open={showConfirmDelete} onClose={() => setShowConfirmDelete(false)} onConfirm={() => handleDeleteEmployee()} employee={employeeToDelete} />
       {showResendConfirm && resendTarget && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-graphik animate-in fade-in duration-200">
-          <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden border border-slate-200">
-            <div className="bg-slate-900 p-4 flex items-center gap-3">
-              <Mail className="h-5 w-5 text-emerald-400" />
-              <h3 className="text-md font-bold text-white">Resend Invite</h3>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-sans animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-2xl bg-[#FAF6F2] shadow-2xl overflow-hidden border border-[#E1D4C7]">
+            <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] p-4 flex items-center gap-3 shadow-sm">
+              <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center text-[#F5ECE4]">
+                <Mail className="h-4 w-4" />
+              </div>
+              <h3 className="text-md font-heading font-extrabold text-white uppercase tracking-wider">Resend Invite</h3>
             </div>
             <div className="p-6 space-y-4">
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Send a new onboarding invitation to <span className="font-bold text-slate-900">{resendTarget.email}</span>?
+              <p className="text-sm text-[#5C5C5C] leading-relaxed">
+                Send a new onboarding invitation to <span className="font-bold text-[#24130A]">{resendTarget.email}</span>?
               </p>
               <div className="flex justify-end gap-2">
-                <Button variant="outline" className="h-9 rounded-lg font-bold text-xs" onClick={() => { setShowResendConfirm(false); setResendTarget(null); }}>CANCEL</Button>
-                <Button className="h-9 rounded-lg bg-slate-900 hover:bg-slate-800 font-bold text-xs px-4" onClick={handleResendInvite} disabled={resendingInvite}>
+                <Button variant="outline" className="h-9 rounded-lg font-bold text-xs border-[#E1D4C7] text-[#2E2E2E] hover:bg-[#F5ECE4]" onClick={() => { setShowResendConfirm(false); setResendTarget(null); }}>CANCEL</Button>
+                <Button className="h-9 rounded-lg bg-[#734425] hover:bg-[#5D361D] text-white font-bold text-xs px-4 shadow-sm" onClick={handleResendInvite} disabled={resendingInvite}>
                   {resendingInvite ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
                   CONFIRM SEND
                 </Button>

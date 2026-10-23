@@ -364,77 +364,75 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
   );
 
   return (
-    <div className="w-full max-h-[95vh] flex flex-col overflow-hidden">
+    <div className="w-full max-h-[95vh] flex flex-col overflow-hidden bg-[#FAF6F2]">
       {/* Premium Header */}
-      <Card className="bg-slate-900 text-white">
-        <CardContent className="p-4 md:p-6">
-          <div className="grid grid-cols-12 items-center gap-4">
-              <div className="col-span-12 md:col-span-8 space-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
-                    <CalendarPlus className="h-5 w-5" />
-                  </span>
-                  <div className="space-y-0.5">
-                    <h2 className="text-2xl font-semibold font-graphik text-[#FFFFFF] tracking-tight">
-                      Create Leave Request
-                    </h2>
-                    <p className="text-[#FFFFFF] font-graphik font-medium">
-                      Administrative leave submission for employees
-                    </p>
-                  </div>
-                </div>
-            </div>
-            <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="rounded-md hover:bg-slate-100 bg-[#e2e8f0] text-slate-700 transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </Button>
+      <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white p-5 md:p-6 shadow-md border-b border-[#734425]/40 flex-shrink-0">
+        <div className="grid grid-cols-12 items-center gap-4">
+          <div className="col-span-12 md:col-span-8 space-y-1">
+            <div className="flex items-center gap-3">
+              <span className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center shadow-inner">
+                <CalendarPlus className="h-5 w-5 text-[#F5ECE4]" />
+              </span>
+              <div className="space-y-0.5">
+                <h2 className="text-xl md:text-2xl font-heading font-extrabold uppercase tracking-tight text-white">
+                  Create Leave Request
+                </h2>
+                <p className="text-white/80 font-sans text-xs md:text-sm font-medium">
+                  Administrative leave submission for employees
+                </p>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="col-span-12 md:col-span-4 flex md:justify-end">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="rounded-xl hover:bg-white/20 bg-white/10 text-white border border-white/20 transition-all"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto px-8 py-6 scroll-slim">
+      <div className="flex-1 overflow-y-auto px-6 md:px-8 py-6 scroll-slim bg-[#F5ECE4]/50">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-[1fr,350px]">
             <div className="space-y-6">
               {/* Employee Selection Section */}
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-                <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
-                  <div className="h-8 w-8 border-[#047857] bg-[#e2e8f0] text-[#047857] flex items-center justify-center rounded-md">
+              <div className="bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] p-6 shadow-sm">
+                <div className="flex items-center gap-2.5 mb-5 border-b border-[#E1D4C7]/60 pb-4">
+                  <div className="h-8 w-8 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
                     <Users className="h-4 w-4" />
                   </div>
-                  <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Employee Selection</h3>
+                  <h3 className="font-heading font-bold text-[#2E2E2E] text-base uppercase tracking-tight">Employee Selection</h3>
                 </div>
 
-                <div className="space-y-1">
-                  <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
-                    Select Employee <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
+                <div className="space-y-2">
+                  <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">
+                    Select Employee <span className="text-rose-500 font-bold text-sm">*</span>
                   </Label>
                   <Select
                     value={selectedEmployee || ""}
                     onValueChange={handleEmployeeChange}
                   >
-                    <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
-                      <SelectValue placeholder="Choose an employee..." className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider" />
+                    <SelectTrigger className="h-12 bg-white border-[#E1D4C7] rounded-xl focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans font-medium">
+                      <SelectValue placeholder="Choose an employee..." className="text-sm font-semibold text-[#2E2E2E]" />
                     </SelectTrigger>
-                    <SelectContent className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">
+                    <SelectContent className="text-sm font-medium text-[#2E2E2E] bg-[#FAF6F2] border-[#E1D4C7]">
                       {sortedEmployees.map((emp) => (
                         <SelectItem
                           key={emp.id}
                           value={emp.id.toString()}
-                          className="py-3 rounded-lg"
+                          className="py-3 rounded-lg focus:bg-[#F5ECE4] focus:text-[#734425]"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider">
+                            <span className="text-sm font-medium text-[#2E2E2E] font-sans capitalize tracking-wider">
                               {emp.first_name} {emp.last_name || ""}
                             </span>
-                            <span className="text-slate-600 text-xs font-medium bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                            <span className="text-[#734425] text-xs font-semibold bg-[#734425]/10 px-2 py-0.5 rounded-md border border-[#734425]/20">
                               #{emp.employee_no}
                             </span>
                           </div>
@@ -443,7 +441,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                     </SelectContent>
                   </Select>
                   {errors.employee_id && (
-                    <p className="text-rose-500 text-xs font-bold flex items-center gap-1.5 mt-1 animate-in fade-in slide-in-from-top-1">
+                    <p className="text-rose-500 text-xs font-bold flex items-center gap-1.5 mt-1 animate-in fade-in slide-in-from-top-1 font-sans">
                       <AlertCircle className="h-3.5 w-3.5" />
                       {errors.employee_id}
                     </p>
@@ -453,17 +451,17 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
               {/* Leave Details Section */}
               {selectedEmployee && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  <div className="flex items-center gap-2.5 border-b border-slate-50 pb-4">
-                    <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
+                <div className="bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] p-6 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="flex items-center gap-2.5 border-b border-[#E1D4C7]/60 pb-4">
+                    <span className="h-8 w-8 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
                       <Briefcase className="h-4 w-4" />
                     </span>
-                    <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Leave Configuration</h3>
+                    <h3 className="font-heading font-bold text-[#2E2E2E] text-base uppercase tracking-tight">Leave Configuration</h3>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
-                      Leave Type <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
+                    <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">
+                      Leave Type <span className="text-rose-500 font-bold text-sm">*</span>
                     </Label>
                     <Select
                       value={leaveType ? leaveType.toString() : ""}
@@ -491,15 +489,15 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         setLeaveType(parseInt(val));
                       }}
                     >
-                      <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
-                        <SelectValue placeholder="Select leave type..." className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider" />
+                      <SelectTrigger className="h-12 bg-white border-[#E1D4C7] rounded-xl focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans font-medium">
+                        <SelectValue placeholder="Select leave type..." className="text-sm font-semibold text-[#2E2E2E]" />
                       </SelectTrigger>
-                      <SelectContent className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider">
+                      <SelectContent className="text-sm font-medium text-[#2E2E2E] bg-[#FAF6F2] border-[#E1D4C7]">
                         {sortedLeaveTypes?.map((type) => (
                           <SelectItem
                             key={type?.leave_id}
                             value={type?.leave_id.toString()}
-                            className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
+                            className="text-sm font-medium text-[#2E2E2E] font-sans focus:bg-[#F5ECE4] focus:text-[#734425]"
                           >
                             {type?.leave_type}
                           </SelectItem>
@@ -507,21 +505,21 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         <SelectItem
                           key={FLOATING_LEAVE_VALUE}
                           value={FLOATING_LEAVE_VALUE}
-                          className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
+                          className="text-sm font-medium text-[#2E2E2E] font-sans focus:bg-[#F5ECE4] focus:text-[#734425]"
                         >
                           {FLOATING_LEAVE_LABEL}
                         </SelectItem>
                         <SelectItem
                           key={EXTRA_WORK_LEAVE_VALUE}
                           value={EXTRA_WORK_LEAVE_VALUE}
-                          className="text-sm font-semibold text-slate-700 font-graphik capitalize tracking-wider"
+                          className="text-sm font-medium text-[#2E2E2E] font-sans focus:bg-[#F5ECE4] focus:text-[#734425]"
                         >
                           {EXTRA_WORK_LEAVE_LABEL}
                         </SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.leave_type && (
-                      <p className="text-rose-500 text-xs font-semibold font-graphik flex items-center gap-1.5 mt-1 animate-in fade-in slide-in-from-top-1">
+                      <p className="text-rose-500 text-xs font-semibold font-sans flex items-center gap-1.5 mt-1 animate-in fade-in slide-in-from-top-1">
                         <AlertCircle className="h-3.5 w-3.5" />
                         {errors.leave_type}
                       </p>
@@ -530,22 +528,23 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
                   {isFloatingLeave && (
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
-                        Festival <span className="text-rose-500 font-graphik font-medium text-sm">*</span>
+                      <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">
+                        Festival <span className="text-rose-500 font-bold text-sm">*</span>
                       </Label>
                       <Select
                         value={selectedFestivalKey}
                         onValueChange={handleFestivalChange}
                       >
-                        <SelectTrigger className="h-12 bg-white border-slate-200 font-graphik rounded-xl focus:ring-indigo-500/20 focus:border-[#131313] transition-all font-medium">
+                        <SelectTrigger className="h-12 bg-white border-[#E1D4C7] rounded-xl focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans font-medium">
                           <SelectValue placeholder="Choose restricted holiday..." />
                         </SelectTrigger>
-                        <SelectContent className="text-sm font-semibold text-slate-700 font-graphik">
+                        <SelectContent className="text-sm font-medium text-[#2E2E2E] bg-[#FAF6F2] border-[#E1D4C7]">
                           {restrictedHolidays.map((holiday) => (
                             <SelectItem
                               key={holiday.key}
                               value={holiday.key}
                               disabled={holiday.isPast}
+                              className="focus:bg-[#F5ECE4] focus:text-[#734425]"
                             >
                               {holiday.name} - {dayjs(holiday.date).format("DD MMM YYYY")}
                               {holiday.isPast ? " (Past)" : ""}
@@ -558,24 +557,24 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">Start Date <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
+                      <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">Start Date <span className="text-rose-500 font-bold text-sm">*</span></Label>
                       <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
+                              "w-full h-12 justify-start text-left text-sm font-medium text-[#2E2E2E] font-sans border-[#E1D4C7] bg-white hover:bg-[#F5ECE4]/60 transition-all",
                               !startDate && "text-slate-400"
                             )}
                             disabled={isFloatingLeave}
                           >
-                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
-                              <CalendarIcon className="w-2 h-2" />
+                            <span className="h-6 w-6 rounded-md bg-[#734425]/10 text-[#734425] flex items-center justify-center mr-2">
+                              <CalendarIcon className="w-3.5 h-3.5" />
                             </span>
                             {startDate ? format(startDate, "dd MMM yyyy") : <span>Pick start date</span>}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 rounded-2xl border-none shadow-2xl" align="start">
+                        <PopoverContent className="w-auto p-0 rounded-2xl border border-[#E1D4C7] shadow-2xl bg-[#FAF6F2]" align="start">
                           <Calendar
                             mode="single"
                             selected={startDate}
@@ -590,29 +589,29 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         </PopoverContent>
                       </Popover>
                       {errors.start_date && (
-                        <p className="text-rose-500 text-xs font-bold mt-1">{errors.start_date}</p>
+                        <p className="text-rose-500 text-xs font-bold mt-1 font-sans">{errors.start_date}</p>
                       )}
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">End Date <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
+                      <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">End Date <span className="text-rose-500 font-bold text-sm">*</span></Label>
                       <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full h-12 justify-start text-left text-sm font-medium text-slate-700 font-graphik capitalize tracking-wider hover:bg-slate-50 hover:border-slate-300 transition-all",
+                              "w-full h-12 justify-start text-left text-sm font-medium text-[#2E2E2E] font-sans border-[#E1D4C7] bg-white hover:bg-[#F5ECE4]/60 transition-all",
                               !endDate && "text-slate-400"
                             )}
                             disabled={isFloatingLeave}
                           >
-                            <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-6 w-6 items-center font-graphik justify-center rounded-md">
-                              <CalendarIcon className="w-2 h-2" />
+                            <span className="h-6 w-6 rounded-md bg-[#734425]/10 text-[#734425] flex items-center justify-center mr-2">
+                              <CalendarIcon className="w-3.5 h-3.5" />
                             </span>
                             {endDate ? format(endDate, "dd MMM yyyy") : <span>Pick end date</span>}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 rounded-2xl border-none shadow-2xl" align="start">
+                        <PopoverContent className="w-auto p-0 rounded-2xl border border-[#E1D4C7] shadow-2xl bg-[#FAF6F2]" align="start">
                           <Calendar
                             mode="single"
                             selected={endDate}
@@ -628,7 +627,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         </PopoverContent>
                       </Popover>
                       {errors.end_date && (
-                        <p className="text-rose-500 text-xs font-bold mt-1">{errors.end_date}</p>
+                        <p className="text-rose-500 text-xs font-bold mt-1 font-sans">{errors.end_date}</p>
                       )}
                     </div>
                   </div>
@@ -637,39 +636,39 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
               {/* Day Selection Grid */}
               {dayCount > 0 && selectedEmployee && !isFloatingLeave && (
-                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <div className="bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <div className="px-6 py-4 border-b border-[#E1D4C7]/60 bg-[#F5ECE4]/50 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
+                      <span className="h-8 w-8 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
                         <Clock className="h-4 w-4" />
                       </span>
-                      <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Daily Breakdown</h3>
+                      <h3 className="font-heading font-bold text-[#2E2E2E] text-base uppercase tracking-tight">Daily Breakdown</h3>
                     </div>
-                    <Badge className="bg-white border-slate-200 text-indigo-600 font-bold px-3 py-1 text-xs shadow-sm">
+                    <Badge className="bg-[#FAF6F2] border border-[#E1D4C7] text-[#734425] font-bold px-3 py-1 text-xs shadow-sm">
                       {dayCount} {dayCount === 1 ? "Working Day" : "Working Days"}
                     </Badge>
                   </div>
 
-                  <div className="divide-y divide-slate-100 max-h-80 overflow-y-auto scroll-slim">
+                  <div className="divide-y divide-[#E1D4C7]/60 max-h-80 overflow-y-auto scroll-slim">
                     {leaveDays?.map((day, index) => (
                       <div
                         key={day.date}
-                        className="flex items-center justify-between gap-6 px-6 py-4 hover:bg-slate-50/50 transition-colors"
+                        className="flex items-center justify-between gap-6 px-6 py-4 hover:bg-[#F5ECE4]/40 transition-colors"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex flex-col items-center justify-center shadow-md">
-                            <span className="text-[10px] font-black uppercase leading-none text-slate-400 mb-0.5">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#24130A] to-[#734425] text-white flex flex-col items-center justify-center shadow-md">
+                            <span className="text-[10px] font-heading font-bold uppercase leading-none text-[#F5ECE4]/70 mb-0.5">
                               {dayjs(day.date).format("MMM")}
                             </span>
-                            <span className="text-lg font-black leading-none tracking-tighter">
+                            <span className="text-lg font-heading font-extrabold leading-none tracking-tighter">
                               {dayjs(day.date).format("DD")}
                             </span>
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900 leading-tight">
+                            <p className="font-heading font-bold text-[#2E2E2E] leading-tight">
                               {dayjs(day.date).format("dddd")}
                             </p>
-                            <p className="text-xs text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">
+                            <p className="text-xs font-sans text-slate-500 flex items-center gap-1">
                               {dayjs(day.date).format("DD MMMM YYYY")}
                             </p>
                           </div>
@@ -682,18 +681,18 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           >
                             <SelectTrigger
                               className={cn(
-                                "h-11 border-slate-200 rounded-xl font-bold transition-all",
+                                "h-11 border-[#E1D4C7] bg-white rounded-xl font-bold transition-all text-[#2E2E2E]",
                                 dayErrors[index] && "border-rose-300 bg-rose-50 text-rose-600"
                               )}
                             >
                               <SelectValue placeholder="Select duration" />
                             </SelectTrigger>
-                            <SelectContent className="rounded-xl border-slate-200 shadow-xl">
+                            <SelectContent className="rounded-xl border-[#E1D4C7] bg-[#FAF6F2] shadow-xl">
                               {LEAVE?.map((type) => (
                                 <SelectItem
                                   key={type?.id}
                                   value={type?.id.toString()}
-                                  className="py-2.5 font-bold"
+                                  className="py-2.5 font-bold focus:bg-[#F5ECE4] focus:text-[#734425]"
                                 >
                                   {type?.name}
                                 </SelectItem>
@@ -714,25 +713,25 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
               {/* Reason Section */}
               {selectedEmployee && (!isFloatingLeave || selectedFestival) && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  <div className="flex items-center gap-2.5 mb-5 border-b border-slate-50 pb-4">
-                    <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center font-graphik justify-center rounded-md">
+                <div className="bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] p-6 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="flex items-center gap-2.5 mb-5 border-b border-[#E1D4C7]/60 pb-4">
+                    <span className="h-8 w-8 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
                       <FileText className="h-4 w-4" />
                     </span>
-                    <h3 className="font-semibold font-graphik text-slate-900 text-lg capitalize tracking-tight">Justification</h3>
+                    <h3 className="font-heading font-bold text-[#2E2E2E] text-base uppercase tracking-tight">Justification</h3>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] capitalize tracking-wider font-semibold font-graphik text-slate-600 flex items-center gap-1">{isFloatingLeave ? "Justification" : "Reason for Leave"} <span className="text-rose-500 font-graphik font-medium text-sm">*</span></Label>
+                    <Label className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425] flex items-center gap-1">{isFloatingLeave ? "Justification" : "Reason for Leave"} <span className="text-rose-500 font-bold text-sm">*</span></Label>
                     <Textarea
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
                       placeholder={isFloatingLeave ? "Why are you choosing this festival?" : "Why is this leave being requested?"}
                       rows={4}
-                      className="bg-white border-slate-200 rounded-xl focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none font-medium fontmontserrat text-sm text-slate-700"
+                      className="bg-white border-[#E1D4C7] rounded-xl focus:ring-[#734425]/20 focus:border-[#734425] transition-all resize-none font-sans text-sm text-[#2E2E2E]"
                     />
                     {errors.reason && (
-                      <p className="text-rose-500 text-xs font-bold mt-1">{errors.reason}</p>
+                      <p className="text-rose-500 text-xs font-bold mt-1 font-sans">{errors.reason}</p>
                     )}
                   </div>
                 </div>
@@ -744,28 +743,28 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
               {selectedEmployee ? (
                 <div className="space-y-6 lg:sticky lg:top-0 h-fit">
                   {/* Summary Card */}
-                  <div className="bg-slate-900 rounded-xl py-4 px-6 text-white shadow-xl shadow-indigo-100 overflow-hidden relative group transition-all duration-500">
+                  <div className="bg-gradient-to-br from-[#24130A] via-[#734425] to-[#5D361D] rounded-2xl py-5 px-6 text-white shadow-xl shadow-[#734425]/20 overflow-hidden relative group transition-all duration-500 border border-[#734425]/40">
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform duration-500">
                       <LayoutDashboard className="h-24 w-24" />
                     </div>
                     
                     <div className="flex items-center gap-2 mb-6 relative">
-                      <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
+                      <span className="h-8 w-8 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-[#F5ECE4] flex items-center justify-center shadow-inner">
                         <CheckCircle2 className="h-4 w-4" />
                       </span>
-                      <h3 className="font-semibold font-graphik text-[#FFFFFF] capitalize tracking-tight text-md">Request Summary</h3>
+                      <h3 className="font-heading font-bold text-white uppercase tracking-tight text-sm">Request Summary</h3>
                     </div>
 
                     <div className="space-y-4 relative">
                       <div className="space-y-1">
-                        <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Employee</p>
-                        <p className="font-black text-xl font-graphik truncate">{selectedEmployeeData?.first_name} {selectedEmployeeData?.last_name}</p>
+                        <p className="text-[#F5ECE4]/70 text-[10px] uppercase font-heading font-bold tracking-widest">Employee</p>
+                        <p className="font-heading font-extrabold text-xl text-white truncate">{selectedEmployeeData?.first_name} {selectedEmployeeData?.last_name}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
                         <div className="space-y-1">
-                          <p className="text-indigo-100 text-[10px] capitalize font-semibold font-graphik tracking-widest">Type</p>
-                          <p className="font-bold text-sm font-graphik">
+                          <p className="text-[#F5ECE4]/70 text-[10px] uppercase font-heading font-bold tracking-widest">Type</p>
+                          <p className="font-heading font-bold text-sm text-white truncate">
                             {isFloatingLeave
                               ? FLOATING_LEAVE_LABEL
                               : isExtraWorkLeave
@@ -774,14 +773,14 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           </p>
                         </div>
                         <div className="space-y-1 text-right">
-                          <p className="text-indigo-100 text-[10px] capitalize font-graphik font-semibold tracking-widest">Count</p>
-                          <p className="font-bold text-xl font-graphik">{totalLeaveCount || 0} <span className="text-xs font-medium font-graphik">Days</span></p>
+                          <p className="text-[#F5ECE4]/70 text-[10px] uppercase font-heading font-bold tracking-widest">Count</p>
+                          <p className="font-heading font-extrabold text-2xl text-[#C26819]">{totalLeaveCount || 0} <span className="text-xs font-medium font-sans text-white/80">Days</span></p>
                         </div>
                       </div>
 
                       {startDate && endDate && (
-                        <div className="mt-2 p-3 bg-white/10 rounded-xl border border-white/10 text-xs font-bold flex items-center justify-center gap-2 group-hover:bg-white/20 transition-colors">
-                          <CalendarIcon className="h-3.5 w-3.5" />
+                        <div className="mt-2 p-3 bg-white/10 rounded-xl border border-white/10 text-xs font-heading font-bold flex items-center justify-center gap-2 group-hover:bg-white/20 transition-colors">
+                          <CalendarIcon className="h-3.5 w-3.5 text-[#C26819]" />
                           {format(startDate, "dd MMM")} <ArrowRight className="h-3 w-3" /> {format(endDate, "dd MMM yyyy")}
                         </div>
                       )}
@@ -790,12 +789,12 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
 
                   {/* Policy Snapshot Card */}
                   {leaveType && !isFloatingLeave && (
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5 animate-in slide-in-from-right-4 duration-500">
-                      <div className="flex items-center gap-2.5 pb-4 border-b border-slate-50">
-                        <span className="border-[#047857] bg-[#e2e8f0] text-[#047857] flex h-8 w-8 items-center justify-center rounded-md">
+                    <div className="bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7] p-6 shadow-sm space-y-5 animate-in slide-in-from-right-4 duration-500">
+                      <div className="flex items-center gap-2.5 pb-4 border-b border-[#E1D4C7]/60">
+                        <span className="h-8 w-8 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
                           <CalendarDays className="h-4 w-4" />
                         </span>
-                        <h3 className="font-semibold text-slate-900 text-sm capitalize font-graphik tracking-tight">
+                        <h3 className="font-heading font-bold text-[#2E2E2E] text-sm uppercase tracking-tight">
                           {isExtraWorkLeave ? "Extra Work Balance" : "Policy Snapshot"}
                         </h3>
                       </div>
@@ -805,16 +804,16 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                           return (
                             <div className="space-y-4">
                               <div className="flex items-center justify-between group">
-                                <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Earned</span>
-                                <span className="font-black text-slate-900 text-md">{selectedEmployeeData?.extra_work_leave_balance?.total_earned ?? 0}</span>
+                                <span className="text-xs font-heading font-bold text-slate-500 uppercase tracking-wider">Earned</span>
+                                <span className="font-heading font-extrabold text-[#2E2E2E] text-base">{selectedEmployeeData?.extra_work_leave_balance?.total_earned ?? 0}</span>
                               </div>
                               <div className="flex items-center justify-between group">
-                                <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Used</span>
-                                <span className="font-black text-slate-900 text-md">{selectedEmployeeData?.extra_work_leave_balance?.total_used ?? 0}</span>
+                                <span className="text-xs font-heading font-bold text-slate-500 uppercase tracking-wider">Used</span>
+                                <span className="font-heading font-extrabold text-[#2E2E2E] text-base">{selectedEmployeeData?.extra_work_leave_balance?.total_used ?? 0}</span>
                               </div>
-                              <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                                <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Available</span>
-                                <span className="font-black text-emerald-600 text-md group-hover:scale-110 transition-transform">{extraWorkBalance}</span>
+                              <div className="pt-3 border-t border-[#E1D4C7]/60 flex items-center justify-between group">
+                                <span className="text-xs font-heading font-bold text-[#C26819] uppercase tracking-wider">Available</span>
+                                <span className="font-heading font-extrabold text-[#C26819] text-lg group-hover:scale-110 transition-transform">{extraWorkBalance}</span>
                               </div>
                             </div>
                           );
@@ -824,16 +823,16 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                         return (
                           <div className="space-y-4">
                             <div className="flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Total Annual</span>
-                              <span className="font-black text-slate-900 text-md">{policy.leave_count ?? 0}</span>
+                              <span className="text-xs font-heading font-bold text-slate-500 uppercase tracking-wider">Total Annual</span>
+                              <span className="font-heading font-extrabold text-[#2E2E2E] text-base">{policy.leave_count ?? 0}</span>
                             </div>
                             <div className="flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-graphik text-slate-400 capitalize tracking-wider group-hover:text-slate-600 transition-colors">Used to Date</span>
-                              <span className="font-black text-slate-900 text-md">{policy.leave_used ?? 0}</span>
+                              <span className="text-xs font-heading font-bold text-slate-500 uppercase tracking-wider">Used to Date</span>
+                              <span className="font-heading font-extrabold text-[#2E2E2E] text-base">{policy.leave_used ?? 0}</span>
                             </div>
-                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between group">
-                              <span className="text-xs font-semibold font-graphik text-emerald-600 capitalize tracking-wider">Remaining</span>
-                              <span className="font-black text-emerald-600 text-md group-hover:scale-110 transition-transform">{policy.leave_remaing ?? 0}</span>
+                            <div className="pt-3 border-t border-[#E1D4C7]/60 flex items-center justify-between group">
+                              <span className="text-xs font-heading font-bold text-[#C26819] uppercase tracking-wider">Remaining</span>
+                              <span className="font-heading font-extrabold text-[#C26819] text-lg group-hover:scale-110 transition-transform">{policy.leave_remaing ?? 0}</span>
                             </div>
                           </div>
                         );
@@ -842,11 +841,11 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
                   )}
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center space-y-3">
-                  <div className="h-10 w-10 border-[#047857] bg-[#e2e8f0] text-[#047857] flex items-center mx-auto justify-center rounded-md">
+                <div className="bg-[#FAF6F2] rounded-2xl border border-dashed border-[#E1D4C7] p-8 text-center space-y-3">
+                  <div className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center mx-auto justify-center">
                     <Users className="h-5 w-5" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-500 capitalize font-graphik tracking-widest">Select an employee to see summary</p>
+                  <p className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider">Select an employee to see summary</p>
                 </div>
               )}
             </div>
@@ -855,13 +854,13 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
       </div>
 
       {/* Modern Action Footer */}
-      <div className="flex-shrink-0 px-8 py-6 bg-white border-t border-slate-200">
+      <div className="flex-shrink-0 px-8 py-5 bg-[#FAF6F2] border-t border-[#E1D4C7]">
         <div className="flex items-center justify-end gap-4">
           <Button
             type="button"
             variant="ghost"
             onClick={onClose}
-            className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+            className="rounded-xl border border-[#E1D4C7] text-[#2E2E2E] bg-white hover:bg-[#F5ECE4] text-sm font-heading font-bold px-5 py-2.5 transition-all shadow-sm"
             disabled={isSubmitting}
           >
             Cancel
@@ -869,8 +868,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
           <Button
             type="submit"
             onClick={handleSubmit}
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
-            // disabled={isSubmitting || !selectedEmployee || dayCount === 0}
+            className="rounded-xl bg-[#734425] hover:bg-[#5D361D] text-white font-heading font-bold px-6 py-2.5 shadow-lg shadow-[#734425]/20 transition-all"
           >
             {isSubmitting ? (
               <>

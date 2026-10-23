@@ -117,34 +117,34 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
   };
 
   return (
-    <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik space-y-6">
+    <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2] font-sans space-y-6">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-slate-900">Proof of Work</h3>
-          <p className="text-sm font-medium text-slate-500">
+          <h3 className="text-xl font-heading font-extrabold uppercase tracking-tight text-[#2E2E2E]">Proof of Work</h3>
+          <p className="text-xs font-sans text-slate-500 font-medium">
             Review evidence submitted by this employee.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-44 h-11 border-slate-200 font-graphik">
+            <SelectTrigger className="w-full sm:w-44 h-11 border-[#E1D4C7] bg-[#FAF6F2] font-sans text-sm text-[#2E2E2E] rounded-xl">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
+              <SelectItem value="all" className="focus:bg-[#F5ECE4] focus:text-[#734425]">All Status</SelectItem>
+              <SelectItem value="pending" className="focus:bg-[#F5ECE4] focus:text-[#734425]">Pending</SelectItem>
+              <SelectItem value="approved" className="focus:bg-[#F5ECE4] focus:text-[#734425]">Approved</SelectItem>
+              <SelectItem value="rejected" className="focus:bg-[#F5ECE4] focus:text-[#734425]">Rejected</SelectItem>
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-full sm:w-56 h-11 border-slate-200 font-graphik">
+            <SelectTrigger className="w-full sm:w-56 h-11 border-[#E1D4C7] bg-[#FAF6F2] font-sans text-sm text-[#2E2E2E] rounded-xl">
               <SelectValue placeholder="Work Type" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
+              <SelectItem value="all" className="focus:bg-[#F5ECE4] focus:text-[#734425]">All Types</SelectItem>
               {Object.entries(WORK_TYPE_LABELS).map(([value, label]) => (
-                <SelectItem key={value} value={value}>
+                <SelectItem key={value} value={value} className="focus:bg-[#F5ECE4] focus:text-[#734425]">
                   {label}
                 </SelectItem>
               ))}
@@ -155,19 +155,19 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-slate-500">
-          <Loader2 className="h-6 w-6 animate-spin" />
+          <Loader2 className="h-6 w-6 animate-spin text-[#734425]" />
         </div>
       ) : filteredSubmissions.length === 0 ? (
         <NoDataFound title="No proof of work submissions found" />
       ) : (
         <div className="space-y-4">
           {filteredSubmissions.map((submission) => (
-            <Card key={submission.id} className="border border-slate-100 rounded-xl shadow-sm">
+            <Card key={submission.id} className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
               <CardContent className="p-5 space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center gap-3">
-                      <h4 className="text-lg font-bold text-slate-900">{submission.title}</h4>
+                      <h4 className="text-lg font-heading font-bold text-[#2E2E2E]">{submission.title}</h4>
                       <Badge className={`capitalize border ${statusStyles[submission.status] || statusStyles.pending}`}>
                         {submission.status}
                       </Badge>
@@ -183,7 +183,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
                     <div className="flex flex-col sm:flex-row gap-2">
                       <Button
                         size="sm"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                        className="bg-[#734425] hover:bg-[#5D361D] text-white font-heading font-bold rounded-xl"
                         disabled={reviewingId === submission.id}
                         onClick={() => reviewSubmission(submission, "approved")}
                       >
@@ -193,7 +193,7 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-rose-200 text-rose-600 hover:bg-rose-50"
+                        className="border-rose-200 text-rose-600 hover:bg-rose-50 font-heading font-bold rounded-xl"
                         disabled={reviewingId === submission.id}
                         onClick={() => setRejectTarget(submission)}
                       >
@@ -204,13 +204,13 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
                   )}
                 </div>
 
-                <p className="rounded-lg border border-slate-100 bg-slate-50 p-3 text-sm font-medium leading-relaxed text-slate-700">
+                <p className="rounded-xl border border-[#E1D4C7]/60 bg-[#F5ECE4]/70 p-3 text-sm font-medium leading-relaxed text-[#2E2E2E]">
                   {submission.description}
                 </p>
 
                 {submission.manager_comment && (
-                  <div className="rounded-lg border border-slate-100 bg-white p-3 text-sm text-slate-600">
-                    <span className="font-bold text-slate-900">Manager comment: </span>
+                  <div className="rounded-xl border border-[#E1D4C7]/60 bg-[#F5ECE4]/70 p-3 text-sm text-slate-600">
+                    <span className="font-heading font-bold text-[#734425]">Manager comment: </span>
                     {submission.manager_comment}
                   </div>
                 )}
@@ -222,9 +222,9 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
                       href={attachment.file?.file_path}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                      className="inline-flex items-center gap-2 rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-3 py-2 text-xs font-semibold text-[#734425] hover:bg-[#FAF6F2]"
                     >
-                      <FileCheck2 className="h-4 w-4 text-emerald-600" />
+                      <FileCheck2 className="h-4 w-4 text-[#734425]" />
                       {attachment.file?.file_name || `File #${attachment.file_id}`}
                       <ExternalLink className="h-3 w-3" />
                     </a>
@@ -237,25 +237,26 @@ const ProofOfWorkAdminTab = ({ employeeId }) => {
       )}
 
       <Dialog open={Boolean(rejectTarget)} onOpenChange={(open) => !open && setRejectTarget(null)}>
-        <DialogContent>
+        <DialogContent className="bg-[#FAF6F2] border-[#E1D4C7] rounded-2xl">
           <DialogHeader>
-            <DialogTitle>Reject Proof of Work</DialogTitle>
+            <DialogTitle className="font-heading font-bold text-[#2E2E2E]">Reject Proof of Work</DialogTitle>
           </DialogHeader>
           <div className="space-y-2">
-            <Label>Manager Comment</Label>
+            <Label className="font-heading font-semibold text-[#2E2E2E]">Manager Comment</Label>
             <Textarea
               value={rejectComment}
               onChange={(event) => setRejectComment(event.target.value)}
               placeholder="Explain what evidence or detail is missing."
               rows={4}
+              className="border-[#E1D4C7] bg-[#F5ECE4]/50 focus:border-[#734425] rounded-xl text-[#2E2E2E]"
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setRejectTarget(null)}>
+            <Button variant="outline" className="border-[#E1D4C7] bg-[#F5ECE4] text-[#734425] hover:bg-[#FAF6F2] rounded-xl" onClick={() => setRejectTarget(null)}>
               Cancel
             </Button>
             <Button
-              className="bg-rose-600 hover:bg-rose-700 text-white"
+              className="bg-rose-600 hover:bg-rose-700 text-white rounded-xl"
               disabled={!rejectComment.trim() || reviewingId === rejectTarget?.id}
               onClick={() => reviewSubmission(rejectTarget, "rejected", rejectComment.trim())}
             >

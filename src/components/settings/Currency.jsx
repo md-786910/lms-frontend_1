@@ -82,21 +82,25 @@ function Currency() {
   }, []);
 
   return (
-    <Card className="border-0 shadow-md">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
-          <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+    <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-2xl">
+      <CardHeader className="border-b border-[#E1D4C7]/60 pb-5">
+        <CardTitle className="flex items-center space-x-3 text-xl font-heading font-bold uppercase tracking-tight text-[#24130A]">
+          <span className="border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] flex h-11 w-11 items-center justify-center rounded-xl shadow-sm">
             <IndianRupee className="h-5 w-5" />
           </span>
-          <span>Currency Settings</span>
+          <div>
+            <span>Currency Settings</span>
+            <p className="text-xs text-[#2E2E2E]/60 font-sans normal-case tracking-normal mt-0.5 font-normal">
+              Select base operating currency and display formatting for all payroll modules
+            </p>
+          </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardContent className="space-y-6 pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
-            <Label htmlFor="currency" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Default Currency</Label>
+            <Label htmlFor="currency" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Default Currency</Label>
             <Select
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
               disabled
               value={prefixData.name}
               onValueChange={(value) => {
@@ -108,10 +112,10 @@ function Currency() {
                 });
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="h-11 border border-[#E1D4C7] bg-[#FAF6F2] rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]">
                 <SelectValue placeholder="Select a currency" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="border-[#E1D4C7] bg-[#FAF6F2] rounded-xl">
                 {currencies.map((currency) => (
                   <SelectItem key={currency.name} value={currency.name}>
                     {currency.name} - {currency.symbol}
@@ -121,9 +125,9 @@ function Currency() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="currencySymbol" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Currency Symbol</Label>
+            <Label htmlFor="currencySymbol" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Currency Symbol</Label>
             <Input
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+              className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/70 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               disabled
               id="currencySymbol"
               value={prefixData.symbol}
@@ -137,9 +141,7 @@ function Currency() {
           </div>
         </div>
         <Button
-          // onClick={() => handleSave()}
-          // disabled
-          className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
+          className="bg-[#734425] hover:bg-[#5D361D] text-white rounded-xl font-heading font-bold uppercase tracking-wider text-xs shadow-md px-6 py-2.5"
         >
           <Save className="h-4 w-4 mr-2" />
           Save Currency Settings

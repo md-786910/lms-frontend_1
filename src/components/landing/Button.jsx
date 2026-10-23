@@ -7,13 +7,14 @@ const Button = ({
   className = '',
   ...props 
 }) => {
-  const baseStyles = 'font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 justify-center';
+  const baseStyles = 'font-semibold rounded-full transition-all duration-300 flex items-center gap-2 justify-center font-heading';
   
   const variants = {
-    primary: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5',
-    secondary: 'bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg',
-    outline: 'bg-transparent text-white border-2 border-white hover:bg-white hover:text-blue-600 transition-all',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
+    primary: 'bg-gradient-to-r from-[#734425] to-[#5D361D] text-[#FAF6F2] hover:from-[#5D361D] hover:to-[#492B17] shadow-lg shadow-[#734425]/20 hover:shadow-xl hover:-translate-y-0.5',
+    secondary: 'bg-[#FAF6F2] text-[#734425] border-2 border-[#734425] hover:bg-[#F5ECE4] shadow-md hover:shadow-lg',
+    accent: 'bg-gradient-to-r from-[#C26819] to-[#A85712] text-white hover:from-[#A85712] hover:to-[#8C4410] shadow-lg shadow-[#C26819]/25 hover:shadow-xl hover:-translate-y-0.5',
+    outline: 'bg-transparent text-[#734425] border-2 border-[#734425] hover:bg-[#734425] hover:text-[#FAF6F2] transition-all',
+    ghost: 'bg-transparent text-[#2E2E2E] hover:bg-[#F5ECE4]',
   };
 
   const sizes = {

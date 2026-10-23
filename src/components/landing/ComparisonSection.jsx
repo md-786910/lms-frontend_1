@@ -57,20 +57,20 @@ const comparisonData = [
 
 const ComparisonRow = ({ item, index }) => {
   return (
-    <tr className={`border-b border-gray-200 hover:bg-blue-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-      <td className="px-6 py-4 font-semibold text-gray-900 min-w-60">
+    <tr className={`border-b border-[#E1D4C7] hover:bg-[#F5ECE4]/80 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-[#FAF6F2]'}`}>
+      <td className="px-6 py-4 font-heading font-bold text-sm text-[#2E2E2E] min-w-60">
         {item.feature}
       </td>
       <td className="px-6 py-4">
         <div className="flex items-start gap-3">
-          <X size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
-          <span className="text-gray-600">{item.spreadsheet}</span>
+          <X size={18} className="text-rose-500 flex-shrink-0 mt-0.5" />
+          <span className="text-[#5C5C5C] text-sm font-sans">{item.spreadsheet}</span>
         </div>
       </td>
       <td className="px-6 py-4">
         <div className="flex items-start gap-3">
-          <Check size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-          <span className="text-gray-900 font-medium">{item.lms}</span>
+          <Check size={18} className="text-[#C26819] flex-shrink-0 mt-0.5" />
+          <span className="text-[#24130A] font-semibold text-sm font-sans">{item.lms}</span>
         </div>
       </td>
     </tr>
@@ -79,42 +79,41 @@ const ComparisonRow = ({ item, index }) => {
 
 const ComparisonSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('table');
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
   return (
-    <SectionContainer className="bg-gradient-to-b from-gray-50 to-white">
+    <SectionContainer className="bg-[#F5ECE4] font-sans text-[#2E2E2E] py-16 md:py-24 border-t border-[#E1D4C7]">
       {/* Header */}
       <div className="max-w-3xl mx-auto text-center mb-16">
-        <div className={`inline-block px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-semibold mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          📊 Smart Switch
+        <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C26819]/10 border border-[#C26819]/25 text-[#734425] text-xs font-heading font-bold uppercase tracking-widest mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <span>📊</span> Smart Switch
         </div>
-        <h2 className={`text-4xl md:text-5xl font-bold text-gray-900 mb-6 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h2 className={`text-4xl md:text-5xl font-heading font-black text-[#2E2E2E] mb-6 uppercase tracking-tight transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           Why teams switch from spreadsheets
         </h2>
-        <p className={`text-xl text-gray-600 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <p className={`text-lg text-[#5A524C] leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           Spreadsheets are great for quick tasks, but they're not built for enterprise HR operations. Here's what changes when you switch.
         </p>
       </div>
 
       {/* Comparison Table */}
-      <div className={`overflow-x-auto rounded-2xl border border-gray-200 shadow-lg transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className={`overflow-x-auto rounded-3xl border border-[#E1D4C7] shadow-xl bg-white transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <table className="w-full">
           <thead>
-            <tr className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-              <th className="px-6 py-4 text-left font-bold text-lg">Feature</th>
-              <th className="px-6 py-4 text-left font-bold text-lg">
+            <tr className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white">
+              <th className="px-6 py-4 text-left font-heading font-bold text-sm uppercase tracking-wider">Feature</th>
+              <th className="px-6 py-4 text-left font-heading font-bold text-sm uppercase tracking-wider">
                 <div className="flex items-center gap-2">
                   <span>Spreadsheets</span>
                 </div>
               </th>
-              <th className="px-6 py-4 text-left font-bold text-lg">
+              <th className="px-6 py-4 text-left font-heading font-bold text-sm uppercase tracking-wider">
                 <div className="flex items-center gap-2">
-                  <span>LMS Platform</span>
-                  <span className="bg-blue-500 text-xs px-2 py-1 rounded">Better</span>
+                  <span>Leanport HR</span>
+                  <span className="bg-[#C26819] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Recommended</span>
                 </div>
               </th>
             </tr>
@@ -153,25 +152,28 @@ const ComparisonSection = () => {
         ].map((advantage, idx) => (
           <div
             key={idx}
-            className={`bg-white rounded-xl border border-gray-200 p-6 text-center hover:shadow-lg transition-all duration-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`bg-white rounded-2xl border border-[#E1D4C7] p-6 text-center hover:shadow-lg hover:border-[#734425]/40 transition-all duration-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             style={{ transitionDelay: `${100 * (idx + 1)}ms` }}
           >
-            <div className="text-4xl mb-3">{advantage.icon}</div>
-            <h3 className="font-bold text-lg text-gray-900 mb-2">{advantage.title}</h3>
-            <p className="text-gray-600 text-sm">{advantage.description}</p>
+            <div className="text-3xl mb-3">{advantage.icon}</div>
+            <h3 className="font-heading font-bold text-base text-[#2E2E2E] mb-2 uppercase tracking-wide">{advantage.title}</h3>
+            <p className="text-[#5C5C5C] text-sm leading-relaxed">{advantage.description}</p>
           </div>
         ))}
       </div>
 
       {/* CTA Section */}
-      <div className={`mt-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <h3 className="text-3xl font-bold mb-4">Ready to leave spreadsheets behind?</h3>
-        <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+      <div className={`mt-20 bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] rounded-3xl p-10 md:p-14 text-white text-center shadow-xl border border-[#734425]/30 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <h3 className="text-3xl md:text-4xl font-heading font-black mb-4 uppercase tracking-tight text-white">Ready to leave spreadsheets behind?</h3>
+        <p className="text-base md:text-lg text-[#F5ECE4]/80 mb-8 max-w-2xl mx-auto leading-relaxed">
           Join thousands of companies that have modernized their HR operations with our intelligent leave management system.
         </p>
-        <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-300 inline-block">
+        <a
+          href="/company/get-started"
+          className="inline-flex items-center justify-center bg-[#FAF6F2] hover:bg-white text-[#734425] px-8 py-4 rounded-full font-heading font-bold text-sm uppercase tracking-wider transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-300"
+        >
           Start Your Free Trial
-        </button>
+        </a>
       </div>
     </SectionContainer>
   );

@@ -35,11 +35,13 @@ function Document() {
   }
 
   return (
-    <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-lg">
+    <div className="mt-6 rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm overflow-hidden font-sans">
       {/* Header */}
-      <div className="flex items-center gap-2 px-6 py-4 border-b bg-white/70 backdrop-blur">
-        <FileText className="h-5 w-5 text-blue-600" />
-        <h3 className="text-lg font-semibold text-slate-800">
+      <div className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white shadow-sm">
+        <span className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center text-[#F5ECE4]">
+          <FileText className="h-4 w-4" />
+        </span>
+        <h3 className="text-base font-heading font-extrabold uppercase tracking-wide text-white">
           Documents
         </h3>
       </div>
@@ -48,9 +50,9 @@ function Document() {
       <div className="p-6">
         {documents.length === 0 ? (
           /* Empty State */
-          <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500">
-            <FileText className="h-10 w-10 mb-3 opacity-40" />
-            <p className="text-sm">No documents available</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center text-[#5C5C5C]">
+            <FileText className="h-10 w-10 mb-3 opacity-30 text-[#734425]" />
+            <p className="text-sm font-medium">No documents available</p>
           </div>
         ) : (
           <div
@@ -63,26 +65,23 @@ function Document() {
             {documents.map((doc) => (
               <div
                 key={doc.id}
-                className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="group relative overflow-hidden rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/60 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
               >
-                {/* Glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-blue-50" />
-
                 <div className="relative flex items-start justify-between gap-4">
                   {/* Left - Info */}
                   <div>
-                    <Label className="text-sm font-semibold text-slate-700">
+                    <Label className="text-sm font-heading font-bold text-[#734425] uppercase tracking-wider">
                       {doc.document_category?.type || "Unknown Document"}
                     </Label>
 
-                    <p className="mt-1 text-sm text-slate-600">
+                    <p className="mt-1 text-xs text-[#5C5C5C]">
                       Document Number:{" "}
                       {doc.document_number ? (
-                        <span className="font-medium text-slate-700">
+                        <span className="font-semibold text-[#2E2E2E]">
                           {doc.document_number}
                         </span>
                       ) : (
-                        <span className="italic text-slate-400">
+                        <span className="italic text-[#5C5C5C]/60">
                           Not Provided
                         </span>
                       )}
@@ -96,9 +95,9 @@ function Document() {
                       download={doc.file.file_name || "document"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary/90 hover:shadow-md"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#734425] hover:bg-[#5D361D] px-4 py-2 text-xs font-heading font-bold uppercase tracking-wider text-white shadow-sm transition-all duration-200 hover:scale-105"
                     >
-                      <Download className="h-4 w-4" />
+                      <Download className="h-3.5 w-3.5" />
                       Download
                     </a>
                   )}

@@ -10,14 +10,14 @@ const Settings = ({ children }) => {
   return (
     <div className="space-y-4 mb-4">
       {/* Hero / Page header */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
-        <CardContent className="p-5 md:p-7">
+      <Card className="border border-[#E1D4C7] shadow-xl rounded-3xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white">
+        <CardContent className="p-6 md:p-8">
           <div className="grid grid-cols-12 items-center gap-4">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">System Settings</h1>
+                <h1 className="text-3xl md:text-4xl font-heading font-black uppercase tracking-tight text-white">System Settings</h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
+              <p className="text-[#F5ECE4]/80 font-medium text-sm font-sans">
                 Configure the guardrails, defaults, and policies that keep your HR workspace consistent.
                 Changes apply instantly across admin experiences.
               </p>
@@ -26,23 +26,23 @@ const Settings = ({ children }) => {
         </CardContent>
       </Card>
 
-      {/* Navigation with sticky behavior className="sticky top-20 md:top-24 z-30" */}
+      {/* Navigation */}
       <div>
-        <div className="rounded-md border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)] transition-shadow duration-300 will-change-transform">
-          <div className="flex flex-col gap-2 border-b border-slate-100 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-3xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm transition-shadow duration-300">
+          <div className="flex flex-col gap-2 border-b border-[#E1D4C7]/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-bold font-graphik text-slate-900">
+              <h2 className="text-lg font-heading font-bold uppercase tracking-tight text-[#2E2E2E]">
                 Configuration areas
               </h2>
-              <p className="font-medium text-sm font-graphik text-[#131313]">
+              <p className="font-medium text-sm text-[#2E2E2E]/70 font-sans">
                 Pick a section below. Your current selection stays highlighted while you work through the form.
               </p>
             </div>
           </div>
 
-          <div className="p-2 sm:p-6">
+          <div className="p-3 sm:p-6">
             <div className="overflow-x-auto pb-1">
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2.5">
                 {settingTabs?.map((tab) => {
                   const isActive =
                     activePath === tab.link.toLowerCase() ||
@@ -53,20 +53,20 @@ const Settings = ({ children }) => {
                     <NavLink
                       to={tab.link}
                       key={tab.id}
-                      className={`group inline-flex items-center gap-3 rounded-full px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition font-graphik duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 ${
+                      className={`group inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-semibold shadow-sm transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C26819] ${
                         isActive
-                          ? "border-slate-900 bg-slate-900 text-white shadow-lg shadow-slate-900/30 font-graphik"
-                          : "border border-[#e2e8f0] bg-white text-slate-700 hover:border-emerald-100 hover:bg-slate-50 font-graphik"
+                          ? "border border-[#734425] bg-[#734425] text-white shadow-md shadow-[#734425]/20 font-heading"
+                          : "border border-[#E1D4C7] bg-[#F5ECE4]/70 text-[#2E2E2E]/80 hover:border-[#734425]/40 hover:bg-[#F5ECE4]"
                       }`}
                     >
                       <span
-                        className={`flex h-7 w-7 items-center justify-center rounded-full border text-base ${
+                        className={`flex h-6 w-6 items-center justify-center rounded-full text-xs ${
                           isActive
-                            ? "border-transparent bg-[#e2e8f0] text-[#047857]"
-                            : "border-[#e2e8f0] bg-[#e2e8f0] text-[#047857]"
+                            ? "bg-white/20 text-white"
+                            : "bg-[#E1D4C7]/50 text-[#734425]"
                         }`}
                       >
-                        <Icon className="h-4 w-4" />
+                        <Icon className="h-3.5 w-3.5" />
                       </span>
                       <span>{tab.name}</span>
                     </NavLink>

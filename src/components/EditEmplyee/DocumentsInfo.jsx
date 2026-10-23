@@ -87,14 +87,14 @@ const DocumentsForm = ({
   const isImage = (fileName) => /\.(jpg|jpeg|png)$/i.test(fileName);
   const isPdf = (fileName) => /\.pdf$/i.test(fileName);
   return (
-    <div className="space-y-8 font-graphik">
+    <div className="space-y-8 font-sans">
       {/* Upload Form */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 border border-gray-100 rounded-xl shadow-sm bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
         {/* Document Type */}
         <div className="space-y-2">
           <Label
             htmlFor="docType"
-            className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider"
+            className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]"
           >
             Document Type *
           </Label>
@@ -102,12 +102,12 @@ const DocumentsForm = ({
             value={selectedType}
             onValueChange={(value) => setSelectedType(value)}
           >
-            <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik rounded-md shadow-sm">
+            <SelectTrigger className="h-11 border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl shadow-sm">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
-            <SelectContent className="font-graphik">
+            <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
               {documentType.map((doc) => (
-                <SelectItem key={doc.id} value={doc.id}>
+                <SelectItem key={doc.id} value={doc.id} className="focus:bg-[#F5ECE4] focus:text-[#734425]">
                   {doc.type}
                 </SelectItem>
               ))}
@@ -119,7 +119,7 @@ const DocumentsForm = ({
         <div className="space-y-2">
           <Label
             htmlFor="docFile"
-            className="text-sm font-bold text-slate-700 font-graphik uppercase tracking-wider"
+            className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]"
           >
             File <span className="text-[10px] text-slate-400 font-normal">(PDF, JPG, PNG)</span> *
           </Label>
@@ -127,7 +127,7 @@ const DocumentsForm = ({
             id="docFile"
             type="file"
             accept=".pdf,.jpg,.jpeg,.png"
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik cursor-pointer file:font-bold file:text-slate-700 file:bg-slate-50 file:border-0 file:mr-4 file:h-full"
+            className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm cursor-pointer file:font-heading file:font-bold file:text-[#734425] file:bg-[#734425]/10 file:border-0 file:mr-4 file:h-full file:rounded-lg rounded-xl"
             onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
           />
         </div>
@@ -137,7 +137,7 @@ const DocumentsForm = ({
           <Button
             type="button"
             onClick={handleAddDocument}
-            className="w-full h-11 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-lg transition-all font-graphik font-bold uppercase tracking-wider"
+            className="w-full h-11 bg-[#734425] hover:bg-[#5D361D] text-white shadow-lg shadow-[#734425]/20 transition-all font-heading font-bold uppercase tracking-wider rounded-xl"
           >
             <UploadCloud className="w-4 h-4 mr-2" />
             Add Document
@@ -207,11 +207,11 @@ const DocumentsForm = ({
       {/* Uploaded Documents */}
       {Array.isArray(documents) && documents.some((doc) => !doc.isPending) && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <h3 className="text-lg font-bold text-slate-700 font-graphik uppercase tracking-wider">
+          <div className="flex items-center gap-2 border-b border-[#E1D4C7]/60 pb-2">
+            <h3 className="text-base font-heading font-bold text-[#734425] uppercase tracking-wider">
               Uploaded Documents
             </h3>
-            <Badge variant="outline" className="text-slate-400 border-slate-200 font-bold">{documents.filter(d => !d.isPending).length}</Badge>
+            <Badge variant="outline" className="text-[#734425] border-[#E1D4C7] bg-[#FAF6F2] font-bold">{documents.filter(d => !d.isPending).length}</Badge>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {documents
@@ -230,14 +230,14 @@ const DocumentsForm = ({
                 return (
                   <div
                     key={doc.id || index}
-                    className="flex items-center justify-between border border-slate-100 rounded-xl p-5 bg-white hover:shadow-md transition-all duration-200 group"
+                    className="flex items-center justify-between border border-[#E1D4C7] rounded-2xl p-5 bg-[#FAF6F2] hover:shadow-md transition-all duration-200 group"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                      <div className="h-12 w-12 rounded-xl bg-[#F5ECE4] border border-[#E1D4C7] flex items-center justify-center text-[#734425] group-hover:bg-[#734425] group-hover:text-white transition-all shadow-sm">
                         <FileText className="w-6 h-6" />
                       </div>
                       <div className="space-y-1">
-                        <div className="text-sm font-bold text-slate-900 uppercase tracking-tight">
+                        <div className="text-sm font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                           {docType}
                         </div>
                         <div className="text-xs text-slate-400 font-medium truncate max-w-[250px]">

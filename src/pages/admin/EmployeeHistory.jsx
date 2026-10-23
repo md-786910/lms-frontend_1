@@ -464,23 +464,23 @@ const EmployeeHistory = () => {
   return (
     <div className="space-y-6 pb-10">
       {/* Header Card */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white">
-        <CardContent className="p-5 md:p-7">
+      <Card className="border border-[#E1D4C7]/30 shadow-xl rounded-2xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white overflow-hidden">
+        <CardContent className="p-6 md:p-8">
           <div className="grid grid-cols-12 items-center gap-4">
             <div className="col-span-12 md:col-span-8 space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">{employeeName}</h1>
-                <Badge className={employee?.is_active ? "bg-emerald-100 font-graphik text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}>
+                <h1 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white">{employeeName}</h1>
+                <Badge className={employee?.is_active ? "bg-emerald-500/20 font-heading font-bold uppercase tracking-wider text-[#FAF6F2] border border-emerald-400/30 text-xs" : "bg-rose-500/20 text-rose-200 border border-rose-400/30 text-xs"}>
                   {employee?.is_active ? "Active" : "Inactive"}
                 </Badge>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-xl font-graphik">
+              <p className="text-white/85 font-medium text-lg font-sans">
                 {employee?.designation?.title || "No Designation"} • {employee?.department?.name || "No Department"}
               </p>
-              <p className="text-md text-[#FFFFFF] font-graphik tracking-wider">{employee?.employee_no}</p>
+              <p className="text-xs text-[#E1D4C7] font-sans tracking-widest uppercase">{employee?.employee_no}</p>
             </div>
             <div className="col-span-12 md:col-span-4 flex md:justify-end pb-2">
-              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-sm border-slate-200 flex items-center border p-2 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">
+              <div onClick={() => navigate("/admin/employees")} className="rounded-xl shadow-md border-[#E1D4C7] flex items-center border px-4 py-2 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#F5ECE4] cursor-pointer transition ease-in-out duration-300">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 <span>Back to Employees</span>
               </div>
@@ -490,10 +490,10 @@ const EmployeeHistory = () => {
       </Card>
 
       {/* Main Tabs */}
-      <Card className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden bg-white min-h-[600px]">
+      <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl overflow-hidden bg-[#FAF6F2] min-h-[600px]">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/50 pb-7">
-            <TabsList className="flex flex-wrap gap-3 bg-transparent p-0">
+          <div className="px-6 py-4 border-b border-[#E1D4C7]/60 bg-[#FAF6F2] pb-6">
+            <TabsList className="flex flex-wrap gap-2.5 bg-transparent p-0">
               {[
                 { id: "basic", label: "Basic Info", icon: User },
                 { id: "address", label: "Address", icon: MapPin },
@@ -507,10 +507,10 @@ const EmployeeHistory = () => {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="group inline-flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-base font-medium text-slate-700 shadow-sm transition hover:border-emerald-100 hover:bg-slate-50 font-graphik data-[state=active]:border-slate-900 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-lg"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-2.5 text-xs font-heading font-bold uppercase tracking-wider text-[#2E2E2E] shadow-sm transition hover:border-[#734425] hover:bg-[#FAF6F2] data-[state=active]:border-[#734425] data-[state=active]:bg-[#734425] data-[state=active]:text-white data-[state=active]:shadow-md"
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] group-data-[state=active]:border-transparent group-data-[state=active]:bg-[#e2e8f0] group-data-[state=active]:text-[#047857]">
-                    <tab.icon className="h-4 w-4" />
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] group-data-[state=active]:border-white/20 group-data-[state=active]:bg-white/20 group-data-[state=active]:text-white">
+                    <tab.icon className="h-3.5 w-3.5" />
                   </span>
                   {tab.label}
                 </TabsTrigger>
@@ -540,51 +540,51 @@ const EmployeeHistory = () => {
             </TabsContent>
             {/* Leave Balance - Top Section */}
             <TabsContent value="leave_balance" className="mt-0 space-y-6">
-              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
+              <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
                 <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
                   {[firstCycleLeaveSummary, secondCycleLeaveSummary].map((summary) => (
                     <div
                       key={summary.cycle}
-                      className="rounded-md border border-slate-200 bg-white p-4 shadow-sm"
+                      className="rounded-2xl border border-[#E1D4C7] bg-[#F5ECE4]/70 p-4 shadow-sm"
                     >
                       <div className="grid grid-cols-1 items-center gap-3 sm:grid-cols-5">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                          <p className="text-xs font-heading font-bold uppercase tracking-wide text-[#734425]/80">
                             {summary.cycle_name}
                           </p>
-                          <h3 className="text-lg font-bold text-slate-900">
+                          <h3 className="text-lg font-heading font-bold text-[#2E2E2E]">
                             {summary.cycle_label}-2026
                           </h3>
                         </div>
-                        <div className="rounded-md border border-slate-100 bg-slate-50 p-3">
-                          <p className="text-xs font-semibold text-slate-500">
+                        <div className="rounded-xl border border-[#E1D4C7] bg-[#FAF6F2] p-3">
+                          <p className="text-xs font-semibold text-[#734425]/80">
                             Cycle Entitlement
                           </p>
-                          <p className="text-2xl font-bold text-slate-900">
+                          <p className="text-2xl font-heading font-bold text-[#2E2E2E]">
                             {formatLeaveDays(summary.total)}
                           </p>
                         </div>
-                        <div className="rounded-md border border-amber-100 bg-amber-50 p-3">
-                          <p className="text-xs font-semibold text-amber-700">
+                        <div className="rounded-xl border border-amber-200/80 bg-amber-50/70 p-3">
+                          <p className="text-xs font-semibold text-amber-800">
                             Leave In Cycle
                           </p>
-                          <p className="text-2xl font-bold text-amber-700">
+                          <p className="text-2xl font-heading font-bold text-amber-800">
                             {formatLeaveDays(summary.availed ?? summary.used)}
                           </p>
                         </div>
-                        <div className="rounded-md border border-rose-100 bg-rose-50 p-3">
-                          <p className="text-xs font-semibold text-rose-700">
+                        <div className="rounded-xl border border-rose-200/80 bg-rose-50/70 p-3">
+                          <p className="text-xs font-semibold text-rose-800">
                             Deduction
                           </p>
-                          <p className="text-2xl font-bold text-rose-700">
+                          <p className="text-2xl font-heading font-bold text-rose-800">
                             {formatLeaveDays(summary.deduction ?? 0)}
                           </p>
                         </div>
-                        <div className="rounded-md border border-emerald-100 bg-emerald-50 p-3">
-                          <p className="text-xs font-semibold text-emerald-700">
+                        <div className="rounded-xl border border-emerald-200/80 bg-emerald-50/70 p-3">
+                          <p className="text-xs font-semibold text-emerald-800">
                             Remaining
                           </p>
-                          <p className="text-2xl font-bold text-emerald-700">
+                          <p className="text-2xl font-heading font-bold text-emerald-800">
                             {formatLeaveDays(summary.remaining)}
                           </p>
                         </div>
@@ -598,36 +598,36 @@ const EmployeeHistory = () => {
 
             <TabsContent value="history" className="mt-0 space-y-6">
               {/* Leave History Content */}
-              <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white font-graphik">
+              <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {[
-                    { label: "Total Leaves", value: historySummary.totalDays, color: "bg-slate-50 text-slate-700 border-slate-100" },
-                    { label: "Total Leaves Approved", value: historySummary.days.approved, color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
-                    { label: "Total Leaves Pending", value: historySummary.days.pending, color: "bg-amber-50 text-amber-700 border-amber-100" },
-                    { label: "Total Leaves Rejected", value: historySummary.days.rejected, color: "bg-rose-50 text-rose-700 border-rose-100" },
+                    { label: "Total Leaves", value: historySummary.totalDays, color: "bg-[#F5ECE4] text-[#2E2E2E] border-[#E1D4C7]" },
+                    { label: "Total Leaves Approved", value: historySummary.days.approved, color: "bg-emerald-50/80 text-emerald-800 border-emerald-200/80" },
+                    { label: "Total Leaves Pending", value: historySummary.days.pending, color: "bg-amber-50/80 text-amber-800 border-amber-200/80" },
+                    { label: "Total Leaves Rejected", value: historySummary.days.rejected, color: "bg-rose-50/80 text-rose-800 border-rose-200/80" },
                   ].map((stat) => (
-                    <div key={stat.label} className={`p-5 rounded-xl border ${stat.color} transition-all duration-200 hover:shadow-md`}>
-                      <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
-                      <p className="text-3xl font-extrabold">{stat.value}</p>
+                    <div key={stat.label} className={`p-5 rounded-2xl border ${stat.color} transition-all duration-200 shadow-sm`}>
+                      <p className="text-xs font-heading font-bold uppercase tracking-wider opacity-80 mb-1">{stat.label}</p>
+                      <p className="text-3xl font-heading font-extrabold">{stat.value}</p>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-4 mb-8">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#734425]/60" />
                     <Input
                       placeholder="Search leaves..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                      className="pl-10 h-12 border-[#E1D4C7] bg-[#FAF6F2] focus:border-[#734425] rounded-xl text-[#2E2E2E] placeholder:text-[#734425]/50 transition-all font-graphik"
                     />
                   </div>
                   <Select value={yearFilter} onValueChange={setYearFilter}>
-                    <SelectTrigger className="w-full md:w-32 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
+                    <SelectTrigger className="w-full md:w-32 h-12 border-[#E1D4C7] bg-[#FAF6F2] focus:border-[#734425] rounded-xl text-[#2E2E2E] transition-all font-graphik">
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
-                    <SelectContent className="font-graphik">
+                    <SelectContent className="font-graphik bg-[#FAF6F2] border-[#E1D4C7]">
                       <SelectItem value="all">All Years</SelectItem>
                       {yearOptions.map((y) => (
                         <SelectItem key={y} value={y}>
@@ -637,10 +637,10 @@ const EmployeeHistory = () => {
                     </SelectContent>
                   </Select>
                   <Select value={monthFilter} onValueChange={setMonthFilter}>
-                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
+                    <SelectTrigger className="w-full md:w-48 h-12 border-[#E1D4C7] bg-[#FAF6F2] focus:border-[#734425] rounded-xl text-[#2E2E2E] transition-all font-graphik">
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
-                    <SelectContent className="font-graphik">
+                    <SelectContent className="font-graphik bg-[#FAF6F2] border-[#E1D4C7]">
                       <SelectItem value="all">All Months</SelectItem>
                       {monthOptions.map((m) => (
                         <SelectItem key={m.value} value={m.value}>
@@ -650,10 +650,10 @@ const EmployeeHistory = () => {
                     </SelectContent>
                   </Select>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full md:w-48 h-12 border-slate-200 focus:border-slate-900 transition-all font-graphik">
+                    <SelectTrigger className="w-full md:w-48 h-12 border-[#E1D4C7] bg-[#FAF6F2] focus:border-[#734425] rounded-xl text-[#2E2E2E] transition-all font-graphik">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="font-graphik">
+                    <SelectContent className="font-graphik bg-[#FAF6F2] border-[#E1D4C7]">
                       <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="approved">Approved</SelectItem>
                       <SelectItem value="pending">Pending</SelectItem>
@@ -667,7 +667,7 @@ const EmployeeHistory = () => {
                 ) : (
                   <div className="space-y-4">
                     {filteredLeaves.map((leave) => (
-                      <div key={leave.id} className="p-6 rounded-xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-200 group">
+                      <div key={leave.id} className="p-6 rounded-2xl border border-[#E1D4C7] bg-[#F5ECE4]/70 shadow-sm hover:shadow-md transition-all duration-200 group">
                         <div className="flex flex-col lg:flex-row justify-between gap-4">
                           <div className="flex items-center gap-5">
                             <div className={`h-14 w-14 rounded-xl flex items-center justify-center text-xl font-bold shadow-inner ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
@@ -675,24 +675,24 @@ const EmployeeHistory = () => {
                             </div>
                             <div className="space-y-1">
                               <div className="flex items-center gap-3">
-                                <span className="font-bold text-lg text-slate-900 group-hover:text-black transition-colors">{leave.leave_type?.leave_type}</span>
+                                <span className="font-heading font-bold text-lg text-[#2E2E2E] group-hover:text-[#734425] transition-colors">{leave.leave_type?.leave_type}</span>
                                 <Badge className={`font-semibold px-2 py-0.5 rounded-md ${statusStyles[leave.status?.toLowerCase()] || statusStyles.other}`}>
                                   {leave.status}
                                 </Badge>
                               </div>
-                              <p className="text-sm font-medium text-slate-500 flex items-center gap-2">
+                              <p className="text-sm font-medium text-[#734425]/80 flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
                                 {dayjs(leave.start_date).format("D MMM YYYY")} - {dayjs(leave.end_date).format("D MMM YYYY")}
-                                <span className="text-slate-900 font-bold ml-1">({leave.total_days} days)</span>
+                                <span className="text-[#2E2E2E] font-bold ml-1">({leave.total_days} days)</span>
                               </p>
                             </div>
                           </div>
                           <div className="flex flex-col items-start lg:items-end justify-center text-left lg:text-right border-t lg:border-t-0 pt-4 lg:pt-0">
-                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Applied on {dayjs(leave.createdAt).format("D MMM YYYY")}</p>
+                            <p className="text-xs text-[#734425]/70 font-heading font-bold uppercase tracking-widest mb-1">Applied on {dayjs(leave.createdAt).format("D MMM YYYY")}</p>
                             {leave.reason && (
-                              <div className="flex items-start gap-2 bg-slate-50 p-2 rounded-lg max-w-md">
-                                <FileText className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
-                                <p className="text-sm text-slate-600 line-clamp-2 italic">{leave.reason}</p>
+                              <div className="flex items-start gap-2 bg-[#FAF6F2] border border-[#E1D4C7] p-2.5 rounded-xl max-w-md">
+                                <FileText className="h-4 w-4 text-[#734425]/60 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm text-[#2E2E2E]/80 line-clamp-2 italic">{leave.reason}</p>
                               </div>
                             )}
                           </div>
@@ -711,10 +711,10 @@ const EmployeeHistory = () => {
 
           {/* Action Bar (Sticky at bottom if needed, but here simple) */}
           {activeTab !== "history" && activeTab !== "leave_balance" && activeTab !== "proof_of_work" && (
-            <div className="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-end gap-3 font-graphik">
-              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-slate-200 border text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
-              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[120px] border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik">
-                {saveLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            <div className="p-6 border-t border-[#E1D4C7] bg-[#FAF6F2] flex justify-end gap-3">
+              <Button onClick={() => setHit(Math.random())} disabled={saveLoading} className="rounded-xl shadow-sm border-[#E1D4C7] border text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#F5ECE4] hover:bg-[#FAF6F2] cursor-pointer transition ease-in-out duration-300">Reset Changes</Button>
+              <Button onClick={handleSave} disabled={saveLoading} className="min-w-[140px] bg-[#734425] hover:bg-[#5D361D] text-white rounded-xl font-heading font-bold uppercase tracking-wider text-xs shadow-md">
+                {saveLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Save Changes
               </Button>
             </div>

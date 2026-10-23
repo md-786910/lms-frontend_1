@@ -31,47 +31,47 @@ function PersonalInfo() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 mt-8">
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Emergency Contact Name</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-6 font-sans">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Emergency Contact Name</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.emergency_contact_person || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Emergency Contact Phone</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Emergency Contact Phone</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.emergency_contact_number || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Relationship</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Relationship</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.emergency_contact_relationship || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Blood Group</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white flex items-center justify-between group hover:border-primary/50 transition-colors">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Blood Group</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.blood_group || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Medical Conditions</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Medical Conditions</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] capitalize flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.medical_conditions || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
-      <div className="space-y-4">
-        <label className="text-xs font-bold text-slate-500 capitalize tracking-wider block">Hobbies & Interests</label>
-        <div className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white capitalize flex items-center justify-between group hover:border-primary/50 transition-colors">
+      <div className="space-y-2">
+        <label className="text-xs font-heading font-bold text-[#734425] uppercase tracking-wider block">Hobbies & Interests</label>
+        <div className="w-full bg-[#F5ECE4]/60 border border-[#E1D4C7] rounded-xl px-4 py-3 text-sm font-semibold text-[#2E2E2E] capitalize flex items-center justify-between group hover:border-[#734425]/50 transition-colors shadow-sm">
           {personalInfo.hobbies || "N/A"}
-          <LockKeyhole className="h-4 w-4 textbase text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+          <LockKeyhole className="h-4 w-4 text-[#734425]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
     </div>

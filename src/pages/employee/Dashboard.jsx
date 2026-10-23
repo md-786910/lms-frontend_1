@@ -62,40 +62,40 @@ const EmployeeDashboard = () => {
   const [greeting, setGreeting] = useState("");
   const statToneMap = {
     amber: {
-      accent: "bg-amber-500",
-      chip: "bg-amber-50 text-amber-700",
-      dot: "bg-amber-500",
-      iconBg: "bg-amber-100 text-amber-700",
+      accent: "bg-[#C26819]",
+      chip: "bg-[#C26819]/10 text-[#C26819]",
+      dot: "bg-[#C26819]",
+      iconBg: "bg-[#C26819]/15 text-[#C26819]",
     },
     blue: {
-      accent: "bg-blue-600",
-      chip: "bg-blue-50 text-blue-700",
-      dot: "bg-blue-500",
-      iconBg: "bg-blue-100 text-blue-700",
+      accent: "bg-[#734425]",
+      chip: "bg-[#734425]/10 text-[#734425]",
+      dot: "bg-[#734425]",
+      iconBg: "bg-[#734425]/15 text-[#734425]",
     },
     violet: {
-      accent: "bg-violet-600",
-      chip: "bg-violet-50 text-violet-700",
-      dot: "bg-violet-500",
-      iconBg: "bg-violet-100 text-violet-700",
+      accent: "bg-[#8A522D]",
+      chip: "bg-[#8A522D]/10 text-[#8A522D]",
+      dot: "bg-[#8A522D]",
+      iconBg: "bg-[#8A522D]/15 text-[#8A522D]",
     },
     emerald: {
-      accent: "bg-emerald-600",
-      chip: "bg-emerald-50 text-emerald-700",
-      dot: "bg-emerald-500",
-      iconBg: "bg-emerald-100 text-emerald-700",
+      accent: "bg-[#734425]",
+      chip: "bg-[#734425]/10 text-[#734425]",
+      dot: "bg-[#734425]",
+      iconBg: "bg-[#734425]/15 text-[#734425]",
     },
     default: {
-      accent: "bg-slate-500",
-      chip: "bg-slate-100 text-slate-700",
-      dot: "bg-slate-500",
-      iconBg: "bg-slate-100 text-slate-700",
+      accent: "bg-[#2E2E2E]",
+      chip: "bg-[#E1D4C7]/40 text-[#2E2E2E]",
+      dot: "bg-[#2E2E2E]",
+      iconBg: "bg-[#E1D4C7]/60 text-[#2E2E2E]",
     },
     rose: {
-      accent: "bg-rose-500",
-      chip: "bg-rose-50 text-rose-700",
-      dot: "bg-rose-500",
-      iconBg: "bg-rose-100 text-rose-700",
+      accent: "bg-[#A6540F]",
+      chip: "bg-[#C26819]/10 text-[#C26819]",
+      dot: "bg-[#C26819]",
+      iconBg: "bg-[#C26819]/15 text-[#C26819]",
     },
   };
   const myLeaveData = [
@@ -469,7 +469,7 @@ const EmployeeDashboard = () => {
                 return (
                   <div
                     key={notification.id}
-                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                    className="group relative overflow-hidden rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                     onClick={async () => {
                       const resp = await authAPI.readNotification(
                         notification.id
@@ -531,24 +531,24 @@ const EmployeeDashboard = () => {
           </div>
         )}
 
-        <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white overflow-hidden">
-          <CardContent className="p-5 md:p-7 relative">
+        <Card className="border border-[#E1D4C7] shadow-xl rounded-3xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white overflow-hidden">
+          <CardContent className="p-6 md:p-8 relative">
             <div className="grid grid-cols-12 items-center gap-4 relative z-10">
               <div className="col-span-12 md:col-span-8 space-y-2">
                 <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold text-[#FFFFFF] tracking-tight font-monserrat">
+                  <h1 className="text-3xl md:text-4xl font-heading font-black text-white tracking-tight uppercase">
                     {greeting}, {basicProfile?.first_name + " " + basicProfile?.last_name}!
                   </h1>
                 </div>
-                <p className="text-[#FFFFFF] opacity-90 font-medium text-sm max-w-2xl font-graphik">
+                <p className="text-[#F5ECE4]/80 font-medium text-sm max-w-2xl font-sans">
                   Stay on top of your leave balance, team updates, and recent activity with a dashboard built for daily flow.
                 </p>
               </div>
               <div className="col-span-12 md:col-span-4 flex md:justify-end">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <Button
                     size="lg"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border border-white/20 flex items-center py-2 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => {
                       setReadOnly(false);
                       setLeaveRequestViewMode({});
@@ -556,9 +556,10 @@ const EmployeeDashboard = () => {
                     }}
                   >
                     Apply for Leave
-                  </Button>                  <Button
+                  </Button>
+                  <Button
                     size="lg"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border border-white/20 flex items-center py-2 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowProofOfWorkModal(true)}
                   >
                     Apply for Proof of Work
@@ -566,7 +567,7 @@ const EmployeeDashboard = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                    className="rounded-xl shadow-sm border border-white/20 flex items-center py-2 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                     onClick={() => setShowHolidayModal(true)}
                   >
                     View Leave Policy
@@ -583,66 +584,66 @@ const EmployeeDashboard = () => {
               {
                 label: "Leave Policy",
                 value: formatLeaveDays(summary?.total ?? 0),
-                bg: "bg-slate-50",
-                border: "border-slate-200",
-                text: "text-slate-800",
+                bg: "bg-[#FAF6F2]",
+                border: "border-[#E1D4C7]",
+                text: "text-[#24130A]",
               },
               {
                 label: "Leave Used",
                 value: formatLeaveDays(summary?.availed ?? summary?.used ?? 0),
-                bg: "bg-amber-50",
-                border: "border-amber-200",
-                text: "text-amber-700",
+                bg: "bg-[#FAF6F2]",
+                border: "border-[#E1D4C7]",
+                text: "text-[#C26819]",
               },
               {
                 label: "Leave Balance",
                 value: formatLeaveDays(summary?.remaining ?? 0),
-                bg: "bg-emerald-50",
-                border: "border-emerald-200",
+                bg: "bg-[#FAF6F2]",
+                border: "border-[#E1D4C7]",
                 text: "text-emerald-700",
               },
               {
                 label: "Deduction",
                 value: formatLeaveDays(summary?.deduction ?? 0),
-                bg: "bg-rose-50",
-                border: "border-rose-200",
+                bg: "bg-[#FAF6F2]",
+                border: "border-[#E1D4C7]",
                 text: "text-rose-700",
               },
               {
                 label: "Extra Work",
                 value: formatLeaveDays(summary?.extra_work ?? 0),
-                bg: "bg-sky-50",
-                border: "border-sky-200",
-                text: "text-sky-700",
+                bg: "bg-[#FAF6F2]",
+                border: "border-[#E1D4C7]",
+                text: "text-[#734425]",
               },
             ];
 
             return (
               <div
                 key={cycle}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                className="overflow-hidden rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 {/* Header */}
-                <div className="flex flex-col gap-3 border-b border-slate-100 py-2 px-4 sm:flex-row sm:items-center sm:justify-between">
-                  <h2 className="text-lg font-bold text-slate-900 font-graphik whitespace-nowrap">
+                <div className="flex flex-col gap-3 border-b border-[#E1D4C7] bg-[#FAF6F2] py-4 px-6 sm:flex-row sm:items-center sm:justify-between">
+                  <h2 className="text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight whitespace-nowrap">
                     {cycle === "first" ? "First Cycle - Jan-Jun 2026" : "Second Cycle - Jul-Dec 2026"}
                   </h2>
-                  <span className="inline-flex items-center rounded-lg bg-slate-100 p-1 text-[8px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                  <span className="inline-flex items-center rounded-xl bg-[#734425]/10 border border-[#734425]/20 px-3 py-1 text-[10px] font-heading font-bold uppercase tracking-wider text-[#734425]">
                     Cycle Overview
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-3 xl:grid-cols-5">
+                <div className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-3 xl:grid-cols-5">
                   {stats.map((item) => (
                     <div
                       key={item.label}
-                      className={`${item.bg} ${item.border} rounded-lg border py-1 px-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
+                      className={`${item.bg} ${item.border} rounded-xl border p-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-md`}
                     >
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      <p className="text-[10px] font-heading font-bold uppercase tracking-wider text-[#734425]">
                         {item.label}
                       </p>
 
-                      <h3 className={`mt-[2px] text-lg font-black ${item.text}`}>
+                      <h3 className={`mt-1 text-xl font-heading font-extrabold ${item.text}`}>
                         {item.value}
                       </h3>
                     </div>
@@ -654,10 +655,10 @@ const EmployeeDashboard = () => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Calendar */}
-          <Card className="lg:col-span-2 rounded-md border border-slate-200 shadow-sm overflow-hidden">
-            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
-                <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+          <Card className="lg:col-span-2 rounded-2xl border border-[#E1D4C7] shadow-sm overflow-hidden bg-[#FAF6F2]">
+            <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
+              <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
                   <CalendarIcon className="h-5 w-5" />
                 </span>
                 Schedule & Team Leaves
@@ -665,8 +666,8 @@ const EmployeeDashboard = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                <div className="p-6 border-b md:border-b-0 md:border-r border-slate-100">
-                  <div className="rounded-xl border border-slate-200 shadow-sm bg-slate-50">
+                <div className="p-6 border-b md:border-b-0 md:border-r border-[#E1D4C7]">
+                  <div className="rounded-xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2] p-2">
                     <Calendar
                       mode="single"
                       selected={selectedDate}
@@ -678,23 +679,23 @@ const EmployeeDashboard = () => {
                         month: "space-y-4",
                         table: "w-full border-collapse",
                         head_row:
-                          "grid grid-cols-7 text-xs text-slate-500 font-semibold",
+                          "grid grid-cols-7 text-xs text-[#734425] font-heading font-bold uppercase",
                         head_cell: "text-center py-1",
                         row: "grid grid-cols-7 text-center",
                         cell: "text-sm relative",
-                        day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-semibold",
+                        day: "h-10 w-10 mx-auto flex items-center justify-center rounded-full font-heading font-semibold hover:bg-[#734425]/10 text-[#2E2E2E]",
                         day_selected:
-                          "bg-slate-900 text-white shadow-lg shadow-slate-900/15",
+                          "bg-[#734425] text-white shadow-lg shadow-[#734425]/20 hover:bg-[#5D361D]",
                         day_today:
-                          "border border-slate-900/30 text-slate-900",
+                          "border border-[#734425]/40 text-[#734425] font-bold",
                       }}
                       modifiers={{
                         hasLeave: leaveData.map((leave) => leave.date),
                       }}
                       modifiersStyles={{
                         hasLeave: {
-                          border: "2px solid rgba(59,130,246,0.35)",
-                          backgroundColor: "rgba(59,130,246,0.08)",
+                          border: "2px solid rgba(194, 104, 25, 0.4)",
+                          backgroundColor: "rgba(194, 104, 25, 0.1)",
                         },
                       }}
                     />
@@ -703,7 +704,7 @@ const EmployeeDashboard = () => {
                 <div className="p-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-lg font-semibold text-slate-900">
+                      <h4 className="text-lg font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                         {selectedDate
                           ? format(selectedDate, "EEEE, dd MMMM")
                           : "Select a date"}
@@ -711,36 +712,38 @@ const EmployeeDashboard = () => {
                     </div>
                     <Badge
                       variant="outline"
-                      className="rounded-full border-slate-200 text-slate-700 font-graphik"
+                      className="rounded-full border-[#E1D4C7] bg-[#FAF6F2] text-[#734425] font-heading text-[10px] font-bold uppercase tracking-wider"
                     >
                       Calendar
                     </Badge>
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
-                    <div className="p-4 border-b border-slate-100 flex items-center gap-2">
-                      <CalendarIcon className="h-4 w-4 text-primary" />
-                      <p className="text-sm font-semibold text-slate-900 font-graphik">
+                  <div className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm overflow-hidden">
+                    <div className="p-4 border-b border-[#E1D4C7] bg-[#F5ECE4]/60 flex items-center gap-2">
+                      <span className="h-7 w-7 rounded-lg bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
+                        <CalendarIcon className="h-4 w-4" />
+                      </span>
+                      <p className="text-xs font-heading font-bold uppercase tracking-wider text-[#2E2E2E]">
                         Team on leave today
                       </p>
                     </div>
-                    <div className="divide-y divide-slate-100">
+                    <div className="divide-y divide-[#E1D4C7]/60">
                       {leaveData?.length > 0 ? (
                         leaveData.map((leave) => (
                           <div
                             key={leave.id}
-                            className="p-4 flex items-center justify-between gap-3"
+                            className="p-4 flex items-center justify-between gap-3 bg-[#FAF6F2]"
                           >
                             <div>
-                              <p className="text-sm font-semibold text-slate-900 font-graphik">
+                              <p className="text-sm font-heading font-bold text-[#2E2E2E]">
                                 {leave.employeeName}
                               </p>
-                              <p className="text-xs text-slate-500 font-graphik">
+                              <p className="text-xs text-[#2E2E2E]/60 font-sans">
                                 ID: {leave.employeeId}
                               </p>
                             </div>
                             <Badge
-                              className="rounded-full text-xs font-semibold font-graphik border-slate-200"
+                              className="rounded-full text-xs font-heading font-semibold border-[#E1D4C7] bg-[#F5ECE4] text-[#734425]"
                               variant="outline"
                             >
                               {leave.type}
@@ -748,14 +751,14 @@ const EmployeeDashboard = () => {
                           </div>
                         ))
                       ) : (
-                        <div className="p-6 flex flex-col items-center text-center gap-2">
-                          <div className="h-10 w-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                        <div className="p-6 flex flex-col items-center text-center gap-2 bg-[#FAF6F2]">
+                          <div className="h-10 w-10 rounded-full bg-[#734425]/10 text-[#734425] border border-[#734425]/20 flex items-center justify-center">
                             <CalendarX className="h-5 w-5" />
                           </div>
-                          <p className="text-sm font-semibold text-slate-900 font-graphik">
+                          <p className="text-sm font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                             Clear schedule
                           </p>
-                          <p className="text-xs text-slate-500 font-graphik">
+                          <p className="text-xs text-[#2E2E2E]/60 font-sans">
                             No one is on leave today.
                           </p>
                         </div>
@@ -768,10 +771,10 @@ const EmployeeDashboard = () => {
           </Card>
 
           {/* Recent Activities */}
-          <Card className="border border-slate-200 rounded-md shadow-sm">
-            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
-                <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+          <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
+            <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
+              <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
                   <BellRing className="h-5 w-5" />
                 </span>
                 Recent Activities
@@ -781,18 +784,18 @@ const EmployeeDashboard = () => {
               {recentActivities.map((activity, index) => (
                 <div key={index} className="flex gap-4">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 shadow-sm">
-                      <AlertCircle className="h-5 w-5 text-primary" />
+                    <div className="w-10 h-10 rounded-full bg-white border border-[#E1D4C7] flex items-center justify-center text-[#734425] shadow-sm">
+                      <AlertCircle className="h-5 w-5 text-[#734425]" />
                     </div>
                     {index !== recentActivities.length - 1 && (
-                      <div className="absolute left-1/2 top-10 -ml-px h-8 w-[2px] bg-slate-100" />
+                      <div className="absolute left-1/2 top-10 -ml-px h-8 w-[2px] bg-[#E1D4C7]" />
                     )}
                   </div>
                   <div className="space-y-1">
-                    <p className="text-sm font-semibold text-slate-900 font-graphik">
+                    <p className="text-sm font-heading font-bold text-[#2E2E2E]">
                       {activity.message}
                     </p>
-                    <p className="text-xs text-slate-500 font-graphik">
+                    <p className="text-xs text-slate-500 font-sans">
                       {dayjs(activity.createdAt).fromNow()}
                     </p>
                   </div>
@@ -802,10 +805,10 @@ const EmployeeDashboard = () => {
           </Card>
 
           {/* Extra Work Sidebar Category */}
-          <Card className="border border-slate-200 rounded-md shadow-sm">
-            <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-6 py-4">
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center font-graphik gap-2">
-                <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+          <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
+            <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
+              <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
                   <Award className="h-5 w-5" />
                 </span>
                 Extra Work
@@ -816,10 +819,10 @@ const EmployeeDashboard = () => {
                 proofOfWorkRecords.map((submission) => (
                   <div
                     key={submission.id}
-                    className="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm"
+                    className="rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/50 p-4 shadow-sm"
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-semibold text-slate-900 font-graphik">
+                      <p className="text-sm font-heading font-bold text-[#2E2E2E]">
                         {submission.title}
                       </p>
                       <Badge
@@ -828,10 +831,10 @@ const EmployeeDashboard = () => {
                         {submission.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500 mt-2 font-graphik">
+                    <p className="text-xs text-[#2E2E2E]/70 mt-2 font-sans">
                       {proofTypeLabels[submission.work_type] || submission.work_type} • {workingHoursLabels[submission.working_hours] || submission.working_hours || "Full Day"}
                     </p>
-                    <p className="text-xs text-slate-500 mt-1 font-graphik">
+                    <p className="text-xs text-[#2E2E2E]/60 mt-1 font-sans">
                       {dayjs(submission.work_date).format("D MMM YYYY")}
                     </p>
                   </div>
@@ -845,34 +848,35 @@ const EmployeeDashboard = () => {
 
         {/* Monthly Leave Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
-            <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-500" />
-            <CardHeader className="py-3">
-              <CardTitle className="flex items-center gap-2 text-base font-semibold font-graphik text-slate-900">
-                <Award className="h-5 w-5 text-amber-600" />
+          <Card className="relative overflow-hidden rounded-2xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2]">
+            <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
+              <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
+                  <Award className="h-5 w-5" />
+                </span>
                 <span>
                   My leaves for Month - {format(new Date(), "MMMM yyyy")}
                 </span>
               </CardTitle>
-              <p className="text-sm text-slate-500">Current month snapshot</p>
+              <p className="text-xs text-[#2E2E2E]/60 font-sans mt-0.5">Current month snapshot</p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full border-t border-slate-100">
-                  <thead className="bg-slate-50 text-left">
+                <table className="w-full">
+                  <thead className="bg-[#F5ECE4] border-b border-[#E1D4C7] text-left">
                     <tr>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 font-graphik">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">
                         Name
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] text-right">
                         Total Deduction
                       </th>
-                      <th className="py-3 px-4 text-md font-semibold capitalize tracking-wide text-slate-600 text-right font-graphik">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] text-right">
                         Total Leave (Days)
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-[#E1D4C7]/60 bg-[#FAF6F2]">
                     {(dashboardData?.current_month_leaves || []).length > 0 ? (
                       dashboardData.current_month_leaves.map(
                         (
@@ -886,18 +890,18 @@ const EmployeeDashboard = () => {
                         ) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
+                            className="hover:bg-[#F5ECE4]/50 transition-colors"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
+                            <td className="py-3 px-6 text-sm font-heading font-semibold text-[#2E2E2E]">
                               {emp.employee_name ||
                                 `${emp.first_name || ""} ${emp.last_name || ""
                                   }`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                            <td className="py-3 px-6 text-sm text-[#734425] text-right font-bold">
                               {leave_deduction ?? 0}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                            <td className="py-3 px-6 text-sm text-[#24130A] text-right font-bold">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
                           </tr>
@@ -907,7 +911,7 @@ const EmployeeDashboard = () => {
                       <tr>
                         <td
                           colSpan="3"
-                          className="py-6 text-center text-slate-500 text-sm font-graphik"
+                          className="py-8 text-center text-[#2E2E2E]/60 text-sm font-sans"
                         >
                           No leave data available for this month
                         </td>
@@ -919,40 +923,39 @@ const EmployeeDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden rounded-md border border-slate-200 shadow-sm">
-            <div className="absolute inset-x-0 top-0 h-[1px] bg-primary" />
-            <CardHeader className="py-3">
-              <CardTitle className="flex justify-between items-center text-base font-semibold text-slate-900 font-graphik">
-                <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-primary" />
-                  <span>
-                    My leaves for Month -{" "}
-                    {format(
-                      new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                      "MMMM yyyy"
-                    )}
-                  </span>
-                </div>
+          <Card className="relative overflow-hidden rounded-2xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2]">
+            <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
+              <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
+                  <Award className="h-5 w-5" />
+                </span>
+                <span>
+                  My leaves for Month -{" "}
+                  {format(
+                    new Date(new Date().setMonth(new Date().getMonth() - 1)),
+                    "MMMM yyyy"
+                  )}
+                </span>
               </CardTitle>
-              <p className="text-sm text-slate-500">Previous month snapshot</p>
+              <p className="text-xs text-[#2E2E2E]/60 font-sans mt-0.5">Previous month snapshot</p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full border-t border-slate-100">
-                  <thead className="bg-slate-50 text-left">
+                <table className="w-full">
+                  <thead className="bg-[#F5ECE4] border-b border-[#E1D4C7] text-left">
                     <tr>
-                      <th className="text-left py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">
                         Name
                       </th>
-                      <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] text-right">
                         Total Deduction
                       </th>
-                      <th className="text-right py-3 px-4 text-md font-graphik font-semibold capitalize tracking-wide text-slate-600">
+                      <th className="py-3 px-6 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] text-right">
                         Total Leave (Days)
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-[#E1D4C7]/60 bg-[#FAF6F2]">
                     {(dashboardData?.previous_month_leaves || []).length > 0 ? (
                       dashboardData.previous_month_leaves.map(
                         (
@@ -966,18 +969,18 @@ const EmployeeDashboard = () => {
                         ) => (
                           <tr
                             key={index}
-                            className="border-t border-slate-100 hover:bg-slate-50/70 font-graphik"
+                            className="hover:bg-[#F5ECE4]/50 transition-colors"
                           >
-                            <td className="py-3 px-4 text-sm text-slate-900 font-graphik">
+                            <td className="py-3 px-6 text-sm font-heading font-semibold text-[#2E2E2E]">
                               {emp.employee_name ||
                                 `${emp.first_name || ""} ${emp.last_name || ""
                                   }`.trim() ||
                                 "N/A"}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                            <td className="py-3 px-6 text-sm text-[#734425] text-right font-bold">
                               {leave_deduction ?? 0}
                             </td>
-                            <td className="py-3 px-4 text-sm text-slate-700 text-right font-semibold font-graphik">
+                            <td className="py-3 px-6 text-sm text-[#24130A] text-right font-bold">
                               {leave_availed ?? total_leave ?? 0}
                             </td>
                           </tr>
@@ -987,7 +990,7 @@ const EmployeeDashboard = () => {
                       <tr>
                         <td
                           colSpan="3"
-                          className="py-6 text-center text-slate-500 text-sm font-graphik"
+                          className="py-8 text-center text-[#2E2E2E]/60 text-sm font-sans"
                         >
                           No leave data available for previous month
                         </td>
@@ -1003,32 +1006,32 @@ const EmployeeDashboard = () => {
       {showHolidayModal && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div
-            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+            className="absolute inset-0 bg-[#24130A]/60 backdrop-blur-sm transition-opacity duration-300"
             onClick={() => setShowHolidayModal(false)}
           />
-          <div className="relative w-full max-w-md h-full bg-white shadow-2xl transform translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
-            <div className="flex justify-between items-center px-6 py-4 border-b bg-slate-100">
-              <h2 className="text-lg font-semibold text-slate-800">
-                ?? Holiday List
+          <div className="relative w-full max-w-md h-full bg-[#FAF6F2] border-l border-[#E1D4C7] shadow-2xl transform translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+            <div className="flex justify-between items-center px-6 py-4 border-b border-[#E1D4C7] bg-[#F5ECE4]">
+              <h2 className="text-base font-heading font-bold text-[#24130A] uppercase tracking-tight flex items-center gap-2">
+                Holiday List
               </h2>
               <button
                 onClick={() => setShowHolidayModal(false)}
-                className="text-slate-500 hover:text-red-500 text-2xl font-bold transition duration-200"
+                className="text-[#734425] hover:text-[#24130A] text-2xl font-bold transition duration-200"
               >
                 &times;
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              <h4 className="font-medium ">Fixed Holidays</h4>
+              <h4 className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Fixed Holidays</h4>
               {holidayList?.fixed_holidays?.map((holiday, index) => (
                 <div
                   key={index}
-                  className="p-4 bg-slate-50 hover:bg-slate-100 border rounded-lg transition duration-200"
+                  className="p-4 bg-[#F5ECE4]/60 hover:bg-[#F5ECE4] border border-[#E1D4C7] rounded-xl transition duration-200"
                 >
-                  <h3 className="font-medium text-slate-800">
+                  <h3 className="font-heading font-bold text-sm text-[#2E2E2E]">
                     {index + 1}. {holiday.name}
                   </h3>
-                  <p className="text-sm text-[#ea580c]">
+                  <p className="text-xs font-semibold text-[#C26819] mt-1 font-sans">
                     {new Date(holiday.date).toLocaleDateString("en-GB", {
                       weekday: "short",
                       day: "2-digit",
@@ -1039,17 +1042,18 @@ const EmployeeDashboard = () => {
                 </div>
               ))}
 
-              <br />
-              <h4 className="font-medium ">Restricted Holidays</h4>
+              <div className="pt-2">
+                <h4 className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Restricted Holidays</h4>
+              </div>
               {holidayList?.restricted_holidays?.map((holiday, index) => (
                 <div
                   key={index}
-                  className="p-4 bg-slate-50 hover:bg-slate-100 border rounded-lg transition duration-200"
+                  className="p-4 bg-[#F5ECE4]/60 hover:bg-[#F5ECE4] border border-[#E1D4C7] rounded-xl transition duration-200"
                 >
-                  <h3 className="font-medium text-slate-800">
+                  <h3 className="font-heading font-bold text-sm text-[#2E2E2E]">
                     {index + 1}. {holiday.name}
                   </h3>
-                  <p className="text-sm  text-[#ea580c]">
+                  <p className="text-xs font-semibold text-[#C26819] mt-1 font-sans">
                     {new Date(holiday.date).toLocaleDateString("en-GB", {
                       weekday: "short",
                       day: "2-digit",

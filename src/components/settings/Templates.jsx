@@ -256,47 +256,51 @@ function Templates({ value }) {
 
   return (
     <>
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <FileText className="h-5 w-5" />
+      <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-2xl overflow-hidden font-sans">
+        <CardHeader className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white px-6 py-5">
+          <CardTitle className="flex items-center space-x-3 text-lg font-heading font-extrabold uppercase tracking-wide text-white">
+            <span className="h-9 w-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#F5ECE4]">
+              <FileText className="h-5 w-5" />
+            </span>
             <span>Template Management</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-8 p-6">
           {/* PDF Templates Section */}
           <div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-              <FileText className="h-5 w-5 mr-2 text-red-600" />
+            <h3 className="text-base font-heading font-bold text-[#24130A] uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span className="h-7 w-7 rounded-lg bg-[#734425]/10 text-[#734425] flex items-center justify-center">
+                <FileText className="h-4 w-4" />
+              </span>
               PDF Templates
             </h3>
             <div className="grid grid-cols-1 gap-4">
-              <Card className="p-6 border-2 border-red-100 bg-gradient-to-r from-red-50 to-orange-50">
-                <div className="flex items-center justify-between">
+              <Card className="p-6 border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex-1">
-                    <h4 className="font-semibold text-slate-800 mb-2 flex items-center">
-                      <FileText className="h-4 w-4 mr-2 text-red-600" />
+                    <h4 className="font-heading font-bold text-base text-[#2E2E2E] mb-2 flex items-center">
+                      <FileText className="h-4 w-4 mr-2 text-[#734425]" />
                       Payslip Template
                     </h4>
-                    <p className="text-sm text-slate-600 mb-3">
+                    <p className="text-sm text-[#5C5C5C] mb-3">
                       PDF template for employee payslips with automatic data
                       mapping (salary, EPF, ESI, tax calculations)
                     </p>
                     <div className="flex flex-wrap gap-2 mb-3">
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-[#F5ECE4] text-[#734425] border-[#E1D4C7] font-semibold">
                         Auto-calculate EPF
                       </Badge>
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-[#F5ECE4] text-[#734425] border-[#E1D4C7] font-semibold">
                         Tax deductions
                       </Badge>
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-[#F5ECE4] text-[#734425] border-[#E1D4C7] font-semibold">
                         Salary breakdown
                       </Badge>
                     </div>
                   </div>
                   <Button
                     onClick={() => openTemplateEditor("payslip")}
-                    className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700"
+                    className="bg-[#734425] hover:bg-[#5D361D] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm"
                   >
                     <Edit3 className="h-4 w-4 mr-2" />
                     Edit PDF Template
@@ -308,22 +312,26 @@ function Templates({ value }) {
 
           {/* Email Templates Section */}
           <div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-              <Mail className="h-5 w-5 mr-2 text-blue-600" />
+            <h3 className="text-base font-heading font-bold text-[#24130A] uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span className="h-7 w-7 rounded-lg bg-[#C26819]/10 text-[#C26819] flex items-center justify-center">
+                <Mail className="h-4 w-4" />
+              </span>
               Email Templates
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="p-4 border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50">
-                <h4 className="font-medium text-slate-800 mb-2 flex items-center">
-                  <Calendar className="h-4 w-4 mr-2 text-green-600" />
-                  Leave Approval
-                </h4>
-                <p className="text-sm text-slate-500 mb-4">
-                  Email template for leave approvals and notifications
-                </p>
+              <Card className="p-5 border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-heading font-bold text-sm text-[#2E2E2E] mb-2 flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-[#734425]" />
+                    Leave Approval
+                  </h4>
+                  <p className="text-xs text-[#5C5C5C] mb-4">
+                    Email template for leave approvals and notifications
+                  </p>
+                </div>
                 <Button
                   variant="outline"
-                  className="w-full border-blue-200 hover:bg-blue-50"
+                  className="w-full border-[#E1D4C7] text-[#734425] hover:bg-[#F5ECE4] rounded-lg font-bold text-xs uppercase tracking-wider"
                   onClick={() => openTemplateEditor("leave")}
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
@@ -331,17 +339,19 @@ function Templates({ value }) {
                 </Button>
               </Card>
 
-              <Card className="p-4 border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50">
-                <h4 className="font-medium text-slate-800 mb-2 flex items-center">
-                  <Building2 className="h-4 w-4 mr-2 text-purple-600" />
-                  Employment Letter
-                </h4>
-                <p className="text-sm text-slate-500 mb-4">
-                  Email template for employment verification letters
-                </p>
+              <Card className="p-5 border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-heading font-bold text-sm text-[#2E2E2E] mb-2 flex items-center">
+                    <Building2 className="h-4 w-4 mr-2 text-[#734425]" />
+                    Employment Letter
+                  </h4>
+                  <p className="text-xs text-[#5C5C5C] mb-4">
+                    Email template for employment verification letters
+                  </p>
+                </div>
                 <Button
                   variant="outline"
-                  className="w-full border-blue-200 hover:bg-blue-50"
+                  className="w-full border-[#E1D4C7] text-[#734425] hover:bg-[#F5ECE4] rounded-lg font-bold text-xs uppercase tracking-wider"
                   onClick={() => openTemplateEditor("employment")}
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
@@ -349,17 +359,19 @@ function Templates({ value }) {
                 </Button>
               </Card>
 
-              <Card className="p-4 border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50">
-                <h4 className="font-medium text-slate-800 mb-2 flex items-center">
-                  <Users className="h-4 w-4 mr-2 text-emerald-600" />
-                  Welcome Email
-                </h4>
-                <p className="text-sm text-slate-500 mb-4">
-                  Email template for new employee welcome and invitations
-                </p>
+              <Card className="p-5 border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-heading font-bold text-sm text-[#2E2E2E] mb-2 flex items-center">
+                    <Users className="h-4 w-4 mr-2 text-[#C26819]" />
+                    Welcome Email
+                  </h4>
+                  <p className="text-xs text-[#5C5C5C] mb-4">
+                    Email template for new employee welcome and invitations
+                  </p>
+                </div>
                 <Button
                   variant="outline"
-                  className="w-full border-blue-200 hover:bg-blue-50"
+                  className="w-full border-[#E1D4C7] text-[#734425] hover:bg-[#F5ECE4] rounded-lg font-bold text-xs uppercase tracking-wider"
                   onClick={() => openTemplateEditor("invitation")}
                 >
                   <Edit3 className="h-4 w-4 mr-2" />
@@ -372,29 +384,33 @@ function Templates({ value }) {
       </Card>
 
       <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
-        <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
-              {templates[selectedTemplate]?.type === "pdf" ? (
-                <FileText className="h-5 w-5 text-red-600" />
-              ) : (
-                <Mail className="h-5 w-5 text-blue-600" />
-              )}
-              <span>
-                Edit{" "}
-                {selectedTemplate.charAt(0).toUpperCase() +
-                  selectedTemplate.slice(1)}
-                {templates[selectedTemplate]?.type === "pdf"
-                  ? " PDF"
-                  : " Email"}{" "}
-                Template
-              </span>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-6">
+        <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto p-0 border-none rounded-2xl shadow-2xl bg-[#FAF6F2] font-sans">
+          <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white p-6 sticky top-0 z-10 shadow-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center space-x-3 text-lg font-heading font-extrabold uppercase tracking-wide text-white">
+                <span className="h-9 w-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#F5ECE4]">
+                  {templates[selectedTemplate]?.type === "pdf" ? (
+                    <FileText className="h-5 w-5" />
+                  ) : (
+                    <Mail className="h-5 w-5" />
+                  )}
+                </span>
+                <span>
+                  Edit{" "}
+                  {selectedTemplate.charAt(0).toUpperCase() +
+                    selectedTemplate.slice(1)}
+                  {templates[selectedTemplate]?.type === "pdf"
+                    ? " PDF"
+                    : " Email"}{" "}
+                  Template
+                </span>
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="space-y-6 p-6">
             <div className="space-y-3">
-              <Label className="text-base font-medium">Template Content</Label>
-              <div className="border-2 border-slate-200 rounded-lg overflow-hidden">
+              <Label className="text-xs font-bold text-[#5C5C5C] uppercase tracking-wider">Template Content</Label>
+              <div className="border border-[#E1D4C7] rounded-xl overflow-hidden bg-white shadow-sm">
                 <ReactQuill
                   theme="snow"
                   value={currentTemplateContent}
@@ -417,12 +433,12 @@ function Templates({ value }) {
             </div>
 
             <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-800 mb-3 flex items-center">
+              <div className="p-4 bg-[#F5ECE4]/70 rounded-xl border border-[#E1D4C7] shadow-sm">
+                <h4 className="font-heading font-bold text-sm text-[#734425] uppercase tracking-wider mb-3 flex items-center">
                   <Users className="h-4 w-4 mr-2" />
                   Employee Variables
                 </h4>
-                <div className="grid grid-cols-1 gap-1 text-sm text-blue-700">
+                <div className="grid grid-cols-1 gap-1 text-xs text-[#2E2E2E] font-mono">
                   <code>{"{{employee_name}}"}</code>
                   <code>{"{{employee_id}}"}</code>
                   <code>{"{{department}}"}</code>
@@ -433,12 +449,12 @@ function Templates({ value }) {
               </div>
 
               {selectedTemplate === "payslip" && (
-                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <h4 className="font-semibold text-green-800 mb-3 flex items-center">
+                <div className="p-4 bg-[#F5ECE4]/70 rounded-xl border border-[#E1D4C7] shadow-sm">
+                  <h4 className="font-heading font-bold text-sm text-[#734425] uppercase tracking-wider mb-3 flex items-center">
                     <DollarSign className="h-4 w-4 mr-2" />
                     Salary & Deduction Variables
                   </h4>
-                  <div className="grid grid-cols-1 gap-1 text-sm text-green-700">
+                  <div className="grid grid-cols-1 gap-1 text-xs text-[#2E2E2E] font-mono">
                     <code>{"{{basic_salary}}"}</code>
                     <code>{"{{hra}}"}</code>
                     <code>{"{{epf}}"}</code>
@@ -452,12 +468,12 @@ function Templates({ value }) {
               )}
 
               {selectedTemplate !== "payslip" && (
-                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <h4 className="font-semibold text-purple-800 mb-3 flex items-center">
+                <div className="p-4 bg-[#F5ECE4]/70 rounded-xl border border-[#E1D4C7] shadow-sm">
+                  <h4 className="font-heading font-bold text-sm text-[#C26819] uppercase tracking-wider mb-3 flex items-center">
                     <Building2 className="h-4 w-4 mr-2" />
                     Company & Date Variables
                   </h4>
-                  <div className="grid grid-cols-1 gap-1 text-sm text-purple-700">
+                  <div className="grid grid-cols-1 gap-1 text-xs text-[#2E2E2E] font-mono">
                     <code>{"{{company_name}}"}</code>
                     <code>{"{{company_address}}"}</code>
                     <code>{"{{hr_email}}"}</code>
@@ -469,16 +485,17 @@ function Templates({ value }) {
               )}
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4 border-t">
+            <div className="flex justify-end space-x-3 pt-4 border-t border-[#E1D4C7]">
               <Button
                 variant="outline"
+                className="border-[#E1D4C7] text-[#2E2E2E] hover:bg-[#F5ECE4] font-bold text-xs uppercase tracking-wider"
                 onClick={() => setTemplateDialogOpen(false)}
               >
                 Cancel
               </Button>
               <Button
                 onClick={saveTemplate}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                className="bg-[#734425] hover:bg-[#5D361D] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm px-5"
               >
                 <Save className="h-4 w-4 mr-2" />
                 Save Template

@@ -80,28 +80,32 @@ function UpdateDocumentModel(props) {
 
   return (
     <>
-      <div className="p-4 bg-slate-50 ">
+      <div className="p-5 bg-[#FAF6F2] rounded-2xl border border-[#E1D4C7]">
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           <Input
-            className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+            className="h-11 border border-[#E1D4C7] bg-white focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
             placeholder="Document Name"
             name="type"
             value={newDocument.type}
             onChange={handleChange}
           />
-          {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
+          {errors.type && <p className="text-red-500 text-xs font-bold mt-1 font-sans">{errors.type}</p>}
         </div>
-        <div className="flex justify-end space-x-4 pt-4">
-          <Button type="button" className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300" onClick={() => OnClose()}>
+        <div className="flex justify-end space-x-3 pt-4">
+          <Button
+            type="button"
+            className="rounded-xl shadow-sm border border-[#E1D4C7] text-sm font-heading font-bold text-[#2E2E2E] bg-white hover:bg-[#F5ECE4] cursor-pointer transition ease-in-out duration-300"
+            onClick={() => OnClose()}
+          >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={loader}
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
+            className="rounded-xl bg-[#734425] hover:bg-[#5D361D] text-white shadow-lg shadow-[#734425]/20 font-heading font-bold"
           >
-            <Edit3 className="h-4 w-4" />
-            {loader ? "saving data..." : "Update Document"}
+            <Edit3 className="h-4 w-4 mr-2" />
+            {loader ? "Saving data..." : "Update Document"}
           </Button>
         </div>
       </div>

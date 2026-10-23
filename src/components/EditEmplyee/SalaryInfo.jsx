@@ -129,32 +129,34 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
     ) : null;
 
   return (
-    <div className="space-y-8 font-graphik">
+    <div className="space-y-8 font-sans">
       {/* === Salary Summary === */}
-      <div className="bg-slate-900 text-white rounded-xl p-6 shadow-xl border border-slate-800">
+      <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white rounded-2xl p-6 shadow-xl border border-[#734425]/40">
         <div className="flex items-center gap-3 mb-6">
-          <Wallet className="h-6 w-6 text-emerald-400" />
-          <h3 className="text-xl font-bold uppercase tracking-wider">Salary Summary</h3>
+          <div className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center">
+            <Wallet className="h-5 w-5 text-[#C26819]" />
+          </div>
+          <h3 className="text-xl font-heading font-extrabold uppercase tracking-tight text-white">Salary Summary</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-1">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Gross Earnings</p>
-            <p className="text-2xl font-extrabold text-white">₹{values.salary_with_allowance || 0}</p>
+            <p className="text-[11px] font-heading font-bold text-[#F5ECE4]/70 uppercase tracking-widest">Gross Earnings</p>
+            <p className="text-2xl font-heading font-extrabold text-white">₹{values.salary_with_allowance || 0}</p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Deductions</p>
-            <p className="text-2xl font-extrabold text-rose-400">₹{values.total_deduction_allowance || 0}</p>
+            <p className="text-[11px] font-heading font-bold text-[#F5ECE4]/70 uppercase tracking-widest">Total Deductions</p>
+            <p className="text-2xl font-heading font-extrabold text-rose-300">₹{values.total_deduction_allowance || 0}</p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Net Payable</p>
-            <p className={`text-3xl font-black ${values.payable_salary < 0 ? "text-rose-500" : "text-emerald-400"}`}>
+            <p className="text-[11px] font-heading font-bold text-[#F5ECE4]/70 uppercase tracking-widest">Net Payable</p>
+            <p className={`text-3xl font-heading font-extrabold ${values.payable_salary < 0 ? "text-rose-400" : "text-[#F5ECE4]"}`}>
               ₹{values.payable_salary || 0}
             </p>
           </div>
         </div>
-        <div className="mt-6 pt-4 border-t border-slate-800">
-          <p className="text-sm text-slate-400 italic">
-            <span className="font-bold text-slate-300 not-italic uppercase text-xs mr-2 tracking-wider">Amount in words:</span>
+        <div className="mt-6 pt-4 border-t border-white/15">
+          <p className="text-sm text-[#F5ECE4]/70 italic">
+            <span className="font-heading font-bold text-white not-italic uppercase text-xs mr-2 tracking-wider">Amount in words:</span>
             {numberToWords(values?.payable_salary || 0)}
           </p>
         </div>
@@ -162,10 +164,10 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* === Earnings Section === */}
-        <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-50 pb-4">
-            <TrendingUp className="h-5 w-5 text-emerald-500" />
-            <h3 className="text-lg font-bold text-slate-800 uppercase tracking-wider">Earnings</h3>
+        <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2] space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#E1D4C7]/60 pb-4">
+            <TrendingUp className="h-5 w-5 text-[#C26819]" />
+            <h3 className="text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-wider">Earnings</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
@@ -175,7 +177,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
               ["hra", "HRA"],
             ].map(([field, label]) => (
               <div key={field} className="space-y-2">
-                <Label htmlFor={field} className="text-sm font-bold text-slate-700 uppercase tracking-wider">{label}</Label>
+                <Label htmlFor={field} className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]">{label}</Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
                   <Input
@@ -185,7 +187,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                     value={values[field]}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                    className="h-11 pl-7 border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
                   />
                 </div>
                 {renderError(field)}
@@ -195,26 +197,26 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
         </div>
 
         {/* === Deductions Section === */}
-        <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-50 pb-4">
+        <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2] space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#E1D4C7]/60 pb-4">
             <TrendingDown className="h-5 w-5 text-rose-500" />
-            <h3 className="text-lg font-bold text-slate-800 uppercase tracking-wider">Deductions</h3>
+            <h3 className="text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-wider">Deductions</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="is_epf_applicable" className="text-sm font-bold text-slate-700 uppercase tracking-wider">EPF Applicable?</Label>
+              <Label htmlFor="is_epf_applicable" className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]">EPF Applicable?</Label>
               <Select
                 value={values.is_epf_applicable ? "true" : "false"}
                 onValueChange={(value) =>
                   setFieldValue("is_epf_applicable", value === "true")
                 }
               >
-                <SelectTrigger className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik">
+                <SelectTrigger className="h-11 border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="font-graphik">
-                  <SelectItem value="true">Yes</SelectItem>
-                  <SelectItem value="false">No</SelectItem>
+                <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
+                  <SelectItem value="true" className="focus:bg-[#F5ECE4] focus:text-[#734425]">Yes</SelectItem>
+                  <SelectItem value="false" className="focus:bg-[#F5ECE4] focus:text-[#734425]">No</SelectItem>
                 </SelectContent>
               </Select>
               {renderError("is_epf_applicable")}
@@ -228,7 +230,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                   ["epf_admin", "EPF Admin"],
                 ].map(([field, label]) => (
                   <div key={field} className="space-y-2">
-                    <Label htmlFor={field} className="text-sm font-bold text-slate-700 uppercase tracking-wider">{label}</Label>
+                    <Label htmlFor={field} className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]">{label}</Label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
                       <Input
@@ -238,7 +240,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                         value={values[field]}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="h-11 pl-7 border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                        className="h-11 pl-7 border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
                       />
                     </div>
                     {renderError(field)}
@@ -251,10 +253,10 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
       </div>
 
       {/* === Payment Details === */}
-      <div className="p-6 border border-gray-100 rounded-xl shadow-sm bg-white space-y-6">
-        <div className="flex items-center gap-3 border-b border-slate-50 pb-4">
-          <CreditCard className="h-5 w-5 text-blue-500" />
-          <h3 className="text-lg font-bold text-slate-800 uppercase tracking-wider">Payment Details</h3>
+      <div className="p-6 border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2] space-y-6">
+        <div className="flex items-center gap-3 border-b border-[#E1D4C7]/60 pb-4">
+          <CreditCard className="h-5 w-5 text-[#734425]" />
+          <h3 className="text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-wider">Payment Details</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -264,7 +266,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
             ["upi_number", "UPI Number"],
           ].map(([field, label]) => (
             <div key={field} className="space-y-2">
-              <Label htmlFor={field} className="text-sm font-bold text-slate-700 uppercase tracking-wider">{label}</Label>
+              <Label htmlFor={field} className="text-[11px] uppercase tracking-wider font-heading font-bold text-[#734425]">{label}</Label>
               <Input
                 id={field}
                 name={field}
@@ -272,7 +274,7 @@ const SalaryForm = forwardRef(({ salaryInfo, setSalaryInfo }, ref) => {
                 value={values[field]}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="h-11 border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border-[#E1D4C7] bg-[#F5ECE4]/50 focus:ring-[#734425]/20 focus:border-[#734425] transition-all font-sans text-sm text-[#2E2E2E] rounded-xl"
               />
               {renderError(field)}
             </div>

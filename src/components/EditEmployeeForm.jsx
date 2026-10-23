@@ -284,7 +284,7 @@ const EditEmployeeForm = ({
   };
 
   return (
-    <Card className="w-full  mx-auto min-h-[80vh] max-h-[80vh] flex flex-col">
+    <Card className="w-full mx-auto min-h-[80vh] max-h-[80vh] flex flex-col rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2]">
       <CardContent className="flex-1 overflow-y-auto px-6">
         <Tabs
           value={activeTab}
@@ -294,8 +294,8 @@ const EditEmployeeForm = ({
           }}
           className="w-full"
         >
-          <div className="sticky top-0 z-10 bg-white py-4">
-            <TabsList className="grid w-full grid-cols-6">
+          <div className="sticky top-0 z-10 bg-[#FAF6F2] py-4">
+            <TabsList className="grid w-full grid-cols-6 bg-[#F5ECE4]/70 border border-[#E1D4C7] p-1.5 rounded-2xl">
               <TabsTrigger
                 value="basic"
                 className="flex items-center space-x-2"
@@ -401,14 +401,14 @@ const EditEmployeeForm = ({
           </TabsContent>
         </Tabs>
       </CardContent>
-      <div className="flex justify-end space-x-4 py-4 mr-4">
-        <Button type="button" variant="outline" onClick={onClose}>
+      <div className="flex justify-end space-x-4 py-4 px-6 border-t border-[#E1D4C7] bg-[#FAF6F2]">
+        <Button type="button" variant="outline" className="border-[#E1D4C7] bg-[#F5ECE4] hover:bg-[#FAF6F2] text-[#734425] rounded-xl font-heading font-bold" onClick={onClose}>
           Cancel
         </Button>
         {activeTab !== "leave" && (
           <Button
             onClick={handleSave}
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="bg-[#734425] hover:bg-[#5D361D] text-white rounded-xl font-heading font-bold uppercase tracking-wider text-xs shadow-md"
             disabled={loader}
           >
             {loader ? "Saving..." : "Save Changes"}

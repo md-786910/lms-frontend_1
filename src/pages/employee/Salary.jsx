@@ -112,83 +112,88 @@ const Salary = () => {
   }, [updateDashboard]);
 
   return (
-    <div className=" space-y-8">
-      {/* Header */}
-      <div className="rounded-md border border-slate-200 bg-white/80 shadow-sm backdrop-blur-sm p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold text-slate-900">
-            Salary &amp; Payroll
-          </h1>
-          <p className="text-slate-600 text-sm">
-            Your monthly payout overview, deductions, and downloadable payslips in one place.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            variant="outline"
-            className="border-slate-200 text-slate-800 hover:text-slate-900"
-            onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
-          >
-            View History
-          </Button>
-          <Button
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-md shadow-slate-900/20 font-graphik"
-            onClick={async () => {
-              const currentMonth = salaryHistory?.find(
-                (item) => item?.month_in_digit === month_in_digit
-              );
-              if (!currentMonth?.["salary_slip"]) {
-                toast.error("No payslip found for the current month.");
-                return;
-              }
-              handleDownloadSalary(month_in_digit);
-            }}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Download Payslip
-          </Button>
-        </div>
-      </div>
+    <div className="space-y-8">
+      {/* Header Banner */}
+      <Card className="border border-[#E1D4C7]/30 shadow-xl rounded-2xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white overflow-hidden">
+        <CardContent className="p-6 md:p-8 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+          <div className="space-y-2">
+            <span className="inline-block text-[11px] font-heading font-bold tracking-widest text-[#E1D4C7] uppercase bg-white/10 px-3 py-1 rounded-full">
+              Compensation & Payroll
+            </span>
+            <h1 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white">
+              Salary &amp; Payroll
+            </h1>
+            <p className="text-white/80 text-sm font-sans">
+              Your monthly payout overview, deductions, and downloadable payslips in one place.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              variant="outline"
+              className="rounded-xl border-white/20 bg-white/10 text-white hover:bg-white hover:text-[#24130A] font-heading font-semibold text-xs uppercase tracking-wider"
+              onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
+            >
+              View History
+            </Button>
+            <Button
+              className="rounded-xl bg-[#FAF6F2] text-[#734425] hover:bg-white hover:text-[#5D361D] font-heading font-bold text-xs uppercase tracking-wider shadow-lg"
+              onClick={async () => {
+                const currentMonth = salaryHistory?.find(
+                  (item) => item?.month_in_digit === month_in_digit
+                );
+                if (!currentMonth?.["salary_slip"]) {
+                  toast.error("No payslip found for the current month.");
+                  return;
+                }
+                handleDownloadSalary(month_in_digit);
+              }}
+            >
+              <Download className="h-4 w-4 mr-2 text-[#C26819]" />
+              Download Payslip
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Current Salary Overview */}
-      <Card className="relative overflow-hidden rounded-md border border-slate-800/10 bg-[#111827] text-white shadow-2xl">
+      <Card className="relative overflow-hidden rounded-2xl border border-[#734425]/40 bg-[#24130A] text-white shadow-2xl">
         <CardContent className="relative p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-baseline gap-3">
-                <h2 className="text-4xl font-semibold tracking-tight">
+                <h2 className="text-4xl font-heading font-extrabold tracking-tight text-white">
                   ₹{salaryInfo?.payable_salary?.toLocaleString() ?? 0}
                 </h2>
-                <Badge className="bg-emerald-100 text-emerald-800 border-0 font-graphik">
+                <Badge className="bg-[#734425]/50 text-[#FAF6F2] border border-[#E1D4C7]/30 font-heading font-bold uppercase tracking-wider text-xs">
                   Net after deductions
                 </Badge>
               </div>
-              <p className="text-slate-300 text-sm font-graphik">
+              <p className="text-[#E1D4C7] text-xs font-sans tracking-wide">
                 Updated for {dayjs().format("MMMM YYYY")}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
               <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs text-slate-200 font-graphik">Gross Salary</p>
-                <p className="text-lg font-semibold">
+                <p className="text-xs text-[#E1D4C7] font-heading font-bold uppercase tracking-wider">Gross Salary</p>
+                <p className="text-lg font-heading font-bold text-white mt-1">
                   ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs text-slate-200">Deductions</p>
-                <p className="text-lg font-semibold">₹{mandatoryDeductions?.toLocaleString()}</p>
+                <p className="text-xs text-[#E1D4C7] font-heading font-bold uppercase tracking-wider">Deductions</p>
+                <p className="text-lg font-heading font-bold text-rose-300 mt-1">₹{mandatoryDeductions?.toLocaleString()}</p>
               </div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between text-xs text-slate-200">
-              <span>Net retention</span>
-              <span className="font-medium">{netRetention.toFixed(0)}%</span>
+            <div className="flex items-center justify-between text-xs text-[#E1D4C7] font-sans">
+              <span>Net retention rate</span>
+              <span className="font-heading font-bold text-white">{netRetention.toFixed(0)}%</span>
             </div>
             <div className="h-2 rounded-full bg-white/10 overflow-hidden">
               <div
-                className="h-full rounded-full bg-emerald-400"
+                className="h-full rounded-full bg-[#C26819]"
                 style={{ width: `${netRetention}%` }}
               />
             </div>
@@ -197,48 +202,48 @@ const Salary = () => {
       </Card>
 
       {/* YTD Summary */}
-      <Card className="border border-slate-200 shadow-lg rounded-md">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-slate-900">
-            <TrendingUp className="h-5 w-5 text-indigo-600" />
+      <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+        <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
+          <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+            <TrendingUp className="h-5 w-5 text-[#734425]" />
             Year-to-Date Summary ({dayjs().year()})
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <div className="flex items-center justify-between text-sm text-slate-600">
+            <div className="rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 p-4 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">
                 <span>Gross Pay</span>
-                <IndianRupee className="h-5 w-5 text-indigo-600" />
+                <IndianRupee className="h-4 w-4 text-[#734425]" />
               </div>
-              <p className="mt-2 text-2xl font-semibold text-slate-900">
+              <p className="mt-2 text-2xl font-heading font-extrabold text-[#24130A]">
                 ₹{ytdSummary?.grossPay?.toLocaleString() ?? 0}
               </p>
             </div>
-            <div className="rounded-xl border border-red-100 bg-red-50 p-4">
-              <div className="flex items-center justify-between text-sm text-red-700">
+            <div className="rounded-xl border border-rose-300/40 bg-rose-500/10 p-4 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-heading font-bold uppercase tracking-wider text-rose-700">
                 <span>Total Deductions</span>
-                <Minus className="h-5 w-5" />
+                <Minus className="h-4 w-4" />
               </div>
-              <p className="mt-2 text-2xl font-semibold text-red-700">
+              <p className="mt-2 text-2xl font-heading font-extrabold text-rose-700">
                 ₹{ytdSummary?.totalDeductions?.toLocaleString() ?? 0}
               </p>
             </div>
-            <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-4">
-              <div className="flex items-center justify-between text-sm text-emerald-700">
+            <div className="rounded-xl border border-emerald-300/40 bg-emerald-500/10 p-4 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-heading font-bold uppercase tracking-wider text-emerald-800">
                 <span>Net Pay</span>
-                <Plus className="h-5 w-5" />
+                <Plus className="h-4 w-4" />
               </div>
-              <p className="mt-2 text-2xl font-semibold text-emerald-700">
+              <p className="mt-2 text-2xl font-heading font-extrabold text-emerald-800">
                 ₹{ytdSummary?.netPay?.toLocaleString()}
               </p>
             </div>
-            <div className="rounded-xl border border-amber-100 bg-amber-50 p-4">
-              <div className="flex items-center justify-between text-sm text-amber-700">
+            <div className="rounded-xl border border-amber-300/40 bg-amber-500/10 p-4 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-heading font-bold uppercase tracking-wider text-[#C26819]">
                 <span>Tax Paid</span>
-                <Calendar className="h-5 w-5" />
+                <Calendar className="h-4 w-4" />
               </div>
-              <p className="mt-2 text-2xl font-semibold text-amber-700">
+              <p className="mt-2 text-2xl font-heading font-extrabold text-[#C26819]">
                 ₹{ytdSummary?.taxPaid?.toLocaleString()}
               </p>
             </div>
@@ -248,99 +253,99 @@ const Salary = () => {
 
       {/* Salary Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border border-slate-200 shadow-lg rounded-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900">
-              <Plus className="h-5 w-5 text-emerald-600" />
-              Earnings
+        <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+          <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
+            <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+              <Plus className="h-5 w-5 text-[#734425]" />
+              Earnings Breakdown
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-              <span className="text-slate-700">Basic Salary</span>
-              <span className="font-semibold text-emerald-700">
+          <CardContent className="space-y-3 pt-6">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">Basic Salary</span>
+              <span className="font-heading font-bold text-sm text-[#24130A]">
                 ₹{salaryInfo?.base_salary?.toLocaleString() ?? 0}
               </span>
             </div>
-            <div className="flex items-center justify-between rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-              <span className="text-slate-700">Allowances</span>
-              <span className="font-semibold text-emerald-700">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">Allowances</span>
+              <span className="font-heading font-bold text-sm text-[#24130A]">
                 ₹{allowancesTotal?.toLocaleString()}
               </span>
             </div>
-            <div className="flex items-center justify-between rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-              <span className="text-slate-700">Bonus</span>
-              <span className="font-semibold text-emerald-700">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">Bonus</span>
+              <span className="font-heading font-bold text-sm text-[#24130A]">
                 ₹{salaryInfo?.bonus?.toLocaleString() ?? 0}
               </span>
             </div>
-            <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-lg font-semibold">
-              <span className="text-slate-800">Total Earnings</span>
-              <span className="text-emerald-700">
+            <div className="border-t border-[#E1D4C7] pt-4 flex items-center justify-between text-base font-heading font-extrabold">
+              <span className="text-[#24130A] uppercase tracking-wide">Total Earnings</span>
+              <span className="text-[#734425] text-lg">
                 ₹{salaryInfo?.salary_with_allowance?.toLocaleString() ?? 0}
               </span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-slate-200 shadow-lg rounded-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900">
-              <Minus className="h-5 w-5 text-rose-600" />
-              Deductions
+        <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+          <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
+            <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+              <Minus className="h-5 w-5 text-rose-700" />
+              Deductions Breakdown
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between rounded-xl border border-rose-100 bg-rose-50 px-4 py-3">
-              <span className="text-slate-700">Income Tax</span>
-              <span className="font-semibold text-rose-700">₹0</span>
+          <CardContent className="space-y-3 pt-6">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">Income Tax</span>
+              <span className="font-heading font-bold text-sm text-[#2E2E2E]">₹0</span>
             </div>
-            <div className="flex items-center justify-between rounded-xl border border-rose-100 bg-rose-50 px-4 py-3">
-              <span className="text-slate-700">PF Deduction</span>
-              <span className="font-semibold text-rose-700">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">PF Deduction</span>
+              <span className="font-heading font-bold text-sm text-rose-700">
                 ₹{mandatoryDeductions?.toLocaleString()}
               </span>
             </div>
-            <div className="flex items-center justify-between rounded-xl border border-rose-100 bg-rose-50 px-4 py-3">
-              <span className="text-slate-700">Other Deductions</span>
-              <span className="font-semibold text-rose-700">₹0</span>
+            <div className="flex items-center justify-between rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/70 px-4 py-3">
+              <span className="text-sm font-sans text-[#2E2E2E]">Other Deductions</span>
+              <span className="font-heading font-bold text-sm text-[#2E2E2E]">₹0</span>
             </div>
-            <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-lg font-semibold">
-              <span className="text-slate-800">Total Deductions</span>
-              <span className="text-rose-700">₹{mandatoryDeductions?.toLocaleString()}</span>
+            <div className="border-t border-[#E1D4C7] pt-4 flex items-center justify-between text-base font-heading font-extrabold">
+              <span className="text-[#24130A] uppercase tracking-wide">Total Deductions</span>
+              <span className="text-rose-700 text-lg">₹{mandatoryDeductions?.toLocaleString()}</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Salary History */}
-      <Card className="border border-slate-200 shadow-xl rounded-md" id="salary-history">
+      <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2] overflow-hidden" id="salary-history">
   
   {/* Header */}
-  <CardHeader className="flex flex-col gap-2">
-    <CardTitle className="text-slate-900 text-lg sm:text-xl">
+  <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
+    <CardTitle className="font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
       Salary History
     </CardTitle>
-    <p className="text-sm text-slate-600">
+    <p className="text-xs text-[#2E2E2E]/70 font-sans">
       Download past payslips and review payout status.
     </p>
   </CardHeader>
 
-  <CardContent>
+  <CardContent className="p-0">
 
     {/* ================= DESKTOP TABLE ================= */}
-    <div className="hidden lg:block overflow-x-auto rounded-xl border border-slate-100">
+    <div className="hidden lg:block overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-slate-700">
-          <tr className="border-b border-slate-200">
-            <th className="text-left py-3 px-4">Month</th>
-            <th className="text-right py-3 px-4">Basic</th>
-            <th className="text-right py-3 px-4">Allowances</th>
-            <th className="text-right py-3 px-4">Bonus</th>
-            <th className="text-right py-3 px-4">Deductions</th>
-            <th className="text-right py-3 px-4">Net</th>
-            <th className="text-center py-3 px-4">Status</th>
-            <th className="text-center py-3 px-4">Action</th>
+        <thead className="bg-[#FAF6F2]/80 text-[#734425]">
+          <tr className="border-b border-[#E1D4C7]">
+            <th className="text-left py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Month</th>
+            <th className="text-right py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Basic</th>
+            <th className="text-right py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Allowances</th>
+            <th className="text-right py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Bonus</th>
+            <th className="text-right py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Deductions</th>
+            <th className="text-right py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Net</th>
+            <th className="text-center py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Status</th>
+            <th className="text-center py-3.5 px-4 font-heading font-bold uppercase tracking-wider text-xs">Action</th>
           </tr>
         </thead>
 
@@ -386,7 +391,7 @@ const Salary = () => {
         salaryHistory.map((record, index) => (
           <div
             key={index}
-            className="border border-slate-200 rounded-xl p-4 shadow-sm bg-white space-y-3"
+            className="border border-[#E1D4C7] rounded-2xl p-4 shadow-sm bg-[#FAF6F2] space-y-3"
           >
 
             {/* Top Row */}

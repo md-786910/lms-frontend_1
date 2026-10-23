@@ -184,89 +184,94 @@ function Company({ value }) {
 
   return (
     <>
-      <Card className="border-0 shadow-md">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
-            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+      <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-2xl">
+        <CardHeader className="border-b border-[#E1D4C7]/60 pb-5">
+          <CardTitle className="flex items-center space-x-3 text-xl font-heading font-bold uppercase tracking-tight text-[#24130A]">
+            <span className="border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] flex h-11 w-11 items-center justify-center rounded-xl shadow-sm">
               <Building2 className="h-5 w-5" />
             </span>
-            <span>Company Information</span>
+            <div>
+              <span>Company Information</span>
+              <p className="text-xs text-[#2E2E2E]/60 font-sans normal-case tracking-normal mt-0.5 font-normal">
+                Manage organization profile, business identifiers, and public details
+              </p>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="space-y-6 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="companyName" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Company Name</Label>
+              <Label htmlFor="companyName" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Company Name</Label>
               <Input
                 id="companyName"
                 name="company_name"
                 value={companyData?.company_name ?? ""}
                 onChange={handleChange}
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               />
               {errors.company_name && (
-                <p className="text-red-500 text-sm">{errors.company_name}</p>
+                <p className="text-red-500 text-xs">{errors.company_name}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="companyEmail" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Email</Label>
+              <Label htmlFor="companyEmail" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Email</Label>
               <Input
                 id="companyEmail"
                 type="email"
                 name="email"
                 value={companyData?.email ?? ""}
                 onChange={handleChange}
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
                 disabled
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
+                <p className="text-red-500 text-xs">{errors.email}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="companyPhone" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Phone</Label>
+              <Label htmlFor="companyPhone" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Phone</Label>
               <Input
                 id="companyPhone"
                 name="phone_number"
                 value={companyData?.phone_number ?? ""}
                 onChange={handleChange}
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               />
               {errors.phone_number && (
-                <p className="text-red-500 text-sm">{errors.phone_number}</p>
+                <p className="text-red-500 text-xs">{errors.phone_number}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="companyWebsite" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Website</Label>
+              <Label htmlFor="companyWebsite" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Website</Label>
               <Input
                 id="companyWebsite"
                 name="company_website"
                 value={companyData?.company_website ?? ""}
                 onChange={handleChange}
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               />
               {errors.company_website && (
-                <p className="text-red-500 text-sm">{errors.company_website}</p>
+                <p className="text-red-500 text-xs">{errors.company_website}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="taxId" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">CIN Number</Label>
+              <Label htmlFor="taxId" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">CIN Number</Label>
               <Input
                 id="taxId"
                 name="tax_no"
                 value={companyData?.tax_no ?? ""}
                 onChange={handleChange}
-                className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                className="h-11 border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               />
               {errors.tax_no && (
-                <p className="text-red-500 text-sm">{errors.tax_no}</p>
+                <p className="text-red-500 text-xs">{errors.tax_no}</p>
               )}
             </div>
             <div className="space-y-2">
-              <label htmlFor="companyLogo" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Logo</label>
-              <div className="flex item-center space-x-3">
+              <label htmlFor="companyLogo" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425] block">Logo</label>
+              <div className="flex items-center space-x-3">
                 <input
-                  className="rounded-md border  border-input bg-background px-3 py-2 ring-offset-background file:border-0  w-full text-sm text-gray-600"
+                  className="rounded-xl border border-[#E1D4C7] bg-[#F5ECE4]/50 px-3 py-2 text-xs text-[#2E2E2E] w-full"
                   id="companyLogo"
                   type="file"
                   accept="image/*"
@@ -276,36 +281,36 @@ function Company({ value }) {
                   <img
                     src={companyLogo}
                     alt="Company Logo"
-                    className="w-8 h-8 object-cover rounded"
+                    className="w-10 h-10 object-cover rounded-xl border border-[#E1D4C7]"
                   />
                 )}
               </div>
               {logoUploading && (
-                <div className="text-red-800">Uploading...</div>
+                <div className="text-xs text-[#C26819]">Uploading...</div>
               )}
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="companyAddress" className="text-sm font-bold text-slate-700 font-graphik capitalize tracking-wider">Address</Label>
+            <Label htmlFor="companyAddress" className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">Address</Label>
             <Textarea
               id="companyAddress"
               name="address"
               value={companyData?.address ?? ""}
               onChange={handleChange}
-              className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+              className="border border-[#E1D4C7] bg-[#F5ECE4]/50 rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
               rows={3}
             />
             {errors.address && (
-              <p className="text-red-500 text-sm">{errors.address}</p>
+              <p className="text-red-500 text-xs">{errors.address}</p>
             )}
           </div>
           <Button
             onClick={() => handleSave()}
             disabled={loader}
-            className="border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
+            className="bg-[#734425] hover:bg-[#5D361D] text-white rounded-xl font-heading font-bold uppercase tracking-wider text-xs shadow-md px-6 py-2.5"
           >
             <Save className="h-4 w-4 mr-2" />
-            {loader ? "saving data..." : "Save Company Details"}
+            {loader ? "Saving data..." : "Save Company Details"}
           </Button>
         </CardContent>
       </Card>

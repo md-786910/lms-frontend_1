@@ -152,17 +152,18 @@ const EmployeeLeave = () => {
   return (
     <div className="min-h-[calc(100vh-110px)] flex flex-col space-y-6 overflow-y-auto scroll-smooth mb-5">
       {/* Header */}
-      <Card className="border border-slate-200 shadow-md rounded-md bg-slate-900 text-white">
-        <CardContent className="p-5 md:p-7">
+      <Card className="border border-[#E1D4C7]/30 shadow-xl rounded-2xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white overflow-hidden">
+        <CardContent className="p-6 md:p-8">
           <div className="grid grid-cols-12 gap-4 items-center">
             {/* Left Content */}
             <div className="col-span-12 md:col-span-8 space-y-2">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl sm:text-3xl font-bold font-graphik text-white">
-                  Leave Management
-                </h1>
-              </div>
-              <p className="text-white font-medium text-sm font-graphik">
+              <span className="inline-block text-[11px] font-heading font-bold tracking-widest text-[#E1D4C7] uppercase bg-white/10 px-3 py-1 rounded-full">
+                Leave Management
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-heading font-extrabold uppercase tracking-tight text-white">
+                Leave &amp; Time Off
+              </h1>
+              <p className="text-white/80 font-sans text-sm">
                 Track balances, submit requests, and view leave history with ease
               </p>
             </div>
@@ -170,14 +171,14 @@ const EmployeeLeave = () => {
             {/* Right Button */}
             <div className="col-span-12 md:col-span-4 flex md:justify-end">
               <Button
-                className="w-full sm:w-auto rounded-xl shadow-sm border border-slate-200 flex items-center justify-center gap-2 py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-white hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="w-full sm:w-auto rounded-xl shadow-md border border-[#E1D4C7] flex items-center justify-center gap-2 py-2.5 px-5 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-white cursor-pointer transition ease-in-out duration-300"
                 onClick={() => {
                   setReadOnly(false);
                   setLeaveRequestViewMode({});
                   setShowRequestModal(true);
                 }}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 text-[#C26819]" />
                 Request Leave
               </Button>
             </div>
@@ -186,47 +187,47 @@ const EmployeeLeave = () => {
       </Card>
 
       {/* Leave Balance - Top Section */}
-      <Card className="border border-slate-200 shadow-sm rounded-md bg-white">
-        <CardContent className="p-4 md:p-5">
+      <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+        <CardContent className="p-5 md:p-6">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
             <div className="md:col-span-1">
-              <p className="text-xs font-bold tracking-wide text-slate-500 font-graphik uppercase">
+              <p className="text-xs font-heading font-bold tracking-wider text-[#734425] uppercase">
                 Current Cycle
               </p>
-              <h2 className="text-xl font-bold text-slate-900 font-graphik">
+              <h2 className="text-xl font-heading font-extrabold text-[#24130A] mt-0.5">
                 {leaveDash?.cycle_name || "Current Cycle"}:{" "}
                 {leaveDash?.cycle_label || "-"}
               </h2>
             </div>
-            <div className="rounded-md bg-slate-50 border border-slate-100 p-3">
-              <p className="text-xs font-semibold text-slate-500 font-graphik">
+            <div className="rounded-xl bg-[#FAF6F2] border border-[#E1D4C7] p-3.5 shadow-sm">
+              <p className="text-xs font-heading font-bold uppercase tracking-wider text-[#734425]">
                 Cycle Entitlement
               </p>
-              <p className="text-2xl font-bold text-slate-900 font-graphik">
+              <p className="text-2xl font-heading font-extrabold text-[#24130A] mt-1">
                 {formatLeaveDays(leaveDash?.cycle_total ?? 0)}
               </p>
             </div>
-            <div className="rounded-md bg-amber-50 border border-amber-100 p-3">
-              <p className="text-xs font-semibold text-amber-700 font-graphik">
+            <div className="rounded-xl bg-amber-500/10 border border-amber-300/40 p-3.5 shadow-sm">
+              <p className="text-xs font-heading font-bold uppercase tracking-wider text-[#C26819]">
                 Availed In Cycle
               </p>
-              <p className="text-2xl font-bold text-amber-700 font-graphik">
+              <p className="text-2xl font-heading font-extrabold text-[#C26819] mt-1">
                 {formatLeaveDays(leaveDash?.cycle_availed ?? leaveDash?.cycle_used ?? 0)}
               </p>
             </div>
-            <div className="rounded-md bg-rose-50 border border-rose-100 p-3">
-              <p className="text-xs font-semibold text-rose-700 font-graphik">
+            <div className="rounded-xl bg-rose-500/10 border border-rose-300/40 p-3.5 shadow-sm">
+              <p className="text-xs font-heading font-bold uppercase tracking-wider text-rose-700">
                 Deduction In Cycle
               </p>
-              <p className="text-2xl font-bold text-rose-700 font-graphik">
+              <p className="text-2xl font-heading font-extrabold text-rose-700 mt-1">
                 {formatLeaveDays(leaveDash?.cycle_deduction ?? 0)}
               </p>
             </div>
-            <div className="rounded-md bg-emerald-50 border border-emerald-100 p-3">
-              <p className="text-xs font-semibold text-emerald-700 font-graphik">
+            <div className="rounded-xl bg-emerald-500/10 border border-emerald-300/40 p-3.5 shadow-sm">
+              <p className="text-xs font-heading font-bold uppercase tracking-wider text-emerald-800">
                 Remaining In Cycle
               </p>
-              <p className="text-2xl font-bold text-emerald-700 font-graphik">
+              <p className="text-2xl font-heading font-extrabold text-emerald-800 mt-1">
                 {formatLeaveDays(leaveDash?.cycle_remaining ?? 0)}
               </p>
             </div>
@@ -240,25 +241,25 @@ const EmployeeLeave = () => {
             leave.cycle_leave_availed ?? leave.cycle_leave_used ?? leave.leave_used ?? 0;
           const formattedAvailed = formatLeaveDays(cycleAvailed);
           return (
-            <Card key={index} className="border border-slate-200 shadow-sm rounded-md bg-white">
-              <CardContent className="p-4">
-                <div className="mb-4 flex items-start justify-between">
+            <Card key={index} className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+              <CardContent className="p-5">
+                <div className="mb-3 flex items-start justify-between">
                   <div>
-                    <p className="text-xl  font-semibold tracking-wide text-slate-700 font-graphik">
+                    <p className="text-base font-heading font-bold text-[#734425] uppercase tracking-wide">
                       {leave.leave_type}
                     </p>
-                    <h4 className="text-lg font-semibold text-slate-900 font-graphik mt-1">
+                    <h4 className="text-xl font-heading font-extrabold text-[#24130A] mt-1">
                       {formattedAvailed} availed
                     </h4>
                   </div>
-                  <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-600 ring-1 ring-slate-200">
+                  <span className="rounded-full bg-[#734425]/10 px-2.5 py-0.5 text-[10px] font-heading font-bold uppercase tracking-wider text-[#734425] border border-[#E1D4C7]">
                     {leaveDash?.cycle_name || leave.cycle_name || "Cycle"}
                   </span>
                 </div>
-                <div className="space-y-2 text-sm text-slate-600 font-graphik mb-3">
+                <div className="space-y-2 text-xs text-[#2E2E2E]/70 font-sans">
                   <div className="flex justify-between">
                     <span>Availed in cycle</span>
-                    <span className="font-semibold text-amber-600">
+                    <span className="font-heading font-bold text-[#C26819]">
                       {formattedAvailed}
                     </span>
                   </div>
@@ -281,14 +282,14 @@ const EmployeeLeave = () => {
                     paginatedRequests.map((request) => (
                       <Card
                         key={request.id}
-                        className="group border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                        className="group border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                       >
                       <div className="p-1">
-                        <div className="bg-white rounded-[14px] p-4 space-y-3">
+                        <div className="bg-[#F5ECE4]/70 border border-[#E1D4C7]/60 rounded-xl p-4 space-y-3">
                           {/* Header with Leave Type and Status */}
                           <div className="flex items-start justify-between">
                             <div className="space-y-0.5">
-                              <h3 className="font-semibold font-graphik text-slate-900 text-lg group-hover:text-indigo-600 transition-colors">
+                              <h3 className="font-heading font-bold text-[#2E2E2E] text-lg group-hover:text-[#734425] transition-colors">
                                 {request.leave_type?.leave_type || request.type} Leave Request
                               </h3>
                               <p className="text-xs text-slate-500 font-graphik">
@@ -306,7 +307,7 @@ const EmployeeLeave = () => {
 
                           {/* Leave Details Grid */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                            <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-xl py-2 px-3 space-y-1">
                               <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <Calendar className="h-3 w-3" />
                                 Applied On
@@ -316,7 +317,7 @@ const EmployeeLeave = () => {
                               </div>
                             </div>
 
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                            <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-xl py-2 px-3 space-y-1">
                               <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <Clock className="h-3 w-3" />
                                 Duration
@@ -326,7 +327,7 @@ const EmployeeLeave = () => {
                               </div>
                             </div>
 
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                            <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-xl py-2 px-3 space-y-1">
                               <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <CalendarDays className="h-3 w-3" />
                                 Leave Dates
@@ -336,7 +337,7 @@ const EmployeeLeave = () => {
                               </div>
                             </div>
 
-                            <div className="bg-slate-50/80 border border-slate-100 rounded-md py-2 px-3 space-y-1">
+                            <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-xl py-2 px-3 space-y-1">
                               <div className="flex items-center gap-2 text-[10px] capitalize tracking-wider font-bold font-graphik text-slate-400">
                                 <FileText className="h-3 w-3" />
                                 Type
@@ -348,7 +349,7 @@ const EmployeeLeave = () => {
                           </div>
 
                           {/* Reason Section */}
-                          <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-md py-2 px-3">
+                          <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-xl py-2 px-3">
                             <div className="text-[10px] capitalize font-graphik tracking-wider font-semibold text-slate-400 mb-1.5 flex items-center gap-1.5">
                               <MoreVertical className="h-3 w-3 rotate-90" />
                               Reason for Leave
@@ -359,7 +360,7 @@ const EmployeeLeave = () => {
                           </div>
 
                           {/* Footer Row: Meta & Actions */}
-                          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
+                          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-[#E1D4C7]">
                             <div className="text-sm w-full sm:w-auto">
                               {request?.status === "approved" && (
                                 <div className="flex items-center gap-2 text-emerald-600 font-semibold font-graphik bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
@@ -435,7 +436,7 @@ const EmployeeLeave = () => {
                     </Card>
                   ))
                 ) : (
-                  <div className="bg-white border border-slate-200 rounded-2xl py-20">
+                  <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-2xl py-20">
                     <NoDataFound />
                   </div>
                 )}
@@ -446,7 +447,7 @@ const EmployeeLeave = () => {
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 bg-white px-3 py-3 border border-slate-200 rounded-xl shrink-0">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#FAF6F2] px-4 py-3 border border-[#E1D4C7] rounded-2xl shrink-0">
               <div className="w-full sm:w-auto text-center sm:text-left">
                 <p className="text-sm font-medium text-slate-500 font-graphik">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}
@@ -475,10 +476,10 @@ const EmployeeLeave = () => {
                       variant={currentPage === i + 1 ? "default" : "outline"}
                       size="sm"
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`min-w-[36px] h-9 px-2 rounded-lg font-graphik text-sm font-semibold transition-all duration-200 ${
+                      className={`min-w-[36px] h-9 px-2 rounded-xl font-heading text-xs font-bold transition-all duration-200 ${
                         currentPage === i + 1
-                          ? "bg-slate-900 text-white shadow-md scale-105"
-                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                          ? "bg-[#734425] text-white shadow-md scale-105"
+                          : "border-[#E1D4C7] bg-[#F5ECE4] text-[#2E2E2E] hover:bg-[#FAF6F2]"
                       }`}
                     >
                       {i + 1}
@@ -505,10 +506,10 @@ const EmployeeLeave = () => {
         {/* Sidebar - Filter & Stats */}
         <div className="space-y-4 flex flex-col">
           {/* Filter Card */}
-          <Card className="border border-slate-200 shadow-sm rounded-md bg-white h-fit md:sticky md:top-20">
-            <CardHeader className="pb-4 border-b border-slate-100">
-              <CardTitle className="text-base font-bold text-slate-900 font-graphik flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+          <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2] h-fit md:sticky md:top-20">
+            <CardHeader className="pb-4 border-b border-[#E1D4C7] bg-[#FAF6F2]">
+              <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-2">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425]">
                   <Filter className="h-4 w-4" />
                 </div>
                 Filter
@@ -521,10 +522,10 @@ const EmployeeLeave = () => {
                   Status
                 </label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-graphik">
+                  <SelectTrigger className="w-full rounded-xl border-[#E1D4C7] bg-[#F5ECE4]/60 text-[#2E2E2E] font-graphik">
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
                     <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="approved">Approved</SelectItem>
@@ -539,10 +540,10 @@ const EmployeeLeave = () => {
                   Month
                 </label>
                 <Select value={monthFilter} onValueChange={setMonthFilter}>
-                  <SelectTrigger className="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 font-graphik">
+                  <SelectTrigger className="w-full rounded-xl border-[#E1D4C7] bg-[#F5ECE4]/60 text-[#2E2E2E] font-graphik">
                     <SelectValue placeholder="Filter by month" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#FAF6F2] border-[#E1D4C7]">
                     <SelectItem value="all">All Months</SelectItem>
                     {[...Array(12)].map((_, i) => {
                       const date = dayjs().month(i);
@@ -561,7 +562,7 @@ const EmployeeLeave = () => {
           </Card>
 
           {/* Quick Stats */}
-          <Card className="border border-emerald-100 shadow-[0_8px_24px_rgba(16,185,129,0.12)] rounded-2xl bg-white">
+          <Card className="border border-emerald-200/80 shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
@@ -583,7 +584,7 @@ const EmployeeLeave = () => {
             </CardContent>
           </Card>
 
-          <Card className="border border-amber-100 shadow-[0_8px_24px_rgba(245,158,11,0.12)] rounded-2xl bg-white">
+          <Card className="border border-amber-200/80 shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
@@ -603,7 +604,7 @@ const EmployeeLeave = () => {
             </CardContent>
           </Card>
 
-          <Card className="border border-indigo-100 shadow-[0_8px_24px_rgba(99,102,241,0.12)] rounded-2xl bg-white">
+          <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
@@ -625,7 +626,7 @@ const EmployeeLeave = () => {
             </CardContent>
           </Card>
 
-          <Card className="border border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.08)] rounded-2xl bg-white">
+          <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 text-slate-700">

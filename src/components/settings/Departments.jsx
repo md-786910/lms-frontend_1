@@ -99,72 +99,78 @@ function Departments({ value }) {
 
   return (
     <>
-      <Card className="border-0 shadow-md">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-2xl font-bold text-slate-700 font-graphik capitalize tracking-wider">
-            <span className="border-[#e2e8f0] bg-[#e2e8f0] text-[#047857] flex h-10 w-10 items-center justify-center rounded-md">
+      <Card className="border border-[#E1D4C7] bg-[#FAF6F2] shadow-sm rounded-2xl">
+        <CardHeader className="border-b border-[#E1D4C7]/60 pb-5">
+          <CardTitle className="flex items-center space-x-3 text-xl font-heading font-bold uppercase tracking-tight text-[#24130A]">
+            <span className="border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] flex h-11 w-11 items-center justify-center rounded-xl shadow-sm">
               <Users className="h-5 w-5" />
             </span>
-            <span>Department Management</span>
+            <div>
+              <span>Department Management</span>
+              <p className="text-xs text-[#2E2E2E]/60 font-sans normal-case tracking-normal mt-0.5 font-normal">
+                Define functional teams, business divisions, and departmental descriptions
+              </p>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 pt-6">
           {/* Add New Department */}
-          <div className="p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-bold text-slate-700 font-graphik capitalize tracking-wider mb-4">
+          <div className="p-5 bg-[#F5ECE4]/70 border border-[#E1D4C7] rounded-2xl shadow-sm">
+            <h3 className="font-heading font-bold text-xs uppercase tracking-wider text-[#734425] mb-4">
               Add New Department
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Input
-                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                  className="h-11 border border-[#E1D4C7] bg-[#FAF6F2] rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
                   placeholder="Department Name"
                   name="name"
                   value={newDepartment?.name ?? ""}
                   onChange={handleChange}
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name}</p>
+                  <p className="text-red-500 text-xs mt-1">{errors.name}</p>
                 )}
               </div>
               <div>
                 <Input
-                  className="h-11 border border-slate-200 focus:border-slate-900 transition-all font-graphik"
+                  className="h-11 border border-[#E1D4C7] bg-[#FAF6F2] rounded-xl focus:border-[#734425] transition-all text-[#2E2E2E]"
                   placeholder="Description"
                   name="description"
                   value={newDepartment?.description ?? ""}
                   onChange={handleChange}
                 />
                 {errors.description && (
-                  <p className="text-red-500 text-sm">{errors.description}</p>
+                  <p className="text-red-500 text-xs mt-1">{errors.description}</p>
                 )}
               </div>
             </div>
             <Button
               onClick={addDepartment}
               disabled={loader}
-              className="mt-4 border-slate-900 bg-slate-800 hover:bg-slate-900 text-white shadow-xl shadow-slate-900/20 font-graphik"
+              className="mt-4 bg-[#734425] hover:bg-[#5D361D] text-white rounded-xl font-heading font-bold uppercase tracking-wider text-xs shadow-md px-6 py-2.5"
             >
               <Plus className="h-4 w-4 mr-2" />
-              {loader ? "saving data..." : "Save Department Details"}
+              {loader ? "Saving data..." : "Save Department Details"}
             </Button>
           </div>
 
           {/* Existing Departments */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {listDepartment?.map((dept) => (
               <div
                 key={dept.id}
-                className="flex items-center justify-between p-4 font-graphik border border-slate-200 rounded-lg"
+                className="flex items-center justify-between p-4 border border-[#E1D4C7] bg-[#FAF6F2] rounded-xl hover:border-[#734425] transition-all shadow-sm"
               >
                 <div>
-                  <h4 className="font-medium text-slate-800 font-graphik">{dept.name}</h4>
-                  <p className="text-sm text-slate-500 font-graphik">{dept.description}</p>
+                  <h4 className="font-heading font-bold text-sm text-[#24130A]">{dept.name}</h4>
+                  <p className="text-xs text-[#2E2E2E]/70 font-sans mt-0.5">{dept.description}</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="text-[#734425] hover:bg-[#734425]/10 rounded-xl"
                     onClick={() => setSelectedDepartment(dept)}
                   >
                     <Edit3 className="h-4 w-4" />
@@ -172,7 +178,7 @@ function Departments({ value }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-red-600"
+                    className="text-red-600 hover:bg-red-50 rounded-xl"
                     onClick={() => {
                       confirmFn({
                         onDelete: async () => {

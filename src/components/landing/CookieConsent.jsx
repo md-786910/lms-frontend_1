@@ -91,21 +91,21 @@ const CookieConsent = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[120] px-4 pb-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/20">
+    <div className="fixed inset-x-0 bottom-0 z-[120] px-4 pb-4 sm:px-6 lg:px-8 font-sans">
+      <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-[#E1D4C7] bg-[#FAF6F2] shadow-2xl shadow-stone-900/20">
         <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-start">
           <div className="flex gap-4">
-            <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#222875] text-white sm:flex">
+            <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#734425] text-[#FAF6F2] sm:flex">
               <Cookie className="h-6 w-6" />
             </div>
             <div>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-950">Cookie preferences</h2>
+                  <h2 className="text-lg font-bold text-[#2E2E2E] font-heading">Cookie preferences</h2>
                   <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                     We use essential browser storage for login/session behavior and core site operation.
                     Optional cookies or storage are used only if you accept them. Read the{" "}
-                    <Link to="/company/cookie-policy" className="font-bold text-[#222875] hover:underline">
+                    <Link to="/company/cookie-policy" className="font-bold text-[#734425] hover:text-[#C26819] underline">
                       Cookie Policy
                     </Link>
                     .
@@ -114,7 +114,7 @@ const CookieConsent = () => {
                 <button
                   type="button"
                   onClick={() => setIsVisible(false)}
-                  className="rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                  className="rounded-full p-2 text-slate-400 transition hover:bg-[#EADCCF] hover:text-[#2E2E2E]"
                   aria-label="Close cookie notice"
                 >
                   <X className="h-5 w-5" />
@@ -128,15 +128,15 @@ const CookieConsent = () => {
                       key={item.id}
                       type="button"
                       onClick={() => togglePreference(item.id)}
-                      className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-[#90D7F5]"
+                      className="flex items-center justify-between gap-4 rounded-2xl border border-[#E1D4C7] bg-white p-4 text-left transition hover:border-[#C26819]"
                     >
                       <span>
-                        <span className="block font-bold text-slate-950">{item.title}</span>
-                        <span className="mt-1 block text-sm leading-6 text-slate-600">{item.description}</span>
+                        <span className="block font-bold text-[#2E2E2E] font-heading">{item.title}</span>
+                        <span className="mt-1 block text-sm leading-6 text-slate-600 font-sans">{item.description}</span>
                       </span>
                       <span
                         className={`relative h-7 w-12 shrink-0 rounded-full transition ${
-                          preferences[item.id] ? "bg-[#222875]" : "bg-slate-300"
+                          preferences[item.id] ? "bg-[#734425]" : "bg-stone-300"
                         } ${item.required ? "opacity-70" : ""}`}
                       >
                         <span
@@ -152,20 +152,20 @@ const CookieConsent = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row lg:w-60 lg:flex-col">
+          <div className="flex flex-col gap-3 sm:flex-row lg:w-60 lg:flex-col font-heading">
             {isManaging ? (
               <>
                 <button
                   type="button"
                   onClick={() => closeWithConsent("custom", preferences)}
-                  className="inline-flex items-center justify-center rounded-full bg-[#222875] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1a1f5c]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#734425] px-5 py-3 text-sm font-bold text-[#FAF6F2] transition hover:bg-[#5D361D]"
                 >
                   Save choices
                 </button>
                 <button
                   type="button"
                   onClick={() => closeWithConsent("rejected", defaultPreferences)}
-                  className="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-[#222875] hover:text-[#222875]"
+                  className="inline-flex items-center justify-center rounded-full border border-[#E1D4C7] px-5 py-3 text-sm font-bold text-[#2E2E2E] transition hover:border-[#734425] hover:text-[#734425]"
                 >
                   Reject optional
                 </button>
@@ -175,21 +175,21 @@ const CookieConsent = () => {
                 <button
                   type="button"
                   onClick={() => closeWithConsent("accepted", { essential: true, preferences: true, analytics: true })}
-                  className="inline-flex items-center justify-center rounded-full bg-[#222875] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1a1f5c]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#734425] px-5 py-3 text-sm font-bold text-[#FAF6F2] transition hover:bg-[#5D361D]"
                 >
                   Accept all
                 </button>
                 <button
                   type="button"
                   onClick={() => closeWithConsent("rejected", defaultPreferences)}
-                  className="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-[#222875] hover:text-[#222875]"
+                  className="inline-flex items-center justify-center rounded-full border border-[#E1D4C7] px-5 py-3 text-sm font-bold text-[#2E2E2E] transition hover:border-[#734425] hover:text-[#734425]"
                 >
                   Reject optional
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsManaging(true)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#222875] transition hover:bg-[#eefaff]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#734425] transition hover:bg-[#F5ECE4]"
                 >
                   <Settings2 className="h-4 w-4" />
                   Manage choices

@@ -181,39 +181,39 @@ const Leave = () => {
   return (
     <div className="min-h-[calc(100vh-110px)] space-y-6 pb-6">
       {/* Header */}
-      <Card className="border border-slate-200 shadow-lg rounded-md bg-slate-900 text-white shrink-0">
-        <CardContent className="p-5 md:p-7">
-          <div className="grid grid-cols-12 items-center gap-4 relative">
-            <div className="col-span-12 md:col-span-8 space-y-2">
+      <Card className="border border-[#E1D4C7] shadow-xl rounded-3xl bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white shrink-0">
+        <CardContent className="p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-graphik text-[#FFFFFF]">
+                <h1 className="text-3xl md:text-4xl font-heading font-black tracking-tight uppercase text-white">
                   Leave Management
                 </h1>
               </div>
-              <p className="text-[#FFFFFF] font-medium text-sm font-graphik">
+              <p className="text-[#F5ECE4]/80 font-medium text-sm font-sans">
                 Monitor and manage employee leave requests and policies
               </p>
             </div>
-            <div className="flex items-center gap-3 absolute right-5 top-1/2 -translate-y-1/2">
+            <div className="flex items-center gap-3">
               <Button
-                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="rounded-xl shadow-sm border border-white/20 flex items-center py-2.5 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => setShowLeavePolicyModal(true)}
               >
-                <FileText className="h-4 w-4 text-slate-500" />
+                <FileText className="h-4 w-4 mr-1 text-[#734425]" />
                 Leave Policy
               </Button>
               <Button
-                className="rounded-xl shadow-sm border-slate-200 flex items-center border py-2 px-4 text-sm font-graphik font-medium text-slate-900 bg-[#FFFFFF] hover:bg-[#F0F0F0] cursor-pointer transition ease-in-out duration-300"
+                className="rounded-xl shadow-sm border border-white/20 flex items-center py-2.5 px-4 text-xs font-heading font-bold uppercase tracking-wider text-[#734425] bg-[#FAF6F2] hover:bg-[#E1D4C7] cursor-pointer transition ease-in-out duration-300"
                 onClick={() => setShowCreateLeaveModal(true)}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 mr-1" />
                 Create Leave
               </Button>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Card className="border-slate-200 shadow-sm rounded-2xl bg-white">
+      <Card className="border border-[#E1D4C7] shadow-sm rounded-3xl bg-[#FAF6F2]">
         <CardContent className="p-4">
           <div className="flex flex-wrap items-end gap-4">
             {/* Search */}
@@ -282,10 +282,10 @@ const Leave = () => {
             {paginatedRequests?.map((request) => (
               <Card
                 key={request.id}
-                className="group border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                className="group border border-[#E1D4C7] bg-[#FAF6F2] rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
               >
                 <div className="p-1">
-                  <div className="bg-white rounded-[14px] p-4 space-y-3">
+                  <div className="bg-[#FAF6F2] rounded-[14px] p-4 space-y-3">
                     {/* Top Row: Employee & Status */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-4">
@@ -446,7 +446,7 @@ const Leave = () => {
               </Card>
             ))}
             {filteredLeaveRequest?.length === 0 && (
-              <div className="bg-white border border-slate-200 rounded-2xl py-20">
+              <div className="bg-[#FAF6F2] border border-[#E1D4C7] rounded-2xl py-20">
                 <NoDataFound />
               </div>
             )}
@@ -454,7 +454,7 @@ const Leave = () => {
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between bg-white px-4 py-3 border border-slate-200 rounded-xl shrink-0">
+            <div className="flex items-center justify-between bg-[#FAF6F2] px-4 py-3 border border-[#E1D4C7] rounded-xl shrink-0">
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium text-slate-500 font-graphik">
                   Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
@@ -539,15 +539,15 @@ const Leave = () => {
               {leavePolicy &&
                 leavePolicy?.length > 0 &&
                 leavePolicy?.map((section, idx) => (
-                  <Card key={idx} className="border-slate-100 shadow-sm rounded-2xl bg-slate-50/50">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base font-semibold text-slate-900 font-graphik">{section?.type}</CardTitle>
+                  <Card key={idx} className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
+                    <CardHeader className="pb-3 border-b border-[#E1D4C7]/60">
+                      <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">{section?.type}</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 p-4">
                       <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] capitalize font-graphik tracking-wider font-semibold text-slate-700">Annual Allowance</span>
-                        <div className="bg-white border border-slate-200 font-graphik rounded-xl px-4 py-2.5 font-bold text-slate-900 text-lg">
-                          {section?.annual_days} <span className="text-sm font-medium font-graphik text-slate-600 capitalize">Days</span>
+                        <span className="text-[10px] uppercase font-heading tracking-wider font-bold text-[#734425]">Annual Allowance</span>
+                        <div className="bg-[#F5ECE4]/70 border border-[#E1D4C7] rounded-xl px-4 py-2.5 font-bold text-[#24130A] text-lg font-heading">
+                          {section?.annual_days} <span className="text-sm font-medium text-[#734425] capitalize font-sans">Days</span>
                         </div>
                       </div>
                     </CardContent>
