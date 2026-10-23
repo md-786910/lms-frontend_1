@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -12,368 +13,411 @@ import {
   LockKeyhole,
   Settings2,
   ShieldCheck,
-  Bubbles,
+  Sparkles,
   Users,
   Workflow,
+  Check,
+  ChevronDown,
+  Clock,
+  Layers,
+  HelpCircle,
+  Zap,
 } from "lucide-react";
+import FeaturesBento from "./FeaturesBento";
 
-const productStats = [
-  { value: "3-step", label: "company onboarding" },
-  { value: "Role-based", label: "admin and employee portals" },
-  { value: "Realtime", label: "notifications and activity" },
+const metrics = [
+  { value: "1.5 Days / mo", label: "Automatic Leave Rollover" },
+  { value: "Proof of Work", label: "Remote & Overtime Audits" },
+  { value: "1-Click Payroll", label: "Encrypted PDF Payslips" },
+  { value: "3 User Portals", label: "Admin, Manager & Staff" },
 ];
 
-const featureCards = [
+const roleShowcases = [
   {
-    icon: CalendarCheck,
-    title: "Leave workflows",
-    description:
-      "Employees apply for leave, admins approve or reject with reasons, and balances update automatically after approval.",
-  },
-  {
-    icon: Users,
-    title: "Employee records",
-    description:
-      "Manage profiles, addresses, personal information, documents, salary details, leave balances, suspension, and reactivation.",
-  },
-  {
-    icon: CircleDollarSign,
-    title: "Salary operations",
-    description:
-      "Import current-month salaries, review salary history, mark paid records, and generate downloadable salary slips.",
-  },
-  {
-    icon: FolderCheck,
-    title: "Document management",
-    description:
-      "Upload employee files, attach document categories, retrieve records, and keep identity and certificate data organized.",
-  },
-  {
-    icon: Bell,
-    title: "Notifications",
-    description:
-      "Socket.IO and stored notifications keep admins and employees informed about leave requests, approvals, and rejections.",
-  },
-  {
-    icon: Settings2,
-    title: "Company settings",
-    description:
-      "Configure departments, designations, leave types, document categories, currencies, prefixes, and company profile data.",
-  },
-];
-
-const workflowSteps = [
-  {
-    title: "Create the company",
-    text: "Register the business, first admin, default departments, designations, currencies, leave types, and document categories.",
-  },
-  {
-    title: "Invite employees",
-    text: "Add employees, generate employee numbers, send password setup emails, and initialize leave balances.",
-  },
-  {
-    title: "Run HR operations",
-    text: "Handle leave, payroll, salary slips, reports, notifications, activity logs, and employee self-service from one portal.",
-  },
-];
-
-const rolePanels = [
-  {
-    title: "Admin workspace",
-    icon: ShieldCheck,
-    items: [
-      "Dashboard metrics and recent activity",
-      "Employee management and leave review",
-      "Payroll history and salary slip generation",
-      "Settings for policies and organization structure",
+    role: "Company Admin",
+    badge: "Full Governance",
+    desc: "Complete operational control over company profiles, departments, policy rules, and payroll.",
+    capabilities: [
+      "Company registration, prefix management, & currency defaults",
+      "Employee invites, profile management, and status suspension",
+      "Leave request approval, rejection with reasons, & custom entries",
+      "One-click monthly salary import & encrypted PDF payslips",
+      "Executive analytics, monthly CSV reports, & email report delivery",
+      "Light admin provisioning and delegation",
     ],
   },
   {
-    title: "Light admin access",
-    icon: LockKeyhole,
-    items: [
-      "Uses the protected admin route group",
-      "Company-scoped operational access",
-      "Created and removed by full admins",
-      "Works with the same login/session system",
+    role: "Light Admin",
+    badge: "Delegated Operations",
+    desc: "Designed for department heads and assistant HR managers needing operational access without company ownership.",
+    capabilities: [
+      "Protected admin route group access for daily operations",
+      "Review department leave requests and track approvals",
+      "Access employee directory and documentation records",
+      "Restricted from creating or deleting administrative users",
+      "View company-wide attendance and leave trends",
     ],
   },
   {
-    title: "Employee self-service",
-    icon: Building2,
-    items: [
-      "Leave balances and request history",
-      "Profile, documents, and salary information",
-      "Salary slip download for paid records",
-      "Realtime and stored notifications",
+    role: "Employee Self-Service",
+    badge: "Staff Empowerment",
+    desc: "A clean, modern portal giving employees full transparency into their leave balances, payslips, and work proofs.",
+    capabilities: [
+      "Submit Proof of Work with file & screenshot attachments",
+      "Apply for leave with real-time balance calculations",
+      "Download verified PDF salary slips for paid cycles",
+      "Live clock in / clock out with running shift timer",
+      "Maintain personal details, address, and view uploaded certificates",
     ],
   },
 ];
 
-const comparisonRows = [
-  ["Leave requests", "Email threads and manual sheet updates", "Tracked requests, status, reasons, and balance changes"],
-  ["Payroll records", "Separate formulas and exported files", "Salary profiles, history, paid status, and PDF slips"],
-  ["Employee files", "Scattered folders and unclear categories", "Uploaded files attached to employee document categories"],
-  ["Permissions", "Shared access with weak ownership", "Admin, light admin, and employee protected route groups"],
-  ["Reporting", "Manual monthly summaries", "Dashboard metrics, CSV download, and email report support"],
+const spreadsheetVsLms = [
+  {
+    feature: "Remote Work Verification",
+    manual: "Scattered across email and chat messages with no audit log",
+    leanport: "Upload screenshots & deliverables with manager approval in seconds",
+  },
+  {
+    feature: "Leave Carry-Forward",
+    manual: "Broken spreadsheet formulas and monthly manual reconciliation errors",
+    leanport: "Automatic 1.5 days/month accrual, rollover, and formula salary deduction",
+  },
+  {
+    feature: "Salary Slip Generation",
+    manual: "Manual mail-merge templates prone to confidentiality errors",
+    leanport: "One-click generation of encrypted PDF payslips with employee self-download",
+  },
+  {
+    feature: "Access Control & Roles",
+    manual: "Shared spreadsheets with uncontrolled editing and privacy risks",
+    leanport: "Secure login sessions with isolated Admin, Light Admin, and Employee areas",
+  },
+  {
+    feature: "Employee Documents",
+    manual: "Scattered in random Google Drive folders or desktop downloads",
+    leanport: "Safe, categorized vault for Government IDs, Tax cards, and Certificates",
+  },
+];
+
+const faqs = [
+  {
+    q: "How does the Proof of Work feature verify remote work and overtime?",
+    a: "Employees select their task type (Remote Day, Overtime, or Special Project), write a brief summary of what they completed, and attach proof files (screenshots, reports, or deliverables). The submission appears in the manager's review queue with real-time notifications for quick approval. Once approved, overtime hours automatically sync with monthly payroll.",
+  },
+  {
+    q: "How does the 1.5 leave carry-forward work each month?",
+    a: "Every active employee automatically accrues 1.5 days on their balance each month. Any unused days carry forward into the following month. If an employee takes more days than their available balance (current entitlement + previous carried-forward days), the system automatically calculates the deduction and reflects it on their payslip.",
+  },
+  {
+    q: "Can employees download salary slips before they are officially paid?",
+    a: "No. For audit integrity and financial accuracy, salary slips are only unlocked for employee self-service download after an administrator has reviewed and officially marked the payroll record as Paid.",
+  },
+  {
+    q: "What is the difference between an Admin and a Light Admin?",
+    a: "Full Admins have universal control over company settings, billing, and administrator user accounts. Light Admins share the operational workspace to review leaves and manage records, but cannot create or remove other administrative accounts.",
+  },
+  {
+    q: "How are employee documents organized and secured?",
+    a: "Files up to 10 MB are securely uploaded into categorized buckets (Government IDs, Tax identifiers, Educational degrees, and HR agreements). Documents are tied directly to the employee record with quick preview and download options.",
+  },
 ];
 
 const LandingPage = () => {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   return (
-    <div className="bg-[#F5ECE4] text-[#2E2E2E] font-sans selection:bg-[#C26819]/20 selection:text-[#2E2E2E]">
-      <section className="relative overflow-hidden bg-[#FAF5F0] border-b border-[#E1D4C7]">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C26819] to-transparent" />
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
-          <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-12 lg:gap-16 items-center">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#C26819]/30 bg-[#FAF6F2] px-4 py-2 text-xs font-bold tracking-widest text-[#734425] uppercase shadow-sm font-heading">
-                <Bubbles className="h-4 w-4 text-[#C26819]" />
-                Built for leave, payroll, documents & self-service
-              </div>
+    <div className="bg-[#FAF6F2] text-stone-900 font-sans selection:bg-[#C26819]/20 selection:text-stone-900">
+      {/* ========================================================= */}
+      {/* 1. HERO SECTION: USER-FRIENDLY, WELCOMING, HIGH-CONTRAST  */}
+      {/* ========================================================= */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-white via-[#FAF6F2] to-[#FAF6F2] border-b border-stone-200/80 pt-12 pb-16 lg:pt-20 lg:pb-24">
+        {/* Subtle warm glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-[#734425]/5 via-[#C26819]/8 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-              <h1 className="mt-7 text-4xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-5xl lg:text-6xl leading-[1.1] font-heading uppercase">
-                A cleaner way to run <span className="text-[#734425]">everyday HR</span> operations.
-              </h1>
-
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A524C] font-sans">
-                Leanport HR brings company onboarding, employee administration, leave approvals,
-                salary handling, documents, dashboards, and notifications into one focused luxury workspace.
-              </p>
-
-              <div className="mt-9 flex flex-col sm:flex-row gap-4 font-heading">
-                <Link
-                  to="/company/get-started"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#734425] px-7 py-3.5 text-base font-bold text-[#FAF6F2] shadow-lg shadow-[#734425]/20 transition duration-300 hover:-translate-y-0.5 hover:bg-[#5D361D]"
-                >
-                  Start company setup
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#734425] bg-[#FAF6F2] px-7 py-3.5 text-base font-bold text-[#734425] transition duration-300 hover:-translate-y-0.5 hover:bg-[#734425] hover:text-[#FAF6F2]"
-                >
-                  Login to portal
-                </Link>
-              </div>
-
-              <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {productStats.map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-[#E1D4C7] bg-[#FAF6F2] p-4 shadow-sm">
-                    <div className="text-xl font-extrabold text-[#734425] font-heading uppercase">{stat.value}</div>
-                    <div className="mt-1 text-sm text-[#5A524C] font-sans">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            {/* Friendly Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-xs font-semibold text-[#734425] shadow-sm mb-6 hover:border-[#C26819]/50 transition-colors">
+              <span className="flex h-2 w-2 rounded-full bg-[#C26819]" />
+              <span>New: Proof of Work & Remote Audits Feature Live</span>
             </div>
 
-            <div className="relative">
-              <div className="rounded-[28px] border border-[#E1D4C7] bg-[#FAF6F2] p-3 shadow-2xl shadow-[#734425]/15">
-                <div className="rounded-3xl bg-[#2E2E2E] p-5 sm:p-6 border border-[#444]">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                    <div>
-                      <div className="text-xs text-stone-400 font-sans uppercase tracking-widest">Admin dashboard</div>
-                      <div className="mt-1 text-xl font-bold text-[#FAF6F2] font-heading">May Operations</div>
-                    </div>
-                    <div className="rounded-full bg-[#C26819] px-3.5 py-1 text-xs font-bold text-white uppercase tracking-wider font-heading">
-                      Live
-                    </div>
+            {/* Main Headline - Natural Title Case */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-900 leading-[1.15]">
+              A simpler, smarter way to run{" "}
+              <span className="text-[#734425] underline decoration-[#C26819]/40 decoration-wavy decoration-2">
+                HR and payroll.
+              </span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
+              Manage employee onboarding, 1.5/month leave carry-forward, remote work verification,
+              and 1-click PDF salary slips in one friendly platform your team will love using.
+            </p>
+
+            {/* Primary Action Buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <Link
+                to="/company/get-started"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#734425] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#734425]/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#5D361D]"
+              >
+                <span>Get Started Free</span>
+                <ArrowRight className="h-4 w-4 text-[#E88F44]" />
+              </Link>
+              <Link
+                to="/company/features"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-stone-300 bg-white px-7 py-3.5 text-sm font-semibold text-stone-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-stone-50 hover:text-stone-900 shadow-sm"
+              >
+                <span>Explore Feature Workflows</span>
+                <ArrowRight className="h-4 w-4 text-[#C26819]" />
+              </Link>
+            </div>
+
+            {/* Trust Metrics Pill Bar */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto">
+              {metrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="rounded-2xl border border-stone-200 bg-white p-3.5 text-left shadow-sm"
+                >
+                  <div className="text-lg font-bold text-[#734425]">
+                    {m.value}
+                  </div>
+                  <div className="mt-0.5 text-xs text-stone-500 font-medium">
+                    {m.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 2. BENTO-GRID FEATURE HIGHLIGHTS                          */}
+      {/* ========================================================= */}
+      <FeaturesBento />
+
+      {/* ========================================================= */}
+      {/* 3. THREE-TIER WORKSPACE ARCHITECTURE (NO TABS)            */}
+      {/* ========================================================= */}
+      <section className="py-16 sm:py-24 bg-white border-y border-stone-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C26819]/10 text-[#C26819] text-xs font-semibold mb-2">
+              <LockKeyhole className="w-3.5 h-3.5" />
+              Dedicated User Experiences
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-stone-900">
+              Tailored portals for admins, managers, and staff
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-stone-600">
+              Everyone sees exactly what they need with protected route groups, encrypted sessions, and company-scoped isolation.
+            </p>
+          </div>
+
+          {/* 3 Roles Side-by-Side (Zero Tabs) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {roleShowcases.map((role) => (
+              <div
+                key={role.role}
+                className="rounded-3xl border border-stone-200 bg-[#FAF6F2] p-6 sm:p-7 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#734425]/10 text-[#734425]">
+                      {role.badge}
+                    </span>
+                    <span className="text-[11px] text-stone-400 font-mono">Protected</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 py-5">
-                    {[
-                      ["Pending leaves", "12", CalendarCheck],
-                      ["Active employees", "148", Users],
-                      ["Pending payroll", "18", CircleDollarSign],
-                      ["Unread alerts", "7", Bell],
-                    ].map(([label, value, Icon]) => (
-                      <div key={label} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 transition duration-300 hover:bg-white/10">
-                        <Icon className="h-6 w-6 text-[#C26819]" />
-                        <div className="mt-4 text-2xl font-bold text-white font-heading">{value}</div>
-                        <div className="mt-1 text-xs text-stone-400 font-sans">{label}</div>
+                  <h3 className="text-xl font-bold text-stone-900 mb-2">
+                    {role.role}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed mb-6">
+                    {role.desc}
+                  </p>
+
+                  <div className="space-y-2.5 text-xs text-stone-700 border-t border-stone-200/80 pt-4">
+                    <span className="text-xs font-semibold text-stone-900 block mb-2">
+                      Key Capabilities:
+                    </span>
+                    {role.capabilities.map((cap, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#C26819] shrink-0 mt-0.5" />
+                        <span className="leading-snug">{cap}</span>
                       </div>
                     ))}
                   </div>
+                </div>
 
-                  <div className="rounded-2xl bg-[#FAF6F2] p-4 border border-[#E1D4C7]">
-                    <div className="mb-4 flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-bold text-[#2E2E2E] font-heading uppercase">Leave requests</div>
-                        <div className="text-xs text-slate-500 font-sans">Approval queue</div>
-                      </div>
-                      <BarChart3 className="h-6 w-6 text-[#734425]" />
-                    </div>
-                    <div className="space-y-3 font-sans">
-                      {["Sick Leave", "Earned Leave", "Casual Leave"].map((leave, index) => (
-                        <div key={leave} className="flex items-center justify-between rounded-xl bg-white p-3 border border-[#E1D4C7]/60">
-                          <div>
-                            <div className="text-sm font-semibold text-[#2E2E2E] font-heading">{leave}</div>
-                            <div className="text-xs text-slate-500">Employee request #{index + 1}</div>
-                          </div>
-                          <div className="rounded-full bg-[#FAF0E6] px-3 py-1 text-xs font-bold text-[#C26819] font-heading">
-                            Review
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                <div className="mt-6 pt-4 border-t border-stone-200">
+                  <Link
+                    to="/login"
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white border border-stone-300 text-xs font-semibold text-[#734425] hover:bg-[#734425] hover:text-white transition-all shadow-sm"
+                  >
+                    <span>Sign in to {role.role}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 5. COMPARISON MATRIX: SPREADSHEETS VS LEANPORT HR         */}
+      {/* ========================================================= */}
+      <section className="py-16 sm:py-24 bg-[#FAF6F2]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#734425]/10 text-[#734425] text-xs font-semibold mb-2">
+              <Workflow className="w-3.5 h-3.5 text-[#C26819]" />
+              Clear Difference
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+              Why manual spreadsheets fall short
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-stone-600">
+              See how Leanport HR saves hours and prevents common payroll and leave mistakes.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+            <div className="grid grid-cols-12 bg-[#734425] text-white p-4 font-semibold text-xs">
+              <div className="col-span-4 sm:col-span-3">Process</div>
+              <div className="col-span-4 sm:col-span-4 text-stone-300">Spreadsheets & Email</div>
+              <div className="col-span-4 sm:col-span-5 text-white flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#E88F44]" />
+                Leanport HR Platform
+              </div>
+            </div>
+
+            <div className="divide-y divide-stone-100">
+              {spreadsheetVsLms.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="grid grid-cols-12 p-4 items-center hover:bg-stone-50/70 transition-colors text-xs"
+                >
+                  <div className="col-span-4 sm:col-span-3 font-semibold text-stone-900">
+                    {item.feature}
+                  </div>
+                  <div className="col-span-4 sm:col-span-4 text-stone-500 pr-3 leading-relaxed">
+                    {item.manual}
+                  </div>
+                  <div className="col-span-4 sm:col-span-5 font-medium text-[#734425] leading-relaxed flex items-start gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{item.leanport}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section id="features" className="py-20 sm:py-24 bg-[#F5ECE4]">
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Product modules</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-4xl font-heading uppercase">
-              Exact workflows your system already supports.
+      {/* ========================================================= */}
+      {/* 6. FAQ ACCORDION SECTION                                  */}
+      {/* ========================================================= */}
+      <section className="py-16 sm:py-24 bg-white border-y border-stone-200">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#734425]/10 text-[#734425] text-xs font-semibold mb-2">
+              <HelpCircle className="w-3.5 h-3.5 text-[#C26819]" />
+              Common Questions
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-stone-900">
+              Frequently Asked Questions
             </h2>
-            <p className="mt-4 text-lg leading-8 text-[#5A524C] font-sans">
-              The homepage highlights implemented product areas: onboarding, employee data,
-              leave, salary, documents, reports, notifications, and configurable settings.
+            <p className="mt-2 text-stone-600 text-sm">
+              Answers about leave rollover rules, Proof of Work audits, and privacy.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featureCards.map((feature) => (
+          <div className="space-y-3">
+            {faqs.map((faq, index) => (
               <div
-                key={feature.title}
-                className="group rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#C26819] hover:shadow-xl hover:shadow-[#734425]/10"
+                key={index}
+                className="rounded-2xl border border-stone-200 bg-[#FAF6F2] overflow-hidden transition-all duration-200"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white">
-                  <feature.icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase tracking-wide">{feature.title}</h3>
-                <p className="mt-3 leading-7 text-[#5A524C] font-sans">{feature.description}</p>
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-stone-900"
+                >
+                  <span>{faq.q}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-stone-400 transition-transform duration-200 shrink-0 ${
+                      openFaq === index ? "rotate-180 text-[#C26819]" : ""
+                    }`}
+                  />
+                </button>
+
+                {openFaq === index && (
+                  <div className="px-4 sm:px-5 pb-5 text-sm text-stone-600 leading-relaxed border-t border-stone-200/60 pt-3">
+                    {faq.a}
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="workflow" className="bg-[#FAF5F0] py-20 sm:py-24 border-y border-[#E1D4C7]">
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Operating flow</p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-4xl font-heading uppercase">
-                From signup to monthly HR reporting.
-              </h2>
-              <p className="mt-4 text-lg leading-8 text-[#5A524C] font-sans">
-                Leanport HR is built around the real company lifecycle: setup, invite,
-                operate, report, and keep every role informed.
-              </p>
-            </div>
-
-            <div className="grid gap-4">
-              {workflowSteps.map((step, index) => (
-                <div key={step.title} className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm">
-                  <div className="flex gap-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#734425] text-sm font-bold text-[#FAF6F2] font-heading">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-[#2E2E2E] font-heading uppercase">{step.title}</h3>
-                      <p className="mt-2 leading-7 text-[#5A524C] font-sans">{step.text}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="roles" className="py-20 sm:py-24 bg-[#F5ECE4]">
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-sm font-bold uppercase tracking-widest text-[#C26819] font-heading">Role-based access</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#2E2E2E] sm:text-4xl font-heading uppercase">
-              Separate portals without scattered tools.
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {rolePanels.map((role) => (
-              <div key={role.title} className="rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F5ECE4] text-[#734425]">
-                    <role.icon className="h-6 w-6 text-[#C26819]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#2E2E2E] font-heading uppercase">{role.title}</h3>
-                </div>
-                <ul className="mt-6 space-y-4 font-sans">
-                  {role.items.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-[#5A524C]">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#C26819]" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+      {/* ========================================================= */}
+      {/* 7. FRIENDLY, WARM FINAL CTA                               */}
+      {/* ========================================================= */}
+      <section className="py-16 sm:py-24 bg-[#FAF6F2]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-gradient-to-br from-[#734425] to-[#5D361D] p-8 sm:p-14 text-center text-white shadow-xl shadow-[#734425]/20 relative overflow-hidden border border-[#8D5531]">
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-[#E88F44]" />
+                Easy 3-Step Company Setup
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section id="comparison" className="bg-[#2E2E2E] py-20 sm:py-24 text-white">
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#C26819] text-white">
-                <Workflow className="h-6 w-6" />
-              </div>
-              <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">
-                Replace fragmented HR tracking with an auditable system.
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight leading-snug">
+                Ready to simplify your HR operations?
               </h2>
-              <p className="mt-4 text-lg leading-8 text-stone-300 font-sans">
-                Spreadsheets can hold data, but Leanport HR adds controlled access,
-                employee workflows, salary records, documents, notifications, and dashboard visibility.
+
+              <p className="mt-4 text-sm sm:text-base text-stone-200 leading-relaxed">
+                Register your business, initialize default departments and leave rules, and invite your team in under 5 minutes.
               </p>
-            </div>
 
-            <div className="overflow-hidden rounded-2xl border border-stone-700 bg-[#FAF6F2]">
-              {comparisonRows.map(([area, manual, leanport], index) => (
-                <div key={area} className={`grid gap-4 p-5 sm:grid-cols-[0.55fr_1fr_1fr] ${index !== comparisonRows.length - 1 ? "border-b border-[#E1D4C7]" : ""}`}>
-                  <div className="font-bold text-[#2E2E2E] font-heading uppercase text-sm">{area}</div>
-                  <div className="text-sm leading-6 text-[#73685F] font-sans">{manual}</div>
-                  <div className="text-sm font-bold leading-6 text-[#734425] font-sans">{leanport}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  to="/company/get-started"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#C26819] px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#A85712]"
+                >
+                  <span>Start Free Setup</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/login"
+                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3.5 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10"
+                >
+                  Sign in to Portal
+                </Link>
+              </div>
 
-      <section id="pricing" className="py-20 sm:py-24 bg-[#F5ECE4]">
-        <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[28px] bg-gradient-to-br from-[#734425] to-[#492B17] px-6 py-12 text-center text-[#FAF6F2] shadow-2xl shadow-[#734425]/25 sm:px-12 border border-[#8D5531]">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-[#FAF6F2] shadow-inner border border-white/15">
-              <FileText className="h-6 w-6 text-[#C26819]" />
-            </div>
-            <h2 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">
-              Set up your company and start with real HR data.
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#FAF6F2]/90 font-sans">
-              Create the company, configure defaults, invite employees, and begin managing
-              leave, payroll, documents, reports, and notifications from the first workspace.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row font-heading">
-              <Link
-                to="/company/get-started"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C26819] px-7 py-3.5 text-base font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#A85712] shadow-lg shadow-[#C26819]/25 uppercase tracking-wide"
-              >
-                Get started
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center rounded-full border-2 border-[#FAF6F2]/80 px-7 py-3.5 text-base font-bold text-[#FAF6F2] transition duration-300 hover:bg-white/10 uppercase tracking-wide"
-              >
-                Open existing portal
-              </Link>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-xs text-stone-300">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#E88F44]" /> No credit card required
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#E88F44]" /> 5-minute setup
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#E88F44]" /> Full Proof of Work & Payroll support
+                </span>
+              </div>
             </div>
           </div>
         </div>

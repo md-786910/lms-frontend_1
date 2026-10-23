@@ -31,50 +31,42 @@ const CompanyHeader = () => {
       href: "/company/features",
       submenu: [
         { 
-          name: "Leave Management", 
-          description: "Automate leave requests and approvals with ease.",
-          href: "/company/features#leave",
+          name: "Proof of Work & Audits", 
+          description: "Verify remote work, overtime, and task evidence.",
+          href: "/company/features#proof-of-work",
+          icon: ShieldCheck,
+          color: "text-emerald-600",
+          bg: "bg-emerald-50"
+        },
+        { 
+          name: "Leave & 1.5/mo Rollover", 
+          description: "Automate leave requests, carry-forward, and salary cuts.",
+          href: "/company/features#carry-forward",
           icon: Calendar,
           color: "text-blue-600",
           bg: "bg-blue-50"
         },
         { 
-          name: "Employee Directory", 
-          description: "Centralized database for all your workforce info.",
+          name: "Salary & PDF Slips", 
+          description: "One-click payroll imports and encrypted payslips.",
+          href: "/company/features#payroll",
+          icon: BarChart3,
+          color: "text-amber-600",
+          bg: "bg-amber-50"
+        },
+        { 
+          name: "Employee 360° Directory", 
+          description: "Centralized database for workforce info & documents.",
           href: "/company/features#directory",
           icon: Users,
           color: "text-indigo-600",
           bg: "bg-indigo-50"
         },
         { 
-          name: "Attendance Tracking", 
-          description: "Employee time-log UI for clock-in, clock-out, and monthly summaries.",
-          href: "/company/features#analytics",
+          name: "Attendance & Time Logs", 
+          description: "Clock in/out timers and monthly attendance summaries.",
+          href: "/company/features#attendance",
           icon: Clock,
-          color: "text-emerald-600",
-          bg: "bg-emerald-50"
-        },
-        { 
-          name: "Performance Analytics", 
-          description: "Detailed insights into workforce productivity.",
-          href: "/company/features#analytics",
-          icon: BarChart3,
-          color: "text-amber-600",
-          bg: "bg-amber-50"
-        },
-        { 
-          name: "Policy Compliance", 
-          description: "Ensure your company stays within legal bounds.",
-          href: "/company/why-us",
-          icon: ShieldCheck,
-          color: "text-rose-600",
-          bg: "bg-rose-50"
-        },
-        { 
-          name: "Smart Automation", 
-          description: "Automated setup, leave balances, notifications, and monthly reports.",
-          href: "/company/services",
-          icon: Zap,
           color: "text-purple-600",
           bg: "bg-purple-50"
         },

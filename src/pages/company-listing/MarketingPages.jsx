@@ -11,6 +11,7 @@ import {
   ChevronDown,
   CircleDollarSign,
   ClipboardCheck,
+  Clock,
   Cookie,
   Database,
   FileArchive,
@@ -84,19 +85,28 @@ const SectionIntro = ({ eyebrow, title, description, center = false }) => (
   </div>
 );
 
-const FeatureTile = ({ icon: Icon, title, description, items = [] }) => (
-  <div className="group rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#C26819] hover:shadow-xl hover:shadow-[#734425]/10">
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white shrink-0">
-      <Icon className="h-6 w-6" />
+const FeatureTile = ({ icon: Icon, title, description, items = [], badge }) => (
+  <div className="group rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#C26819] hover:shadow-xl hover:shadow-[#734425]/10 flex flex-col justify-between h-full">
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white shrink-0">
+          <Icon className="h-6 w-6" />
+        </div>
+        {badge && (
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold font-heading uppercase tracking-wider bg-[#C26819] text-white">
+            {badge}
+          </span>
+        )}
+      </div>
+      <h3 className="text-xl font-bold text-[#2E2E2E] font-heading uppercase tracking-wide">{title}</h3>
+      <p className="mt-3 leading-7 text-[#5A524C] font-sans text-sm">{description}</p>
     </div>
-    <h3 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase tracking-wide">{title}</h3>
-    <p className="mt-3 leading-7 text-[#5A524C] font-sans">{description}</p>
     {items.length > 0 && (
-      <ul className="mt-5 space-y-3 font-sans">
+      <ul className="mt-5 space-y-2.5 font-sans border-t border-[#E1D4C7]/60 pt-4">
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-sm leading-6 text-[#5A524C]">
-            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#C26819]" />
-            {item}
+          <li key={item} className="flex gap-2.5 text-xs leading-5 text-[#5A524C]">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C26819]" />
+            <span>{item}</span>
           </li>
         ))}
       </ul>
@@ -132,39 +142,80 @@ const CTASection = ({ title, description }) => (
 
 const featureGroups = [
   {
+    id: "proof-of-work",
+    icon: ShieldCheck,
+    title: "Proof of work & remote audits",
+    badge: "Featured",
+    description: "Employee-facing workflow to submit evidence (screenshots, PRs, deliverables) for remote work, overtime, and special assignments.",
+    items: [
+      "Multi-file attachments powered by Cloudinary pipeline",
+      "Manager review queue with approval/rejection comments",
+      "Direct sync to overtime payroll calculations",
+      "Auditable record for client billing and overtime logs",
+    ],
+  },
+  {
+    id: "carry-forward",
+    icon: CalendarCheck,
+    title: "1.5/mo Leave carry-forward engine",
+    badge: "Automated",
+    description: "Rules-driven monthly leave accrual of 1.5 days per employee with automatic rollover and formulaic salary deduction.",
+    items: [
+      "Formula: Available = 1.5 + Previous Month Remaining",
+      "Salary Deduction = Max(0, Availed - Available)",
+      "Next Month Rollover = Max(0, Available - Availed)",
+      "Eliminates manual monthly HR spreadsheet disputes",
+    ],
+  },
+  {
     id: "leave",
     icon: CalendarCheck,
-    title: "Leave management",
+    title: "Leave management & approvals",
     description: "Company leave types, employee balances, requests, cancellation, approval, rejection reasons, and admin-created leaves.",
     items: ["Overlap validation for approved leaves", "Balance updates after approval", "Email and stored notifications"],
   },
   {
     id: "directory",
     icon: Users,
-    title: "Employee administration",
-    description: "Employee creation, invite emails, employee numbers, profile sections, suspension, reactivation, and resend invite support.",
-    items: ["Basic, address, personal, document, salary, and leave sections", "Department and designation data", "Active and suspended filtering"],
+    title: "Employee 360° administration",
+    description: "Employee creation, invite emails, department prefix numbers, 6-part profile sections, suspension, and reactivation.",
+    items: ["Basic, address, personal, document, salary, and leave sections", "Department prefix auto-numbering (e.g. ENG-001)", "Active and suspended lifecycle filtering"],
   },
   {
     id: "payroll",
     icon: CircleDollarSign,
-    title: "Salary and slips",
+    title: "Salary and automated PDF slips",
+    badge: "Puppeteer",
     description: "Maintain salary profiles, import current-month salary history, review paid and pending totals, and generate PDF salary slips.",
-    items: ["Admin salary dashboard", "Employee salary history", "Download salary slips for paid records"],
+    items: ["Admin salary dashboard & one-click import", "Encrypted Puppeteer PDF generation from EJS template", "Download salary slips only for paid records"],
   },
   {
     id: "documents",
     icon: FolderCheck,
-    title: "Document records",
+    title: "Document records vault",
     description: "Cloudinary-backed uploads, file metadata, document category settings, employee document listing, retrieval, and deletion.",
-    items: ["10 MB upload limit support", "Category-based organization", "Employee document association"],
+    items: ["10 MB upload limit support", "Category-based organization (Aadhaar, PAN, Passport, Degrees)", "Employee document association & preview"],
+  },
+  {
+    id: "attendance",
+    icon: Clock,
+    title: "Time logs & live attendance",
+    description: "Real-time employee clock-in and clock-out with session timer, break tracking, and monthly attendance summaries.",
+    items: ["Live elapsed shift timer", "Monthly attendance metrics (present, absent, half-days, overtime)", "Exportable time audit logs"],
+  },
+  {
+    id: "notifications",
+    icon: Bell,
+    title: "Real-time socket alerts",
+    description: "Socket.IO and Redis-backed instant push notifications keep admins and employees informed of all HR events.",
+    items: ["Instant push for leave submissions & approvals", "In-app notification center with read/unread flags", "Transactional email notifications via SMTP"],
   },
   {
     id: "analytics",
     icon: BarChart3,
-    title: "Dashboards and reports",
+    title: "Dashboards and executive reports",
     description: "Admin and employee dashboards show leave, salary, activity, notification, and workforce metrics for daily operations.",
-    items: ["Monthly leave report email", "CSV report download", "Yearly leave summary filters"],
+    items: ["Monthly leave report email", "CSV report download", "Live 'Who is on leave today' tracker"],
   },
   {
     id: "settings",
