@@ -105,7 +105,7 @@ const FeatureCard = ({ feature, index }) => {
       {/* Card */}
       <div className="relative h-full bg-[#FAF6F2] rounded-3xl border border-[#E1D4C7] p-8 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-[#734425]/10 group-hover:-translate-y-2 group-hover:border-[#734425]/30">
         {/* Icon container */}
-        <div className={`inline-flex p-4 rounded-2xl mb-6 bg-gradient-to-r ${feature.color} shadow-lg shadow-[#734425]/20 transition-all duration-300 group-hover:scale-110`}>
+        <div className={`inline-flex p-3 rounded-2xl mb-6 bg-gradient-to-r ${feature.color} text-white shadow-lg shadow-[#734425]/20 transition-all duration-300 group-hover:scale-110`}>
           <Icon className="w-6 h-6 text-white" />
         </div>
 

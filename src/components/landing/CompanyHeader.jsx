@@ -151,8 +151,8 @@ const CompanyHeader = () => {
         <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link to="/company" className="flex items-center space-x-2 group shrink-0">
-            <div className="p-2 bg-[#734425] rounded-xl group-hover:scale-105 transition-transform">
-                <Building className="h-5 w-5 sm:h-6 sm:w-6 text-[#FAF6F2]" />
+            <div className="h-10 w-10 bg-[#734425] rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+                <Building className="h-6 w-6 text-[#FAF6F2]" />
             </div>
             <span className="text-xl sm:text-2xl font-bold text-[#2E2E2E] tracking-tight font-heading">
                 Leanport <span className="text-[#C26819]">HR</span>

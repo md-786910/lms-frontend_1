@@ -87,8 +87,8 @@ const RoleCard = ({ role, isCenter }) => {
         {/* Content */}
         <div className="p-8">
           {/* Icon */}
-          <div className={`inline-flex p-4 rounded-2xl mb-6 transition-all duration-300 ${isHovered || isCenter ? 'bg-white/20' : 'bg-[#FAF6F2] border border-[#E1D4C7]'}`}>
-            <Icon className={`w-8 h-8 ${isHovered || isCenter ? 'text-white' : 'text-[#734425]'}`} />
+          <div className={`inline-flex p-3 rounded-2xl mb-6 transition-all duration-300 ${isHovered || isCenter ? 'bg-white/20' : 'bg-[#FAF6F2] border border-[#E1D4C7]'}`}>
+            <Icon className={`w-6 h-6 ${isHovered || isCenter ? 'text-white' : 'text-[#734425]'}`} />
           </div>
 
           {/* Title */}
@@ -201,8 +201,8 @@ const RolesSection = () => {
             <div className="relative bg-[#FAF6F2] rounded-2xl p-6 border border-[#E1D4C7] shadow-xl text-[#2E2E2E]">
               <div className="space-y-3 font-sans">
                 <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-[#E1D4C7] hover:border-[#734425]/40 transition-colors cursor-pointer shadow-sm">
-                  <div className="h-9 w-9 rounded-lg bg-[#734425]/10 flex items-center justify-center text-[#734425]">
-                    <Shield size={18} />
+                  <div className="h-10 w-10 rounded-xl bg-[#734425]/10 flex items-center justify-center text-[#734425] shrink-0">
+                    <Shield className="w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-sm font-heading font-bold uppercase text-[#24130A]">Switch to Admin Dashboard</p>
@@ -210,8 +210,8 @@ const RolesSection = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-[#E1D4C7] hover:border-[#734425]/40 transition-colors cursor-pointer shadow-sm">
-                  <div className="h-9 w-9 rounded-lg bg-[#734425]/10 flex items-center justify-center text-[#734425]">
-                    <Building2 size={18} />
+                  <div className="h-10 w-10 rounded-xl bg-[#734425]/10 flex items-center justify-center text-[#734425] shrink-0">
+                    <Building2 className="w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-sm font-heading font-bold uppercase text-[#24130A]">Switch to Company View</p>
@@ -219,8 +219,8 @@ const RolesSection = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-[#E1D4C7] hover:border-[#C26819]/40 transition-colors cursor-pointer shadow-sm">
-                  <div className="h-9 w-9 rounded-lg bg-[#C26819]/10 flex items-center justify-center text-[#C26819]">
-                    <User size={18} />
+                  <div className="h-10 w-10 rounded-xl bg-[#C26819]/10 flex items-center justify-center text-[#C26819] shrink-0">
+                    <User className="w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-sm font-heading font-bold uppercase text-[#24130A]">Employee Portal</p>

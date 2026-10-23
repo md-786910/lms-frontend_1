@@ -565,8 +565,8 @@ const EmployeeLeave = () => {
           <Card className="border border-emerald-200/80 shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                  <CheckCircle className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shrink-0">
+                  <CheckCircle className="h-6 w-6" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
@@ -587,8 +587,8 @@ const EmployeeLeave = () => {
           <Card className="border border-amber-200/80 shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
-                  <Clock className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shrink-0">
+                  <Clock className="h-6 w-6" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
@@ -607,8 +607,8 @@ const EmployeeLeave = () => {
           <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-                  <CalendarDays className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 shrink-0">
+                  <CalendarDays className="h-6 w-6" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">
@@ -629,8 +629,8 @@ const EmployeeLeave = () => {
           <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 text-slate-700">
-                  <Hash className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-700 shrink-0">
+                  <Hash className="h-6 w-6" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs capitalize tracking-wide text-slate-500 font-graphik">

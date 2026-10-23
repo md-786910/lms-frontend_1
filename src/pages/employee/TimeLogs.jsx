@@ -201,8 +201,10 @@ const TimeLogs = () => {
       {/* Clock In/Out Section */}
       <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
         <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
-          <CardTitle className="flex items-center space-x-2 text-lg font-heading font-bold uppercase tracking-tight text-[#24130A]">
-            <Timer className="h-5 w-5 text-[#734425]" />
+          <CardTitle className="flex items-center space-x-3 text-lg font-heading font-bold uppercase tracking-tight text-[#24130A]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] shrink-0">
+              <Timer className="h-6 w-6" />
+            </div>
             <span>Today's Attendance Session</span>
           </CardTitle>
         </CardHeader>
@@ -295,7 +297,7 @@ const TimeLogs = () => {
                 <p className="text-3xl font-heading font-extrabold text-[#24130A] mt-1">8h 30m</p>
                 <p className="text-xs text-emerald-700 font-medium mt-1">On target</p>
               </div>
-              <div className="p-3 rounded-2xl bg-[#734425]/10 text-[#734425]">
+              <div className="h-10 w-10 rounded-xl bg-[#734425]/10 text-[#734425] flex items-center justify-center shrink-0">
                 <Clock className="h-6 w-6" />
               </div>
             </div>
@@ -312,7 +314,7 @@ const TimeLogs = () => {
                 </p>
                 <p className="text-xs text-[#2E2E2E]/60 mt-1">5 days worked</p>
               </div>
-              <div className="p-3 rounded-2xl bg-[#C26819]/15 text-[#C26819]">
+              <div className="h-10 w-10 rounded-xl bg-[#C26819]/15 text-[#C26819] flex items-center justify-center shrink-0">
                 <TrendingUp className="h-6 w-6" />
               </div>
             </div>
@@ -327,7 +329,7 @@ const TimeLogs = () => {
                 <p className="text-3xl font-heading font-extrabold text-[#734425] mt-1">144h</p>
                 <p className="text-xs text-[#C26819] font-medium mt-1">32h remaining</p>
               </div>
-              <div className="p-3 rounded-2xl bg-[#734425]/10 text-[#734425]">
+              <div className="h-10 w-10 rounded-xl bg-[#734425]/10 text-[#734425] flex items-center justify-center shrink-0">
                 <CalendarIcon className="h-6 w-6" />
               </div>
             </div>
@@ -342,7 +344,7 @@ const TimeLogs = () => {
                 <p className="text-3xl font-heading font-extrabold text-[#24130A] mt-1">95%</p>
                 <p className="text-xs text-emerald-700 font-medium mt-1">Excellent</p>
               </div>
-              <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-700">
+              <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center shrink-0">
                 <CheckCircle className="h-6 w-6" />
               </div>
             </div>
@@ -354,8 +356,10 @@ const TimeLogs = () => {
       <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2] overflow-hidden">
         <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            <CardTitle className="flex items-center space-x-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
-              <Clock className="h-5 w-5 text-[#734425]" />
+            <CardTitle className="flex items-center space-x-3 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] shrink-0">
+                <Clock className="h-6 w-6" />
+              </div>
               <span>Time Log History</span>
             </CardTitle>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">

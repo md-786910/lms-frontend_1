@@ -175,19 +175,19 @@ const Profile = ({ readOnly = false }) => {
     {
       label: "Email address",
       value: contactValue(basicInfo?.email),
-      icon: <Mail className="h-4 w-4" />,
+      icon: <Mail className="h-5 w-5" />,
       accentBg: "bg-blue-100 text-blue-700",
     },
     {
       label: "Phone number",
       value: contactValue(basicInfo?.phone_number),
-      icon: <Phone className="h-4 w-4" />,
+      icon: <Phone className="h-5 w-5" />,
       accentBg: "bg-emerald-100 text-emerald-700",
     },
     {
       label: "Location",
       value: locationLabel,
-      icon: <MapPin className="h-4 w-4" />,
+      icon: <MapPin className="h-5 w-5" />,
       accentBg: "bg-violet-100 text-violet-700",
     },
   ];
@@ -196,25 +196,25 @@ const Profile = ({ readOnly = false }) => {
     {
       label: "Employee ID",
       value: basicInfo?.employee_no ?? (loading ? "Loading..." : "N/A"),
-      icon: <User className="h-5 w-5" />,
+      icon: <User className="h-6 w-6" />,
       iconBg: "bg-sky-100 text-sky-700",
     },
     {
       label: "Designation",
       value: designationTitle,
-      icon: <Briefcase className="h-5 w-5" />,
+      icon: <Briefcase className="h-6 w-6" />,
       iconBg: "bg-emerald-100 text-emerald-700",
     },
     {
       label: "Department",
       value: departmentName,
-      icon: <MapPin className="h-5 w-5" />,
+      icon: <MapPin className="h-6 w-6" />,
       iconBg: "bg-violet-100 text-violet-700",
     },
     {
       label: "Date of Joining",
       value: profileJoinedLabel,
-      icon: <Calendar className="h-5 w-5" />,
+      icon: <Calendar className="h-6 w-6" />,
       iconBg: "bg-amber-100 text-amber-700",
     },
   ];
@@ -320,7 +320,7 @@ const Profile = ({ readOnly = false }) => {
                       key={item.label}
                       className="flex items-center gap-3 rounded-xl border border-[#E1D4C7]/60 bg-[#F5ECE4]/70 px-4 py-3"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] border border-[#E1D4C7]">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] border border-[#E1D4C7] shrink-0">
                         {item.icon}
                       </div>
                       <div>

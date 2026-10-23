@@ -371,7 +371,7 @@ const AdminLeaveModal = ({ onClose, onSuccess }) => {
           <div className="col-span-12 md:col-span-8 space-y-1">
             <div className="flex items-center gap-3">
               <span className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center shadow-inner">
-                <CalendarPlus className="h-5 w-5 text-[#F5ECE4]" />
+                <CalendarPlus className="h-6 w-6 text-[#F5ECE4]" />
               </span>
               <div className="space-y-0.5">
                 <h2 className="text-xl md:text-2xl font-heading font-extrabold uppercase tracking-tight text-white">

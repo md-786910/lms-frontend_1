@@ -143,8 +143,8 @@ const EmployeeLayout = () => {
                 className="h-10 w-10 rounded-xl object-cover"
               />
             ) : (
-              <div className="h-10 w-10 rounded-xl bg-[#734425] text-white flex items-center justify-center shadow-sm">
-                <Building2 className="h-5 w-5" />
+              <div className="h-10 w-10 rounded-xl bg-[#734425] text-white flex items-center justify-center shadow-sm shrink-0">
+                <Building2 className="h-6 w-6" />
               </div>
             )}
             <div className="leading-tight">
@@ -184,13 +184,13 @@ const EmployeeLayout = () => {
                   }`}
                 >
                   <span
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors shrink-0 ${
                       isActive
                         ? "bg-[#734425] text-white shadow-sm"
                         : "bg-[#E1D4C7]/50 text-[#734425] group-hover:bg-[#734425]/15"
                     }`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-6 w-6" />
                   </span>
                   <span className="font-medium">{item.label}</span>
                   {isActive && (

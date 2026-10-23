@@ -296,11 +296,11 @@ const AdminDashboard = () => {
               const palette = tonePalette[tone];
 
               const getIcon = () => {
-                if (isApproved) return <CheckCircle className="h-5 w-5" />;
-                if (isRejected) return <X className="h-5 w-5" />;
+                if (isApproved) return <CheckCircle className="h-6 w-6" />;
+                if (isRejected) return <X className="h-6 w-6" />;
                 if (isLeaveRequest)
-                  return <CalendarIcon className="h-5 w-5" />;
-                return <Bell className="h-5 w-5" />;
+                  return <CalendarIcon className="h-6 w-6" />;
+                return <Bell className="h-6 w-6" />;
               };
 
               const getTitle = () => {
@@ -455,7 +455,7 @@ const AdminDashboard = () => {
                       </p>
                     </div>
                     <div
-                      className={`h-12 w-12 rounded-2xl ${palette.icon} flex items-center justify-center shadow-sm`}
+                      className={`h-12 w-12 rounded-2xl ${palette.icon} flex items-center justify-center shadow-sm shrink-0`}
                     >
                       <Icon className="h-6 w-6" />
                     </div>
@@ -469,8 +469,8 @@ const AdminDashboard = () => {
         <Card className="border rounded-md border-slate-200 shadow-sm">
           <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100 rounded-t-md md:flex-row md:items-center md:justify-between">
             <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900 capitalize font-graphik">
-              <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-                <TimerReset className="h-5 w-5" />
+              <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm shrink-0">
+                <TimerReset className="h-6 w-6" />
               </span>
               Pending leave requests
             </CardTitle>
@@ -548,8 +548,8 @@ const AdminDashboard = () => {
         <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
           <CardHeader className="flex flex-col gap-3 px-6 py-4 bg-[#FAF6F2] border-b border-[#E1D4C7] rounded-t-2xl md:flex-row md:items-center md:justify-between">
             <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
-              <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-                <ClipboardCheck className="h-5 w-5" />
+              <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm shrink-0">
+                <ClipboardCheck className="h-6 w-6" />
               </span>
               Pending proof of work
             </CardTitle>
@@ -601,8 +601,8 @@ const AdminDashboard = () => {
           <Card className="lg:col-span-2 rounded-2xl border border-[#E1D4C7] shadow-sm overflow-hidden bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
-                <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-                  <CalendarIcon className="h-5 w-5" />
+                <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm shrink-0">
+                  <CalendarIcon className="h-6 w-6" />
                 </span>
                 Employee Leave Calendar
               </CardTitle>
@@ -717,8 +717,8 @@ const AdminDashboard = () => {
           <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
-                <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-                  <BellRing className="h-5 w-5" />
+                <span className="border border-[#734425]/20 bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm shrink-0">
+                  <BellRing className="h-6 w-6" />
                 </span>
                 Recent Activities
               </CardTitle>
@@ -727,8 +727,8 @@ const AdminDashboard = () => {
               {recentActivities.map((activity, index) => (
                 <div key={index} className="flex gap-4">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-white border border-[#E1D4C7] flex items-center justify-center text-[#734425] shadow-sm">
-                      <AlertCircle className="h-5 w-5 text-[#734425]" />
+                    <div className="w-10 h-10 rounded-full bg-white border border-[#E1D4C7] flex items-center justify-center text-[#734425] shadow-sm shrink-0">
+                      <AlertCircle className="h-6 w-6 text-[#734425]" />
                     </div>
                     {index !== recentActivities.length - 1 && (
                       <div className="absolute left-1/2 top-10 -ml-px h-8 w-[2px] bg-[#E1D4C7]" />
@@ -753,8 +753,8 @@ const AdminDashboard = () => {
           <Card className="relative overflow-hidden rounded-2xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <Award className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <Award className="h-6 w-6" />
                 </span>
                 <span>
                   Leaves - {format(new Date(), "MMMM yyyy")}
@@ -828,8 +828,8 @@ const AdminDashboard = () => {
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="flex justify-between items-center text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                 <div className="flex items-center gap-3">
-                  <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                    <Award className="h-5 w-5" />
+                  <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                    <Award className="h-6 w-6" />
                   </span>
                   <span>
                     Leaves -{" "}
@@ -948,7 +948,7 @@ const AdminDashboard = () => {
             {/* Header */}
             <div className="flex justify-between items-center px-6 py-4 border-b border-[#E1D4C7] bg-[#F5ECE4]">
               <h2 className="text-base font-heading font-bold text-[#24130A] uppercase tracking-tight flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5 text-[#734425]" />
+                <CalendarIcon className="h-6 w-6 text-[#734425]" />
                 Holiday List
               </h2>
               <button
@@ -1012,8 +1012,8 @@ const AdminDashboard = () => {
           />
           <div className="relative w-full max-w-sm rounded-2xl bg-[#FAF6F2] p-6 shadow-2xl space-y-4 border border-[#E1D4C7]">
             <div className="flex flex-col items-center gap-3 text-center">
-              <span className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center">
-                <AlertCircle className="h-5 w-5" />
+              <span className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center shrink-0">
+                <AlertCircle className="h-6 w-6" />
               </span>
               <h3 className="text-lg font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                 Confirm download
@@ -1062,8 +1062,8 @@ const AdminDashboard = () => {
           />
           <div className="relative w-full max-w-sm rounded-2xl bg-[#FAF6F2] p-6 shadow-2xl space-y-4 border border-[#E1D4C7]">
             <div className="flex flex-col items-center gap-3 text-center">
-              <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center">
-                <Mail className="h-5 w-5" />
+              <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shrink-0">
+                <Mail className="h-6 w-6" />
               </span>
               <h3 className="text-lg font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                 Confirm email

@@ -204,8 +204,10 @@ const Salary = () => {
       {/* YTD Summary */}
       <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
         <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
-          <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
-            <TrendingUp className="h-5 w-5 text-[#734425]" />
+          <CardTitle className="flex items-center gap-3 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] shrink-0">
+              <TrendingUp className="h-6 w-6" />
+            </div>
             Year-to-Date Summary ({dayjs().year()})
           </CardTitle>
         </CardHeader>
@@ -255,8 +257,10 @@ const Salary = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
           <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
-            <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
-              <Plus className="h-5 w-5 text-[#734425]" />
+            <CardTitle className="flex items-center gap-3 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#734425]/10 text-[#734425] shrink-0">
+                <Plus className="h-6 w-6" />
+              </div>
               Earnings Breakdown
             </CardTitle>
           </CardHeader>
@@ -290,8 +294,10 @@ const Salary = () => {
 
         <Card className="border border-[#E1D4C7] shadow-sm rounded-2xl bg-[#FAF6F2]">
           <CardHeader className="border-b border-[#E1D4C7]/60 pb-4">
-            <CardTitle className="flex items-center gap-2 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
-              <Minus className="h-5 w-5 text-rose-700" />
+            <CardTitle className="flex items-center gap-3 font-heading font-bold uppercase tracking-tight text-lg text-[#24130A]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-700 shrink-0">
+                <Minus className="h-6 w-6" />
+              </div>
               Deductions Breakdown
             </CardTitle>
           </CardHeader>

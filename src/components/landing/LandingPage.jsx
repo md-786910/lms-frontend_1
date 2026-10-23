@@ -187,7 +187,7 @@ const LandingPage = () => {
                       ["Unread alerts", "7", Bell],
                     ].map(([label, value, Icon]) => (
                       <div key={label} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 transition duration-300 hover:bg-white/10">
-                        <Icon className="h-5 w-5 text-[#C26819]" />
+                        <Icon className="h-6 w-6 text-[#C26819]" />
                         <div className="mt-4 text-2xl font-bold text-white font-heading">{value}</div>
                         <div className="mt-1 text-xs text-stone-400 font-sans">{label}</div>
                       </div>
@@ -200,7 +200,7 @@ const LandingPage = () => {
                         <div className="text-sm font-bold text-[#2E2E2E] font-heading uppercase">Leave requests</div>
                         <div className="text-xs text-slate-500 font-sans">Approval queue</div>
                       </div>
-                      <BarChart3 className="h-5 w-5 text-[#734425]" />
+                      <BarChart3 className="h-6 w-6 text-[#734425]" />
                     </div>
                     <div className="space-y-3 font-sans">
                       {["Sick Leave", "Earned Leave", "Casual Leave"].map((leave, index) => (
@@ -350,7 +350,9 @@ const LandingPage = () => {
       <section id="pricing" className="py-20 sm:py-24 bg-[#F5ECE4]">
         <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
           <div className="rounded-[28px] bg-gradient-to-br from-[#734425] to-[#492B17] px-6 py-12 text-center text-[#FAF6F2] shadow-2xl shadow-[#734425]/25 sm:px-12 border border-[#8D5531]">
-            <FileText className="mx-auto h-10 w-10 text-[#C26819]" />
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-[#FAF6F2] shadow-inner border border-white/15">
+              <FileText className="h-6 w-6 text-[#C26819]" />
+            </div>
             <h2 className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl font-heading uppercase">
               Set up your company and start with real HR data.
             </h2>

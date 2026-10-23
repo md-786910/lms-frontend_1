@@ -60,8 +60,10 @@ const CompanyFooter = () => {
       <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 mb-16">
           <div className="col-span-2 space-y-6">
-            <Link to="/company" className="flex items-center space-x-2 text-white">
-              <Building className="h-8 w-8 text-[#C26819]" />
+            <Link to="/company" className="flex items-center space-x-3 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#C26819]/10 text-[#C26819] border border-[#C26819]/20">
+                <Building className="h-6 w-6 text-[#C26819]" />
+              </div>
               <span className="text-2xl font-bold tracking-tight font-heading">Leanport HR</span>
             </Link>
             <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-sm font-sans">

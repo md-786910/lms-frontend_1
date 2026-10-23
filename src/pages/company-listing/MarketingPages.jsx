@@ -86,7 +86,7 @@ const SectionIntro = ({ eyebrow, title, description, center = false }) => (
 
 const FeatureTile = ({ icon: Icon, title, description, items = [] }) => (
   <div className="group rounded-2xl border border-[#E1D4C7] bg-[#FAF6F2] p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#C26819] hover:shadow-xl hover:shadow-[#734425]/10">
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white">
+    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] transition duration-300 group-hover:bg-[#C26819] group-hover:text-white shrink-0">
       <Icon className="h-6 w-6" />
     </div>
     <h3 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase tracking-wide">{title}</h3>
@@ -820,7 +820,7 @@ const LegalPage = ({ type }) => {
         <div className="max-w-8xl mx-auto xl:mx-60 px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
             <div className="rounded-2xl border border-[#E1D4C7] bg-[#FAF5F0] p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#734425] text-[#FAF6F2] shrink-0">
                 <Icon className="h-6 w-6" />
               </div>
               <h2 className="mt-5 text-xl font-bold text-[#2E2E2E] font-heading uppercase">Plain-language policy</h2>

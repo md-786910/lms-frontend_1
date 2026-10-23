@@ -211,7 +211,7 @@ const Salary = () => {
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-[#734425]/15 text-[#734425]">
-                  <DollarSign className="h-5 w-5" />
+                  <DollarSign className="h-6 w-6" />
                 </div>
               </div>
             </CardContent>
@@ -229,7 +229,7 @@ const Salary = () => {
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-[#734425]/10 text-[#734425]">
-                  <TrendingUp className="h-5 w-5" />
+                  <TrendingUp className="h-6 w-6" />
                 </div>
               </div>
             </CardContent>
@@ -247,7 +247,7 @@ const Salary = () => {
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-[#C26819]/15 text-[#C26819]">
-                  <Calendar className="h-5 w-5" />
+                  <Calendar className="h-6 w-6" />
                 </div>
               </div>
             </CardContent>
@@ -263,7 +263,7 @@ const Salary = () => {
                   </p>
                 </div>
                 <div className="p-3 rounded-2xl bg-[#8A522D]/15 text-[#8A522D]">
-                  <Users className="h-5 w-5" />
+                  <Users className="h-6 w-6" />
                 </div>
               </div>
             </CardContent>
@@ -346,8 +346,8 @@ const Salary = () => {
       {/* Salary Table */}
       <div className="p-6 bg-[#FAF6F2] border border-[#E1D4C7] rounded-2xl shadow-sm">
         <div className="flex items-center space-x-3 text-lg font-bold text-[#2E2E2E] font-heading uppercase tracking-tight mb-5 border-b border-[#E1D4C7]/60 pb-3">
-          <span className="bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm">
-            <AlarmClockMinus className="h-5 w-5" />
+          <span className="bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shadow-sm shrink-0">
+            <AlarmClockMinus className="h-6 w-6" />
           </span>
           <span>
             Salary Details
@@ -518,8 +518,8 @@ const Salary = () => {
               <div className="grid grid-cols-12 items-center gap-4">
                 <div className="col-span-12 md:col-span-8 space-y-1">
                   <div className="flex items-center gap-3">
-                    <span className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center shadow-inner">
-                      <AlarmClockMinus className="h-5 w-5 text-[#F5ECE4]" />
+                    <span className="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-[#F5ECE4] flex items-center justify-center shadow-inner shrink-0">
+                      <AlarmClockMinus className="h-6 w-6 text-[#F5ECE4]" />
                     </span>
                     <div className="space-y-0.5">
                       <h2 className="text-xl font-heading font-extrabold uppercase tracking-tight text-white">

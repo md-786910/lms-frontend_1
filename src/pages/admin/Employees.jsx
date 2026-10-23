@@ -684,8 +684,8 @@ const Employees = ({
           <div className="bg-gradient-to-r from-[#24130A] via-[#734425] to-[#5D361D] text-white p-6 sticky top-0 z-10 shadow-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3 text-xl font-heading font-extrabold text-white tracking-wide uppercase">
-                <span className="bg-white/10 text-[#F5ECE4] border border-white/20 flex h-10 w-10 items-center justify-center rounded-xl backdrop-blur-sm">
-                  <User className="h-5 w-5" />
+                <span className="bg-white/10 text-[#F5ECE4] border border-white/20 flex h-10 w-10 items-center justify-center rounded-xl backdrop-blur-sm shrink-0">
+                  <User className="h-6 w-6" />
                 </span>
                 <span>Add New Employee</span>
               </DialogTitle>

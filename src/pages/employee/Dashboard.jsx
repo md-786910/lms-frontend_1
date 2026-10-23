@@ -452,11 +452,11 @@ const EmployeeDashboard = () => {
 
                 const getIcon = () => {
                   if (isApproved)
-                    return <CheckCircle className="h-5 w-5" />;
-                  if (isRejected) return <X className="h-5 w-5" />;
+                    return <CheckCircle className="h-6 w-6" />;
+                  if (isRejected) return <X className="h-6 w-6" />;
                   if (isLeaveRequest)
-                    return <CalendarIcon className="h-5 w-5" />;
-                  return <Bell className="h-5 w-5" />;
+                    return <CalendarIcon className="h-6 w-6" />;
+                  return <Bell className="h-6 w-6" />;
                 };
 
                 const getTitle = () => {
@@ -658,8 +658,8 @@ const EmployeeDashboard = () => {
           <Card className="lg:col-span-2 rounded-2xl border border-[#E1D4C7] shadow-sm overflow-hidden bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <CalendarIcon className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <CalendarIcon className="h-6 w-6" />
                 </span>
                 Schedule & Team Leaves
               </CardTitle>
@@ -752,8 +752,8 @@ const EmployeeDashboard = () => {
                         ))
                       ) : (
                         <div className="p-6 flex flex-col items-center text-center gap-2 bg-[#FAF6F2]">
-                          <div className="h-10 w-10 rounded-full bg-[#734425]/10 text-[#734425] border border-[#734425]/20 flex items-center justify-center">
-                            <CalendarX className="h-5 w-5" />
+                          <div className="h-10 w-10 rounded-full bg-[#734425]/10 text-[#734425] border border-[#734425]/20 flex items-center justify-center shrink-0">
+                            <CalendarX className="h-6 w-6" />
                           </div>
                           <p className="text-sm font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
                             Clear schedule
@@ -774,8 +774,8 @@ const EmployeeDashboard = () => {
           <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <BellRing className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <BellRing className="h-6 w-6" />
                 </span>
                 Recent Activities
               </CardTitle>
@@ -784,8 +784,8 @@ const EmployeeDashboard = () => {
               {recentActivities.map((activity, index) => (
                 <div key={index} className="flex gap-4">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-white border border-[#E1D4C7] flex items-center justify-center text-[#734425] shadow-sm">
-                      <AlertCircle className="h-5 w-5 text-[#734425]" />
+                    <div className="w-10 h-10 rounded-full bg-white border border-[#E1D4C7] flex items-center justify-center text-[#734425] shadow-sm shrink-0">
+                      <AlertCircle className="h-6 w-6 text-[#734425]" />
                     </div>
                     {index !== recentActivities.length - 1 && (
                       <div className="absolute left-1/2 top-10 -ml-px h-8 w-[2px] bg-[#E1D4C7]" />
@@ -808,8 +808,8 @@ const EmployeeDashboard = () => {
           <Card className="border border-[#E1D4C7] rounded-2xl shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="text-base font-heading font-bold text-[#2E2E2E] flex items-center gap-3 uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <Award className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <Award className="h-6 w-6" />
                 </span>
                 Extra Work
               </CardTitle>
@@ -851,8 +851,8 @@ const EmployeeDashboard = () => {
           <Card className="relative overflow-hidden rounded-2xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <Award className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <Award className="h-6 w-6" />
                 </span>
                 <span>
                   My leaves for Month - {format(new Date(), "MMMM yyyy")}
@@ -926,8 +926,8 @@ const EmployeeDashboard = () => {
           <Card className="relative overflow-hidden rounded-2xl border border-[#E1D4C7] shadow-sm bg-[#FAF6F2]">
             <CardHeader className="border-b border-[#E1D4C7] bg-[#FAF6F2] px-6 py-4">
               <CardTitle className="flex items-center gap-3 text-base font-heading font-bold text-[#2E2E2E] uppercase tracking-tight">
-                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm">
-                  <Award className="h-5 w-5" />
+                <span className="h-10 w-10 rounded-xl bg-[#734425]/10 border border-[#734425]/20 text-[#734425] flex items-center justify-center shadow-sm shrink-0">
+                  <Award className="h-6 w-6" />
                 </span>
                 <span>
                   My leaves for Month -{" "}

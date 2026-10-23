@@ -62,8 +62,8 @@ const UseCaseCard = ({ useCase, isVisible, index }) => {
     >
       <div className={`relative h-full rounded-3xl p-8 transition-all duration-300 ${isHovered ? `bg-gradient-to-br ${useCase.color} text-white shadow-2xl -translate-y-2` : 'bg-white border border-[#E1D4C7] hover:border-[#734425]/40 shadow-sm'}`}>
         {/* Icon */}
-        <div className={`inline-flex p-4 rounded-2xl mb-6 ${isHovered ? 'bg-white/20' : `bg-gradient-to-br ${useCase.color} text-white`} transition-all duration-300 shadow-sm`}>
-          <Icon size={28} className="text-white" />
+        <div className={`inline-flex p-3 rounded-2xl mb-6 ${isHovered ? 'bg-white/20' : `bg-gradient-to-br ${useCase.color} text-white`} transition-all duration-300 shadow-sm`}>
+          <Icon className="w-6 h-6 text-white" />
         </div>
 
         {/* Title */}

@@ -131,8 +131,8 @@ const User = () => {
 
       <div className="p-6 bg-[#FAF6F2] border border-[#E1D4C7] rounded-2xl shadow-sm">
         <div className="flex items-center space-x-3 mb-6">
-          <span className="border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] flex h-11 w-11 items-center justify-center rounded-xl">
-            <Users className="h-5 w-5" />
+          <span className="border border-[#E1D4C7] bg-[#734425]/10 text-[#734425] flex h-10 w-10 items-center justify-center rounded-xl shrink-0">
+            <Users className="h-6 w-6" />
           </span>
           <div>
             <h2 className="text-xl font-heading font-bold uppercase tracking-tight text-[#24130A]">
